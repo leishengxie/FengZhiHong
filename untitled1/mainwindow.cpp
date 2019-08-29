@@ -6,9 +6,9 @@
 #include<QFontDialog>
 #include<QDebug>
 #include"peizhijiemian.h"
-MainWindow::MainWindow(QWidget *parent) :
+CDairyMainWindow::CDairyMainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::DairyMainWindow)
 {
     ui->setupUi(this);
     //setWindowFlags(Qt::FramelessWindowHint | windowFlags());
@@ -19,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->textBrowser->setStyleSheet("background-color:transparent");
     ui->menuBar->setStyleSheet("background-color:transparent");
 }
-void MainWindow::timeroutshow()
+void CDairyMainWindow::timeroutshow()
 {
    on_actionshuxin_triggered();//刷新
    QPalette pal;
@@ -29,11 +29,11 @@ void MainWindow::timeroutshow()
    ui->labelwangming->setToolTip("网名："+wangming);
    ui->labelzhanghao->setToolTip("账号："+ui->labelzhanghao->text());
 }
-MainWindow::~MainWindow()
+CDairyMainWindow::~CDairyMainWindow()
 {
     delete ui;
 }
-void MainWindow::SetZhanghao(QString zhanghao)
+void CDairyMainWindow::SetZhanghao(QString zhanghao)
 {
     ui->labelzhanghao->setText(zhanghao);
     MySql sql;
@@ -57,7 +57,7 @@ if(list.length()==5)
     timeroutshow();
 }
 }
-void MainWindow::on_actionxieriji_triggered()//写日记
+void CDairyMainWindow::on_actionxieriji_triggered()//写日记
 {
   Writerj *write=new Writerj;
 
@@ -65,7 +65,7 @@ void MainWindow::on_actionxieriji_triggered()//写日记
   write->exec();
 }
 
-void MainWindow::on_actionshuxin_triggered()//刷新
+void CDairyMainWindow::on_actionshuxin_triggered()//刷新
 {
     ui->listWidget->clear();
     MySql sql;
@@ -74,7 +74,7 @@ void MainWindow::on_actionshuxin_triggered()//刷新
     ui->listWidget->addItems(list);
 }
 
-void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)//点击ITEM
+void CDairyMainWindow::on_listWidget_itemClicked(QListWidgetItem *item)//点击ITEM
 {
    QString riqi=item->text();
    MySql sql;
@@ -83,7 +83,7 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)//点击ITEM
    ui->labelxinqing1->setText(list.at(1));
    ui->textBrowser->setPlainText(list.at(2));
 }
-void MainWindow::on_actionpeizhi_triggered()//配置
+void CDairyMainWindow::on_actionpeizhi_triggered()//配置
 {
     Peizhijiemian *pz=new Peizhijiemian;
     pz->PeiZhiInit(font,pix,touxiang,wangming,geqian);
@@ -93,7 +93,7 @@ void MainWindow::on_actionpeizhi_triggered()//配置
     pz->exec();
 }
 
-void MainWindow::huoqu(QFont font1,QString beijing, QString touxiang1, QString wangming1, QString geqian1)
+void CDairyMainWindow::huoqu(QFont font1,QString beijing, QString touxiang1, QString wangming1, QString geqian1)
 {
    font=font1;
    pix=beijing;
@@ -112,7 +112,7 @@ void MainWindow::huoqu(QFont font1,QString beijing, QString touxiang1, QString w
    sql.SetXinXi(ui->labelzhanghao->text(),font1.toString(),beijing,touxiang,wangming,geqian);
 }
 #include<QMessageBox>
-void MainWindow::on_actionguanyu_triggered()
+void CDairyMainWindow::on_actionguanyu_triggered()
 {
    QMessageBox::information(this,"关于","软件名： Qt超级日记本\n"
                                        "创作人： 梦飞翔\n"

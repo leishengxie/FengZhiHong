@@ -13,8 +13,19 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+    LoginWidget.cpp \
+    AboutDialog.cpp \
+    DairyMainWindow.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += \
+    LoginWidget.h \
+    AboutDialog.h \
+    DairyMainWindow.h
 
-FORMS    += mainwindow.ui
+FORMS    += \
+    LoginWidget.ui \
+    DairyMainWindow.ui \
+    AboutDialog.ui
+
+RESOURCES += \
+    res.qrc

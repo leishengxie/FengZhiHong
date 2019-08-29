@@ -1,12 +1,12 @@
-#include "mainwindow.h"
+#include "DairyMainWindow.h"
 #include "ui_mainwindow.h"
 #include <QIcon>
 
 
 
-MainWindow::MainWindow(QWidget *parent) :
+CDairyMainWindow::CDairyMainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::DairyMainWindow)
 {
     ui->setupUi(this);
 
@@ -32,7 +32,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 }
 
-void MainWindow::closeEvent(QCloseEvent *event)
+void CDairyMainWindow::closeEvent(QCloseEvent *event)
 {
     // event->ignore();
     //event->accept();
@@ -80,11 +80,11 @@ void MainWindow::closeEvent(QCloseEvent *event)
     }
 }
 
-MainWindow::~MainWindow()
+CDairyMainWindow::~CDairyMainWindow()
 {
     delete ui;
 }
-void MainWindow::  newFileSlot()
+void CDairyMainWindow::  newFileSlot()
 {
     // Modify:更改，修改
     if(ui->textEdit->document()->isModified())
@@ -98,7 +98,7 @@ void MainWindow::  newFileSlot()
         this->setWindowTitle("unTitle");
     }
 }
-void MainWindow::openFileSlot()
+void CDairyMainWindow::openFileSlot()
 {
     /*
      QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
@@ -131,7 +131,7 @@ void MainWindow::openFileSlot()
     }
 }
 
-void MainWindow::saveFileSlot()
+void CDairyMainWindow::saveFileSlot()
 {
     if(saveFileName.isEmpty())
     {
@@ -156,7 +156,7 @@ void MainWindow::saveFileSlot()
         }
     }
 }
-void MainWindow::saveAsFileSlot()
+void CDairyMainWindow::saveAsFileSlot()
 {
     QString saveFileName =QFileDialog::getSaveFileName(this,"save as file",QDir::currentPath(),tr("*.png;; *.xpm ;;*.jpg ;;*.txt"));
     if(saveFileName.isEmpty())
@@ -182,18 +182,18 @@ void MainWindow::saveAsFileSlot()
         return;
     }
 }
-void MainWindow:: exitFileSlot()
+void CDairyMainWindow:: exitFileSlot()
 {
     ui->textEdit->clear();
     this->close();
 }
-void MainWindow::printFileSlot()
+void CDairyMainWindow::printFileSlot()
 {
     //
 
 
 }
-void MainWindow::setFontSlot()
+void CDairyMainWindow::setFontSlot()
 {
     /*
     bool ok;
@@ -219,7 +219,7 @@ void MainWindow::setFontSlot()
     }
 
 }
-void MainWindow::setColorSlot()
+void CDairyMainWindow::setColorSlot()
 {
     /*
     const QColorDialog::ColorDialogOptions options = QFlag(colorDialogOptionsWidget->value());
@@ -243,21 +243,21 @@ void MainWindow::setColorSlot()
     }
 
 }
-void MainWindow::currentDaateTimeSlot()
+void CDairyMainWindow::currentDaateTimeSlot()
 {
     QDateTime currentTime = QDateTime::currentDateTime();
     QString time = currentTime.toString("yyyy-M-dd hh:mm:ss");
     ui->textEdit->append(time); //append:附加，贴上
 }
 
-void MainWindow::aboutWebServicesSlot()
+void CDairyMainWindow::aboutWebServicesSlot()
 {
    QDesktopServices::openUrl(QUrl("http://www.baidu.com"));
 }
 
-void MainWindow::aboutSoftwareSlot()
+void CDairyMainWindow::aboutSoftwareSlot()
 {
-    about *dialog=new about;
+    CAboutDialog *dialog=new CAboutDialog;
     dialog->show(); //unmodal dialog;
     //dialog.exec()    modal dialog
 }

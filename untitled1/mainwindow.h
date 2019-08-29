@@ -6,16 +6,16 @@
 #include"writerj.h"
 #include<QTimer>
 namespace Ui {
-class MainWindow;
+class DairyMainWindow;
 }
 
-class MainWindow : public QMainWindow
+class CDairyMainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+    explicit CDairyMainWindow(QWidget *parent = 0);
+    ~CDairyMainWindow();
     void SetZhanghao(QString zhanghao);
 
 private slots:
@@ -28,7 +28,7 @@ private slots:
     void on_actionguanyu_triggered();
 
 private:
-    Ui::MainWindow *ui;
+    Ui::DairyMainWindow *ui;
     QTimer *timer;
     QFont font;
     QString pix;

@@ -79,7 +79,7 @@ void denglv::on_pushButtondenglv_clicked()//登录
     MySql sql;
     if(sql.yanzheng(zhanghao,mima))
     {
-       MainWindow *mainzhu=new MainWindow;
+       CDairyMainWindow *mainzhu=new CDairyMainWindow;
        mainzhu->SetZhanghao(ui->lineEditzanghao->currentText());
        mainzhu->show();
        this->close();/////////////////////////////////////

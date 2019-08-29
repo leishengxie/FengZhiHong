@@ -16,7 +16,7 @@
 #include <QDateTime>
 #include <QUrl>
 #include <QDesktopServices>
-#include "about.h"
+#include "AboutDialog.h"
 #include <QCloseEvent>
 
 //当程序需要关闭的时候所处理的内容
@@ -26,16 +26,16 @@
 
 
 namespace Ui {
-class MainWindow;
+class DairyMainWindow;
 }
 
-class MainWindow : public QMainWindow
+class CDairyMainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+    explicit CDairyMainWindow(QWidget *parent = 0);
+    ~CDairyMainWindow();
 protected:
     void closeEvent(QCloseEvent *event);
 private slots:
@@ -52,7 +52,7 @@ private slots:
     void aboutSoftwareSlot();
 
 private:
-    Ui::MainWindow *ui;
+    Ui::DairyMainWindow *ui;
     QString saveFileName;
 };
 

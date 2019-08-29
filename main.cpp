@@ -1,10 +1,10 @@
-#include "mainwindow.h"
+#include "DairyMainWindow.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow w;
+    CDairyMainWindow w;
     w.show();
 
     return a.exec();
