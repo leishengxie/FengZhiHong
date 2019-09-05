@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/new/icon">
+        <file>icon/4.png</file>
+        <file>icon/6.png</file>
+        <file>icon/1440x900_04.jpg</file>
+        <file>icon/201306031254496361.png</file>
+        <file>icon/201306241707512168.png</file>
+        <file>icon/err.png</file>
+        <file>icon/ok.png</file>
+        <file>icon/return.gif</file>
+        <file>icon/Text.png</file>
+        <file>icon/右箭头.png</file>
+        <file>icon/左箭头.png</file>
+    </qresource>
+</RCC>

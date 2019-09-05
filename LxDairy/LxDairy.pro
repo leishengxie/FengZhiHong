@@ -8,19 +8,21 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = FengZhiHong
+TARGET = LxDairy
 TEMPLATE = app
 
 
 SOURCES += main.cpp\
     LoginWidget.cpp \
     AboutDialog.cpp \
-    DairyMainWindow.cpp
+    DairyMainWindow.cpp \
+    SqlOperate.cpp
 
 HEADERS  += \
     LoginWidget.h \
     AboutDialog.h \
-    DairyMainWindow.h
+    DairyMainWindow.h \
+    SqlOperate.h
 
 FORMS    += \
     LoginWidget.ui \

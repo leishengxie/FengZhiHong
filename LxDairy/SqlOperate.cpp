@@ -1,4 +1,4 @@
-#include "mysql.h"
+#include "SqlOperate.h"
 #include<QVariant>
 #include<QCoreApplication>
 #include<QDir>
@@ -6,11 +6,14 @@
 #include<QDebug>
 
 #include <time.h>
-MySql::MySql()
+
+
+
+CSqlOperate::CSqlOperate(QObject *parent) : QObject(parent)
 {
-    
 
 }
+
 bool isDirExist(QString fullPath)
 {
     QDir dir(fullPath);
@@ -24,11 +27,11 @@ bool isDirExist(QString fullPath)
        return ok;
     }
 }
-bool MySql::WriteData(QString zhanghao, QString time,QString wather,QString xinqing,QString neirong)
+bool CSqlOperate::WriteData(QString zhanghao, QString time,QString wather,QString xinqing,QString neirong)
 {
     QSqlQuery query;
     bool ok=query.prepare("INSERT INTO mobile (zhanghao,time,wather,xinqing,neirong) "
-                       "VALUES (?, ?, ?, ?, ?)");
+                       "VALUES (?, ?, ?,?, ?)");
          query.bindValue(0, zhanghao.toInt());
          query.bindValue(1, time);
          query.bindValue(2, wather);
@@ -37,7 +40,7 @@ bool MySql::WriteData(QString zhanghao, QString time,QString wather,QString xinq
          query.exec();
          return ok;
 }
-QStringList MySql::shuaxin(QString zhanghao)
+QStringList CSqlOperate::shuaxin(QString zhanghao)
 {
     QSqlQuery query;
     QStringList list;
@@ -46,12 +49,12 @@ QStringList MySql::shuaxin(QString zhanghao)
     {
         if(zhanghao.toInt()==query.value(0).toInt())
         {
-          list.append(query.value(1).toString());  //时间          
+          list.append(query.value(1).toString());  //时间
         }
     }
     return list;
 }
-QStringList MySql::huoquqita(QString zhanghao, QString riqi)
+QStringList CSqlOperate::huoquqita(QString zhanghao, QString riqi)
 {
     QSqlQuery query;
     QStringList list;
@@ -65,7 +68,7 @@ QStringList MySql::huoquqita(QString zhanghao, QString riqi)
     }
     return list;
 }
-int MySql::zhanghao(QString mima,QString beizhu,QString wangming,QString qianming,QString touxiang)
+int CSqlOperate::zhanghao(QString mima,QString beizhu,QString wangming,QString qianming,QString touxiang)
 {
     QSqlQuery query;
     qsrand(time(NULL));
@@ -106,7 +109,7 @@ int MySql::zhanghao(QString mima,QString beizhu,QString wangming,QString qianmin
     }
 
 }
-QString MySql::wangjimima(QString zhanghao,QString beizhu,QString mima)
+QString CSqlOperate::wangjimima(QString zhanghao,QString beizhu,QString mima)
 {
     QSqlQuery query;
     query.exec("select * from zhanghao");
@@ -120,7 +123,7 @@ QString MySql::wangjimima(QString zhanghao,QString beizhu,QString mima)
     }
     return "账号或备注不正确！请检查！！";
 }
-bool MySql::yanzheng(QString zhanghao,QString mima)
+bool CSqlOperate::yanzheng(QString zhanghao,QString mima)
 {
     QSqlQuery query;
     query.exec("select * from zhanghao");
@@ -133,7 +136,7 @@ bool MySql::yanzheng(QString zhanghao,QString mima)
     }
     return false;
 }
-QStringList MySql::zhumaintongbu(QString zhanghao)
+QStringList CSqlOperate::zhumaintongbu(QString zhanghao)
 {
     QSqlQuery query;
     query.exec("select * from zhanghao");
@@ -150,7 +153,7 @@ QStringList MySql::zhumaintongbu(QString zhanghao)
     }
     return list;
 }
-void MySql::setziti(QString zhanghao,QString ziti)
+void CSqlOperate::setziti(QString zhanghao,QString ziti)
 {
     QSqlQuery query;
     query.exec("select * from zhanghao");
@@ -163,7 +166,7 @@ void MySql::setziti(QString zhanghao,QString ziti)
         }
     }
 }
-void MySql::SetXinXi(QString zhanghao, QString ziti, QString beijing, QString touxiang, QString wangming, QString geqian)
+void CSqlOperate::SetXinXi(QString zhanghao, QString ziti, QString beijing, QString touxiang, QString wangming, QString geqian)
 {
     QString path=QCoreApplication::applicationDirPath()+"/file";
     isDirExist(path);
