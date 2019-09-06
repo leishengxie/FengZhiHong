@@ -11,7 +11,7 @@ CDairyMainWindow::CDairyMainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     this->setWindowTitle("MyNotepad");
-    this->setWindowIcon(QIcon(":new/icon/icon/1440x900_94.jpg"));
+
     //trigger:引发，触发
     QObject::connect(ui->action_N,SIGNAL(triggered()),this,SLOT(newFileSlot()));
     QObject::connect(ui->action_O,SIGNAL(triggered()),this,SLOT(openFileSlot()));

@@ -1,15 +1,21 @@
 <RCC>
-    <qresource prefix="/new/icon">
-        <file>icon/4.png</file>
-        <file>icon/6.png</file>
-        <file>icon/1440x900_04.jpg</file>
-        <file>icon/201306031254496361.png</file>
-        <file>icon/201306241707512168.png</file>
-        <file>icon/err.png</file>
-        <file>icon/ok.png</file>
-        <file>icon/return.gif</file>
-        <file>icon/Text.png</file>
-        <file>icon/右箭头.png</file>
-        <file>icon/左箭头.png</file>
+    <qresource prefix="/">
+        <file>css/black.css</file>
+        <file>css/blue.css</file>
+        <file>css/gray.css</file>
+        <file>css/navy.css</file>
+        <file>font/fontawesome-webfont.ttf</file>
+        <file>img/arrows_left.png</file>
+        <file>img/arrows_right.png</file>
+        <file>img/bg.jpg</file>
+        <file>img/calendar.png</file>
+        <file>img/copy.png</file>
+        <file>img/err.png</file>
+        <file>img/ok.png</file>
+        <file>img/return.gif</file>
+        <file>img/save.png</file>
+        <file>img/save_1.png</file>
+        <file>img/skin.png</file>
+        <file>img/text.png</file>
     </qresource>
 </RCC>

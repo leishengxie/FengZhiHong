@@ -43,7 +43,7 @@
     <item>
      <widget class="QTextEdit" name="textEdit">
       <property name="styleSheet">
-       <string notr="true">background-image: url(:/new/icon/icon/1440x900_04.jpg);</string>
+       <string notr="true">background-image: url(:/img/bg.jpg);</string>
       </property>
       <property name="html">
        <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -71,7 +71,7 @@ p, li { white-space: pre-wrap; }
     </property>
     <addaction name="action_N"/>
     <addaction name="action_O"/>
-    <addaction name="action_S_2"/>
+    <addaction name="action_save"/>
     <addaction name="action_A"/>
     <addaction name="separator"/>
     <addaction name="action_U"/>
@@ -83,10 +83,10 @@ p, li { white-space: pre-wrap; }
     <property name="title">
      <string>编辑（&amp;E）</string>
     </property>
-    <addaction name="action_U_2"/>
-    <addaction name="action_H"/>
+    <addaction name="action_repeal"/>
+    <addaction name="action_recover"/>
     <addaction name="action_T"/>
-    <addaction name="action_C"/>
+    <addaction name="action_copy"/>
     <addaction name="action_P_2"/>
     <addaction name="separator"/>
     <addaction name="action_D"/>
@@ -118,11 +118,11 @@ p, li { white-space: pre-wrap; }
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="action_S_2"/>
+   <addaction name="action_save"/>
    <addaction name="action_F"/>
-   <addaction name="action_C"/>
-   <addaction name="action_U_2"/>
-   <addaction name="action_H"/>
+   <addaction name="action_copy"/>
+   <addaction name="action_repeal"/>
+   <addaction name="action_recover"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="action_N">
@@ -155,19 +155,19 @@ p, li { white-space: pre-wrap; }
     <string>退出(&amp;X)</string>
    </property>
   </action>
-  <action name="action_S_2">
+  <action name="action_save">
    <property name="icon">
     <iconset resource="res.qrc">
-     <normaloff>:/new/icon/icon/6.png</normaloff>:/new/icon/icon/6.png</iconset>
+     <normaloff>:/img/save.png</normaloff>:/img/save.png</iconset>
    </property>
    <property name="text">
     <string>保存(&amp;S)</string>
    </property>
   </action>
-  <action name="action_U_2">
+  <action name="action_repeal">
    <property name="icon">
     <iconset resource="res.qrc">
-     <normaloff>:/new/icon/icon/左箭头.png</normaloff>:/new/icon/icon/左箭头.png</iconset>
+     <normaloff>:/img/arrows_left.png</normaloff>:/img/arrows_left.png</iconset>
    </property>
    <property name="text">
     <string>撤销(&amp;U)</string>
@@ -178,10 +178,10 @@ p, li { white-space: pre-wrap; }
     <string>剪切(&amp;T)</string>
    </property>
   </action>
-  <action name="action_C">
+  <action name="action_copy">
    <property name="icon">
     <iconset resource="res.qrc">
-     <normaloff>:/new/icon/icon/201306241707512168.png</normaloff>:/new/icon/icon/201306241707512168.png</iconset>
+     <normaloff>:/img/copy.png</normaloff>:/img/copy.png</iconset>
    </property>
    <property name="text">
     <string>复制(&amp;C)</string>
@@ -211,10 +211,10 @@ p, li { white-space: pre-wrap; }
     <string>字体颜色(&amp;C)</string>
    </property>
   </action>
-  <action name="action_H">
+  <action name="action_recover">
    <property name="icon">
     <iconset resource="res.qrc">
-     <normaloff>:/new/icon/icon/右箭头.png</normaloff>:/new/icon/icon/右箭头.png</iconset>
+     <normaloff>:/img/arrows_right.png</normaloff>:/img/arrows_right.png</iconset>
    </property>
    <property name="text">
     <string>恢复(&amp;H)</string>

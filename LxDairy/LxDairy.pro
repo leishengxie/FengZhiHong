@@ -16,13 +16,17 @@ SOURCES += main.cpp\
     LoginWidget.cpp \
     AboutDialog.cpp \
     DairyMainWindow.cpp \
-    SqlOperate.cpp
+    SqlOperate.cpp \
+    GlobalFunc.cpp \
+    AwesomeFont.cpp
 
 HEADERS  += \
     LoginWidget.h \
     AboutDialog.h \
     DairyMainWindow.h \
-    SqlOperate.h
+    SqlOperate.h \
+    GlobalFunc.h \
+    AwesomeFont.h
 
 FORMS    += \
     LoginWidget.ui \

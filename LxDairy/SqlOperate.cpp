@@ -19,26 +19,26 @@ bool isDirExist(QString fullPath)
     QDir dir(fullPath);
     if(dir.exists())
     {
-      return true;
+        return true;
     }
     else
     {
-       bool ok = dir.mkdir(fullPath);//只创建一级子目录，即必须保证上级目录存在
-       return ok;
+        bool ok = dir.mkdir(fullPath);//只创建一级子目录，即必须保证上级目录存在
+        return ok;
     }
 }
 bool CSqlOperate::WriteData(QString zhanghao, QString time,QString wather,QString xinqing,QString neirong)
 {
     QSqlQuery query;
     bool ok=query.prepare("INSERT INTO mobile (zhanghao,time,wather,xinqing,neirong) "
-                       "VALUES (?, ?, ?,?, ?)");
-         query.bindValue(0, zhanghao.toInt());
-         query.bindValue(1, time);
-         query.bindValue(2, wather);
-         query.bindValue(3, xinqing);
-         query.bindValue(4, neirong);
-         query.exec();
-         return ok;
+                          "VALUES (?, ?, ?,?, ?)");
+    query.bindValue(0, zhanghao.toInt());
+    query.bindValue(1, time);
+    query.bindValue(2, wather);
+    query.bindValue(3, xinqing);
+    query.bindValue(4, neirong);
+    query.exec();
+    return ok;
 }
 QStringList CSqlOperate::shuaxin(QString zhanghao)
 {
@@ -49,7 +49,7 @@ QStringList CSqlOperate::shuaxin(QString zhanghao)
     {
         if(zhanghao.toInt()==query.value(0).toInt())
         {
-          list.append(query.value(1).toString());  //时间
+            list.append(query.value(1).toString());  //时间
         }
     }
     return list;
@@ -86,25 +86,25 @@ int CSqlOperate::zhanghao(QString mima,QString beizhu,QString wangming,QString q
         }
         if(ok1==false)
         {
-          ok=false;
-          QString ziti="华文楷体,14,-1,5,50,0,0,0,0,0,Regular";//编辑界面初始化字体
-          QString beijing=":/image/1.jpg";//初始化背景
-    QString path=QCoreApplication::applicationDirPath()+"/file";
-    isDirExist(path);
-    QString tupian=path+QString("/%1.png").arg(zhanghao);
-    QPixmap(touxiang).save(tupian,"png");
-        query.prepare("INSERT INTO zhanghao (zhanghao,mima,wangming,qianming,beizhu,touxiang,ziti,beijing) "
-                             "VALUES (?, ?, ?,?, ?, ?,?,?)");
-               query.bindValue(0, zhanghao);
-               query.bindValue(1, mima);
-               query.bindValue(2, wangming);
-               query.bindValue(3, qianming);
-               query.bindValue(4, beizhu);
-               query.bindValue(5, tupian);
-               query.bindValue(6, ziti);
-               query.bindValue(7, beijing);
-               query.exec();
-               return zhanghao;
+            ok=false;
+            QString ziti="华文楷体,14,-1,5,50,0,0,0,0,0,Regular";//编辑界面初始化字体
+            QString beijing=":/image/1.jpg";//初始化背景
+            QString path=QCoreApplication::applicationDirPath()+"/file";
+            isDirExist(path);
+            QString tupian=path+QString("/%1.png").arg(zhanghao);
+            QPixmap(touxiang).save(tupian,"png");
+            query.prepare("INSERT INTO zhanghao (zhanghao,mima,wangming,qianming,beizhu,touxiang,ziti,beijing) "
+                          "VALUES (?, ?, ?,?, ?, ?,?,?)");
+            query.bindValue(0, zhanghao);
+            query.bindValue(1, mima);
+            query.bindValue(2, wangming);
+            query.bindValue(3, qianming);
+            query.bindValue(4, beizhu);
+            query.bindValue(5, tupian);
+            query.bindValue(6, ziti);
+            query.bindValue(7, beijing);
+            query.exec();
+            return zhanghao;
         }
     }
 
@@ -118,7 +118,7 @@ QString CSqlOperate::wangjimima(QString zhanghao,QString beizhu,QString mima)
         if(query.value(0).toInt()==zhanghao.toInt()&&query.value(4).toString()==beizhu)
         {
             query.exec(QString("update zhanghao set [mima]='%1' where [zhanghao]='%2';").arg(mima).arg(zhanghao));
-           return "OK!修改完成！！";
+            return "OK!修改完成！！";
         }
     }
     return "账号或备注不正确！请检查！！";
@@ -131,7 +131,7 @@ bool CSqlOperate::yanzheng(QString zhanghao,QString mima)
     {
         if(query.value(0).toInt()==zhanghao.toInt()&&query.value(1).toString()==mima)
         {
-              return true;
+            return true;
         }
     }
     return false;
@@ -146,9 +146,9 @@ QStringList CSqlOperate::zhumaintongbu(QString zhanghao)
         if(query.value(0).toInt()==zhanghao.toInt())
         {
             //网名 签名 头像 字体 背景
-              list<<query.value(2).toString()<<query.value(3).toString()
-                 <<query.value(5).toString()<<query.value(6).toString()
-                <<query.value(7).toString();
+            list<<query.value(2).toString()<<query.value(3).toString()
+               <<query.value(5).toString()<<query.value(6).toString()
+              <<query.value(7).toString();
         }
     }
     return list;
@@ -162,7 +162,7 @@ void CSqlOperate::setziti(QString zhanghao,QString ziti)
         if(query.value(0).toInt()==zhanghao.toInt())
         {
             query.exec(QString("update zhanghao set [ziti]='%1' where [zhanghao]='%2';").arg(ziti).arg(zhanghao));
-           return;
+            return;
         }
     }
 }
