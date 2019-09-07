@@ -2,6 +2,12 @@
 #define CGLOBALFUNC_H
 
 #include <QObject>
+#include <QFile>
+#include <QApplication>
+#include <QColor>
+#include <QPalette>
+#include <QWidget>
+#include <QDesktopWidget>
 
 class CGlobalFunc : public QObject
 {
@@ -14,13 +20,18 @@ public:
 
 
     //设置皮肤样式
-    static void SetStyle(const QString &styleName)
+    static void setQssStyle(const QString &stylefilePath)
     {
-        QFile file(QString(":/image/%1.css").arg(styleName));
-        file.open(QFile::ReadOnly);
+        QFile file(stylefilePath);
+        bool bOk = file.open(QFile::ReadOnly);
+        if (!bOk)
+        {
+            return;
+        }
         QString qss = QLatin1String(file.readAll());
         qApp->setStyleSheet(qss);
         qApp->setPalette(QPalette(QColor("#F0F0F0")));
+        file.close();
     }
 
     //判断是否是IP地址
@@ -63,17 +74,17 @@ public:
 //        }
 //    }
 
-//    //窗体居中显示
-//    static void FormInCenter(QWidget *frm)
-//    {
-//        int frmX = frm->width();
-//        int frmY = frm->height();
-//        QDesktopWidget w;
-//        int deskWidth = w.width();
-//        int deskHeight = w.height();
-//        QPoint movePoint(deskWidth / 2 - frmX / 2, deskHeight / 2 - frmY / 2);
-//        frm->move(movePoint);
-//    }
+    //窗体居中显示
+    static void moveToCenter(QWidget *widget)
+    {
+        int frmX = widget->width();
+        int frmY = widget->height();
+        QDesktopWidget w;
+        int deskWidth = w.width();
+        int deskHeight = w.height();
+        QPoint movePoint(deskWidth / 2 - frmX / 2, deskHeight / 2 - frmY / 2);
+        widget->move(movePoint);
+    }
 
 signals:
 

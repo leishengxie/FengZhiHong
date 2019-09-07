@@ -29,6 +29,8 @@ namespace Ui {
 class DairyMainWindow;
 }
 
+class CSkinWidget;
+
 class CDairyMainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -54,6 +56,7 @@ private slots:
 private:
     Ui::DairyMainWindow *ui;
     QString saveFileName;
+    CSkinWidget* m_pSkinWidget;
 };
 
 #endif // MAINWINDOW_H

@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -18,7 +18,8 @@ SOURCES += main.cpp\
     DairyMainWindow.cpp \
     SqlOperate.cpp \
     GlobalFunc.cpp \
-    AwesomeFont.cpp
+    AwesomeFont.cpp \
+    SkinWidget.cpp
 
 HEADERS  += \
     LoginWidget.h \
@@ -26,12 +27,14 @@ HEADERS  += \
     DairyMainWindow.h \
     SqlOperate.h \
     GlobalFunc.h \
-    AwesomeFont.h
+    AwesomeFont.h \
+    SkinWidget.h
 
 FORMS    += \
     LoginWidget.ui \
     DairyMainWindow.ui \
-    AboutDialog.ui
+    AboutDialog.ui \
+    SkinWidget.ui
 
 RESOURCES += \
     res.qrc

@@ -1,6 +1,8 @@
 #include "AwesomeFont.h"
 
 #include <QFontDatabase>
+#include <QLabel>
+#include <QPushButton>
 
 bool CAwesomeFont::s_bInitFont = false;
 QFont CAwesomeFont::s_iconFont;
@@ -14,8 +16,8 @@ CAwesomeFont::CAwesomeFont(QObject *parent)
 void CAwesomeFont::setIcon(QLabel *label, QChar ch, int nPoitSize)
 {
     s_iconFont.setPointSize(nPoitSize);
-    lab->setFont(s_iconFont);
-    lab->setText(ch);
+    label->setFont(s_iconFont);
+    label->setText(ch);
 }
 
 void CAwesomeFont::setIcon(QPushButton *btn, QChar ch, int nPoitSize)

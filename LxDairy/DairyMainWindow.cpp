@@ -1,12 +1,13 @@
 #include "DairyMainWindow.h"
-#include "ui_mainwindow.h"
+#include "ui_DairyMainWindow.h"
 #include <QIcon>
+#include "SkinWidget.h"
 
 
-
-CDairyMainWindow::CDairyMainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::DairyMainWindow)
+CDairyMainWindow::CDairyMainWindow(QWidget *parent)
+    : QMainWindow(parent)
+    , ui(new Ui::DairyMainWindow)
+    , m_pSkinWidget(new CSkinWidget())
 {
     ui->setupUi(this);
 
@@ -15,20 +16,21 @@ CDairyMainWindow::CDairyMainWindow(QWidget *parent) :
     //trigger:引发，触发
     QObject::connect(ui->action_N,SIGNAL(triggered()),this,SLOT(newFileSlot()));
     QObject::connect(ui->action_O,SIGNAL(triggered()),this,SLOT(openFileSlot()));
-    QObject::connect(ui->action_S_2,SIGNAL(triggered()),this,SLOT(saveFileSlot()));
+    QObject::connect(ui->action_save,SIGNAL(triggered()),this,SLOT(saveFileSlot()));
     QObject::connect(ui->action_X,SIGNAL(triggered()),this,SLOT(exitFileSlot()));
     QObject::connect(ui->action_P,SIGNAL(triggered()),this,SLOT(printFileSlot()));
     QObject::connect(ui->action_F,SIGNAL(triggered()),this,SLOT(setFontSlot()));
     QObject::connect(ui->action_C_2,SIGNAL(triggered()),this,SLOT(setColorSlot()));
     QObject::connect(ui->action_D,SIGNAL(triggered()),this,SLOT(currentDaateTimeSlot()));
-    QObject::connect(ui->action_C,SIGNAL(triggered()),ui->textEdit,SLOT(copy()));
+    QObject::connect(ui->action_copy,SIGNAL(triggered()),ui->textEdit,SLOT(copy()));
     QObject::connect(ui->action_P_2,SIGNAL(triggered()),ui->textEdit,SLOT(paste()));
     QObject::connect(ui->action_T,SIGNAL(triggered()),ui->textEdit,SLOT(cut()));
-    QObject::connect(ui->action_H,SIGNAL(triggered()),ui->textEdit,SLOT(redo()));
-    QObject::connect(ui->action_U_2,SIGNAL(triggered()),ui->textEdit,SLOT(undo()));
+    QObject::connect(ui->action_recover,SIGNAL(triggered()),ui->textEdit,SLOT(redo()));
+    QObject::connect(ui->action_repeal,SIGNAL(triggered()),ui->textEdit,SLOT(undo()));
     QObject::connect(ui->action_Qt_A,SIGNAL(triggered()),qApp,SLOT(aboutQt()));
     QObject::connect(ui->action_AW,SIGNAL(triggered()),this,SLOT(aboutWebServicesSlot()));
     QObject::connect(ui->action_AS,SIGNAL(triggered()),this,SLOT(aboutSoftwareSlot()));
+    connect(ui->action_skin, SIGNAL(triggered()), m_pSkinWidget, SLOT(show()));
 
 }
 

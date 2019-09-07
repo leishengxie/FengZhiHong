@@ -4,6 +4,7 @@
 #include<QDir>
 #include<QPixmap>
 #include<QDebug>
+#include <QSqlQuery>
 
 #include <time.h>
 
