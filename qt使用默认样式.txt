@@ -1,0 +1,77 @@
+如果从QWidget子类化一个Widget，为了能够使用样式表则需要为自定义Widget提供paintEvent事件。
+
+void CustomWidget::paintEvent(QPaintEvent *event)
+{
+Q_UNUSED(event);
+
+QStyleOption opt;
+opt.init(this);
+QPainter p(this);
+style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+}
+绘图事件
+
+//不使用样式表
+重写paintEvent，使用QPainter来绘制背景。
+
+void Widget::paintEvent(QPaintEvent *event)
+{
+Q_UNUSED(event);
+
+QPainter p(this);
+p.setPen(Qt::NoPen);
+p.setBrush(Qt::black);
+p.drawRect(rect());
+}
+
+
+
+
+Q:widget和view的选择
+void QListWidget::setItemWidget ( QListWidgetItem * item, QWidget * widget )
+
+将widget作为item显示。
+
+
+
+
+这种方法最为简单，
+但是仔细看下官网的函数说明....
+
+
+This function should only be used to display static content in the place of a list widget item. 
+If you want to display custom dynamic content or implement a custom editor widget, 
+use QListView and subclass QItemDelegate instead.
+
+
+
+
+
+只能用来显示静态数据，如果要显示动态数据，请使用QListView和QItemDelegate。
+
+
+
+
+
+Q:自定义model,继承的是QStandardItemModel,当我尝试继承QAbstractTableModel时，发现委托不起作用，原因不明？
+
+
+
+
+
+
+Q:const 函数 as 'this' argument of operator= discards qualifiers 
+
+意思是说  在一个加了const限定符的成员函数中，不能够调用 非const成员函数。
+
+因为如果调用了非const成员函数，就违反了const成员函数不改变对象的规定。
+
+const T top() const {
+    checkElements();
+    return (const T)(first_->data);
+}
+
+void checkElements() {
+    if (first_==NULL || size_==0)
+        throw range_error("There are no elements in the stack.");
+}
