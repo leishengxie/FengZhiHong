@@ -2,6 +2,7 @@
 #define CSQLOPERATE_H
 
 #include <QObject>
+#include <QSqlDatabase>
 
 class CSqlOperate : public QObject
 {
@@ -9,15 +10,19 @@ class CSqlOperate : public QObject
 public:
     explicit CSqlOperate(QObject *parent = 0);
 
-    bool WriteData(QString zhanghao, QString time, QString wather, QString xinqing, QString neirong);
-    QStringList shuaxin(QString zhanghao);
-    QStringList huoquqita(QString zhanghao, QString riqi);
-    int zhanghao(QString mima,QString beizhu,QString wangming,QString qianming,QString touxiang);
-    QString wangjimima(QString zhanghao,QString beizhu,QString mima);
-    bool yanzheng(QString zhanghao,QString mima);
-    QStringList zhumaintongbu(QString zhanghao);
-    void setziti(QString zhanghao,QString ziti);
-    void SetXinXi(QString zhanghao, QString ziti, QString beijing, QString touxiang, QString wangming, QString geqian);
+    static bool connect(QString strDbName);
+
+    bool WriteData(QString registerAccount, QString time, QString wather, QString xinqing, QString neirong);
+    QStringList shuaxin(QString registerAccount);
+    QStringList huoquqita(QString registerAccount, QString riqi);
+
+    static int registerAccount(QString strUserName, QString strPasswd);
+
+    QString wangjimima(QString registerAccount,QString beizhu,QString mima);
+    static bool login(QString strUserName, QString strPasswd);
+    QStringList zhumaintongbu(QString registerAccount);
+    void setziti(QString registerAccount,QString ziti);
+    void SetXinXi(QString registerAccount, QString ziti, QString beijing, QString touxiang, QString wangming, QString geqian);
 
 signals:
 

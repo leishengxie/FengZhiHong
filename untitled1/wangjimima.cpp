@@ -28,6 +28,6 @@ void wangjimima::on_pushButtontijiao_clicked()
     else
     {
     MySql sql;
-    QMessageBox::information(this,"结果",sql.wangj imima(zhanghao,beizhu,mima));
+    QMessageBox::information(this,"结果",sql.wangjimima(zhanghao,beizhu,mima));
     }
 }

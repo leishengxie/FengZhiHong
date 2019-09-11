@@ -15,6 +15,22 @@ CSqlOperate::CSqlOperate(QObject *parent) : QObject(parent)
 
 }
 
+bool CSqlOperate::connect(QString strDbName)
+{
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+     db.setDatabaseName(strDbName);
+    if ( !db.open())
+    {
+        return false;
+    }
+    QSqlQuery query;
+     query.exec("create table zhanghao (zhanghao int primary key,mima varchar,"
+                "wangming varchar,qianming varchar,beizhu varchar,touxiang varcher,"
+                "ziti varcher,beijing varcher)");
+     query.exec("create table mobile (zhanghao int ,time varchar,wather varchar,xinqing varchar,neirong varcher)");
+     return true;
+}
+
 bool isDirExist(QString fullPath)
 {
     QDir dir(fullPath);
@@ -69,47 +85,27 @@ QStringList CSqlOperate::huoquqita(QString zhanghao, QString riqi)
     }
     return list;
 }
-int CSqlOperate::zhanghao(QString mima,QString beizhu,QString wangming,QString qianming,QString touxiang)
+
+int CSqlOperate::registerAccount(QString strUserName,QString strPasswd)
 {
     QSqlQuery query;
-    qsrand(time(NULL));
-    bool ok=true;
-    while (ok) {
-        int zhanghao=111111111+qrand()%2000000000;
-        query.exec("select * from zhanghao");
-        bool ok1=false;
-        while (query.next())
+
+    query.exec("select * from tUser");
+    while (query.next())
+    {
+        if(query.value(0).toString() == strUserName)
         {
-            if(query.value(0).toInt()==zhanghao)
-            {
-                ok1=true;
-            }
-        }
-        if(ok1==false)
-        {
-            ok=false;
-            QString ziti="华文楷体,14,-1,5,50,0,0,0,0,0,Regular";//编辑界面初始化字体
-            QString beijing=":/image/1.jpg";//初始化背景
-            QString path=QCoreApplication::applicationDirPath()+"/file";
-            isDirExist(path);
-            QString tupian=path+QString("/%1.png").arg(zhanghao);
-            QPixmap(touxiang).save(tupian,"png");
-            query.prepare("INSERT INTO zhanghao (zhanghao,mima,wangming,qianming,beizhu,touxiang,ziti,beijing) "
-                          "VALUES (?, ?, ?,?, ?, ?,?,?)");
-            query.bindValue(0, zhanghao);
-            query.bindValue(1, mima);
-            query.bindValue(2, wangming);
-            query.bindValue(3, qianming);
-            query.bindValue(4, beizhu);
-            query.bindValue(5, tupian);
-            query.bindValue(6, ziti);
-            query.bindValue(7, beijing);
-            query.exec();
-            return zhanghao;
+            return 1; // user name already existes
         }
     }
 
+    query.prepare("INSERT INTO tUser (strUserName, strPasswd) VALUES (?, ?)");
+    query.bindValue(0, strUserName);
+    query.bindValue(1, strPasswd);
+    query.exec();
+    return 0;
 }
+
 QString CSqlOperate::wangjimima(QString zhanghao,QString beizhu,QString mima)
 {
     QSqlQuery query;
@@ -124,13 +120,14 @@ QString CSqlOperate::wangjimima(QString zhanghao,QString beizhu,QString mima)
     }
     return "账号或备注不正确！请检查！！";
 }
-bool CSqlOperate::yanzheng(QString zhanghao,QString mima)
+bool CSqlOperate::login(QString strUserName, QString strPasswd)
 {
     QSqlQuery query;
-    query.exec("select * from zhanghao");
+    query.exec("select * from tUser");
     while (query.next())
     {
-        if(query.value(0).toInt()==zhanghao.toInt()&&query.value(1).toString()==mima)
+        if(query.value(0).toString() == strUserName
+                && query.value(1).toString() == strPasswd)
         {
             return true;
         }

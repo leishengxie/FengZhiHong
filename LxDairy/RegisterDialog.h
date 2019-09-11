@@ -15,6 +15,10 @@ public:
     explicit CRegisterDialog(QWidget *parent = 0);
     ~CRegisterDialog();
 
+private slots:
+    void on_btnOK_clicked();
+
+
 private:
     Ui::CRegisterDialog *ui;
 };

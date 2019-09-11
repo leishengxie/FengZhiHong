@@ -8,7 +8,7 @@
 #include"peizhijiemian.h"
 CDairyMainWindow::CDairyMainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::DairyMainWindow)
+    ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     //setWindowFlags(Qt::FramelessWindowHint | windowFlags());

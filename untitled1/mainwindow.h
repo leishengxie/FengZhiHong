@@ -6,7 +6,7 @@
 #include"writerj.h"
 #include<QTimer>
 namespace Ui {
-class DairyMainWindow;
+class MainWindow;
 }
 
 class CDairyMainWindow : public QMainWindow
@@ -28,7 +28,7 @@ private slots:
     void on_actionguanyu_triggered();
 
 private:
-    Ui::DairyMainWindow *ui;
+    Ui::MainWindow *ui;
     QTimer *timer;
     QFont font;
     QString pix;
