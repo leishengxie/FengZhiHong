@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     SqlOperate.cpp \
     GlobalFunc.cpp \
     AwesomeFont.cpp \
-    SkinWidget.cpp
+    SkinWidget.cpp \
+    RegisterDialog.cpp
 
 HEADERS  += \
     LoginWidget.h \
@@ -28,13 +29,15 @@ HEADERS  += \
     SqlOperate.h \
     GlobalFunc.h \
     AwesomeFont.h \
-    SkinWidget.h
+    SkinWidget.h \
+    RegisterDialog.h
 
 FORMS    += \
     LoginWidget.ui \
     DairyMainWindow.ui \
     AboutDialog.ui \
-    SkinWidget.ui
+    SkinWidget.ui \
+    RegisterDialog.ui
 
 RESOURCES += \
     res.qrc
