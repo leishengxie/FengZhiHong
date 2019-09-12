@@ -65,7 +65,7 @@ p, li { white-space: pre-wrap; }
      <x>0</x>
      <y>0</y>
      <width>1032</width>
-     <height>26</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_F">
@@ -76,6 +76,7 @@ p, li { white-space: pre-wrap; }
     <addaction name="separator"/>
     <addaction name="actionLock"/>
     <addaction name="separator"/>
+    <addaction name="logout"/>
     <addaction name="action_X"/>
    </widget>
    <widget class="QMenu" name="menu_F_2">
@@ -163,7 +164,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="action_save">
    <property name="icon">
-    <iconset>
+    <iconset resource="res.qrc">
      <normaloff>:/img/save.png</normaloff>:/img/save.png</iconset>
    </property>
    <property name="text">
@@ -172,7 +173,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="action_repeal">
    <property name="icon">
-    <iconset>
+    <iconset resource="res.qrc">
      <normaloff>:/img/arrows_left.png</normaloff>:/img/arrows_left.png</iconset>
    </property>
    <property name="text">
@@ -186,7 +187,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="action_copy">
    <property name="icon">
-    <iconset>
+    <iconset resource="res.qrc">
      <normaloff>:/img/copy.png</normaloff>:/img/copy.png</iconset>
    </property>
    <property name="text">
@@ -219,7 +220,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="action_recover">
    <property name="icon">
-    <iconset>
+    <iconset resource="res.qrc">
      <normaloff>:/img/arrows_right.png</normaloff>:/img/arrows_right.png</iconset>
    </property>
    <property name="text">
@@ -253,15 +254,22 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="action_skin">
    <property name="icon">
-    <iconset>
+    <iconset resource="res.qrc">
      <normaloff>:/img/skin.png</normaloff>:/img/skin.png</iconset>
    </property>
    <property name="text">
     <string>皮肤</string>
    </property>
   </action>
+  <action name="logout">
+   <property name="text">
+    <string>注销</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="res.qrc"/>
+ </resources>
  <connections/>
 </ui>

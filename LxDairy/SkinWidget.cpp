@@ -42,5 +42,14 @@ void CSkinWidget::slot_list_clicked(QListWidgetItem* pItem)
 {
     QString text = pItem->text();
     int nCurrenRow = ui->listWidget->currentRow();
-    CGlobalFunc::setQssStyle(s_aSkin[nCurrenRow]);
+    setSkin(nCurrenRow);
+}
+
+void CSkinWidget::setSkin(int nSkinIndex)
+{
+    if (nSkinIndex < 0 || nSkinIndex > 3)
+    {
+        return;
+    }
+    CGlobalFunc::setQssStyle(s_aSkin[nSkinIndex]);
 }

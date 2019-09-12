@@ -8,6 +8,9 @@ namespace Ui {
 class CSkinWidget;
 }
 
+///
+/// \brief The CSkinWidget class: the skin select
+///
 class CSkinWidget : public QWidget
 {
     Q_OBJECT
@@ -15,11 +18,13 @@ class CSkinWidget : public QWidget
 public:
     explicit CSkinWidget(QWidget *parent = 0);
     ~CSkinWidget();
-
+public:
+    static void setSkin(int nSkinIndex);
 private slots:
     void slot_cancel();
     void slot_ok();
     void slot_list_clicked(QListWidgetItem *pItem);
+
 
 private:
     Ui::CSkinWidget *ui;

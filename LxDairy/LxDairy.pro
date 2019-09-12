@@ -20,7 +20,8 @@ SOURCES += main.cpp\
     GlobalFunc.cpp \
     AwesomeFont.cpp \
     SkinWidget.cpp \
-    RegisterDialog.cpp
+    RegisterDialog.cpp \
+    TextVerifier.cpp
 
 HEADERS  += \
     LoginWidget.h \
@@ -30,7 +31,8 @@ HEADERS  += \
     GlobalFunc.h \
     AwesomeFont.h \
     SkinWidget.h \
-    RegisterDialog.h
+    RegisterDialog.h \
+    TextVerifier.h
 
 FORMS    += \
     LoginWidget.ui \

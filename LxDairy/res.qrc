@@ -17,5 +17,11 @@
         <file>img/save_1.png</file>
         <file>img/skin.png</file>
         <file>img/text.png</file>
+        <file>img/bg/1.jpg</file>
+        <file>img/bg/2.jpg</file>
+        <file>img/bg/3.jpg</file>
+        <file>img/bg/4.jpg</file>
+        <file>img/bg/5.jpg</file>
+        <file>img/bg/6.jpg</file>
     </qresource>
 </RCC>

@@ -1,5 +1,6 @@
 #include "DairyMainWindow.h"
 #include "ui_DairyMainWindow.h"
+#include "LoginWidget.h"
 #include <QIcon>
 #include "SkinWidget.h"
 
@@ -86,6 +87,12 @@ CDairyMainWindow::~CDairyMainWindow()
 {
     delete ui;
 }
+
+void CDairyMainWindow::setLoginWidget(CLoginWidget *pLoginWidget)
+{
+    m_pLoginWidget = pLoginWidget;
+}
+
 void CDairyMainWindow::  newFileSlot()
 {
     // Modify:更改，修改
@@ -265,3 +272,9 @@ void CDairyMainWindow::aboutSoftwareSlot()
 }
 
 
+
+void CDairyMainWindow::on_logout_triggered()
+{
+    m_pLoginWidget->show();
+    deleteLater();
+}

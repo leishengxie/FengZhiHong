@@ -30,6 +30,7 @@ class DairyMainWindow;
 }
 
 class CSkinWidget;
+class CLoginWidget;
 
 class CDairyMainWindow : public QMainWindow
 {
@@ -38,8 +39,13 @@ class CDairyMainWindow : public QMainWindow
 public:
     explicit CDairyMainWindow(QWidget *parent = 0);
     ~CDairyMainWindow();
+
+public:
+    void setLoginWidget(CLoginWidget* pLoginWidget);
+
 protected:
     void closeEvent(QCloseEvent *event);
+
 private slots:
     void newFileSlot();
     void openFileSlot();
@@ -53,10 +59,13 @@ private slots:
     void aboutWebServicesSlot();
     void aboutSoftwareSlot();
 
+    void on_logout_triggered();
+
 private:
     Ui::DairyMainWindow *ui;
     QString saveFileName;
     CSkinWidget* m_pSkinWidget;
+    CLoginWidget* m_pLoginWidget;
 };
 
 #endif // MAINWINDOW_H

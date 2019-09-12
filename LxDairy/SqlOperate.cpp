@@ -5,6 +5,7 @@
 #include<QPixmap>
 #include<QDebug>
 #include <QSqlQuery>
+#include <QSqlError>
 
 #include <time.h>
 
@@ -18,17 +19,30 @@ CSqlOperate::CSqlOperate(QObject *parent) : QObject(parent)
 bool CSqlOperate::connect(QString strDbName)
 {
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-     db.setDatabaseName(strDbName);
+    db.setDatabaseName(strDbName);
     if ( !db.open())
     {
         return false;
     }
+//    QSqlQuery query;
+//    query.exec("create table zhanghao (zhanghao int primary key,mima varchar,"
+//               "wangming varchar,qianming varchar,beizhu varchar,touxiang varcher,"
+//               "ziti varcher,beijing varcher)");
+//    query.exec("create table mobile (zhanghao int ,time varchar,wather varchar,xinqing varchar,neirong varcher)");
+    return true;
+}
+
+void CSqlOperate::createTable()
+{
     QSqlQuery query;
-     query.exec("create table zhanghao (zhanghao int primary key,mima varchar,"
-                "wangming varchar,qianming varchar,beizhu varchar,touxiang varcher,"
-                "ziti varcher,beijing varcher)");
-     query.exec("create table mobile (zhanghao int ,time varchar,wather varchar,xinqing varchar,neirong varcher)");
-     return true;
+    QString strSql=" CREATE TABLE IF NOT EXISTS tUser ( " \
+    "uid INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL DEFAULT 1," \
+    "user_name  TEXT(32) NOT NULL," \
+    "passwd  TEXT(16) NOT NULL)";
+    if (!query.exec(strSql))
+    {
+        qDebug() << query.lastError();
+    }
 }
 
 bool isDirExist(QString fullPath)
@@ -86,23 +100,39 @@ QStringList CSqlOperate::huoquqita(QString zhanghao, QString riqi)
     return list;
 }
 
-int CSqlOperate::registerAccount(QString strUserName,QString strPasswd)
+int CSqlOperate::registerAccount(QString strUserName, QString strPasswd)
 {
     QSqlQuery query;
 
+    // 检查账号是否已经存在
     query.exec("select * from tUser");
     while (query.next())
     {
-        if(query.value(0).toString() == strUserName)
+        if(query.value("user_name").toString() == strUserName)
         {
             return 1; // user name already existes
         }
     }
+    //INSERT INTO tUser(user_name, passwd) VALUES('leisx', '0406aaaaa');
 
-    query.prepare("INSERT INTO tUser (strUserName, strPasswd) VALUES (?, ?)");
-    query.bindValue(0, strUserName);
-    query.bindValue(1, strPasswd);
-    query.exec();
+    // test1
+//    query.prepare("INSERT INTO tUser(user_name, passwd) VALUES(:user_name, :passwd)");
+//    query.bindValue(":user_name", strUserName);
+//    query.bindValue(":passwd", strPasswd);
+
+    // test2
+        query.prepare("INSERT INTO tUser(user_name, passwd) VALUES(?, ?)");
+        query.bindValue(0, strUserName);
+        query.bindValue(1, strPasswd);
+
+//    QString strSql = "INSERT INTO tUser(user_name, passwd) VALUES('" +
+//            strUserName + "', '" +
+//            strPasswd + "')";
+    if (!query.exec())
+    {
+        qDebug() << query.lastError();
+        return 2;
+    }
     return 0;
 }
 
@@ -126,8 +156,8 @@ bool CSqlOperate::login(QString strUserName, QString strPasswd)
     query.exec("select * from tUser");
     while (query.next())
     {
-        if(query.value(0).toString() == strUserName
-                && query.value(1).toString() == strPasswd)
+        if(query.value("user_name").toString() == strUserName
+                && query.value("passwd").toString() == strPasswd)
         {
             return true;
         }

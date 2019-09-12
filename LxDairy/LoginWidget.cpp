@@ -16,6 +16,9 @@ CLoginWidget::CLoginWidget(QWidget *parent) :
     conf.beginGroup("user");
     QString strUserName = conf.value("user_name", "").toString();
     ui->leUserName->setText(strUserName);
+    QPalette pal;
+    pal.setBrush(QPalette::Background, QBrush(QPixmap(":/img/bg/1.jpg").scaled(size())));
+    setPalette(pal);
 }
 
 CLoginWidget::~CLoginWidget()
@@ -25,14 +28,29 @@ CLoginWidget::~CLoginWidget()
 
 void CLoginWidget::on_btnRegister_clicked()
 {
-  CRegisterDialog* pRegisterDialog = new CRegisterDialog();
-  pRegisterDialog->exec();
+  //CRegisterDialog* pRegisterDialog = new CRegisterDialog();
+  //pRegisterDialog->exec();
+    CRegisterDialog registerDialog;
+    if (registerDialog.exec() == QDialog::Accepted)
+    {
+
+    }
 }
 
 void CLoginWidget::on_btnLogin_clicked()
 {
     QString strUserName = ui->leUserName->text();
     QString strPasswd = ui->lePasswd->text();
+    if (strUserName.isEmpty())
+    {
+        QMessageBox::information(this, "提示" ,"请输入用户名！");
+        return;
+    }
+    if (strPasswd.isEmpty())
+    {
+        QMessageBox::information(this, "提示" ,"请输入密码！");
+        return;
+    }
     if(CSqlOperate::login(strUserName, strPasswd))
     {
         QSettings conf("conf.ini", QSettings::IniFormat);
@@ -40,7 +58,8 @@ void CLoginWidget::on_btnLogin_clicked()
         conf.setValue("user_name", strUserName);
 
        CDairyMainWindow *pDairyMainWindow = new CDairyMainWindow;
-       pDairyMainWindow->SetZhanghao(ui->lineEditzanghao->currentText());
+       pDairyMainWindow->setLoginWidget(this);
+       //pDairyMainWindow->SetZhanghao(ui->lineEditzanghao->currentText());
        pDairyMainWindow->show();
        close();
     }
