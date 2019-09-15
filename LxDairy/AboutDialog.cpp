@@ -6,7 +6,7 @@ CAboutDialog::CAboutDialog(QWidget *parent) :
     ui(new Ui::AboutDialog)
 {
     ui->setupUi(this);
-    QObject::connect(ui->ok,SIGNAL(clicked()),this,SLOT(moviePlay()));
+    setWindowTitle("关于");
 }
 
 CAboutDialog::~CAboutDialog()
@@ -23,7 +23,7 @@ void CAboutDialog::moviePlay()
     movie->start();
     */
 
-    QMovie *movie = new QMovie ("animation.gif");
-    ui->movieTextLabel->setMovie(movie);
-    movie->start();
+//    QMovie *movie = new QMovie ("animation.gif");
+//    ui->movieTextLabel->setMovie(movie);
+//    movie->start();
 }

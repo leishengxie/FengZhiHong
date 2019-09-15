@@ -23,5 +23,17 @@
         <file>img/bg/4.jpg</file>
         <file>img/bg/5.jpg</file>
         <file>img/bg/6.jpg</file>
+        <file>img/css/add-line_horizontal.png</file>
+        <file>img/css/add-line_vertical.png</file>
+        <file>img/css/array_down.png</file>
+        <file>img/css/checkbox_checked.png</file>
+        <file>img/css/checkbox_unchecked.png</file>
+        <file>img/css/error.png</file>
+        <file>img/css/info.png</file>
+        <file>img/css/question.png</file>
+        <file>img/css/radio_normal.png</file>
+        <file>img/css/radio_selected.png</file>
+        <file>img/css/sub-line_horizontal.png</file>
+        <file>img/css/sub-line_vertical.png</file>
     </qresource>
 </RCC>

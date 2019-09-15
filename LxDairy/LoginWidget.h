@@ -20,6 +20,10 @@ private slots:
 
     void on_btnLogin_clicked();
 
+    void on_ckboxRememberUserName_clicked(bool checked);
+
+    void on_ckboxRememberPasswd_clicked(bool checked);
+
 private:
     Ui::CLoginWidget *ui;
 };

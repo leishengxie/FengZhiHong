@@ -9,6 +9,7 @@ CRegisterDialog::CRegisterDialog(QWidget *parent) :
     ui(new Ui::CRegisterDialog)
 {
     ui->setupUi(this);
+    setWindowTitle("注册");
     //setAttribute(Qt::WA_DeleteOnClose);
     QPalette pal;
     pal.setBrush(QPalette::Background, QBrush(QPixmap(":/img/bg/1.jpg").scaled(size())));
