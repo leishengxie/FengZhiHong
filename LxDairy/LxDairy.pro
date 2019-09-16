@@ -24,7 +24,9 @@ SOURCES += main.cpp\
     TextVerifier.cpp \
     model/DairyTagListModel.cpp \
     delegate/DairyTagDelegate.cpp \
-    model/DairyDateTreeModel.cpp
+    model/DairyDateTreeModel.cpp \
+    Dairy.cpp \
+    User.cpp
 
 HEADERS  += \
     LoginWidget.h \
@@ -38,7 +40,9 @@ HEADERS  += \
     TextVerifier.h \
     model/DairyTagListModel.h \
     delegate/DairyTagDelegate.h \
-    model/DairyDateTreeModel.h
+    model/DairyDateTreeModel.h \
+    Dairy.h \
+    User.h
 
 FORMS    += \
     LoginWidget.ui \

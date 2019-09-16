@@ -122,7 +122,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QComboBox" name="comboBox_2">
+             <widget class="QComboBox" name="comboBoxWeather">
               <item>
                <property name="text">
                 <string>晴</string>
@@ -218,7 +218,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QComboBox" name="comboBox">
+             <widget class="QComboBox" name="comboBoxTag">
               <item>
                <property name="text">
                 <string>无标签</string>
@@ -263,7 +263,7 @@ p, li { white-space: pre-wrap; }
      <x>0</x>
      <y>0</y>
      <width>1050</width>
-     <height>26</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_F">

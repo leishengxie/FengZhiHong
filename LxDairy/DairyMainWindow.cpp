@@ -22,6 +22,14 @@ CDairyMainWindow::CDairyMainWindow(QWidget *parent)
     CDairyTagDelegate* pDairyTagDelegate = new CDairyTagDelegate;
     ui->listViewTag->setModel(pDairyTagListModel);
     ui->listViewTag->setItemDelegate(pDairyTagDelegate);
+
+    QList<T_DairyTagItem> lstDairyTag = pDairyTagListModel->listDairyTag();
+    lstDairyTag.pop_front();
+    ui->comboBoxTag->clear();
+    foreach (T_DairyTagItem tDairyTagItem, lstDairyTag)
+    {
+        ui->comboBoxTag->addItem(tDairyTagItem.strTagName);
+    }
 }
 
 CDairyMainWindow::~CDairyMainWindow()
