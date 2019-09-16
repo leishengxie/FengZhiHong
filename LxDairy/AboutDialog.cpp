@@ -6,7 +6,7 @@ CAboutDialog::CAboutDialog(QWidget *parent) :
     ui(new Ui::AboutDialog)
 {
     ui->setupUi(this);
-    QObject::connect(ui->ok,SIGNAL(clicked()),this,SLOT(moviePlay()));
+    QObject::connect(ui->ok, SIGNAL(clicked()), this, SLOT(moviePlay()));
 }
 
 CAboutDialog::~CAboutDialog()
