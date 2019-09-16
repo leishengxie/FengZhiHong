@@ -47,19 +47,40 @@ protected:
     void closeEvent(QCloseEvent *event);
 
 private slots:
-    void newFileSlot();
     void openFileSlot();
-    void saveFileSlot();
     void saveAsFileSlot();
-    void exitFileSlot();
-    void printFileSlot();
-    void setFontSlot();
-    void setColorSlot();
     void currentDaateTimeSlot();
-    void aboutWebServicesSlot();
-    void aboutSoftwareSlot();
 
-    void on_logout_triggered();
+
+    void on_action_logout_triggered();
+
+    void on_action_new_dairy_triggered();
+
+    void on_action_save_triggered();
+
+    void on_action_undo_triggered();
+
+    void on_action_cut_triggered();
+
+    void on_action_copy_triggered();
+
+    void on_action_paste_triggered();
+
+    void on_action_color_triggered();
+
+    void on_action_redo_triggered();
+
+    void on_action_about_triggered();
+
+    void on_action_lock_triggered();
+
+    void on_action_tool_triggered();
+
+    void on_action_skin_triggered();
+
+    void on_action_exit_triggered();
+
+    void on_action_font_triggered();
 
 private:
     Ui::DairyMainWindow *ui;

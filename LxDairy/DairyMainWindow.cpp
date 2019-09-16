@@ -3,6 +3,8 @@
 #include "LoginWidget.h"
 #include <QIcon>
 #include "SkinWidget.h"
+#include "model/DairyTagListModel.h"
+#include "delegate/DairyTagDelegate.h"
 
 
 CDairyMainWindow::CDairyMainWindow(QWidget *parent)
@@ -11,56 +13,34 @@ CDairyMainWindow::CDairyMainWindow(QWidget *parent)
     , m_pSkinWidget(new CSkinWidget())
 {
     ui->setupUi(this);
+    setWindowTitle("LxDairy");
+    QPalette pal;
+    pal.setBrush(QPalette::Background, QBrush(QPixmap(":/img/bg/1.jpg").scaled(size())));
+    setPalette(pal);
 
-    this->setWindowTitle("MyNotepad");
+    CDairyTagListModel* pDairyTagListModel = new CDairyTagListModel(this);
+    CDairyTagDelegate* pDairyTagDelegate = new CDairyTagDelegate;
+    ui->listViewTag->setModel(pDairyTagListModel);
+    ui->listViewTag->setItemDelegate(pDairyTagDelegate);
+}
 
-    //trigger:引发，触发
-    QObject::connect(ui->action_N,SIGNAL(triggered()),this,SLOT(newFileSlot()));
-    QObject::connect(ui->action_O,SIGNAL(triggered()),this,SLOT(openFileSlot()));
-    QObject::connect(ui->action_save,SIGNAL(triggered()),this,SLOT(saveFileSlot()));
-    QObject::connect(ui->action_X,SIGNAL(triggered()),this,SLOT(exitFileSlot()));
-    QObject::connect(ui->action_P,SIGNAL(triggered()),this,SLOT(printFileSlot()));
-    QObject::connect(ui->action_F,SIGNAL(triggered()),this,SLOT(setFontSlot()));
-    QObject::connect(ui->action_C_2,SIGNAL(triggered()),this,SLOT(setColorSlot()));
-    QObject::connect(ui->action_D,SIGNAL(triggered()),this,SLOT(currentDaateTimeSlot()));
-    QObject::connect(ui->action_copy,SIGNAL(triggered()),ui->textEdit,SLOT(copy()));
-    QObject::connect(ui->action_P_2,SIGNAL(triggered()),ui->textEdit,SLOT(paste()));
-    QObject::connect(ui->action_T,SIGNAL(triggered()),ui->textEdit,SLOT(cut()));
-    QObject::connect(ui->action_recover,SIGNAL(triggered()),ui->textEdit,SLOT(redo()));
-    QObject::connect(ui->action_repeal,SIGNAL(triggered()),ui->textEdit,SLOT(undo()));
-    QObject::connect(ui->action_Qt_A,SIGNAL(triggered()),qApp,SLOT(aboutQt()));
-    QObject::connect(ui->action_AW,SIGNAL(triggered()),this,SLOT(aboutWebServicesSlot()));
-    QObject::connect(ui->action_AS,SIGNAL(triggered()),this,SLOT(aboutSoftwareSlot()));
-    connect(ui->action_skin, SIGNAL(triggered()), m_pSkinWidget, SLOT(show()));
-
+CDairyMainWindow::~CDairyMainWindow()
+{
+    delete ui;
 }
 
 void CDairyMainWindow::closeEvent(QCloseEvent *event)
 {
-    // event->ignore();
-    //event->accept();
-    /*
-     switch (ret) {
-  case QMessageBox::Save:// Save was clicked
-      break;
-  case QMessageBox::Discard:// Don't Save was clicked
-      break;
-  case QMessageBox::Cancel:// Cancel was clicked
-      break;
-  default:// should never be reached
-      break;
-}
-    */
     if(ui->textEdit->document()->isModified())
     {
         QMessageBox msgBox;
         msgBox.setText("the File is changed");
-        //msgBox.setText("文件已经改变了");
-        //显示的文本
+        // 显示的文本
         msgBox.setInformativeText("Do you want to save your changes?");
         msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
-        msgBox.setDefaultButton(QMessageBox::Save); //设置默认选中button
-        int ret=msgBox.exec();
+        // 设置默认选中button
+        msgBox.setDefaultButton(QMessageBox::Save);
+        int ret = msgBox.exec();
         switch (ret)
         {
         case QMessageBox::Save:
@@ -75,7 +55,6 @@ void CDairyMainWindow::closeEvent(QCloseEvent *event)
         default:
             break;
         }
-
     }
     else
     {
@@ -83,30 +62,14 @@ void CDairyMainWindow::closeEvent(QCloseEvent *event)
     }
 }
 
-CDairyMainWindow::~CDairyMainWindow()
-{
-    delete ui;
-}
+
 
 void CDairyMainWindow::setLoginWidget(CLoginWidget *pLoginWidget)
 {
     m_pLoginWidget = pLoginWidget;
 }
 
-void CDairyMainWindow::  newFileSlot()
-{
-    // Modify:更改，修改
-    if(ui->textEdit->document()->isModified())
-    {
-        qDebug()<<"current text isModified";
-    }
-    else
-    {
-        qDebug()<<"Not isModified";
-        ui->textEdit->clear();
-        this->setWindowTitle("unTitle");
-    }
-}
+
 void CDairyMainWindow::openFileSlot()
 {
     /*
@@ -140,31 +103,7 @@ void CDairyMainWindow::openFileSlot()
     }
 }
 
-void CDairyMainWindow::saveFileSlot()
-{
-    if(saveFileName.isEmpty())
-    {
-        this->saveAsFileSlot();
-    }
-    else {
-        QFile *file=new QFile;
-        file->setFileName(saveFileName);
-        bool ok=file->open(QIODevice::WriteOnly);
-        if(ok)
-        {
-            QTextStream out(file);
-            out<<ui->textEdit->toPlainText(); //去除textEdit当中的纯文本
-            file->close();
-            this->setWindowTitle(saveFileName+"----notepad");
-            delete file;
-        }
-        else
-        {
-            QMessageBox::information(this,"Error Message","Save file fail");
-            return;
-        }
-    }
-}
+
 void CDairyMainWindow::saveAsFileSlot()
 {
     QString saveFileName =QFileDialog::getSaveFileName(this,"save as file",QDir::currentPath(),tr("*.png;; *.xpm ;;*.jpg ;;*.txt"));
@@ -191,31 +130,137 @@ void CDairyMainWindow::saveAsFileSlot()
         return;
     }
 }
-void CDairyMainWindow:: exitFileSlot()
+
+
+
+void CDairyMainWindow::currentDaateTimeSlot()
+{
+    QDateTime currentTime = QDateTime::currentDateTime();
+    QString time = currentTime.toString("yyyy-M-dd hh:mm:ss");
+    ui->textEdit->append(time); //append:附加，贴上
+}
+
+
+
+void CDairyMainWindow::on_action_logout_triggered()
+{
+    m_pLoginWidget->show();
+    deleteLater();
+}
+
+void CDairyMainWindow::on_action_new_dairy_triggered()
+{
+    // Modify:更改，修改
+    if(ui->textEdit->document()->isModified())
+    {
+        qDebug()<<"current text isModified";
+    }
+    else
+    {
+        qDebug()<<"Not isModified";
+        ui->textEdit->clear();
+        this->setWindowTitle("unTitle");
+    }
+}
+
+void CDairyMainWindow::on_action_save_triggered()
+{
+    if(saveFileName.isEmpty())
+    {
+        this->saveAsFileSlot();
+    }
+    else
+    {
+        QFile *file=new QFile;
+        file->setFileName(saveFileName);
+        bool ok=file->open(QIODevice::WriteOnly);
+        if(ok)
+        {
+            QTextStream out(file);
+            out<<ui->textEdit->toPlainText(); //去除textEdit当中的纯文本
+            file->close();
+            this->setWindowTitle(saveFileName+"----notepad");
+            delete file;
+        }
+        else
+        {
+            QMessageBox::information(this,"Error Message","Save file fail");
+            return;
+        }
+    }
+}
+
+void CDairyMainWindow::on_action_undo_triggered()
+{
+
+}
+
+void CDairyMainWindow::on_action_cut_triggered()
+{
+
+}
+
+void CDairyMainWindow::on_action_copy_triggered()
+{
+    ui->textEdit->copy();
+}
+
+void CDairyMainWindow::on_action_paste_triggered()
+{
+
+}
+
+void CDairyMainWindow::on_action_color_triggered()
+{
+    //    const QColorDialog::ColorDialogOptions options = QFlag(colorDialogOptionsWidget->value());
+    //        const QColor color = QColorDialog::getColor(Qt::green, this, "Select Color", options);
+        QColor color = QColorDialog::getColor(Qt::green,this);
+        if(color.isValid())
+        {
+            ui->textEdit->setTextColor(color);
+        }
+        else
+        {
+            QMessageBox::information(this,"Error Message","set color fail");
+        }
+}
+
+void CDairyMainWindow::on_action_redo_triggered()
+{
+
+}
+
+void CDairyMainWindow::on_action_about_triggered()
+{
+    CAboutDialog dialog(this);
+    //dialog->show(); //unmodal dialog;
+    dialog.exec();    //modal dialog
+    //QDesktopServices::openUrl(QUrl("http://www.baidu.com"));
+}
+
+void CDairyMainWindow::on_action_lock_triggered()
+{
+
+}
+
+void CDairyMainWindow::on_action_tool_triggered()
+{
+
+}
+
+void CDairyMainWindow::on_action_skin_triggered()
+{
+    m_pSkinWidget->show();
+}
+
+void CDairyMainWindow::on_action_exit_triggered()
 {
     ui->textEdit->clear();
-    this->close();
+    close();
 }
-void CDairyMainWindow::printFileSlot()
-{
-    //
 
-
-}
-void CDairyMainWindow::setFontSlot()
+void CDairyMainWindow::on_action_font_triggered()
 {
-    /*
-    bool ok;
-    QFont font = QFontDialog::getFont(
-                    &ok, QFont("Helvetica [Cronyx]", 10), this);
-    if (ok) {
-        // the user clicked OK and font is set to the font the user selected
-    } else {
-        // the user canceled the dialog; font is set to the initial
-        // value, in this case Helvetica [Cronyx], 10
-    }
-    */
-    //get user select font
     bool ok;
     QFont font = QFontDialog::getFont(&ok,QFont("Helvetica [Cronyx]", 10),this);
     if(ok)
@@ -226,55 +271,4 @@ void CDairyMainWindow::setFontSlot()
     {
         QMessageBox::information(this,"Error Message","set font fail");
     }
-
-}
-void CDairyMainWindow::setColorSlot()
-{
-    /*
-    const QColorDialog::ColorDialogOptions options = QFlag(colorDialogOptionsWidget->value());
-        const QColor color = QColorDialog::getColor(Qt::green, this, "Select Color", options);
-
-        if (color.isValid()) {
-            colorLabel->setText(color.name());
-            colorLabel->setPalette(QPalette(color));
-            colorLabel->setAutoFillBackground(true);
-        }
-     */
-    //options:选择
-    QColor color = QColorDialog::getColor(Qt::green,this);
-    if(color.isValid())
-    {
-        ui->textEdit->setTextColor(color);
-    }
-    else
-    {
-        QMessageBox::information(this,"Error Message","set color fail");
-    }
-
-}
-void CDairyMainWindow::currentDaateTimeSlot()
-{
-    QDateTime currentTime = QDateTime::currentDateTime();
-    QString time = currentTime.toString("yyyy-M-dd hh:mm:ss");
-    ui->textEdit->append(time); //append:附加，贴上
-}
-
-void CDairyMainWindow::aboutWebServicesSlot()
-{
-   QDesktopServices::openUrl(QUrl("http://www.baidu.com"));
-}
-
-void CDairyMainWindow::aboutSoftwareSlot()
-{
-    CAboutDialog *dialog=new CAboutDialog;
-    dialog->show(); //unmodal dialog;
-    //dialog.exec()    modal dialog
-}
-
-
-
-void CDairyMainWindow::on_logout_triggered()
-{
-    m_pLoginWidget->show();
-    deleteLater();
 }

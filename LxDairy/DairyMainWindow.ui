@@ -6,15 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1032</width>
-    <height>683</height>
+    <width>1050</width>
+    <height>633</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,4">
+   <layout class="QHBoxLayout" name="horizontalLayout_3">
     <property name="spacing">
      <number>0</number>
     </property>
@@ -31,30 +31,228 @@
      <number>0</number>
     </property>
     <item>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <item>
-       <widget class="QCalendarWidget" name="calendarWidget"/>
-      </item>
-      <item>
-       <widget class="QTreeView" name="treeDairy"/>
-      </item>
-      <item>
-       <widget class="QTreeView" name="treeTag"/>
-      </item>
-     </layout>
-    </item>
-    <item>
-     <widget class="QTextEdit" name="textEdit">
-      <property name="styleSheet">
-       <string notr="true">background-image: url(:/img/bg.jpg);</string>
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="tabPosition">
+       <enum>QTabWidget::South</enum>
       </property>
-      <property name="html">
-       <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+      <property name="tabShape">
+       <enum>QTabWidget::Rounded</enum>
+      </property>
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="tab">
+       <attribute name="title">
+        <string>日记</string>
+       </attribute>
+       <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="0,1">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout" stretch="1,1,2">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QCalendarWidget" name="calendarWidget"/>
+          </item>
+          <item>
+           <widget class="QListView" name="listViewTag"/>
+          </item>
+          <item>
+           <widget class="QTreeView" name="treeDairy"/>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="label_4">
+              <property name="text">
+               <string>日期：</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_3">
+              <property name="text">
+               <string>2019年9月14日 09:33 周六</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QLabel" name="label">
+              <property name="text">
+               <string>天气：</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="comboBox_2">
+              <item>
+               <property name="text">
+                <string>晴</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>多云</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>阴</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>阵雨</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>小雨</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>大雨</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>雷阵雨</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>沙尘</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>小雪</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>大雪</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>冰雹</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="label_6">
+              <property name="text">
+               <string>标题：</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="lineEdit"/>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_2">
+              <property name="text">
+               <string>标签：</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="comboBox">
+              <item>
+               <property name="text">
+                <string>无标签</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QTextEdit" name="textEdit">
+            <property name="html">
+             <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'SimSun'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'宋体';&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_2">
+       <attribute name="title">
+        <string>个人隐私</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="tab_3">
+       <attribute name="title">
+        <string>集</string>
+       </attribute>
+      </widget>
      </widget>
     </item>
    </layout>
@@ -64,8 +262,8 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1032</width>
-     <height>23</height>
+     <width>1050</width>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_F">
@@ -74,37 +272,33 @@ p, li { white-space: pre-wrap; }
     </property>
     <addaction name="action_save"/>
     <addaction name="separator"/>
-    <addaction name="actionLock"/>
+    <addaction name="action_lock"/>
     <addaction name="separator"/>
-    <addaction name="logout"/>
-    <addaction name="action_X"/>
+    <addaction name="action_logout"/>
+    <addaction name="action_exit"/>
    </widget>
    <widget class="QMenu" name="menu_F_2">
     <property name="title">
      <string>编辑（&amp;E）</string>
     </property>
-    <addaction name="action_repeal"/>
-    <addaction name="action_recover"/>
-    <addaction name="action_T"/>
+    <addaction name="action_undo"/>
+    <addaction name="action_redo"/>
+    <addaction name="action_cut"/>
     <addaction name="action_copy"/>
-    <addaction name="action_P_2"/>
+    <addaction name="action_paste"/>
     <addaction name="separator"/>
-    <addaction name="action_D"/>
    </widget>
    <widget class="QMenu" name="menu_Q">
     <property name="title">
      <string>格式（&amp;Q）</string>
     </property>
-    <addaction name="action_F"/>
-    <addaction name="action_C_2"/>
+    <addaction name="action_color"/>
    </widget>
    <widget class="QMenu" name="menu_H">
     <property name="title">
      <string>帮助（&amp;H)</string>
     </property>
-    <addaction name="action_Qt_A"/>
-    <addaction name="action_AW"/>
-    <addaction name="action_AS"/>
+    <addaction name="action_about"/>
    </widget>
    <widget class="QMenu" name="menu_T">
     <property name="title">
@@ -126,40 +320,14 @@ p, li { white-space: pre-wrap; }
     <bool>false</bool>
    </attribute>
    <addaction name="action_save"/>
-   <addaction name="action_F"/>
    <addaction name="action_copy"/>
-   <addaction name="action_repeal"/>
-   <addaction name="action_recover"/>
+   <addaction name="action_undo"/>
+   <addaction name="action_redo"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="action_N">
+  <action name="action_new_dairy">
    <property name="text">
     <string>新建（&amp;N）</string>
-   </property>
-  </action>
-  <action name="action_O">
-   <property name="text">
-    <string>打开（&amp;O）</string>
-   </property>
-  </action>
-  <action name="action_A">
-   <property name="text">
-    <string>另存为(&amp;A)</string>
-   </property>
-  </action>
-  <action name="action_U">
-   <property name="text">
-    <string>页面设置(&amp;U)</string>
-   </property>
-  </action>
-  <action name="action_P">
-   <property name="text">
-    <string>打印(&amp;P)</string>
-   </property>
-  </action>
-  <action name="action_X">
-   <property name="text">
-    <string>退出(&amp;X)</string>
    </property>
   </action>
   <action name="action_save">
@@ -171,7 +339,7 @@ p, li { white-space: pre-wrap; }
     <string>保存(&amp;S)</string>
    </property>
   </action>
-  <action name="action_repeal">
+  <action name="action_undo">
    <property name="icon">
     <iconset resource="res.qrc">
      <normaloff>:/img/arrows_left.png</normaloff>:/img/arrows_left.png</iconset>
@@ -180,7 +348,7 @@ p, li { white-space: pre-wrap; }
     <string>撤销(&amp;U)</string>
    </property>
   </action>
-  <action name="action_T">
+  <action name="action_cut">
    <property name="text">
     <string>剪切(&amp;T)</string>
    </property>
@@ -194,31 +362,17 @@ p, li { white-space: pre-wrap; }
     <string>复制(&amp;C)</string>
    </property>
   </action>
-  <action name="action_P_2">
+  <action name="action_paste">
    <property name="text">
     <string>粘贴(&amp;P)</string>
    </property>
   </action>
-  <action name="action_D">
-   <property name="text">
-    <string>日期(&amp;D)</string>
-   </property>
-  </action>
-  <action name="action_F">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/new/icon/icon/Text.png</normaloff>:/new/icon/icon/Text.png</iconset>
-   </property>
-   <property name="text">
-    <string>字体(&amp;F)</string>
-   </property>
-  </action>
-  <action name="action_C_2">
+  <action name="action_color">
    <property name="text">
     <string>字体颜色(&amp;C)</string>
    </property>
   </action>
-  <action name="action_recover">
+  <action name="action_redo">
    <property name="icon">
     <iconset resource="res.qrc">
      <normaloff>:/img/arrows_right.png</normaloff>:/img/arrows_right.png</iconset>
@@ -227,22 +381,12 @@ p, li { white-space: pre-wrap; }
     <string>恢复(&amp;H)</string>
    </property>
   </action>
-  <action name="action_Qt_A">
+  <action name="action_about">
    <property name="text">
-    <string>关于Qt（&amp;A）</string>
+    <string>关于(&amp;A)</string>
    </property>
   </action>
-  <action name="action_AW">
-   <property name="text">
-    <string>关于官网(&amp;AW)</string>
-   </property>
-  </action>
-  <action name="action_AS">
-   <property name="text">
-    <string>关于软件(&amp;AS)</string>
-   </property>
-  </action>
-  <action name="actionLock">
+  <action name="action_lock">
    <property name="text">
     <string>锁定</string>
    </property>
@@ -261,9 +405,19 @@ p, li { white-space: pre-wrap; }
     <string>皮肤</string>
    </property>
   </action>
-  <action name="logout">
+  <action name="action_logout">
    <property name="text">
     <string>注销</string>
+   </property>
+  </action>
+  <action name="action_exit">
+   <property name="text">
+    <string>退出(&amp;X)</string>
+   </property>
+  </action>
+  <action name="action_font">
+   <property name="text">
+    <string>字体</string>
    </property>
   </action>
  </widget>

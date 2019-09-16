@@ -13,6 +13,35 @@
 
 CSqlOperate::CSqlOperate(QObject *parent) : QObject(parent)
 {
+//    model = new QSqlRelationalTableModel (this);
+//    model->setTable("stations_train_pass"); //要打开的表
+//    // 模型中的所有更改将被缓存,直到submitAll()或revertAll()！
+//    model->setEditStrategy(QSqlRelationalTableModel::OnManualSubmit);
+//    model->setRelation(1,QSqlRelation("stations","sid","sname"));
+//    model->select();
+
+//       model->revertAll(); //撤销上次sql操作
+//       model->submitAll(); //提交上次sql操作
+    //model->setFilter(QObject::tr("snumber like '%1'").arg("%"));
+
+//    model->setFilter(QObject::tr("tid= '%1'").arg(name));
+//        model->select();
+//            QTableView *view = new QTableView;
+//            view->setModel(model);
+//            view->show();
+
+//    ui->tvMainList->setModel(model);
+//    //格式化表
+//    this->model->removeColumn(this->model->fieldIndex("fid"));
+//    this->model->removeColumn(this->model->fieldIndex("flag"));
+//    this->model->setHeaderData(0,Qt::Horizontal,tr("名称"));
+//    this->model->setHeaderData(1,Qt::Horizontal,tr("类型"));
+//    this->model->setHeaderData(2,Qt::Horizontal,tr("价格"));
+//    this->model->setHeaderData(3,Qt::Horizontal,tr("热度"));
+
+    //按热度值获取表中数据 并按降序排列
+//    this->model->setFilter("fhot_count>10 order by fhot_count desc");
+//    this->model->select();
 
 }
 

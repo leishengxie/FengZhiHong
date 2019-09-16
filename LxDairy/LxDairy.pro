@@ -21,7 +21,10 @@ SOURCES += main.cpp\
     AwesomeFont.cpp \
     SkinWidget.cpp \
     RegisterDialog.cpp \
-    TextVerifier.cpp
+    TextVerifier.cpp \
+    model/DairyTagListModel.cpp \
+    delegate/DairyTagDelegate.cpp \
+    model/DairyDateTreeModel.cpp
 
 HEADERS  += \
     LoginWidget.h \
@@ -32,7 +35,10 @@ HEADERS  += \
     AwesomeFont.h \
     SkinWidget.h \
     RegisterDialog.h \
-    TextVerifier.h
+    TextVerifier.h \
+    model/DairyTagListModel.h \
+    delegate/DairyTagDelegate.h \
+    model/DairyDateTreeModel.h
 
 FORMS    += \
     LoginWidget.ui \

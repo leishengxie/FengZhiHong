@@ -55,7 +55,11 @@
         <widget class="QLineEdit" name="leUserName"/>
        </item>
        <item row="4" column="1">
-        <widget class="QLineEdit" name="lePasswdSure"/>
+        <widget class="QLineEdit" name="lePasswdSure">
+         <property name="echoMode">
+          <enum>QLineEdit::Password</enum>
+         </property>
+        </widget>
        </item>
        <item row="4" column="0">
         <widget class="QLabel" name="label_3">
@@ -65,7 +69,11 @@
         </widget>
        </item>
        <item row="2" column="1">
-        <widget class="QLineEdit" name="lePasswd"/>
+        <widget class="QLineEdit" name="lePasswd">
+         <property name="echoMode">
+          <enum>QLineEdit::Password</enum>
+         </property>
+        </widget>
        </item>
        <item row="2" column="0">
         <widget class="QLabel" name="label_2">

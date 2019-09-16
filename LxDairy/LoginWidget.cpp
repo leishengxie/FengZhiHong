@@ -11,11 +11,23 @@ CLoginWidget::CLoginWidget(QWidget *parent) :
     ui(new Ui::CLoginWidget)
 {
     ui->setupUi(this);
-
+    setWindowTitle("登录");
     QSettings conf("conf.ini", QSettings::IniFormat);
     conf.beginGroup("user");
+    bool bRememberUserName = conf.value("remember_user_name", false).toBool();
+    bool bRememberPasswd = conf.value("remember_passwd", false).toBool();
+    ui->ckboxRememberUserName->setChecked(bRememberUserName);
+    ui->ckboxRememberPasswd->setChecked(bRememberPasswd);
+    if (ui->ckboxRememberUserName->isChecked())
+    {
     QString strUserName = conf.value("user_name", "").toString();
     ui->leUserName->setText(strUserName);
+    }
+    if (ui->ckboxRememberPasswd->isChecked())
+    {
+    QString strPasswd = conf.value("passwd", "").toString();
+    ui->lePasswd->setText(strPasswd);
+    }
     QPalette pal;
     pal.setBrush(QPalette::Background, QBrush(QPixmap(":/img/bg/1.jpg").scaled(size())));
     setPalette(pal);
@@ -55,8 +67,14 @@ void CLoginWidget::on_btnLogin_clicked()
     {
         QSettings conf("conf.ini", QSettings::IniFormat);
         conf.beginGroup("user");
-        conf.setValue("user_name", strUserName);
-
+        if (ui->ckboxRememberUserName->isChecked())
+        {
+            conf.setValue("user_name", strUserName);
+        }
+        if (ui->ckboxRememberPasswd->isChecked())
+        {
+            conf.setValue("passwd", strPasswd);
+        }
        CDairyMainWindow *pDairyMainWindow = new CDairyMainWindow;
        pDairyMainWindow->setLoginWidget(this);
        //pDairyMainWindow->SetZhanghao(ui->lineEditzanghao->currentText());
@@ -67,4 +85,18 @@ void CLoginWidget::on_btnLogin_clicked()
     {
         QMessageBox::information(this, "ERROR" ,"账号或密码不正确！！");
     }
+}
+
+void CLoginWidget::on_ckboxRememberUserName_clicked(bool checked)
+{
+    QSettings conf("conf.ini", QSettings::IniFormat);
+    conf.beginGroup("user");
+    conf.setValue("remember_user_name", checked);
+}
+
+void CLoginWidget::on_ckboxRememberPasswd_clicked(bool checked)
+{
+    QSettings conf("conf.ini", QSettings::IniFormat);
+    conf.beginGroup("user");
+    conf.setValue("remember_passwd", checked);
 }
