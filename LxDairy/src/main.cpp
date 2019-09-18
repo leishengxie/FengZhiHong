@@ -5,15 +5,6 @@
 #include <QApplication>
 #include <QMessageBox>
 
-//设置皮肤样式
-static void SetStyle(const QString &styleName)
-{
-    QFile file(QString(":/image/%1.css").arg(styleName));
-    file.open(QFile::ReadOnly);
-    QString qss = QLatin1String(file.readAll());
-    qApp->setStyleSheet(qss);
-    qApp->setPalette(QPalette(QColor("#F0F0F0")));
-}
 
 int main(int argc, char *argv[])
 {
@@ -25,7 +16,7 @@ int main(int argc, char *argv[])
         return -1;
     }
     CSqlOperate::createTable();
-    CSkinWidget::setSkin(0, true);
+    CSkinWidget::loadQssStyle();
 
     CLoginWidget l;
     l.show();

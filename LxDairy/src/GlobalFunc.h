@@ -2,8 +2,6 @@
 #define CGLOBALFUNC_H
 
 #include <QObject>
-#include <QFile>
-#include <QApplication>
 #include <QColor>
 #include <QPalette>
 #include <QWidget>
@@ -20,19 +18,7 @@ public:
 
 
     //设置皮肤样式
-    static void setQssStyle(const QString &stylefilePath)
-    {
-        QFile file(stylefilePath);
-        bool bOk = file.open(QFile::ReadOnly);
-        if (!bOk)
-        {
-            return;
-        }
-        QString qss = QLatin1String(file.readAll());
-        qApp->setStyleSheet(qss);
-        qApp->setPalette(QPalette(QColor("#F0F0F0")));
-        file.close();
-    }
+
 
     //判断是否是IP地址
     static bool IsIP(QString IP)

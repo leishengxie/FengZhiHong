@@ -19,10 +19,16 @@ public:
     explicit CSkinWidget(QWidget *parent = 0);
     ~CSkinWidget();
 public:
-    static void setSkin(int nSkinIndex, bool bSave = false);
+    static void loadQssStyle();
+    static void setSkin(int nSkinIndex);
+    static void setQssStyle(const QString &stylefilePath);
+
+protected:
+    void closeEvent(QCloseEvent *event);
+
 private slots:
-    void slot_cancel();
-    void slot_ok();
+    void slot_cancelCurrentSet();
+    void slot_saveCurrentSet();
     void slot_list_clicked(QListWidgetItem *pItem);
 
 
