@@ -12,9 +12,11 @@ class CUser : public CSingleton<CUser>
 public:
     SETGET(int, nUid, Uid)
     SETGET(QString, strUserName, UserName)
+    SETGET(QList<CDairy>, m_lstDairy, LstDairy)
 
+    void appendDairy(CDairy dairy);
 private:
-       QList<CDairy> m_lstDairy;
+
 };
 
 #endif // CUSER_H

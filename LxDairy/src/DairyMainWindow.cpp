@@ -4,7 +4,9 @@
 #include <QIcon>
 #include "SkinWidget.h"
 #include "model/DairyTagListModel.h"
+#include "model/DairyDateTreeModel.h"
 #include "delegate/DairyTagDelegate.h"
+#include "delegate/DairyDateDelegate.h"
 #include "User.h"
 
 
@@ -19,6 +21,7 @@ CDairyMainWindow::CDairyMainWindow(QWidget *parent)
     pal.setBrush(QPalette::Background, QBrush(QPixmap(":/img/bg/1.jpg").scaled(size())));
     setPalette(pal);
 
+    // 初始化listViewTag
     CDairyTagListModel* pDairyTagListModel = new CDairyTagListModel(this);
     CDairyTagDelegate* pDairyTagDelegate = new CDairyTagDelegate;
     ui->listViewTag->setModel(pDairyTagListModel);
@@ -31,6 +34,13 @@ CDairyMainWindow::CDairyMainWindow(QWidget *parent)
     {
         ui->comboBoxTag->addItem(tDairyTagItem.strTagName);
     }
+
+    // 初始化pDairyDateTreeModel
+    CDairyDateTreeModel* pDairyDateTreeModel = new CDairyDateTreeModel(this);
+    CDairyDateDelegate* pDairyDateDelegate = new CDairyDateDelegate;
+    ui->treeDairy->setModel(pDairyDateTreeModel);
+    ui->treeDairy->setItemDelegate(pDairyDateDelegate);
+    //connect(ui->treeDairy, SIGNAL(clicked(QModelIndex))
 }
 
 CDairyMainWindow::~CDairyMainWindow()
@@ -280,4 +290,11 @@ void CDairyMainWindow::on_action_font_triggered()
     {
         QMessageBox::information(this,"Error Message","set font fail");
     }
+}
+
+void CDairyMainWindow::on_treeDairy_clicked(const QModelIndex &index)
+{
+    T_DairyDateItem tDairyTagItem = qvariant_cast<T_DairyDateItem>(index.data());
+    //ui->comboBoxWeather
+    //index.data()
 }

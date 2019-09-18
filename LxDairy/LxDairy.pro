@@ -49,7 +49,8 @@ HEADERS += \
     src/SkinWidget.h \
     src/SqlOperate.h \
     src/TextVerifier.h \
-    src/User.h
+    src/User.h \
+    src/delegate/DairyDateDelegate.h
 
 SOURCES += \
     src/delegate/DairyTagDelegate.cpp \
@@ -66,7 +67,8 @@ SOURCES += \
     src/SkinWidget.cpp \
     src/SqlOperate.cpp \
     src/TextVerifier.cpp \
-    src/User.cpp
+    src/User.cpp \
+    src/delegate/DairyDateDelegate.cpp
 
 FORMS += \
     src/AboutDialog.ui \

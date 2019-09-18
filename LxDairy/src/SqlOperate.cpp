@@ -13,35 +13,35 @@
 
 CSqlOperate::CSqlOperate(QObject *parent) : QObject(parent)
 {
-//    model = new QSqlRelationalTableModel (this);
-//    model->setTable("stations_train_pass"); //要打开的表
-//    // 模型中的所有更改将被缓存,直到submitAll()或revertAll()！
-//    model->setEditStrategy(QSqlRelationalTableModel::OnManualSubmit);
-//    model->setRelation(1,QSqlRelation("stations","sid","sname"));
-//    model->select();
+    //    model = new QSqlRelationalTableModel (this);
+    //    model->setTable("stations_train_pass"); //要打开的表
+    //    // 模型中的所有更改将被缓存,直到submitAll()或revertAll()！
+    //    model->setEditStrategy(QSqlRelationalTableModel::OnManualSubmit);
+    //    model->setRelation(1,QSqlRelation("stations","sid","sname"));
+    //    model->select();
 
-//       model->revertAll(); //撤销上次sql操作
-//       model->submitAll(); //提交上次sql操作
+    //       model->revertAll(); //撤销上次sql操作
+    //       model->submitAll(); //提交上次sql操作
     //model->setFilter(QObject::tr("snumber like '%1'").arg("%"));
 
-//    model->setFilter(QObject::tr("tid= '%1'").arg(name));
-//        model->select();
-//            QTableView *view = new QTableView;
-//            view->setModel(model);
-//            view->show();
+    //    model->setFilter(QObject::tr("tid= '%1'").arg(name));
+    //        model->select();
+    //            QTableView *view = new QTableView;
+    //            view->setModel(model);
+    //            view->show();
 
-//    ui->tvMainList->setModel(model);
-//    //格式化表
-//    this->model->removeColumn(this->model->fieldIndex("fid"));
-//    this->model->removeColumn(this->model->fieldIndex("flag"));
-//    this->model->setHeaderData(0,Qt::Horizontal,tr("名称"));
-//    this->model->setHeaderData(1,Qt::Horizontal,tr("类型"));
-//    this->model->setHeaderData(2,Qt::Horizontal,tr("价格"));
-//    this->model->setHeaderData(3,Qt::Horizontal,tr("热度"));
+    //    ui->tvMainList->setModel(model);
+    //    //格式化表
+    //    this->model->removeColumn(this->model->fieldIndex("fid"));
+    //    this->model->removeColumn(this->model->fieldIndex("flag"));
+    //    this->model->setHeaderData(0,Qt::Horizontal,tr("名称"));
+    //    this->model->setHeaderData(1,Qt::Horizontal,tr("类型"));
+    //    this->model->setHeaderData(2,Qt::Horizontal,tr("价格"));
+    //    this->model->setHeaderData(3,Qt::Horizontal,tr("热度"));
 
     //按热度值获取表中数据 并按降序排列
-//    this->model->setFilter("fhot_count>10 order by fhot_count desc");
-//    this->model->select();
+    //    this->model->setFilter("fhot_count>10 order by fhot_count desc");
+    //    this->model->select();
 
 }
 
@@ -53,11 +53,11 @@ bool CSqlOperate::connect(QString strDbName)
     {
         return false;
     }
-//    QSqlQuery query;
-//    query.exec("create table zhanghao (zhanghao int primary key,mima varchar,"
-//               "wangming varchar,qianming varchar,beizhu varchar,touxiang varcher,"
-//               "ziti varcher,beijing varcher)");
-//    query.exec("create table mobile (zhanghao int ,time varchar,wather varchar,xinqing varchar,neirong varcher)");
+    //    QSqlQuery query;
+    //    query.exec("create table zhanghao (zhanghao int primary key,mima varchar,"
+    //               "wangming varchar,qianming varchar,beizhu varchar,touxiang varcher,"
+    //               "ziti varcher,beijing varcher)");
+    //    query.exec("create table mobile (zhanghao int ,time varchar,wather varchar,xinqing varchar,neirong varcher)");
     return true;
 }
 
@@ -65,9 +65,9 @@ void CSqlOperate::createTable()
 {
     QSqlQuery query;
     QString strSql=" CREATE TABLE IF NOT EXISTS tUser ( " \
-    "uid INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL DEFAULT 1," \
-    "user_name  TEXT(32) NOT NULL," \
-    "passwd  TEXT(16) NOT NULL)";
+                   "uid INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL DEFAULT 1," \
+                   "user_name  TEXT(32) NOT NULL," \
+                   "passwd  TEXT(16) NOT NULL)";
     if (!query.exec(strSql))
     {
         qDebug() << query.lastError();
@@ -145,18 +145,18 @@ int CSqlOperate::registerAccount(QString strUserName, QString strPasswd)
     //INSERT INTO tUser(user_name, passwd) VALUES('leisx', '0406aaaaa');
 
     // test1
-//    query.prepare("INSERT INTO tUser(user_name, passwd) VALUES(:user_name, :passwd)");
-//    query.bindValue(":user_name", strUserName);
-//    query.bindValue(":passwd", strPasswd);
+    //    query.prepare("INSERT INTO tUser(user_name, passwd) VALUES(:user_name, :passwd)");
+    //    query.bindValue(":user_name", strUserName);
+    //    query.bindValue(":passwd", strPasswd);
 
     // test2
-        query.prepare("INSERT INTO tUser(user_name, passwd) VALUES(?, ?)");
-        query.bindValue(0, strUserName);
-        query.bindValue(1, strPasswd);
+    query.prepare("INSERT INTO tUser(user_name, passwd) VALUES(?, ?)");
+    query.bindValue(0, strUserName);
+    query.bindValue(1, strPasswd);
 
-//    QString strSql = "INSERT INTO tUser(user_name, passwd) VALUES('" +
-//            strUserName + "', '" +
-//            strPasswd + "')";
+    //    QString strSql = "INSERT INTO tUser(user_name, passwd) VALUES('" +
+    //            strUserName + "', '" +
+    //            strPasswd + "')";
     if (!query.exec())
     {
         qDebug() << query.lastError();
@@ -188,8 +188,23 @@ bool CSqlOperate::login(QString strUserName, QString strPasswd)
         if(query.value("user_name").toString() == strUserName
                 && query.value("passwd").toString() == strPasswd)
         {
-            CUser::getInstance()->setUid(query.value("uid").toInt());
+            int uid = query.value("uid").toInt();
+            CUser::getInstance()->setUid(uid);
             CUser::getInstance()->setUserName(strUserName);
+
+            // 读取日记
+            QList<CDairy> lstDairy;
+            query.exec("select * from tDairy where uid = '" + QString::number(uid) + "'");
+            while (query.next())
+            {
+                CDairy dairy;
+                dairy.setTitle(query.value("title").toString());
+                dairy.setDateTime(query.value("datetime").toString());
+                dairy.setTag(query.value("tag").toString());
+                dairy.setWeather(query.value("weather").toString());
+                dairy.setContent(query.value("content").toString());
+                lstDairy.append(dairy);
+            }
             return true;
         }
     }

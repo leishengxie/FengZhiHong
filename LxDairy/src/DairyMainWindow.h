@@ -82,6 +82,8 @@ private slots:
 
     void on_action_font_triggered();
 
+    void on_treeDairy_clicked(const QModelIndex &index);
+
 private:
     Ui::DairyMainWindow *ui;
     QString saveFileName;
