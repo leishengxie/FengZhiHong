@@ -1,7 +1,9 @@
 #include "DairyMainWindow.h"
 #include "ui_DairyMainWindow.h"
-#include "LoginWidget.h"
 #include <QIcon>
+#include <QtDebug>
+#include "LoginWidget.h"
+#include "SqlOperate.h"
 #include "SkinWidget.h"
 #include "model/DairyTagListModel.h"
 #include "model/DairyDateTreeModel.h"
@@ -63,7 +65,7 @@ void CDairyMainWindow::closeEvent(QCloseEvent *event)
         switch (ret)
         {
         case QMessageBox::Save:
-            this->saveAsFileSlot();
+            on_action_save_triggered();
             break;
         case QMessageBox::Discard:
             event->accept();
@@ -88,14 +90,12 @@ void CDairyMainWindow::setLoginWidget(CLoginWidget *pLoginWidget)
     m_pLoginWidget = pLoginWidget;
 }
 
-
+/*
 void CDairyMainWindow::openFileSlot()
 {
-    /*
-     QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
-                                                "/home",
-                                                tr("Images (*.png *.xpm *.jpg)"));
-    */
+//     QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
+//                                                "/home",
+//                                                tr("Images (*.png *.xpm *.jpg)"));
     QString fileName = QFileDialog:: getOpenFileName(this,"Open File",QDir::currentPath(),tr("*.png *.xpm *.jpg *.txt"));
     qDebug()<<"the fileName is"<<fileName;
     if(fileName.isEmpty())
@@ -121,8 +121,9 @@ void CDairyMainWindow::openFileSlot()
 
     }
 }
+*/
 
-
+/*
 void CDairyMainWindow::saveAsFileSlot()
 {
     QString saveFileName =QFileDialog::getSaveFileName(this,"save as file",QDir::currentPath(),tr("*.png;; *.xpm ;;*.jpg ;;*.txt"));
@@ -149,7 +150,7 @@ void CDairyMainWindow::saveAsFileSlot()
         return;
     }
 }
-
+*/
 
 
 void CDairyMainWindow::currentDaateTimeSlot()
@@ -184,29 +185,13 @@ void CDairyMainWindow::on_action_new_dairy_triggered()
 
 void CDairyMainWindow::on_action_save_triggered()
 {
-    if(saveFileName.isEmpty())
-    {
-        this->saveAsFileSlot();
-    }
-    else
-    {
-        QFile *file=new QFile;
-        file->setFileName(saveFileName);
-        bool ok=file->open(QIODevice::WriteOnly);
-        if(ok)
-        {
-            QTextStream out(file);
-            out<<ui->textEdit->toPlainText(); //去除textEdit当中的纯文本
-            file->close();
-            this->setWindowTitle(saveFileName+"----notepad");
-            delete file;
-        }
-        else
-        {
-            QMessageBox::information(this,"Error Message","Save file fail");
-            return;
-        }
-    }
+    CDairy dairy;
+    dairy.setTitle(ui->leTitle->text());
+    dairy.setDateTime(ui->labelDateTime->text());
+    dairy.setTag(ui->comboBoxTag->currentText());
+    dairy.setWeather(ui->comboBoxWeather->currentText());
+    dairy.setContent(ui->textEdit->toPlainText()); //toPlainText 去除textEdit当中的纯文本
+    CSqlOperate::saveDairy(dairy);
 }
 
 void CDairyMainWindow::on_action_undo_triggered()
@@ -294,7 +279,30 @@ void CDairyMainWindow::on_action_font_triggered()
 
 void CDairyMainWindow::on_treeDairy_clicked(const QModelIndex &index)
 {
+    qDebug() << "tree click";
     T_DairyDateItem tDairyTagItem = qvariant_cast<T_DairyDateItem>(index.data());
-    //ui->comboBoxWeather
-    //index.data()
+    switch (tDairyTagItem.eDairyDateNodeType)
+    {
+    case ED_Year:
+        break;
+    case ED_Month:
+        break;
+    case ED_Day:
+    {
+        bool bOk = false;
+        CDairy dairy = CSqlOperate::getDairy(tDairyTagItem.did, bOk);
+        if (bOk)
+        {
+            ui->comboBoxWeather->setCurrentText(dairy.getWeather());
+            ui->comboBoxTag->setCurrentText(dairy.getTag());
+            ui->labelDateTime->setText(dairy.getDateTime());
+            ui->leTitle->setText(dairy.getTitle());
+        }
+    }
+        break;
+    default:
+        break;
+    }
+
+
 }

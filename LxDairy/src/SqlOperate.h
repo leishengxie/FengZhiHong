@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QSqlDatabase>
+#include "Dairy.h"
 
 class CSqlOperate : public QObject
 {
@@ -14,6 +15,8 @@ public:
     static void createTable();
     static int registerAccount(QString strUserName, QString strPasswd);
     static bool login(QString strUserName, QString strPasswd);
+    static CDairy getDairy(int did, bool & bOk);
+    static void saveDairy(CDairy dairy);
 
     bool WriteData(QString registerAccount, QString time, QString wather, QString xinqing, QString neirong);
     QStringList shuaxin(QString registerAccount);

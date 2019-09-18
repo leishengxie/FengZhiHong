@@ -47,8 +47,8 @@ protected:
     void closeEvent(QCloseEvent *event);
 
 private slots:
-    void openFileSlot();
-    void saveAsFileSlot();
+    //void openFileSlot();
+    //void saveAsFileSlot();
     void currentDaateTimeSlot();
 
 
@@ -86,7 +86,6 @@ private slots:
 
 private:
     Ui::DairyMainWindow *ui;
-    QString saveFileName;
     CSkinWidget* m_pSkinWidget;
     CLoginWidget* m_pLoginWidget;
 };

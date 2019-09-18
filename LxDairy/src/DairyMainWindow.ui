@@ -95,7 +95,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QLabel" name="label_3">
+             <widget class="QLabel" name="labelDateTime">
               <property name="text">
                <string>2019年9月14日 09:33 周六</string>
               </property>
@@ -195,7 +195,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="lineEdit"/>
+             <widget class="QLineEdit" name="leTitle"/>
             </item>
             <item>
              <spacer name="horizontalSpacer_2">
@@ -332,7 +332,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="action_save">
    <property name="icon">
-    <iconset resource="res.qrc">
+    <iconset resource="../res.qrc">
      <normaloff>:/img/save.png</normaloff>:/img/save.png</iconset>
    </property>
    <property name="text">
@@ -341,7 +341,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="action_undo">
    <property name="icon">
-    <iconset resource="res.qrc">
+    <iconset resource="../res.qrc">
      <normaloff>:/img/arrows_left.png</normaloff>:/img/arrows_left.png</iconset>
    </property>
    <property name="text">
@@ -355,7 +355,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="action_copy">
    <property name="icon">
-    <iconset resource="res.qrc">
+    <iconset resource="../res.qrc">
      <normaloff>:/img/copy.png</normaloff>:/img/copy.png</iconset>
    </property>
    <property name="text">
@@ -374,7 +374,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="action_redo">
    <property name="icon">
-    <iconset resource="res.qrc">
+    <iconset resource="../res.qrc">
      <normaloff>:/img/arrows_right.png</normaloff>:/img/arrows_right.png</iconset>
    </property>
    <property name="text">
@@ -398,7 +398,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="action_skin">
    <property name="icon">
-    <iconset resource="res.qrc">
+    <iconset resource="../res.qrc">
      <normaloff>:/img/skin.png</normaloff>:/img/skin.png</iconset>
    </property>
    <property name="text">
@@ -423,7 +423,7 @@ p, li { white-space: pre-wrap; }
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
-  <include location="res.qrc"/>
+  <include location="../res.qrc"/>
  </resources>
  <connections/>
 </ui>

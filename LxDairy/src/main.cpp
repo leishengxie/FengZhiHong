@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
         return -1;
     }
     CSqlOperate::createTable();
-    CSkinWidget::setSkin(0);
+    CSkinWidget::setSkin(0, true);
 
     CLoginWidget l;
     l.show();

@@ -197,12 +197,14 @@ bool CSqlOperate::login(QString strUserName, QString strPasswd)
             query.exec("select * from tDairy where uid = '" + QString::number(uid) + "'");
             while (query.next())
             {
+                //为避免内存占用只需要did和datetime
                 CDairy dairy;
-                dairy.setTitle(query.value("title").toString());
+                dairy.setDid(query.value("did").toInt());
+//                dairy.setTitle(query.value("title").toString());
                 dairy.setDateTime(query.value("datetime").toString());
-                dairy.setTag(query.value("tag").toString());
-                dairy.setWeather(query.value("weather").toString());
-                dairy.setContent(query.value("content").toString());
+//                dairy.setTag(query.value("tag").toString());
+//                dairy.setWeather(query.value("weather").toString());
+//                dairy.setContent(query.value("content").toString());
                 lstDairy.append(dairy);
             }
             return true;
@@ -210,6 +212,49 @@ bool CSqlOperate::login(QString strUserName, QString strPasswd)
     }
     return false;
 }
+
+CDairy CSqlOperate::getDairy(int did, bool &bOk)
+{
+    CDairy dairy;
+    QSqlQuery query;
+    query.exec("select * from tDairy where uid = '"
+               + QString::number(CUser::getInstance()->getUid())
+               + "' and did = '" + QString::number(did) + "'");
+    if (query.next())
+    {
+        bOk = true;
+        dairy.setDid(query.value("did").toInt());
+        dairy.setTitle(query.value("title").toString());
+        dairy.setDateTime(query.value("datetime").toString());
+        dairy.setTag(query.value("tag").toString());
+        dairy.setWeather(query.value("weather").toString());
+        dairy.setContent(query.value("content").toString());
+    }
+    else
+    {
+        bOk = false;
+    }
+    return dairy;
+}
+
+void CSqlOperate::saveDairy(CDairy dairy)
+{
+    QSqlQuery query;
+    bool ok = query.prepare("INSERT INTO tDairy (title,datetime,tag,weather,content) "
+                          "VALUES (?, ?, ?,?, ?)");
+    query.bindValue(0, dairy.getTitle());
+    query.bindValue(1, dairy.getDateTime());
+    query.bindValue(2, dairy.getTag());
+    query.bindValue(3, dairy.getWeather());
+    query.bindValue(4, dairy.getContent());
+    ok = query.exec();
+    if (!ok)
+    {
+        qDebug() << query.lastError();
+    }
+}
+
+
 QStringList CSqlOperate::zhumaintongbu(QString zhanghao)
 {
     QSqlQuery query;

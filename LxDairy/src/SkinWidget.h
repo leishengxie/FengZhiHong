@@ -19,7 +19,7 @@ public:
     explicit CSkinWidget(QWidget *parent = 0);
     ~CSkinWidget();
 public:
-    static void setSkin(int nSkinIndex);
+    static void setSkin(int nSkinIndex, bool bSave = false);
 private slots:
     void slot_cancel();
     void slot_ok();
@@ -28,6 +28,8 @@ private slots:
 
 private:
     Ui::CSkinWidget *ui;
+    uint m_unIndexSave;
+    uint m_unIndexCur;
 };
 
 #endif // SKINWIDGET_H

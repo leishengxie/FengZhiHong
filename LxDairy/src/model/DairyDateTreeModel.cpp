@@ -19,6 +19,7 @@ T_DairyDateItem::T_DairyDateItem(E_DairyDateNodeType eDairyDateNodeType, CDairy 
     this->eDairyDateNodeType = eDairyDateNodeType;
     //QMultiMap
     //"2010-07-02 17:35:00";
+    did = dairy.getDid();
     QString strDateTime = dairy.getDateTime();
     strYear = strDateTime.mid(0, 4);
     strMonth = strDateTime.mid(5, 2);
@@ -27,6 +28,7 @@ T_DairyDateItem::T_DairyDateItem(E_DairyDateNodeType eDairyDateNodeType, CDairy 
 
 void T_DairyDateItem::init()
 {
+    did = -1;
     eDairyDateNodeType = ED_Invalid;
     m_setChildItems.clear();
     m_pParentItem = NULL;

@@ -12,9 +12,11 @@ static QString s_aSkin[] =
     ":/css/navy.css"
 };
 
-CSkinWidget::CSkinWidget(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::CSkinWidget)
+CSkinWidget::CSkinWidget(QWidget *parent)
+    : QWidget(parent)
+  , ui(new Ui::CSkinWidget)
+  , m_unIndexSave(0)
+  , m_unIndexCur(0)
 {
     ui->setupUi(this);
     connect(ui->btnCancel, SIGNAL(clicked()), this, SLOT(slot_cancel()));
@@ -30,26 +32,32 @@ CSkinWidget::~CSkinWidget()
 
 void CSkinWidget::slot_cancel()
 {
-
+    setSkin(m_unIndexSave);
+    close();
 }
 
 void CSkinWidget::slot_ok()
 {
-
+    setSkin(m_unIndexCur, true);
+    close();
 }
 
 void CSkinWidget::slot_list_clicked(QListWidgetItem* pItem)
 {
-    QString text = pItem->text();
     int nCurrenRow = ui->listWidget->currentRow();
     setSkin(nCurrenRow);
 }
 
-void CSkinWidget::setSkin(int nSkinIndex)
+void CSkinWidget::setSkin(int nSkinIndex, bool bSave)
 {
     if (nSkinIndex < 0 || nSkinIndex > 3)
     {
         return;
+    }
+    m_unIndexCur = nSkinIndex;
+    if (bSave)
+    {
+        m_unIndexSave = m_unIndexCur;
     }
     CGlobalFunc::setQssStyle(s_aSkin[nSkinIndex]);
 }

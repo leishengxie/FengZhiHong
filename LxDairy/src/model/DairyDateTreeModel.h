@@ -24,6 +24,7 @@ enum E_DairyDateNodeType
 struct T_DairyDateItem
 {
     E_DairyDateNodeType eDairyDateNodeType;
+    int did;
     QString strYear;
     QString strMonth;
     QString strDay;

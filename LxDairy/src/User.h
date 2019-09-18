@@ -13,6 +13,8 @@ public:
     SETGET(int, nUid, Uid)
     SETGET(QString, strUserName, UserName)
     SETGET(QList<CDairy>, m_lstDairy, LstDairy)
+    // 当前活动的日记
+    SETGET(CDairy, ActiveDairy, ActiveDairy)
 
     void appendDairy(CDairy dairy);
 private:

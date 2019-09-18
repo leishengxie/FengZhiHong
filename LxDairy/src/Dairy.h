@@ -12,6 +12,7 @@ class CDairy
 public:
 
     CDairy();
+    SETGET(int, did, Did)
     SETGET(QString, strTitle, Title)
     SETGET(QString, strDateTime, DateTime)
     SETGET(QString, strWeather, Weather)
