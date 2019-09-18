@@ -20,7 +20,7 @@ public:
     ~CSkinWidget();
 public:
     static void loadQssStyle();
-    static void setSkin(int nSkinIndex);
+    static void setSkin(uint nSkinIndex);
     static void setQssStyle(const QString &stylefilePath);
 
 protected:

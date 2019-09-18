@@ -62,9 +62,9 @@ void CSkinWidget::slot_list_clicked(QListWidgetItem* pItem)
     setSkin(m_unIndexCur);
 }
 
-void CSkinWidget::setSkin(int nSkinIndex)
+void CSkinWidget::setSkin(uint nSkinIndex)
 {
-    if (nSkinIndex < 0 || nSkinIndex > 3)
+    if (nSkinIndex > 3)
     {
         return;
     }
