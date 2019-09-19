@@ -4,7 +4,8 @@
 #include <QString>
 #include "def/func.h"
 
-#define FORMAT_DATETIME    "yyyy-MM-dd hh:mm:ss"
+#define FORMAT_DATETIME                 "yyyy-MM-dd hh:mm:ss"
+#define FORMAT_DATETIME_DISPLAYER       "yyyy年MM月dd日 hh:mm"
 // Q_DISABLE_COPY(QObject) 不继承QObject
 class CDairy
 {
@@ -12,12 +13,12 @@ class CDairy
 public:
 
     CDairy();
-    SETGET(int, did, Did)
-    SETGET(QString, strTitle, Title)
-    SETGET(QString, strDateTime, DateTime)
-    SETGET(QString, strWeather, Weather)
-    SETGET(QString, strTag, Tag)
-    SETGET(QString, strContent, Content)
+    SETGETCONST(int, did, Did)
+    SETGETCONST(QString, strTitle, Title)
+    SETGETCONST(QString, strDateTime, DateTime)
+    SETGETCONST(QString, strWeather, Weather)
+    SETGETCONST(QString, strTag, Tag)
+    SETGETCONST(QString, strContent, Content)
 
 
 private:

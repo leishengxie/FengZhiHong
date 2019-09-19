@@ -351,19 +351,23 @@ void CDairyDateTreeModel::loadDairy()
     // 如果列表中没有今天的日记则添加今天的空日记
     bool bHaveTodayDairy = false;
     QString strDateTime = QDateTime::currentDateTime().toString(FORMAT_DATETIME);
+    CDairy dairyToday;
     foreach (CDairy dairy, lstDairy)
     {
         if (dairy.getDateTime() == strDateTime)
         {
             bHaveTodayDairy = true;
+            dairyToday = dairy;
             break;
         }
     }
     if (!bHaveTodayDairy)
     {
         CDairy dairyEmpty;
+        dairyToday = dairyEmpty;
         lstDairy.append(dairyEmpty);
     }
+    emit loadTodayDairyFinished(dairyToday);
     createDateTree(lstDairy);
 }
 

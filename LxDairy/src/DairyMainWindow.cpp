@@ -42,6 +42,7 @@ CDairyMainWindow::CDairyMainWindow(QWidget *parent)
     CDairyDateDelegate* pDairyDateDelegate = new CDairyDateDelegate;
     ui->treeDairy->setModel(pDairyDateTreeModel);
     ui->treeDairy->setItemDelegate(pDairyDateDelegate);
+    connect(pDairyDateTreeModel, SIGNAL(loadTodayDairyFinished(CDairy)), this, SLOT(slot_displayDairy(CDairy)));
     //connect(ui->treeDairy, SIGNAL(clicked(QModelIndex))
 }
 
@@ -88,6 +89,18 @@ void CDairyMainWindow::closeEvent(QCloseEvent *event)
 void CDairyMainWindow::setLoginWidget(CLoginWidget *pLoginWidget)
 {
     m_pLoginWidget = pLoginWidget;
+}
+
+void CDairyMainWindow::slot_displayDairy(const CDairy &dairy)
+{
+    QString strDateTime = dairy.getDateTime();
+    QDateTime datetime = QDateTime::fromString(strDateTime, FORMAT_DATETIME);
+    QString strDateTimeDisplay = datetime.toString(FORMAT_DATETIME_DISPLAYER);
+
+    ui->comboBoxWeather->setCurrentText(dairy.getWeather());
+    ui->comboBoxTag->setCurrentText(dairy.getTag());
+    ui->labelDateTime->setText(strDateTimeDisplay);
+    ui->leTitle->setText(dairy.getTitle());
 }
 
 /*
@@ -185,13 +198,19 @@ void CDairyMainWindow::on_action_new_dairy_triggered()
 
 void CDairyMainWindow::on_action_save_triggered()
 {
+    QString strDateTimeDisplayer = ui->labelDateTime->text();
+    QDateTime datetime = QDateTime::fromString(strDateTimeDisplayer, FORMAT_DATETIME_DISPLAYER);
+    QString strDateTime = datetime.toString(FORMAT_DATETIME);
+
     CDairy dairy;
     dairy.setTitle(ui->leTitle->text());
-    dairy.setDateTime(ui->labelDateTime->text());
+    dairy.setDateTime(strDateTime);
     dairy.setTag(ui->comboBoxTag->currentText());
     dairy.setWeather(ui->comboBoxWeather->currentText());
     dairy.setContent(ui->textEdit->toPlainText()); //toPlainText 去除textEdit当中的纯文本
     CSqlOperate::saveDairy(dairy);
+
+    ui->textEdit->document()->setModified(false);
 }
 
 void CDairyMainWindow::on_action_undo_triggered()
@@ -293,10 +312,7 @@ void CDairyMainWindow::on_treeDairy_clicked(const QModelIndex &index)
         CDairy dairy = CSqlOperate::getDairy(tDairyTagItem.did, bOk);
         if (bOk)
         {
-            ui->comboBoxWeather->setCurrentText(dairy.getWeather());
-            ui->comboBoxTag->setCurrentText(dairy.getTag());
-            ui->labelDateTime->setText(dairy.getDateTime());
-            ui->leTitle->setText(dairy.getTitle());
+            slot_displayDairy(dairy);
         }
     }
         break;

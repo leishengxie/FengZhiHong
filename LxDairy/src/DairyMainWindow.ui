@@ -97,7 +97,14 @@
             <item>
              <widget class="QLabel" name="labelDateTime">
               <property name="text">
-               <string>2019年9月14日 09:33 周六</string>
+               <string>2019年9月14日 09:33</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="labelWeekDay">
+              <property name="text">
+               <string> 周六</string>
               </property>
              </widget>
             </item>
@@ -338,6 +345,9 @@ p, li { white-space: pre-wrap; }
    <property name="text">
     <string>保存(&amp;S)</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
   </action>
   <action name="action_undo">
    <property name="icon">
@@ -346,6 +356,9 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="text">
     <string>撤销(&amp;U)</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Z</string>
    </property>
   </action>
   <action name="action_cut">
@@ -361,10 +374,16 @@ p, li { white-space: pre-wrap; }
    <property name="text">
     <string>复制(&amp;C)</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+C</string>
+   </property>
   </action>
   <action name="action_paste">
    <property name="text">
     <string>粘贴(&amp;P)</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+V</string>
    </property>
   </action>
   <action name="action_color">

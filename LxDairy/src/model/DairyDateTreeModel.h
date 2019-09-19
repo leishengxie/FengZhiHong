@@ -84,6 +84,9 @@ public:
 
     void insetDairy(CDairy dairy);
 
+signals:
+    void loadTodayDairyFinished(const CDairy &dairy);
+
 private:
     T_DairyDateItem* m_pDairyDateItemRoot;
 };

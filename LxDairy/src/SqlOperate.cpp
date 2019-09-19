@@ -64,10 +64,24 @@ bool CSqlOperate::connect(QString strDbName)
 void CSqlOperate::createTable()
 {
     QSqlQuery query;
-    QString strSql=" CREATE TABLE IF NOT EXISTS tUser ( " \
+    QString strSql=" CREATE TABLE IF NOT EXISTS tUser( " \
                    "uid INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL DEFAULT 1," \
                    "user_name  TEXT(32) NOT NULL," \
                    "passwd  TEXT(16) NOT NULL)";
+    if (!query.exec(strSql))
+    {
+        qDebug() << query.lastError();
+    }
+
+    strSql = "CREATE TABLE IF NOT EXISTS tDairy(" \
+    "did INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL DEFAULT 1," \
+    "uid INTEGER NOT NULL," \
+    "title TEXT," \
+    "datetime  TEXT," \
+    "weather TEXT," \
+    "tag TEXT," \
+    "content TEXT," \
+    "CONSTRAINT 'fk_user_uid' FOREIGN KEY ('uid') REFERENCES 'tUser' ('uid') ON DELETE CASCADE ON UPDATE CASCADE)";
     if (!query.exec(strSql))
     {
         qDebug() << query.lastError();
@@ -87,19 +101,7 @@ bool isDirExist(QString fullPath)
         return ok;
     }
 }
-bool CSqlOperate::WriteData(QString zhanghao, QString time,QString wather,QString xinqing,QString neirong)
-{
-    QSqlQuery query;
-    bool ok=query.prepare("INSERT INTO mobile (zhanghao,time,wather,xinqing,neirong) "
-                          "VALUES (?, ?, ?,?, ?)");
-    query.bindValue(0, zhanghao.toInt());
-    query.bindValue(1, time);
-    query.bindValue(2, wather);
-    query.bindValue(3, xinqing);
-    query.bindValue(4, neirong);
-    query.exec();
-    return ok;
-}
+
 QStringList CSqlOperate::shuaxin(QString zhanghao)
 {
     QSqlQuery query;
@@ -240,13 +242,14 @@ CDairy CSqlOperate::getDairy(int did, bool &bOk)
 void CSqlOperate::saveDairy(CDairy dairy)
 {
     QSqlQuery query;
-    bool ok = query.prepare("INSERT INTO tDairy (title,datetime,tag,weather,content) "
-                          "VALUES (?, ?, ?,?, ?)");
-    query.bindValue(0, dairy.getTitle());
-    query.bindValue(1, dairy.getDateTime());
-    query.bindValue(2, dairy.getTag());
-    query.bindValue(3, dairy.getWeather());
-    query.bindValue(4, dairy.getContent());
+    bool ok = query.prepare("INSERT INTO tDairy(uid, title,datetime,tag,weather,content) "
+                          "VALUES (?, ?, ?, ?, ?, ?)");
+    query.bindValue(0, CUser::getInstance()->getUid());
+    query.bindValue(1, dairy.getTitle());
+    query.bindValue(2, dairy.getDateTime());
+    query.bindValue(3, dairy.getTag());
+    query.bindValue(4, dairy.getWeather());
+    query.bindValue(5, dairy.getContent());
     ok = query.exec();
     if (!ok)
     {

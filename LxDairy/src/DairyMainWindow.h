@@ -17,6 +17,7 @@
 #include <QUrl>
 #include <QDesktopServices>
 #include "AboutDialog.h"
+#include "Dairy.h"
 #include <QCloseEvent>
 
 //当程序需要关闭的时候所处理的内容
@@ -42,6 +43,9 @@ public:
 
 public:
     void setLoginWidget(CLoginWidget* pLoginWidget);
+
+public slots:
+    void slot_displayDairy(const CDairy &dairy);
 
 protected:
     void closeEvent(QCloseEvent *event);

@@ -18,7 +18,7 @@ public:
     static CDairy getDairy(int did, bool & bOk);
     static void saveDairy(CDairy dairy);
 
-    bool WriteData(QString registerAccount, QString time, QString wather, QString xinqing, QString neirong);
+
     QStringList shuaxin(QString registerAccount);
     QStringList huoquqita(QString registerAccount, QString riqi);
 
