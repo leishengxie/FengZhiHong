@@ -43,6 +43,7 @@ CDairyMainWindow::CDairyMainWindow(QWidget *parent)
     ui->treeDairy->setModel(pDairyDateTreeModel);
     ui->treeDairy->setItemDelegate(pDairyDateDelegate);
     connect(pDairyDateTreeModel, SIGNAL(loadTodayDairyFinished(CDairy)), this, SLOT(slot_displayDairy(CDairy)));
+    pDairyDateTreeModel->loadDairy();
     //connect(ui->treeDairy, SIGNAL(clicked(QModelIndex))
 }
 

@@ -180,6 +180,12 @@ QString T_DairyDateItem::text()
     return strText;
 }
 
+uint qHash(const T_DairyDateItem *key, uint seed)
+{
+    Q_UNUSED(seed);
+    return key->value();
+}
+
 
 
 
@@ -191,7 +197,7 @@ CDairyDateTreeModel::CDairyDateTreeModel(QObject *parent = 0)
     : QAbstractItemModel(parent)
     , m_pDairyDateItemRoot(NULL)
 {
-    loadDairy();
+
 }
 
 int CDairyDateTreeModel::rowCount(const QModelIndex &parent) const
@@ -424,8 +430,4 @@ void CDairyDateTreeModel::insetDairy(CDairy dairy)
 
 
 
-uint qHash(const T_DairyDateItem *key, uint seed)
-{
-    Q_UNUSED(seed);
-    return key->value();
-}
+

@@ -78,7 +78,9 @@ public:
     virtual QModelIndex parent(const QModelIndex &index) const override;
     bool hasChildren(const QModelIndex &parent) const;
 
+    // 加载所有日记
     void loadDairy();
+
     // 根据日志列表整理成树
     void createDateTree(QList<CDairy> m_lstDairy);
 
