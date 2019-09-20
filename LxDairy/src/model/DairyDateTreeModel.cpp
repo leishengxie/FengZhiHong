@@ -131,10 +131,16 @@ void T_DairyDateItem::insert(T_DairyDateItem* tDairyDateItem)
 //    return false;
 //}
 
-QList<T_DairyDateItem> T_DairyDateItem::values()
+QList<T_DairyDateItem*> T_DairyDateItem::values()
 {
-    return m_setChildItems.values();
-    m_setChildItems[1];
+    QList<T_DairyDateItem*> lstDairyDateItem;
+    for (auto pItem: m_setChildItems)
+    {
+        lstDairyDateItem.append(pItem);
+    }
+//    return m_setChildItems.values();
+
+    return lstDairyDateItem;
 }
 
 T_DairyDateItem *T_DairyDateItem::parentItem()

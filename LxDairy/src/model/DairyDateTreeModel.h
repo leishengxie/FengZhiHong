@@ -69,7 +69,7 @@ struct T_DairyDateItem
     void insert(T_DairyDateItem* tDairyDateItem);
     //bool contains(T_DairyDateItem tDairyDateItem);
     //bool contains_ex(T_DairyDateItem* tDairyDateItem); 使用指针的苦楚
-    QList<T_DairyDateItem> values();
+    QList<T_DairyDateItem *> values();
     T_DairyDateItem* parentItem();
     int row(); //对应treeModel的行
     int column(); //对应treeModel的列
