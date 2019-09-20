@@ -56,6 +56,12 @@ bool T_DairyDateItem::operator ==(const T_DairyDateItem &right) const
     return true;
 }
 
+//bool T_DairyDateItem::operator ==(const T_DairyDateItem *right) const
+//{
+//    return *this == *right;
+//}
+
+
 uint T_DairyDateItem::value() const
 {
     uint nValue = 0;
@@ -86,26 +92,49 @@ void T_DairyDateItem::eraseAll()
 
 }
 
-T_DairyDateItem * T_DairyDateItem::find(T_DairyDateItem *tDairyDateItem)
+T_DairyDateItem* T_DairyDateItem::find(T_DairyDateItem *tDairyDateItem)
 {
-    QSet<T_DairyDateItem*>::iterator iter = m_setChildItems.find(tDairyDateItem);
-    return (*iter);
+
+    QSet<T_DairyDateItem>::iterator iter = m_setChildItems.find(tDairyDateItem);
+    if (iter != m_setChildItems.end())
+    {
+    return *iter;
+    }
+    return NULL;
 }
 
 void T_DairyDateItem::insert(T_DairyDateItem* tDairyDateItem)
 {
-    tDairyDateItem->m_pParentItem = this;
+    tDairyDateItem.m_pParentItem = this;
     m_setChildItems.insert(tDairyDateItem);
 }
 
-bool T_DairyDateItem::contains(T_DairyDateItem* tDairyDateItem)
-{
-    return m_setChildItems.contains(tDairyDateItem);
-}
+//bool T_DairyDateItem::contains(T_DairyDateItem tDairyDateItem)
+//{
+//    return m_setChildItems.contains(tDairyDateItem);
+//}
 
-QList<T_DairyDateItem *> T_DairyDateItem::values()
+//bool T_DairyDateItem::contains_ex(T_DairyDateItem *tDairyDateItem)
+//{
+//    if (m_setChildItems.isEmpty())
+//    {
+//        return false;
+//    }
+//    QSet<T_DairyDateItem*>::iterator iter;
+//    for(iter = m_setChildItems.begin(); iter != m_setChildItems.end(); ++iter)
+//    {
+//         if( *(*iter) == *tDairyDateItem)
+//         {
+//             return true;
+//         }
+//    }
+//    return false;
+//}
+
+QList<T_DairyDateItem> T_DairyDateItem::values()
 {
     return m_setChildItems.values();
+    m_setChildItems[1];
 }
 
 T_DairyDateItem *T_DairyDateItem::parentItem()
@@ -117,7 +146,7 @@ int T_DairyDateItem::row()
 {
     if (m_pParentItem)
     {
-        return m_pParentItem->values().indexOf(const_cast<T_DairyDateItem*>(this));
+        return m_pParentItem->values().indexOf(*this);
     }
     return 0;
 }
@@ -180,11 +209,11 @@ QString T_DairyDateItem::text()
     return strText;
 }
 
-uint qHash(const T_DairyDateItem *key, uint seed)
-{
-    Q_UNUSED(seed);
-    return key->value();
-}
+//uint qHash(const T_DairyDateItem key, uint seed)
+//{
+//    Q_UNUSED(seed);
+//    return key.value();
+//}
 
 
 
@@ -217,7 +246,7 @@ int CDairyDateTreeModel::rowCount(const QModelIndex &parent) const
         pParentItem = static_cast<T_DairyDateItem*>(parent.internalPointer());
     }
 
-    QList<T_DairyDateItem*> lstItem = pParentItem->values();
+    QList<T_DairyDateItem> lstItem = pParentItem->values();
     return lstItem.size();
 }
 
@@ -298,7 +327,7 @@ QModelIndex CDairyDateTreeModel::index(int row, int column, const QModelIndex &p
     else
         parentItem = static_cast<T_DairyDateItem*>(parent.internalPointer());
 
-    T_DairyDateItem *childItem = parentItem->values().at(row);
+    T_DairyDateItem *childItem =  const_cast<T_DairyDateItem *>(&parentItem->values().at(row));
     if (childItem)
     {
 //        int nAbleColumn = childItem->column();
@@ -360,7 +389,7 @@ void CDairyDateTreeModel::loadDairy()
     CDairy dairyToday;
     foreach (CDairy dairy, lstDairy)
     {
-        if (dairy.getDateTime() == strDateTime)
+        if (dairy.getDateTime().mid(0, 10) == strDateTime.mid(0, 10))
         {
             bHaveTodayDairy = true;
             dairyToday = dairy;
@@ -388,44 +417,39 @@ void CDairyDateTreeModel::createDateTree(QList<CDairy> m_lstDairy)
 
 void CDairyDateTreeModel::insetDairy(CDairy dairy)
 {
-    T_DairyDateItem* pItemYear = new T_DairyDateItem(ED_Year, dairy);
-    T_DairyDateItem* pItemMonth = new T_DairyDateItem(ED_Month, dairy);
-    T_DairyDateItem* pItemDay = new T_DairyDateItem(ED_Day, dairy);
-    if (m_pDairyDateItemRoot->contains(pItemYear))
+//    T_DairyDateItem* pItemYear = new T_DairyDateItem(ED_Year, dairy);
+//    T_DairyDateItem* pItemMonth = new T_DairyDateItem(ED_Month, dairy);
+//    T_DairyDateItem* pItemDay = new T_DairyDateItem(ED_Day, dairy);
+        T_DairyDateItem itemYear(ED_Year, dairy);
+        T_DairyDateItem itemMonth(ED_Month, dairy);
+        T_DairyDateItem itemDay(ED_Day, dairy);
+    // 发现contains函数不是想要的结果, 用find
+            T_DairyDateItem* pItemYear = NULL;
+            T_DairyDateItem* pItemMonth = NULL;
+            T_DairyDateItem* pItemDay = NULL;
+    if (!m_pDairyDateItemRoot->contains(itemYear))
     {
-
-        T_DairyDateItem* pItem = m_pDairyDateItemRoot->find(pItemYear);
-        delete pItemYear;
-        pItemYear = pItem;
-    }
-    else
-    {
-        m_pDairyDateItemRoot->insert(pItemYear);
-    }
-
-    if (pItemYear->contains(pItemMonth))
-    {
-
-        T_DairyDateItem* pItem = pItemYear->find(pItemMonth);
-        delete pItemMonth;
-        pItemMonth = pItem;
-    }
-    else
-    {
-        pItemYear->insert(pItemMonth);
+        m_pDairyDateItemRoot->insert(itemYear);
     }
 
-    if (pItemMonth->contains(pItemDay))
+    pItemYear = m_pDairyDateItemRoot->find(itemYear);
+    Q_ASSERT(pItemYear);
+    if (!pItemYear->contains(itemMonth))
     {
+        pItemYear->insert(itemMonth);
+    }
 
-        T_DairyDateItem* pItem = pItemMonth->find(pItemDay);
-        delete pItemDay;
-        pItemDay = pItem;
-    }
-    else
+    pItemMonth = pItemYear->find(itemMonth);
+    Q_ASSERT(pItemMonth);
+    if (!pItemMonth->contains(itemDay))
     {
-        pItemMonth->insert(pItemDay);
+//        delete itemDay;
+//        itemDay = pItem;
+        pItemMonth->insert(itemDay);
     }
+
+    pItemDay = pItemYear->find(itemDay);
+    Q_ASSERT(pItemDay);
 }
 
 

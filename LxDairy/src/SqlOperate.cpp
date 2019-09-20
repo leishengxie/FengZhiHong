@@ -208,6 +208,7 @@ bool CSqlOperate::login(QString strUserName, QString strPasswd)
 //                dairy.setWeather(query.value("weather").toString());
 //                dairy.setContent(query.value("content").toString());
                 lstDairy.append(dairy);
+                CUser::getInstance()->setLstDairy(lstDairy);
             }
             return true;
         }
