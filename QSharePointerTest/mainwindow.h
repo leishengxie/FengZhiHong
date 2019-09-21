@@ -27,16 +27,18 @@ struct T_custom
         return this->a < right.a;
     }
 
-    bool operator == (const QSharedPointer<T_custom> &right) const
-    {
-        if (this->a == right->a)
-        {
-            return true;
-        }
-        //return this->a < right->a;
-        return false;
-    }
+//    bool operator == (const QSharedPointer<T_custom> &right) const
+//    {
+//        if (this->a == right->a)
+//        {
+//            return true;
+//        }
+//        //return this->a < right->a;
+//        return false;
+//    }
 };
+bool operator==(QSharedPointer<T_custom> &c1, QSharedPointer<T_custom> &c2);
+
 
 uint qHash(const QSharedPointer<T_custom> key, uint seed = 0);
 uint qHash(const T_custom key, uint seed = 0);

@@ -41,3 +41,13 @@ uint qHash(const T_custom key, uint seed)
 {
     return key.a;
 }
+
+bool operator==(QSharedPointer<T_custom> &c1, QSharedPointer<T_custom> &c2)
+{
+    if (c1->a == c2->a)
+    {
+        return true;
+    }
+    //return this->a < right->a;
+    return false;
+}

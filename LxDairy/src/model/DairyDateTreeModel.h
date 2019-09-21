@@ -21,6 +21,7 @@ enum E_DairyDateNodeType
 
 
 
+
 //QSet和STL的set是有本质区别的，虽然它们的名字很像，前者是基于哈希表的，后者是红黑树的变种
 //QSet是基于哈希算法的，这就要求自定义的结构体Type必须提供：
 //1. bool operator == (const Type &b) const
@@ -29,17 +30,33 @@ enum E_DairyDateNodeType
 //当使用set容器存放对象指针时，不指定set第二个参数的情况下，默认是以指针的值得大小进行排序的
 //2，当需要以指定的方法进行排序的时候需要指定set的第二个参数，
 //使用一个仿函数进行绑定判断条件（重载对象的小于号操作符并不能使set排序，因为存放的是指针，并不是对象本身，对象本身的时候小于号操作符是有效的）
-struct T_DairyDateComparator;
+
 struct T_DairyDateItem
 {
+    struct T_DairyDateComparator
+    {
+        bool operator()(const T_DairyDateItem* left, const T_DairyDateItem* right)
+        {
+            // 必须同一类型才具可比性，否则不让插入
+            if (left->eDairyDateNodeType != right->eDairyDateNodeType)
+            {
+                return false;
+            }
+
+            // 升序排序
+            return left->value() < right->value();
+        }
+    };
+
     E_DairyDateNodeType eDairyDateNodeType;
     int did;
     QString strYear;
     QString strMonth;
     QString strDay;
     QString strTitle;
-    // 此处采用stl的set, 因为指针的相等直接是地址的相等，QPointer实质也是
+    // QSet, 因为指针的相等直接是地址的相等，QPointer, QSharedPointer实质也是指针， 所以重写insert
     //QSet<QPointer<T_DairyDateItem>> m_setChildItems;
+    // stl的set, 不提供list的转换,其实自己写简单
     set<T_DairyDateItem*, T_DairyDateComparator> m_setChildItems;
     T_DairyDateItem* m_pParentItem;
 
@@ -75,22 +92,11 @@ struct T_DairyDateItem
     int column(); //对应treeModel的列
 
 
+
 };
 Q_DECLARE_METATYPE(T_DairyDateItem)
 
-struct T_DairyDateComparator
-{
-    bool operator()(const T_DairyDateItem* left, const T_DairyDateItem* right)
-    {
-    // 必须同一类型才具可比性，否则不让插入
-    if (left->eDairyDateNodeType != right->eDairyDateNodeType)
-    {
-        return false;
-    }
-    // 升序排序
-    return left->value() < right->value();
-    }
-};
+
 
 
 // 定义排序规则Qset所需
@@ -114,7 +120,7 @@ public:
     void loadDairy();
 
     // 根据日志列表整理成树
-    void createDateTree(QList<CDairy> m_lstDairy);
+    void createDateTree(QList<CDairy> lstDairy);
 
     void insetDairy(CDairy dairy);
 

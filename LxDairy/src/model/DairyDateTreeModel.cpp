@@ -95,17 +95,17 @@ void T_DairyDateItem::eraseAll()
 T_DairyDateItem* T_DairyDateItem::find(T_DairyDateItem *tDairyDateItem)
 {
 
-    QSet<T_DairyDateItem>::iterator iter = m_setChildItems.find(tDairyDateItem);
+    set<T_DairyDateItem*, T_DairyDateComparator>::iterator iter = m_setChildItems.find(tDairyDateItem);
     if (iter != m_setChildItems.end())
     {
-    return *iter;
+        return *iter;
     }
     return NULL;
 }
 
 void T_DairyDateItem::insert(T_DairyDateItem* tDairyDateItem)
 {
-    tDairyDateItem.m_pParentItem = this;
+    tDairyDateItem->m_pParentItem = this;
     m_setChildItems.insert(tDairyDateItem);
 }
 
@@ -152,7 +152,7 @@ int T_DairyDateItem::row()
 {
     if (m_pParentItem)
     {
-        return m_pParentItem->values().indexOf(*this);
+        return m_pParentItem->values().indexOf(const_cast<T_DairyDateItem*>(this));
     }
     return 0;
 }
@@ -252,8 +252,7 @@ int CDairyDateTreeModel::rowCount(const QModelIndex &parent) const
         pParentItem = static_cast<T_DairyDateItem*>(parent.internalPointer());
     }
 
-    QList<T_DairyDateItem> lstItem = pParentItem->values();
-    return lstItem.size();
+    return pParentItem->values().size();
 }
 
 int CDairyDateTreeModel::columnCount(const QModelIndex &parent) const
@@ -333,7 +332,7 @@ QModelIndex CDairyDateTreeModel::index(int row, int column, const QModelIndex &p
     else
         parentItem = static_cast<T_DairyDateItem*>(parent.internalPointer());
 
-    T_DairyDateItem *childItem =  const_cast<T_DairyDateItem *>(&parentItem->values().at(row));
+    T_DairyDateItem *childItem =  parentItem->values().at(row);
     if (childItem)
     {
 //        int nAbleColumn = childItem->column();
@@ -412,10 +411,10 @@ void CDairyDateTreeModel::loadDairy()
     createDateTree(lstDairy);
 }
 
-void CDairyDateTreeModel::createDateTree(QList<CDairy> m_lstDairy)
+void CDairyDateTreeModel::createDateTree(QList<CDairy> lstDairy)
 {
     m_pDairyDateItemRoot = new T_DairyDateItem(ED_Root);
-    foreach (CDairy dairy, m_lstDairy)
+    foreach (CDairy dairy, lstDairy)
     {
         insetDairy(dairy);
     }
@@ -423,39 +422,51 @@ void CDairyDateTreeModel::createDateTree(QList<CDairy> m_lstDairy)
 
 void CDairyDateTreeModel::insetDairy(CDairy dairy)
 {
-//    T_DairyDateItem* pItemYear = new T_DairyDateItem(ED_Year, dairy);
-//    T_DairyDateItem* pItemMonth = new T_DairyDateItem(ED_Month, dairy);
-//    T_DairyDateItem* pItemDay = new T_DairyDateItem(ED_Day, dairy);
-        T_DairyDateItem itemYear(ED_Year, dairy);
-        T_DairyDateItem itemMonth(ED_Month, dairy);
-        T_DairyDateItem itemDay(ED_Day, dairy);
-    // 发现contains函数不是想要的结果, 用find
-            T_DairyDateItem* pItemYear = NULL;
-            T_DairyDateItem* pItemMonth = NULL;
-            T_DairyDateItem* pItemDay = NULL;
-    if (!m_pDairyDateItemRoot->contains(itemYear))
+    T_DairyDateItem* pItemYear = new T_DairyDateItem(ED_Year, dairy);
+    T_DairyDateItem* pItemMonth = new T_DairyDateItem(ED_Month, dairy);
+    T_DairyDateItem* pItemDay = new T_DairyDateItem(ED_Day, dairy);
+
+    T_DairyDateItem* pItemParent = m_pDairyDateItemRoot;
+    T_DairyDateItem* pItemChild = NULL;
+
+    Q_ASSERT(pItemParent);
+    pItemChild = pItemParent->find(pItemYear);
+    if (pItemChild)
     {
-        m_pDairyDateItemRoot->insert(itemYear);
+        delete pItemYear;
+        pItemParent = pItemChild;
+    }
+    else
+    {
+        pItemParent->insert(pItemYear);
+        pItemParent = pItemYear;
     }
 
-    pItemYear = m_pDairyDateItemRoot->find(itemYear);
-    Q_ASSERT(pItemYear);
-    if (!pItemYear->contains(itemMonth))
+    Q_ASSERT(pItemParent);
+    pItemChild = pItemParent->find(pItemMonth);
+    if (pItemChild)
     {
-        pItemYear->insert(itemMonth);
+        delete pItemMonth;
+        pItemParent = pItemChild;
+    }
+    else
+    {
+        pItemParent->insert(pItemMonth);
+        pItemParent = pItemMonth;
     }
 
-    pItemMonth = pItemYear->find(itemMonth);
-    Q_ASSERT(pItemMonth);
-    if (!pItemMonth->contains(itemDay))
+    Q_ASSERT(pItemParent);
+    pItemChild = pItemParent->find(pItemDay);
+    if (pItemChild)
     {
-//        delete itemDay;
-//        itemDay = pItem;
-        pItemMonth->insert(itemDay);
+        delete pItemDay;
+        pItemParent = pItemChild;
+    }
+    else
+    {
+        pItemParent->insert(pItemDay);
     }
 
-    pItemDay = pItemYear->find(itemDay);
-    Q_ASSERT(pItemDay);
 }
 
 
