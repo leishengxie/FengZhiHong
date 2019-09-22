@@ -28,7 +28,7 @@ T_DairyDateItem::T_DairyDateItem(E_DairyDateNodeType eDairyDateNodeType, CDairy 
 
 void T_DairyDateItem::init()
 {
-    did = -1;
+    did = INVAILD_DAIRY_ID;
     eDairyDateNodeType = ED_Invalid;
     m_setChildItems.clear();
     m_pParentItem = NULL;

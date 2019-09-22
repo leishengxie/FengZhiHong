@@ -92,6 +92,8 @@ private:
     Ui::DairyMainWindow *ui;
     CSkinWidget* m_pSkinWidget;
     CLoginWidget* m_pLoginWidget;
+    // 当前活动的日记
+    CDairy m_dairyActive;
 };
 
 #endif // MAINWINDOW_H

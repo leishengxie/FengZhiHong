@@ -94,6 +94,11 @@ void CDairyMainWindow::setLoginWidget(CLoginWidget *pLoginWidget)
 
 void CDairyMainWindow::slot_displayDairy(const CDairy &dairy)
 {
+    if (dairy.isNewDairy())
+    {
+        m_dairyActive = CDairy();
+    }
+    m_dairyActive = dairy;
     QString strDateTime = dairy.getDateTime();
     QDateTime datetime = QDateTime::fromString(strDateTime, FORMAT_DATETIME);
     QString strDateTimeDisplay = datetime.toString(FORMAT_DATETIME_DISPLAYER);
@@ -102,6 +107,7 @@ void CDairyMainWindow::slot_displayDairy(const CDairy &dairy)
     ui->comboBoxTag->setCurrentText(dairy.getTag());
     ui->labelDateTime->setText(strDateTimeDisplay);
     ui->leTitle->setText(dairy.getTitle());
+    ui->textEdit->setPlainText(dairy.getContent());
 }
 
 /*
@@ -309,12 +315,17 @@ void CDairyMainWindow::on_treeDairy_clicked(const QModelIndex &index)
         break;
     case ED_Day:
     {
-        bool bOk = false;
-        CDairy dairy = CSqlOperate::getDairy(tDairyTagItem.did, bOk);
-        if (bOk)
+        CDairy dairy;
+        if (tDairyTagItem.did != INVAILD_DAIRY_ID)
         {
-            slot_displayDairy(dairy);
+            bool bOk = false;
+            dairy = CSqlOperate::getDairy(tDairyTagItem.did, bOk);
+            if (!bOk)
+            {
+                // print error
+            }
         }
+        slot_displayDairy(dairy);
     }
         break;
     default:
