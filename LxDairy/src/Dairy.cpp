@@ -2,7 +2,8 @@
 #include <QDateTime>
 
 CDairy::CDairy()
-    : strTitle("")
+    : did(INVAILD_DAIRY_ID)
+    , strTitle("")
     , strDateTime(QDateTime::currentDateTime().toString(FORMAT_DATETIME))
     , strWeather("晴")
     , strTag("普通日记")

@@ -243,18 +243,36 @@ CDairy CSqlOperate::getDairy(int did, bool &bOk)
 void CSqlOperate::saveDairy(CDairy dairy)
 {
     QSqlQuery query;
-    bool ok = query.prepare("INSERT INTO tDairy(uid, title,datetime,tag,weather,content) "
-                          "VALUES (?, ?, ?, ?, ?, ?)");
-    query.bindValue(0, CUser::getInstance()->getUid());
-    query.bindValue(1, dairy.getTitle());
-    query.bindValue(2, dairy.getDateTime());
-    query.bindValue(3, dairy.getTag());
-    query.bindValue(4, dairy.getWeather());
-    query.bindValue(5, dairy.getContent());
-    ok = query.exec();
-    if (!ok)
+    if (dairy.isNewDairy())
     {
-        qDebug() << query.lastError();
+        bool ok = query.prepare("INSERT INTO tDairy(uid, title,datetime,tag,weather,content) "
+                                "VALUES (?, ?, ?, ?, ?, ?)");
+        query.bindValue(0, CUser::getInstance()->getUid());
+        query.bindValue(1, dairy.getTitle());
+        query.bindValue(2, dairy.getDateTime());
+        query.bindValue(3, dairy.getTag());
+        query.bindValue(4, dairy.getWeather());
+        query.bindValue(5, dairy.getContent());
+        ok = query.exec();
+        if (!ok)
+        {
+            qDebug() << query.lastError();
+        }
+    }
+    else
+    {
+        QString strSql = QString("update tDairy set title='%1', tag='%2', weather='%3', content='%4' where did='%5'")
+                         .arg(dairy.getTitle())
+                         .arg(dairy.getTag())
+                         .arg(dairy.getWeather())
+                         .arg(dairy.getContent())
+                         .arg(dairy.getDid());
+        bool ok = query.exec(strSql);
+
+        if (!ok)
+        {
+            qDebug() << query.lastError();
+        }
     }
 }
 
