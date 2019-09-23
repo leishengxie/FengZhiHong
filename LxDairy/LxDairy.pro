@@ -50,7 +50,9 @@ HEADERS += \
     src/SqlOperate.h \
     src/TextVerifier.h \
     src/User.h \
-    src/delegate/DairyDateDelegate.h
+    src/delegate/DairyDateDelegate.h \
+    src/DairyEdit.h \
+    src/DairyEditWidget.h
 
 SOURCES += \
     src/delegate/DairyTagDelegate.cpp \
@@ -68,11 +70,14 @@ SOURCES += \
     src/SqlOperate.cpp \
     src/TextVerifier.cpp \
     src/User.cpp \
-    src/delegate/DairyDateDelegate.cpp
+    src/delegate/DairyDateDelegate.cpp \
+    src/DairyEdit.cpp \
+    src/DairyEditWidget.cpp
 
 FORMS += \
     src/AboutDialog.ui \
     src/DairyMainWindow.ui \
     src/LoginWidget.ui \
     src/RegisterDialog.ui \
-    src/SkinWidget.ui
+    src/SkinWidget.ui \
+    src/DairyEditWidget.ui

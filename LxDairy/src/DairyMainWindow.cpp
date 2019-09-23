@@ -2,6 +2,7 @@
 #include "ui_DairyMainWindow.h"
 #include <QIcon>
 #include <QtDebug>
+#include <QMdiSubWindow>
 #include "LoginWidget.h"
 #include "SqlOperate.h"
 #include "SkinWidget.h"
@@ -10,6 +11,7 @@
 #include "delegate/DairyTagDelegate.h"
 #include "delegate/DairyDateDelegate.h"
 #include "User.h"
+#include "DairyEditWidget.h"
 
 
 CDairyMainWindow::CDairyMainWindow(QWidget *parent)
@@ -45,6 +47,9 @@ CDairyMainWindow::CDairyMainWindow(QWidget *parent)
     connect(pDairyDateTreeModel, SIGNAL(loadTodayDairyFinished(CDairy)), this, SLOT(slot_displayDairy(CDairy)));
     pDairyDateTreeModel->loadDairy();
     //connect(ui->treeDairy, SIGNAL(clicked(QModelIndex))
+    connect(ui->mdiArea, SIGNAL(subWindowActivated(QMdiSubWindow*)), this, SLOT(slotUpdateMenu(QMdiSubWindow*)));
+    //connect(ui->mdiArea, SIGNAL(customContextMenuRequested(QPoint))
+
 }
 
 CDairyMainWindow::~CDairyMainWindow()
@@ -94,20 +99,31 @@ void CDairyMainWindow::setLoginWidget(CLoginWidget *pLoginWidget)
 
 void CDairyMainWindow::slot_displayDairy(const CDairy &dairy)
 {
+    // 确定日记
     if (dairy.isNewDairy())
     {
         m_dairyActive = CDairy();
     }
     m_dairyActive = dairy;
-    QString strDateTime = dairy.getDateTime();
-    QDateTime datetime = QDateTime::fromString(strDateTime, FORMAT_DATETIME);
-    QString strDateTimeDisplay = datetime.toString(FORMAT_DATETIME_DISPLAYER);
 
-    ui->comboBoxWeather->setCurrentText(dairy.getWeather());
-    ui->comboBoxTag->setCurrentText(dairy.getTag());
-    ui->labelDateTime->setText(strDateTimeDisplay);
-    ui->leTitle->setText(dairy.getTitle());
-    ui->textEdit->setPlainText(dairy.getContent());
+    // 根据did确定是否已经加载了edit，否则创建新的edit
+    bool bNeedCreateEdit = true;
+    QList<QMdiSubWindow *> lstSubWindow = ui->mdiArea->subWindowList();
+    foreach (QMdiSubWindow *pMdiSubWindow, lstSubWindow)
+    {
+        CDairyEditWidget* pDairyEditWidget = qobject_cast<CDairyEditWidget*>(pMdiSubWindow->widget());
+        if (pDairyEditWidget->getDid() == m_dairyActive.getDid())
+        {
+            bNeedCreateEdit = false;
+            QMdiArea
+            break;
+        }
+    }
+
+    // 创建edit
+    CDairyEditWidget* pDairyEditWidget = new CDairyEditWidget(m_dairyActive);
+    /*QMdiSubWindow * pSubWindow = */ui->mdiArea->addSubWindow(pDairyEditWidget);
+
 }
 
 /*
@@ -178,6 +194,25 @@ void CDairyMainWindow::currentDaateTimeSlot()
     QDateTime currentTime = QDateTime::currentDateTime();
     QString time = currentTime.toString("yyyy-M-dd hh:mm:ss");
     ui->textEdit->append(time); //append:附加，贴上
+}
+
+void CDairyMainWindow::slotUpdateMenu(QMdiSubWindow* pMdiSubWindow)
+{
+    //QMdiSubWindow *active_sub_window = ui->mdiArea->activeSubWindow();
+    bool bHasActiveWindow = pMdiSubWindow == NULL ? false : true;
+
+
+    ui->action_save->setEnabled(bHasActiveWindow);
+    ui->action_paste->setEnabled(bHasActiveWindow);
+
+    CDairyEditWidget* pDairyEditWidget = qobject_cast<CDairyEditWidget*>(pMdiSubWindow->widget());
+    bool bHasTextSelection = pDairyEdit->textCursor().hasSelection();
+    ui->action_cut->setEnabled(bHasTextSelection);
+    ui->action_copy->setEnabled(bHasTextSelection);
+
+    //有活动窗口，且系统判断可以执行撤销操作时才显示撤销可用,判断恢复操作可执行时恢复操作才可用
+    ui->action_undo->setEnabled(pDairyEdit && pDairyEdit->document()->isUndoAvailable());
+    ui->action_redo->setEnabled(pDairyEdit && pDairyEdit->document()->isRedoAvailable());
 }
 
 

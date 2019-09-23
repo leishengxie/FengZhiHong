@@ -32,6 +32,7 @@ class DairyMainWindow;
 
 class CSkinWidget;
 class CLoginWidget;
+class QMdiSubWindow;
 
 class CDairyMainWindow : public QMainWindow
 {
@@ -54,6 +55,7 @@ private slots:
     //void openFileSlot();
     //void saveAsFileSlot();
     void currentDaateTimeSlot();
+    void slotUpdateMenu(QMdiSubWindow *pMdiSubWindow);
 
 
     void on_action_logout_triggered();
