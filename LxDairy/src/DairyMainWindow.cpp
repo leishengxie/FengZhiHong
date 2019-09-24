@@ -8,9 +8,12 @@
 #include "SkinWidget.h"
 #include "model/DairyTagListModel.h"
 #include "model/DairyDateTreeModel.h"
+#include "model/DairyStatisticsModel.h"
 #include "delegate/DairyTagDelegate.h"
 #include "delegate/DairyDateDelegate.h"
+#include "delegate/DairyStatisticsDelegate.h"
 #include "User.h"
+#include "DairyEdit.h"
 #include "DairyEditWidget.h"
 
 
@@ -31,13 +34,6 @@ CDairyMainWindow::CDairyMainWindow(QWidget *parent)
     ui->listViewTag->setModel(pDairyTagListModel);
     ui->listViewTag->setItemDelegate(pDairyTagDelegate);
 
-    QList<T_DairyTagItem> lstDairyTag = pDairyTagListModel->listDairyTag();
-    lstDairyTag.pop_front();
-    ui->comboBoxTag->clear();
-    foreach (T_DairyTagItem tDairyTagItem, lstDairyTag)
-    {
-        ui->comboBoxTag->addItem(tDairyTagItem.strTagName);
-    }
 
     // 初始化pDairyDateTreeModel
     CDairyDateTreeModel* pDairyDateTreeModel = new CDairyDateTreeModel(this);
@@ -47,7 +43,17 @@ CDairyMainWindow::CDairyMainWindow(QWidget *parent)
     connect(pDairyDateTreeModel, SIGNAL(loadTodayDairyFinished(CDairy)), this, SLOT(slot_displayDairy(CDairy)));
     pDairyDateTreeModel->loadDairy();
     //connect(ui->treeDairy, SIGNAL(clicked(QModelIndex))
+
+    CDairyStatisticsModel* pDairyStatisticsModel = new CDairyStatisticsModel(this);
+    CDairyStatisticsDelegate* pDairyStatisticsDelegate = new CDairyStatisticsDelegate;
+    ui->listViewStatistics->setModel(pDairyStatisticsModel);
+    ui->listViewStatistics->setItemDelegate(pDairyStatisticsDelegate);
+
     connect(ui->mdiArea, SIGNAL(subWindowActivated(QMdiSubWindow*)), this, SLOT(slotUpdateMenu(QMdiSubWindow*)));
+    //ui->mdiArea->cascadeSubWindows(); //MDI区域内的所有子窗口重叠排列
+    //ui->mdiArea->tileSubWindows(); //将所有子窗口在MDI区域内排列整齐
+    //QMdiArea::AreaOption option;
+    //ui->mdiArea->setOption(option, true);
     //connect(ui->mdiArea, SIGNAL(customContextMenuRequested(QPoint))
 
 }
@@ -59,35 +65,45 @@ CDairyMainWindow::~CDairyMainWindow()
 
 void CDairyMainWindow::closeEvent(QCloseEvent *event)
 {
-    if(ui->textEdit->document()->isModified())
+    //QMainWindow::closeEvent(event);
+    ui->mdiArea->closeAllSubWindows();
+    if(ui->mdiArea->currentSubWindow())
     {
-        QMessageBox msgBox;
-        msgBox.setText("the File is changed");
-        // 显示的文本
-        msgBox.setInformativeText("Do you want to save your changes?");
-        msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
-        // 设置默认选中button
-        msgBox.setDefaultButton(QMessageBox::Save);
-        int ret = msgBox.exec();
-        switch (ret)
-        {
-        case QMessageBox::Save:
-            on_action_save_triggered();
-            break;
-        case QMessageBox::Discard:
-            event->accept();
-            break;
-        case QMessageBox::Cancel:
-            event->ignore();
-            break;
-        default:
-            break;
-        }
+        event->ignore();
     }
     else
     {
-        event->accept();
+        event->accept();//关闭
     }
+//    if(ui->textEdit->document()->isModified())
+//    {
+//        QMessageBox msgBox;
+//        msgBox.setText("the File is changed");
+//        // 显示的文本
+//        msgBox.setInformativeText("Do you want to save your changes?");
+//        msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+//        // 设置默认选中button
+//        msgBox.setDefaultButton(QMessageBox::Save);
+//        int ret = msgBox.exec();
+//        switch (ret)
+//        {
+//        case QMessageBox::Save:
+//            on_action_save_triggered();
+//            break;
+//        case QMessageBox::Discard:
+//            event->accept();
+//            break;
+//        case QMessageBox::Cancel:
+//            event->ignore();
+//            break;
+//        default:
+//            break;
+//        }
+//    }
+//    else
+//    {
+//        event->accept();
+//    }
 }
 
 
@@ -108,6 +124,7 @@ void CDairyMainWindow::slot_displayDairy(const CDairy &dairy)
 
     // 根据did确定是否已经加载了edit，否则创建新的edit
     bool bNeedCreateEdit = true;
+    QMdiSubWindow *pMdiSubWindowDest = NULL;
     QList<QMdiSubWindow *> lstSubWindow = ui->mdiArea->subWindowList();
     foreach (QMdiSubWindow *pMdiSubWindow, lstSubWindow)
     {
@@ -115,14 +132,22 @@ void CDairyMainWindow::slot_displayDairy(const CDairy &dairy)
         if (pDairyEditWidget->getDid() == m_dairyActive.getDid())
         {
             bNeedCreateEdit = false;
-            QMdiArea
+            pMdiSubWindowDest = pMdiSubWindow;
             break;
         }
     }
 
+    if (bNeedCreateEdit)
+    {
     // 创建edit
     CDairyEditWidget* pDairyEditWidget = new CDairyEditWidget(m_dairyActive);
-    /*QMdiSubWindow * pSubWindow = */ui->mdiArea->addSubWindow(pDairyEditWidget);
+    QMdiSubWindow * pSubWindow = ui->mdiArea->addSubWindow(pDairyEditWidget);
+    pSubWindow->showMaximized();
+    }
+    else
+    {
+        ui->mdiArea->setActiveSubWindow(pMdiSubWindowDest);
+    }
 
 }
 
@@ -189,30 +214,29 @@ void CDairyMainWindow::saveAsFileSlot()
 */
 
 
-void CDairyMainWindow::currentDaateTimeSlot()
-{
-    QDateTime currentTime = QDateTime::currentDateTime();
-    QString time = currentTime.toString("yyyy-M-dd hh:mm:ss");
-    ui->textEdit->append(time); //append:附加，贴上
-}
 
 void CDairyMainWindow::slotUpdateMenu(QMdiSubWindow* pMdiSubWindow)
 {
-    //QMdiSubWindow *active_sub_window = ui->mdiArea->activeSubWindow();
+    // 关闭时会调用当前函数，指针为NULL
     bool bHasActiveWindow = pMdiSubWindow == NULL ? false : true;
+    QString str = bHasActiveWindow ? "NOT NULL" : "NULL";
+    qDebug() << "slotUpdateMenu " << str;
+    //QMdiSubWindow *active_sub_window = ui->mdiArea->activeSubWindow();
 
 
+    /*
     ui->action_save->setEnabled(bHasActiveWindow);
     ui->action_paste->setEnabled(bHasActiveWindow);
 
     CDairyEditWidget* pDairyEditWidget = qobject_cast<CDairyEditWidget*>(pMdiSubWindow->widget());
-    bool bHasTextSelection = pDairyEdit->textCursor().hasSelection();
+    bool bHasTextSelection = pDairyEditWidget->dairyEdit()->textCursor().hasSelection();
     ui->action_cut->setEnabled(bHasTextSelection);
     ui->action_copy->setEnabled(bHasTextSelection);
 
     //有活动窗口，且系统判断可以执行撤销操作时才显示撤销可用,判断恢复操作可执行时恢复操作才可用
-    ui->action_undo->setEnabled(pDairyEdit && pDairyEdit->document()->isUndoAvailable());
-    ui->action_redo->setEnabled(pDairyEdit && pDairyEdit->document()->isRedoAvailable());
+    ui->action_undo->setEnabled(pDairyEditWidget && pDairyEditWidget->dairyEdit()->document()->isUndoAvailable());
+    ui->action_redo->setEnabled(pDairyEditWidget && pDairyEditWidget->dairyEdit()->document()->isRedoAvailable());
+    */
 }
 
 
@@ -225,34 +249,12 @@ void CDairyMainWindow::on_action_logout_triggered()
 
 void CDairyMainWindow::on_action_new_dairy_triggered()
 {
-    // Modify:更改，修改
-    if(ui->textEdit->document()->isModified())
-    {
-        qDebug()<<"current text isModified";
-    }
-    else
-    {
-        qDebug()<<"Not isModified";
-        ui->textEdit->clear();
-        this->setWindowTitle("unTitle");
-    }
+    // 今天的日记已经创建了，过去的不能再创建
 }
 
 void CDairyMainWindow::on_action_save_triggered()
 {
-    QString strDateTimeDisplayer = ui->labelDateTime->text();
-    QDateTime datetime = QDateTime::fromString(strDateTimeDisplayer, FORMAT_DATETIME_DISPLAYER);
-    QString strDateTime = datetime.toString(FORMAT_DATETIME);
 
-    CDairy dairy;
-    dairy.setTitle(ui->leTitle->text());
-    dairy.setDateTime(strDateTime);
-    dairy.setTag(ui->comboBoxTag->currentText());
-    dairy.setWeather(ui->comboBoxWeather->currentText());
-    dairy.setContent(ui->textEdit->toPlainText()); //toPlainText 去除textEdit当中的纯文本
-    CSqlOperate::saveDairy(dairy);
-
-    ui->textEdit->document()->setModified(false);
 }
 
 void CDairyMainWindow::on_action_undo_triggered()
@@ -267,7 +269,7 @@ void CDairyMainWindow::on_action_cut_triggered()
 
 void CDairyMainWindow::on_action_copy_triggered()
 {
-    ui->textEdit->copy();
+
 }
 
 void CDairyMainWindow::on_action_paste_triggered()
@@ -282,7 +284,7 @@ void CDairyMainWindow::on_action_color_triggered()
         QColor color = QColorDialog::getColor(Qt::green,this);
         if(color.isValid())
         {
-            ui->textEdit->setTextColor(color);
+            //ui->textEdit->setTextColor(color);
         }
         else
         {
@@ -320,7 +322,7 @@ void CDairyMainWindow::on_action_skin_triggered()
 
 void CDairyMainWindow::on_action_exit_triggered()
 {
-    ui->textEdit->clear();
+    //ui->textEdit->clear();
     close();
 }
 
@@ -330,7 +332,7 @@ void CDairyMainWindow::on_action_font_triggered()
     QFont font = QFontDialog::getFont(&ok,QFont("Helvetica [Cronyx]", 10),this);
     if(ok)
     {
-        ui->textEdit->setFont(font);
+        //ui->textEdit->setFont(font);
     }
     else
     {
@@ -345,9 +347,20 @@ void CDairyMainWindow::on_treeDairy_clicked(const QModelIndex &index)
     switch (tDairyTagItem.eDairyDateNodeType)
     {
     case ED_Year:
+    {
+        QList<CDairy> lstDairy = CSqlOperate::getListDairyByDate(tDairyTagItem.strYear);
+        ((CDairyStatisticsModel*)ui->listViewStatistics->model())->showDairyStatistics(lstDairy);
+        ui->stackedWidget->setCurrentIndex(1);
         break;
+    }
     case ED_Month:
+    {
+        QString strDate = QString("%1-%2").arg(tDairyTagItem.strYear).arg(tDairyTagItem.strMonth);
+        QList<CDairy> lstDairy = CSqlOperate::getListDairyByDate(strDate);
+        ((CDairyStatisticsModel*)ui->listViewStatistics->model())->showDairyStatistics(lstDairy);
+        ui->stackedWidget->setCurrentIndex(1);
         break;
+    }
     case ED_Day:
     {
         CDairy dairy;
@@ -361,8 +374,9 @@ void CDairyMainWindow::on_treeDairy_clicked(const QModelIndex &index)
             }
         }
         slot_displayDairy(dairy);
-    }
+        ui->stackedWidget->setCurrentIndex(0);
         break;
+    }
     default:
         break;
     }

@@ -8,6 +8,7 @@
 #include <QPushButton>
 #include <QCloseEvent>
 #include <QMenu>
+#include <QtDebug>
 
 CDairyEdit::CDairyEdit(QWidget *parent)
     : QTextEdit(parent)
@@ -15,45 +16,15 @@ CDairyEdit::CDairyEdit(QWidget *parent)
 
 }
 
-CDairyEdit::CDairyEdit(CDairy dairy, QWidget *parent)
-: QTextEdit(parent)
+CDairyEdit::CDairyEdit(const QString &text, QWidget *parent)
+    : QTextEdit(text, parent)
 {
 
 }
 
 
 
-void CDairyEdit::init()
-{
-    setAttribute(Qt::WA_DeleteOnClose);
-    setWindowTitle(current_file_path_ + "[*]");
-}
 
-
-
-
-
-bool CDairyEdit::save()
-{
-    QApplication::setOverrideCursor(Qt::WaitCursor);//设置整个应用程序的光标形状为等待形状，因为如果文件的内容非常多时可以提醒用户
-    setPlainText(in.readAll());//读取文本流中的所有内容，并显示在其窗体中
-    QApplication::restoreOverrideCursor();//恢复开始时的光标状态
-
-    if(is_saved_)//已经保存过至少一次后，则说明文件的文件名等已经弄好了，直接保存内容即可。
-        return SaveFile(current_file_path_);
-    else return SaveAs();//第一次保存时，需要调用SaveAs
-}
-
-
-
-bool CDairyEdit::SaveFile(const QString &file_name)
-{
-
-    QApplication::setOverrideCursor(Qt::WaitCursor);
-    out << toPlainText();//以纯文本方式写入，核心函数
-    QApplication::restoreOverrideCursor();
-
-}
 
 void CDairyEdit::contextMenuEvent(QContextMenuEvent *event)
 {
@@ -89,13 +60,10 @@ void CDairyEdit::contextMenuEvent(QContextMenuEvent *event)
 //    delete menu;//销毁这个菜单
 }
 
-//顶层窗口被关闭时发出的事件
+//上层窗口被关闭时发出的事件
 void CDairyEdit::closeEvent(QCloseEvent *event)
 {
-    if(document()->isModified())
-        event->accept();
-    else
-        event->ignore();
-
+    qDebug() << this->parent();
+    event->accept();
 }
 

@@ -9,11 +9,14 @@ class CDairyEdit : public QTextEdit
     Q_OBJECT
 public:
     explicit CDairyEdit(QWidget *parent = 0);
-    explicit CDairyEdit(CDairy dairy, QWidget *parent = 0);
-    bool save();
+    explicit CDairyEdit(const QString &text, QWidget *parent = Q_NULLPTR);
+    //explicit CDairyEdit(CDairy dairy, QWidget *parent = 0);
 
     
 signals:
+
+public:
+   // void setContent(const CDairy & dairy);
     
 public slots:
 

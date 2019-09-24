@@ -240,6 +240,36 @@ CDairy CSqlOperate::getDairy(int did, bool &bOk)
     return dairy;
 }
 
+QList<CDairy> CSqlOperate::getListDairyByDate(QString strFormatDate)
+{
+    // eg: select * from tDairy where substr(date(datetime),1,7) = '2019-09';
+    //
+    QList<CDairy> lstDairy;
+    QSqlQuery query;
+    QString strSql = QString("select * from tDairy where substr(date(datetime),1,%1) = '%2'")
+                     .arg(strFormatDate.length())
+                     .arg(strFormatDate);
+    bool ok = query.exec(strSql);
+
+    if (!ok)
+    {
+        qDebug() << query.lastError();
+        return lstDairy;
+    }
+    while (query.next())
+    {
+        CDairy dairy;
+        dairy.setDid(query.value("did").toInt());
+        dairy.setTitle(query.value("title").toString());
+        dairy.setDateTime(query.value("datetime").toString());
+        dairy.setTag(query.value("tag").toString());
+        dairy.setWeather(query.value("weather").toString());
+        dairy.setContent(query.value("content").toString());
+        lstDairy.append(dairy);
+    }
+    return lstDairy;
+}
+
 void CSqlOperate::saveDairy(CDairy dairy)
 {
     QSqlQuery query;

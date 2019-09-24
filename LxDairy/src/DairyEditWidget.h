@@ -9,6 +9,8 @@ namespace Ui {
 class CDairyEditWidget;
 }
 
+class CDairyEdit;
+
 class CDairyEditWidget : public QWidget
 {
     Q_OBJECT
@@ -19,6 +21,17 @@ public:
     ~CDairyEditWidget();
 
     SETGETCONST(int, did, Did)
+
+    void init();
+
+    CDairyEdit* dairyEdit();
+
+protected:
+    void closeEvent(QCloseEvent *event);//重写关闭事件
+
+public slots:
+    void slot_save();
+    void slot_copy();
 
 private:
     Ui::CDairyEditWidget *ui;

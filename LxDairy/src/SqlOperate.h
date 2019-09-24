@@ -16,6 +16,12 @@ public:
     static int registerAccount(QString strUserName, QString strPasswd);
     static bool login(QString strUserName, QString strPasswd);
     static CDairy getDairy(int did, bool & bOk);
+    ///
+    /// \brief getListDairyByDate
+    /// \param strFormatDate format"yyyy-MM-dd" eg:"'2019-09'", 2019-09-01, 2019
+    /// \return
+    ///
+    static QList<CDairy> getListDairyByDate(QString strFormatDate);
     static void saveDairy(CDairy dairy);
 
 

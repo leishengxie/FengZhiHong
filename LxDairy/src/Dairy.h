@@ -28,7 +28,7 @@ public:
         return strTitle.isEmpty() && strContent.isEmpty();
     }
 
-    bool isNewDairy()
+    bool isNewDairy() const
     {
         return did == INVAILD_DAIRY_ID;
     }

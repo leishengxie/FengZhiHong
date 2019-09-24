@@ -1,9 +1,10 @@
 #include "DairyTagListModel.h"
+#include "User.h"
 
 CDairyTagListModel::CDairyTagListModel(QObject *parent)
     : QAbstractListModel(parent)
 {
-    insetInnerTag();
+    loadDairyTag();
 }
 
 int CDairyTagListModel::rowCount(const QModelIndex &parent) const
@@ -41,11 +42,12 @@ QVariant CDairyTagListModel::data(const QModelIndex &index, int role) const
     //return QAbstractListModel::data(index, role);
 }
 
-void CDairyTagListModel::insetInnerTag()
+void CDairyTagListModel::loadDairyTag()
 {
     m_lstDairyTag.append(T_DairyTagItem("全部日记", 0));
-    m_lstDairyTag.append(T_DairyTagItem("普通日记", 0));
-    m_lstDairyTag.append(T_DairyTagItem("心得体会", 0));
-    m_lstDairyTag.append(T_DairyTagItem("摘抄", 0));
-    m_lstDairyTag.append(T_DairyTagItem("工作笔记", 0));
+    QStringList strlstDairyTag = CUser::getInstance()->getLstDairyTag();
+    foreach (QString dairyTag, strlstDairyTag)
+    {
+        m_lstDairyTag.append(T_DairyTagItem(dairyTag, 0));
+    }
 }

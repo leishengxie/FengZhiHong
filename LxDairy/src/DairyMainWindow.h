@@ -54,7 +54,6 @@ protected:
 private slots:
     //void openFileSlot();
     //void saveAsFileSlot();
-    void currentDaateTimeSlot();
     void slotUpdateMenu(QMdiSubWindow *pMdiSubWindow);
 
 

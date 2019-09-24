@@ -1,8 +1,13 @@
 #include "User.h"
 
-
+CUser::CUser()
+{
+    m_lstDairyTag << "普通日记" << "心得体会" << "摘抄" << "工作笔记";
+}
 
 void CUser::appendDairy(CDairy dairy)
 {
     m_lstDairy.append(dairy);
 }
+
+

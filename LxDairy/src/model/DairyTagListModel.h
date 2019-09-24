@@ -34,6 +34,9 @@ Q_DECLARE_METATYPE(T_DairyTagItem)
 
 //如果数据项固定而且不用于QML用QStandarItemModel
 
+///
+/// \brief The CDairyTagListModel class 标签model
+///
 class CDairyTagListModel : public QAbstractListModel
 {
         Q_OBJECT
@@ -49,9 +52,10 @@ public:
     }
 
 private:
-    void insetInnerTag();
+    void loadDairyTag();
 
 private:
+    // 标签数据
     QList<T_DairyTagItem> m_lstDairyTag;
 };
 

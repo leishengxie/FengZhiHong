@@ -23,6 +23,8 @@ CSkinWidget::CSkinWidget(QWidget *parent)
   , m_unIndexCur(0)
 {
     ui->setupUi(this);
+    setAttribute(Qt::WA_ShowModal, true); // 设置模态
+    setAttribute(Qt::WA_DeleteOnClose);
     connect(ui->btnCancel, SIGNAL(clicked()), this, SLOT(close()));
     connect(ui->btnOk, SIGNAL(clicked()), this, SLOT(slot_saveCurrentSet()));
     connect(ui->listWidget, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(slot_list_clicked(QListWidgetItem*)));
