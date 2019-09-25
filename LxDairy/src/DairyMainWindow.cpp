@@ -48,6 +48,8 @@ CDairyMainWindow::CDairyMainWindow(QWidget *parent)
     CDairyStatisticsDelegate* pDairyStatisticsDelegate = new CDairyStatisticsDelegate;
     ui->listViewStatistics->setModel(pDairyStatisticsModel);
     ui->listViewStatistics->setItemDelegate(pDairyStatisticsDelegate);
+    connect(ui->listViewStatistics->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
+            this, SLOT(slotSelectionChanged(QItemSelection,QItemSelection)));
 
     connect(ui->mdiArea, SIGNAL(subWindowActivated(QMdiSubWindow*)), this, SLOT(slotUpdateMenu(QMdiSubWindow*)));
     //ui->mdiArea->cascadeSubWindows(); //MDI区域内的所有子窗口重叠排列
@@ -65,7 +67,6 @@ CDairyMainWindow::~CDairyMainWindow()
 
 void CDairyMainWindow::closeEvent(QCloseEvent *event)
 {
-    //QMainWindow::closeEvent(event);
     ui->mdiArea->closeAllSubWindows();
     if(ui->mdiArea->currentSubWindow())
     {
@@ -75,35 +76,6 @@ void CDairyMainWindow::closeEvent(QCloseEvent *event)
     {
         event->accept();//关闭
     }
-//    if(ui->textEdit->document()->isModified())
-//    {
-//        QMessageBox msgBox;
-//        msgBox.setText("the File is changed");
-//        // 显示的文本
-//        msgBox.setInformativeText("Do you want to save your changes?");
-//        msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
-//        // 设置默认选中button
-//        msgBox.setDefaultButton(QMessageBox::Save);
-//        int ret = msgBox.exec();
-//        switch (ret)
-//        {
-//        case QMessageBox::Save:
-//            on_action_save_triggered();
-//            break;
-//        case QMessageBox::Discard:
-//            event->accept();
-//            break;
-//        case QMessageBox::Cancel:
-//            event->ignore();
-//            break;
-//        default:
-//            break;
-//        }
-//    }
-//    else
-//    {
-//        event->accept();
-//    }
 }
 
 
@@ -151,68 +123,6 @@ void CDairyMainWindow::slot_displayDairy(const CDairy &dairy)
 
 }
 
-/*
-void CDairyMainWindow::openFileSlot()
-{
-//     QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
-//                                                "/home",
-//                                                tr("Images (*.png *.xpm *.jpg)"));
-    QString fileName = QFileDialog:: getOpenFileName(this,"Open File",QDir::currentPath(),tr("*.png *.xpm *.jpg *.txt"));
-    qDebug()<<"the fileName is"<<fileName;
-    if(fileName.isEmpty())
-    {
-        QMessageBox::information(this,"Error Message","Please Select a Text File");
-        return;
-    }
-    QFile *file = new QFile;
-    file->setFileName(fileName); //set file name
-    bool ok=file->open(QIODevice::ReadOnly);
-    //open file as read only mode
-    if(ok)
-    {
-        QTextStream in(file);
-        ui->textEdit->setText(in.readAll()); //read all content from the file
-        file->close();
-        delete file;
-    }
-    else
-    {
-        QMessageBox::information(this,"Error Message","File Open Error"+file->errorString());
-        return;
-
-    }
-}
-*/
-
-/*
-void CDairyMainWindow::saveAsFileSlot()
-{
-    QString saveFileName =QFileDialog::getSaveFileName(this,"save as file",QDir::currentPath(),tr("*.png;; *.xpm ;;*.jpg ;;*.txt"));
-    if(saveFileName.isEmpty())
-    {
-        QMessageBox::information(this,"Error Message","Please Select A File");
-        return;
-    }
-    QFile *file=new QFile;
-    file->setFileName(saveFileName);
-    bool ok=file->open(QIODevice::WriteOnly);
-    if(ok)
-    {
-        QTextStream out(file);
-        out<<ui->textEdit->toPlainText(); //去除textEdit当中的纯文本
-        file->close();
-        this->setWindowTitle(saveFileName+"----notepad");
-        delete file;
-
-    }
-    else
-    {
-        QMessageBox::information(this,"Error Message","Save file fail");
-        return;
-    }
-}
-*/
-
 
 
 void CDairyMainWindow::slotUpdateMenu(QMdiSubWindow* pMdiSubWindow)
@@ -240,6 +150,31 @@ void CDairyMainWindow::slotUpdateMenu(QMdiSubWindow* pMdiSubWindow)
 }
 
 
+///
+/// \brief CDairyMainWindow::slotSelectionChanged
+/// \param selected 新选择的项目
+/// \param deselected 刚刚被取消选择的项目
+///
+void CDairyMainWindow::slotSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
+{
+    Q_UNUSED(deselected)
+    int nSelected = selected.indexes().size();
+    qDebug() << "nSelected：" << nSelected;
+    if (nSelected == 1)
+    {
+        ui->btnOk->setEnabled(true);
+    }
+    else
+    {
+        ui->btnOk->setEnabled(false);
+    }
+    QItemSelectionModel *selectionModel = ui->listViewStatistics->selectionModel();
+    QModelIndexList listSelected = selectionModel->selectedIndexes();
+    qDebug() << QString("%1 item selected").arg(listSelected.size()); //不能用items,即使是没有选择的数目也不对
+
+}
+
+
 
 void CDairyMainWindow::on_action_logout_triggered()
 {
@@ -254,6 +189,16 @@ void CDairyMainWindow::on_action_new_dairy_triggered()
 
 void CDairyMainWindow::on_action_save_triggered()
 {
+    CSqlOperate::test();
+    return;
+    //
+    QMdiSubWindow* pMdiSubWindow = ui->mdiArea->currentSubWindow();
+    if (pMdiSubWindow == NULL)
+    {
+        return;
+    }
+    CDairyEditWidget* pDairyEditWidget = qobject_cast<CDairyEditWidget*>(pMdiSubWindow->widget());
+    pDairyEditWidget->slot_save();
 
 }
 
@@ -343,31 +288,37 @@ void CDairyMainWindow::on_action_font_triggered()
 void CDairyMainWindow::on_treeDairy_clicked(const QModelIndex &index)
 {
     qDebug() << "tree click";
-    T_DairyDateItem tDairyTagItem = qvariant_cast<T_DairyDateItem>(index.data());
-    switch (tDairyTagItem.eDairyDateNodeType)
+    T_DairyDateItem* tDairyTagItem = qvariant_cast<T_DairyDateItem*>(index.data());
+    switch (tDairyTagItem->eDairyDateNodeType)
     {
     case ED_Year:
     {
-        QList<CDairy> lstDairy = CSqlOperate::getListDairyByDate(tDairyTagItem.strYear);
+        QList<CDairy> lstDairy = CSqlOperate::getListDairyByDate(tDairyTagItem->strYear);
         ((CDairyStatisticsModel*)ui->listViewStatistics->model())->showDairyStatistics(lstDairy);
+        ui->labelDairyTotal->setText(QString("(共%1项)").arg(lstDairy.size()));
+        ui->labelTitle->setText(QString("%1年的日记").arg(tDairyTagItem->strYear));
+        ui->btnOk->setEnabled(false);
         ui->stackedWidget->setCurrentIndex(1);
         break;
     }
     case ED_Month:
     {
-        QString strDate = QString("%1-%2").arg(tDairyTagItem.strYear).arg(tDairyTagItem.strMonth);
+        QString strDate = QString("%1-%2").arg(tDairyTagItem->strYear).arg(tDairyTagItem->strMonth);
         QList<CDairy> lstDairy = CSqlOperate::getListDairyByDate(strDate);
         ((CDairyStatisticsModel*)ui->listViewStatistics->model())->showDairyStatistics(lstDairy);
+        ui->labelDairyTotal->setText(QString("(共%1项)").arg(lstDairy.size()));
+        ui->labelTitle->setText(QString("%1年%2月的日记").arg(tDairyTagItem->strYear).arg(tDairyTagItem->strMonth));
+        ui->btnOk->setEnabled(false);
         ui->stackedWidget->setCurrentIndex(1);
         break;
     }
     case ED_Day:
     {
         CDairy dairy;
-        if (tDairyTagItem.did != INVAILD_DAIRY_ID)
+        if (tDairyTagItem->did != INVAILD_DAIRY_ID)
         {
             bool bOk = false;
-            dairy = CSqlOperate::getDairy(tDairyTagItem.did, bOk);
+            dairy = CSqlOperate::getDairy(tDairyTagItem->did, bOk);
             if (!bOk)
             {
                 // print error
@@ -382,4 +333,14 @@ void CDairyMainWindow::on_treeDairy_clicked(const QModelIndex &index)
     }
 
 
+}
+
+void CDairyMainWindow::on_action_save_all_triggered()
+{
+    QList<QMdiSubWindow *> lstSubWindow = ui->mdiArea->subWindowList();
+    foreach (QMdiSubWindow *pMdiSubWindow, lstSubWindow)
+    {
+        CDairyEditWidget* pDairyEditWidget = qobject_cast<CDairyEditWidget*>(pMdiSubWindow->widget());
+        pDairyEditWidget->slot_save();
+    }
 }

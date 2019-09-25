@@ -88,48 +88,8 @@ void CSqlOperate::createTable()
     }
 }
 
-bool isDirExist(QString fullPath)
-{
-    QDir dir(fullPath);
-    if(dir.exists())
-    {
-        return true;
-    }
-    else
-    {
-        bool ok = dir.mkdir(fullPath);//只创建一级子目录，即必须保证上级目录存在
-        return ok;
-    }
-}
 
-QStringList CSqlOperate::shuaxin(QString zhanghao)
-{
-    QSqlQuery query;
-    QStringList list;
-    query.exec("select * from mobile");
-    while (query.next())
-    {
-        if(zhanghao.toInt()==query.value(0).toInt())
-        {
-            list.append(query.value(1).toString());  //时间
-        }
-    }
-    return list;
-}
-QStringList CSqlOperate::huoquqita(QString zhanghao, QString riqi)
-{
-    QSqlQuery query;
-    QStringList list;
-    query.exec("select * from mobile");
-    while (query.next())
-    {
-        if(query.value(0).toInt()==zhanghao.toInt()&&query.value(1).toString()==riqi)
-        {
-            list<<query.value(2).toString()<<query.value(3).toString()<<query.value(4).toString();
-        }
-    }
-    return list;
-}
+
 
 int CSqlOperate::registerAccount(QString strUserName, QString strPasswd)
 {
@@ -167,20 +127,7 @@ int CSqlOperate::registerAccount(QString strUserName, QString strPasswd)
     return 0;
 }
 
-QString CSqlOperate::wangjimima(QString zhanghao,QString beizhu,QString mima)
-{
-    QSqlQuery query;
-    query.exec("select * from zhanghao");
-    while (query.next())
-    {
-        if(query.value(0).toInt()==zhanghao.toInt()&&query.value(4).toString()==beizhu)
-        {
-            query.exec(QString("update zhanghao set [mima]='%1' where [zhanghao]='%2';").arg(mima).arg(zhanghao));
-            return "OK!修改完成！！";
-        }
-    }
-    return "账号或备注不正确！请检查！！";
-}
+
 bool CSqlOperate::login(QString strUserName, QString strPasswd)
 {
     QSqlQuery query;
@@ -194,26 +141,33 @@ bool CSqlOperate::login(QString strUserName, QString strPasswd)
             CUser::getInstance()->setUid(uid);
             CUser::getInstance()->setUserName(strUserName);
 
-            // 读取日记
-            QList<CDairy> lstDairy;
-            query.exec("select * from tDairy where uid = '" + QString::number(uid) + "'");
-            while (query.next())
-            {
-                //为避免内存占用只需要did和datetime
-                CDairy dairy;
-                dairy.setDid(query.value("did").toInt());
-//                dairy.setTitle(query.value("title").toString());
-                dairy.setDateTime(query.value("datetime").toString());
-//                dairy.setTag(query.value("tag").toString());
-//                dairy.setWeather(query.value("weather").toString());
-//                dairy.setContent(query.value("content").toString());
-                lstDairy.append(dairy);
-                CUser::getInstance()->setLstDairy(lstDairy);
-            }
+            getDairyList(uid);
             return true;
         }
     }
     return false;
+}
+
+    // 读取日记
+void CSqlOperate::getDairyList(int uid)
+{
+    QSqlQuery query;
+    QList<CDairy> lstDairy;
+    query.exec("select * from tDairy where uid = '" + QString::number(uid) + "'");
+    while (query.next())
+    {
+        //为避免内存占用只需要did和datetime
+        CDairy dairy;
+        dairy.setDid(query.value("did").toInt());
+        dairy.setTitle(query.value("title").toString());
+        dairy.setDateTime(query.value("datetime").toString());
+//                dairy.setTag(query.value("tag").toString());
+//                dairy.setWeather(query.value("weather").toString());
+//                dairy.setContent(query.value("content").toString());
+        lstDairy.append(dairy);
+        CUser::getInstance()->setLstDairy(lstDairy);
+        //CUser::getInstance()->loadDairyList(lstDairy);
+    }
 }
 
 CDairy CSqlOperate::getDairy(int did, bool &bOk)
@@ -287,7 +241,14 @@ void CSqlOperate::saveDairy(CDairy dairy)
         if (!ok)
         {
             qDebug() << query.lastError();
+            return;
         }
+
+        // 重新获取今天的日记
+        //select max(did) from tDairy
+        //select * from tDairy WHERE did = (select max(did) from tDairy)
+        //select top 1 * From tDairy Order by did Desc #sqlite没有top函数
+        getDairyList(CUser::getInstance()->getUid());
     }
     else
     {
@@ -307,34 +268,17 @@ void CSqlOperate::saveDairy(CDairy dairy)
 }
 
 
-QStringList CSqlOperate::zhumaintongbu(QString zhanghao)
+bool isDirExist(QString fullPath)
 {
-    QSqlQuery query;
-    query.exec("select * from zhanghao");
-    QStringList list;
-    while (query.next())
+    QDir dir(fullPath);
+    if(dir.exists())
     {
-        if(query.value(0).toInt()==zhanghao.toInt())
-        {
-            //网名 签名 头像 字体 背景
-            list<<query.value(2).toString()<<query.value(3).toString()
-               <<query.value(5).toString()<<query.value(6).toString()
-              <<query.value(7).toString();
-        }
+        return true;
     }
-    return list;
-}
-void CSqlOperate::setziti(QString zhanghao,QString ziti)
-{
-    QSqlQuery query;
-    query.exec("select * from zhanghao");
-    while (query.next())
+    else
     {
-        if(query.value(0).toInt()==zhanghao.toInt())
-        {
-            query.exec(QString("update zhanghao set [ziti]='%1' where [zhanghao]='%2';").arg(ziti).arg(zhanghao));
-            return;
-        }
+        bool ok = dir.mkdir(fullPath);//只创建一级子目录，即必须保证上级目录存在
+        return ok;
     }
 }
 void CSqlOperate::SetXinXi(QString zhanghao, QString ziti, QString beijing, QString touxiang, QString wangming, QString geqian)
@@ -357,4 +301,15 @@ void CSqlOperate::SetXinXi(QString zhanghao, QString ziti, QString beijing, QStr
             return;
         }
     }
+}
+
+void CSqlOperate::test()
+{
+    QSqlQuery query;
+    query.exec("select max(did) from tDairy");
+    while (query.next())
+    {
+        qDebug() << "maxid = " << query.value(0).toInt();
+    }
+
 }

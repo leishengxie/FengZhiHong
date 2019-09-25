@@ -80,7 +80,7 @@
         <item>
          <widget class="QStackedWidget" name="stackedWidget">
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="page_dairy">
            <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -159,6 +159,9 @@
               </item>
               <item>
                <widget class="QPushButton" name="btnOk">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="text">
                  <string>打开</string>
                 </property>
@@ -203,6 +206,7 @@
      <string>文件（&amp;F）</string>
     </property>
     <addaction name="action_save"/>
+    <addaction name="action_save_all"/>
     <addaction name="separator"/>
     <addaction name="action_lock"/>
     <addaction name="separator"/>
@@ -264,7 +268,7 @@
   </action>
   <action name="action_save">
    <property name="icon">
-    <iconset>
+    <iconset resource="../res.qrc">
      <normaloff>:/img/save.png</normaloff>:/img/save.png</iconset>
    </property>
    <property name="text">
@@ -276,7 +280,7 @@
   </action>
   <action name="action_undo">
    <property name="icon">
-    <iconset>
+    <iconset resource="../res.qrc">
      <normaloff>:/img/arrows_left.png</normaloff>:/img/arrows_left.png</iconset>
    </property>
    <property name="text">
@@ -293,7 +297,7 @@
   </action>
   <action name="action_copy">
    <property name="icon">
-    <iconset>
+    <iconset resource="../res.qrc">
      <normaloff>:/img/copy.png</normaloff>:/img/copy.png</iconset>
    </property>
    <property name="text">
@@ -318,7 +322,7 @@
   </action>
   <action name="action_redo">
    <property name="icon">
-    <iconset>
+    <iconset resource="../res.qrc">
      <normaloff>:/img/arrows_right.png</normaloff>:/img/arrows_right.png</iconset>
    </property>
    <property name="text">
@@ -342,7 +346,7 @@
   </action>
   <action name="action_skin">
    <property name="icon">
-    <iconset>
+    <iconset resource="../res.qrc">
      <normaloff>:/img/skin.png</normaloff>:/img/skin.png</iconset>
    </property>
    <property name="text">
@@ -364,8 +368,18 @@
     <string>字体</string>
    </property>
   </action>
+  <action name="action_save_all">
+   <property name="text">
+    <string>保存全部</string>
+   </property>
+   <property name="toolTip">
+    <string>保存全部</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="../res.qrc"/>
+ </resources>
  <connections/>
 </ui>

@@ -1,6 +1,7 @@
 #ifndef CUSER_H
 #define CUSER_H
 
+#include <QObject>
 #include <QString>
 #include <QList>
 #include "patterns/Singleton.h"
@@ -8,10 +9,11 @@
 #include "Dairy.h"
 
 ///
-/// \brief The CUser class 用户数据
+/// \brief The CUser class 用户数据,用于把数据库的数据加载到内存，方便管理
 ///
-class CUser : public CSingleton<CUser>
+class CUser : public QObject, public CSingleton<CUser>
 {
+    Q_OBJECT
 public:
     SETGET(int, nUid, Uid)
     SETGET(QString, strUserName, UserName)
@@ -23,6 +25,11 @@ public:
     void appendDairy(CDairy dairy);
 
     CUser();
+
+    void loadDairyList(const QList<CDairy> & lstDairy);
+
+signals:
+    void dairyListChanged(const QList<CDairy> & lstDairy);
 
 private:
 

@@ -10,13 +10,13 @@ CDairyDateDelegate::CDairyDateDelegate(QObject *parent)
 
 void CDairyDateDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    T_DairyDateItem tDairyTagItem = qvariant_cast<T_DairyDateItem>(index.data());
+    T_DairyDateItem* tDairyTagItem = qvariant_cast<T_DairyDateItem*>(index.data());
     QApplication::style()->drawItemText ( painter
                                           , option.rect
                                           , Qt::AlignLeft | Qt::AlignVCenter
                                           , QApplication::palette()
                                           , true
-                                          , tDairyTagItem.text());
+                                          , tDairyTagItem->text());
 }
 
 QSize CDairyDateDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const

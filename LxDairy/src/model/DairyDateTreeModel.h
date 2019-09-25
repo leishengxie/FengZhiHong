@@ -48,6 +48,7 @@ struct T_DairyDateItem
         }
     };
 
+
     E_DairyDateNodeType eDairyDateNodeType;
     int did;
     QString strYear;
@@ -63,11 +64,16 @@ struct T_DairyDateItem
     T_DairyDateItem();
     T_DairyDateItem(E_DairyDateNodeType eDairyDateNodeType);
     T_DairyDateItem(E_DairyDateNodeType eDairyDateNodeType, CDairy dairy);
+    ~T_DairyDateItem();
+
+    void release();
 
     void init();
 
     // 显示的文本
     QString text();
+
+    void updateDairyByDid(const CDairy & dairy);
 
     // QSet所需
     bool operator == (const T_DairyDateItem &right) const;
@@ -80,8 +86,8 @@ struct T_DairyDateItem
     // std set
 
     // 节点操作
-    void erase(T_DairyDateItem *child);
-    void eraseAll();
+    void deleteChild(T_DairyDateItem *child);
+    void deleteChildren();
     T_DairyDateItem *find(T_DairyDateItem* tDairyDateItem);  // 返回子节点的地址
     void insert(T_DairyDateItem* tDairyDateItem);
     //bool contains(T_DairyDateItem tDairyDateItem);
@@ -94,8 +100,8 @@ struct T_DairyDateItem
 
 
 };
-Q_DECLARE_METATYPE(T_DairyDateItem)
-
+Q_DECLARE_METATYPE(T_DairyDateItem*)
+///申明为指针，但是很危险，如果把赋值给一个局部对象，局部对象析构会释放里面指针所指内容
 
 
 
@@ -123,6 +129,8 @@ public:
     void createDateTree(QList<CDairy> lstDairy);
 
     void insetDairy(CDairy dairy);
+
+    void updateDairyByDid(const CDairy & dairy);
 
 signals:
     void loadTodayDairyFinished(const CDairy &dairy);

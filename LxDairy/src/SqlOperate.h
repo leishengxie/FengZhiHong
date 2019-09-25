@@ -15,6 +15,7 @@ public:
     static void createTable();
     static int registerAccount(QString strUserName, QString strPasswd);
     static bool login(QString strUserName, QString strPasswd);
+    static void getDairyList(int uid);
     static CDairy getDairy(int did, bool & bOk);
     ///
     /// \brief getListDairyByDate
@@ -25,17 +26,8 @@ public:
     static void saveDairy(CDairy dairy);
 
 
-    QStringList shuaxin(QString registerAccount);
-    QStringList huoquqita(QString registerAccount, QString riqi);
-
-
-
-    QString wangjimima(QString registerAccount, QString beizhu, QString mima);
-
-    QStringList zhumaintongbu(QString registerAccount);
-    void setziti(QString registerAccount, QString ziti);
-    void SetXinXi(QString registerAccount, QString ziti, QString beijing, QString touxiang, QString wangming, QString geqian);
-
+    static void SetXinXi(QString registerAccount, QString ziti, QString beijing, QString touxiang, QString wangming, QString geqian);
+    static void test();
 signals:
 
 public slots:

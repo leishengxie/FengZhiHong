@@ -52,9 +52,9 @@ protected:
     void closeEvent(QCloseEvent *event);
 
 private slots:
-    //void openFileSlot();
-    //void saveAsFileSlot();
+
     void slotUpdateMenu(QMdiSubWindow *pMdiSubWindow);
+    void slotSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 
 
     void on_action_logout_triggered();
@@ -88,6 +88,8 @@ private slots:
     void on_action_font_triggered();
 
     void on_treeDairy_clicked(const QModelIndex &index);
+
+    void on_action_save_all_triggered();
 
 private:
     Ui::DairyMainWindow *ui;

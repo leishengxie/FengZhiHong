@@ -20,6 +20,7 @@ T_DairyDateItem::T_DairyDateItem(E_DairyDateNodeType eDairyDateNodeType, CDairy 
     //QMultiMap
     //"2010-07-02 17:35:00";
     did = dairy.getDid();
+    strTitle = dairy.getTitle();
     QString strDateTime = dairy.getDateTime();
     strYear = strDateTime.mid(0, 4);
     strMonth = strDateTime.mid(5, 2);
@@ -32,6 +33,24 @@ void T_DairyDateItem::init()
     eDairyDateNodeType = ED_Invalid;
     m_setChildItems.clear();
     m_pParentItem = NULL;
+}
+
+T_DairyDateItem::~T_DairyDateItem()
+{
+    /*
+    if (m_setChildItems.size() < 1)
+    {
+        return;
+    }
+    qDeleteAll(m_setChildItems);
+    m_setChildItems.clear();
+    */
+}
+
+void T_DairyDateItem::release()
+{
+    deleteChildren();
+    delete this;
 }
 
 bool T_DairyDateItem::operator ==(const T_DairyDateItem &right) const
@@ -82,14 +101,32 @@ uint T_DairyDateItem::value() const
     return nValue;
 }
 
-void T_DairyDateItem::erase(T_DairyDateItem *child)
+void T_DairyDateItem::deleteChild(T_DairyDateItem *child)
 {
-
+//    set<T_DairyDateItem*, T_DairyDateComparator>::iterator iter = m_setChildItems.begin();
+//    for (;iter != m_setChildItems.end(); ++iter)
+//    {
+//        return *iter;
+//    }
+    m_setChildItems.erase(child);
+    delete child;
+    child = NULL;
 }
 
-void T_DairyDateItem::eraseAll()
+void T_DairyDateItem::deleteChildren()
 {
-
+//    if (m_setChildItems.size() < 1)
+//    {
+//        return;
+//    }
+    qDeleteAll(m_setChildItems);
+//    m_setChildItems.clear();
+    set<T_DairyDateItem*, T_DairyDateComparator>::iterator iter = m_setChildItems.begin();
+    while (iter != m_setChildItems.end)
+    {
+        ((T_DairyDateItem*)(*iter))->release();
+        ++iter;
+    }
 }
 
 T_DairyDateItem* T_DairyDateItem::find(T_DairyDateItem *tDairyDateItem)
@@ -215,6 +252,17 @@ QString T_DairyDateItem::text()
     return strText;
 }
 
+void T_DairyDateItem::updateDairyByDid(const CDairy &dairy)
+{
+    for (T_DairyDateItem* pItem: m_setChildItems)
+    {
+        if (pItem->did == dairy.getDid())
+        {
+            pItem->strTitle = dairy.getTitle();
+        }
+    }
+}
+
 //uint qHash(const T_DairyDateItem key, uint seed)
 //{
 //    Q_UNUSED(seed);
@@ -291,7 +339,7 @@ QVariant CDairyDateTreeModel::data(const QModelIndex &index, int role) const
         return QVariant();
 
     QVariant variant;
-    variant.setValue(*pItem);
+    variant.setValue(pItem);
     return variant;
     //return pItem->text();
     //return pItem->data(index.column());
@@ -467,6 +515,15 @@ void CDairyDateTreeModel::insetDairy(CDairy dairy)
         pItemParent->insert(pItemDay);
     }
 
+}
+
+void CDairyDateTreeModel::updateDairyByDid(const CDairy &dairy)
+{
+    if (m_pDairyDateItemRoot == NULL)
+    {
+        return;
+    }
+    //m_pDairyDateItemRoot->m_setChildItems
 }
 
 
