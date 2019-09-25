@@ -119,14 +119,15 @@ void T_DairyDateItem::deleteChildren()
 //    {
 //        return;
 //    }
-    qDeleteAll(m_setChildItems);
+//    qDeleteAll(m_setChildItems);
 //    m_setChildItems.clear();
     set<T_DairyDateItem*, T_DairyDateComparator>::iterator iter = m_setChildItems.begin();
-    while (iter != m_setChildItems.end)
+    while (iter != m_setChildItems.end())
     {
-        ((T_DairyDateItem*)(*iter))->release();
+        ((T_DairyDateItem*)(*iter))->release(); // 注意，只是释放内存，没有erase迭代器
         ++iter;
     }
+    m_setChildItems.clear(); // 移除容器所有项
 }
 
 T_DairyDateItem* T_DairyDateItem::find(T_DairyDateItem *tDairyDateItem)
