@@ -6,16 +6,19 @@
 
 struct T_DairyStatisticsItem
 {
+    int did;
     QString strDate;
     QString strContent;
 
     T_DairyStatisticsItem()
+    : did(-1)
     {
 
     }
 
-    T_DairyStatisticsItem(QString strDate, QString strContent)
-        : strDate(strDate)
+    T_DairyStatisticsItem(int did, QString strDate, QString strContent)
+        : did(did)
+        , strDate(strDate)
         , strContent(strContent)
     {
 

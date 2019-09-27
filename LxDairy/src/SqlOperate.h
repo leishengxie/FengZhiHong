@@ -15,15 +15,11 @@ public:
     static void createTable();
     static int registerAccount(QString strUserName, QString strPasswd);
     static bool login(QString strUserName, QString strPasswd);
-    static void getDairyList(int uid);
+    static QList<CDairy> getDairyList(int uid);
     static CDairy getDairy(int did, bool & bOk);
-    ///
-    /// \brief getListDairyByDate
-    /// \param strFormatDate format"yyyy-MM-dd" eg:"'2019-09'", 2019-09-01, 2019
-    /// \return
-    ///
-    static QList<CDairy> getListDairyByDate(QString strFormatDate);
-    static void saveDairy(CDairy dairy);
+    static QList<CDairy> getListDairyByLimit(QString strFormatDate
+                                             , QString strTagName = ""); //strFormatDate  eg:"'2019-09'", 2019-09-01, 2019
+    static bool saveDairy(const CDairy & dairyModify, CDairy & dairySaved);
 
 
     static void SetXinXi(QString registerAccount, QString ziti, QString beijing, QString touxiang, QString wangming, QString geqian);

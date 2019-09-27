@@ -73,7 +73,10 @@ struct T_DairyDateItem
     // 显示的文本
     QString text();
 
-    void updateDairyByDid(const CDairy & dairy);
+    void dairyModify(const CDairy & dairyBefore, const CDairy & dairyAfter
+                     , T_DairyDateItem *&pDairyDateItem);
+
+    void findItemById(int did, T_DairyDateItem *&pDairyDateItem);
 
     // QSet所需
     bool operator == (const T_DairyDateItem &right) const;
@@ -125,17 +128,25 @@ public:
     bool hasChildren(const QModelIndex &parent) const;
 
     // 加载所有日记
-    void loadDairy();
+    void loadAllDairy();
+    void loadDairy(const QList<CDairy> &lstDairy);
+    void reloadDairyByTag(const QString & strTagName);
 
     // 根据日志列表整理成树
-    void createDateTree(QList<CDairy> lstDairy);
+    void createDateTree(const QList<CDairy> &lstDairy);
 
     void insetDairy(CDairy dairy);
 
-    void updateDairyByDid(const CDairy & dairy);
+    void dairyModify(const CDairy & dairyBefore, const CDairy & dairyAfter);
+
+    void expandDairy(int did);
+
+public slots:
+
 
 signals:
     void loadTodayDairyFinished(const CDairy &dairy);
+    void requireExpand(const QModelIndex & index);
 
 private:
     T_DairyDateItem* m_pDairyDateItemRoot;

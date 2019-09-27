@@ -47,6 +47,7 @@ public:
 
 public slots:
     void slot_displayDairy(const CDairy &dairy);
+    void onRequireExpand(const QModelIndex & index);
 
 protected:
     void closeEvent(QCloseEvent *event);
@@ -55,6 +56,7 @@ private slots:
 
     void slotUpdateMenu(QMdiSubWindow *pMdiSubWindow);
     void slotSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
+    void onSaveDairyfinished(const CDairy & dairySaveBefore, const CDairy & dairySaved);
 
 
     void on_action_logout_triggered();
@@ -90,6 +92,12 @@ private slots:
     void on_treeDairy_clicked(const QModelIndex &index);
 
     void on_action_save_all_triggered();
+
+    void on_btnOpenDairy_clicked();
+
+    void on_listViewTag_clicked(const QModelIndex &index);
+
+    void on_calendarWidget_clicked(const QDate &date);
 
 private:
     Ui::DairyMainWindow *ui;

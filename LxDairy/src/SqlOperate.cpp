@@ -140,8 +140,7 @@ bool CSqlOperate::login(QString strUserName, QString strPasswd)
             int uid = query.value("uid").toInt();
             CUser::getInstance()->setUid(uid);
             CUser::getInstance()->setUserName(strUserName);
-
-            getDairyList(uid);
+            CUser::getInstance()->setLstDairy(getDairyList(uid));
             return true;
         }
     }
@@ -149,7 +148,7 @@ bool CSqlOperate::login(QString strUserName, QString strPasswd)
 }
 
     // 读取日记
-void CSqlOperate::getDairyList(int uid)
+QList<CDairy> CSqlOperate::getDairyList(int uid)
 {
     QSqlQuery query;
     QList<CDairy> lstDairy;
@@ -165,9 +164,8 @@ void CSqlOperate::getDairyList(int uid)
 //                dairy.setWeather(query.value("weather").toString());
 //                dairy.setContent(query.value("content").toString());
         lstDairy.append(dairy);
-        CUser::getInstance()->setLstDairy(lstDairy);
-        //CUser::getInstance()->loadDairyList(lstDairy);
     }
+    return lstDairy;
 }
 
 CDairy CSqlOperate::getDairy(int did, bool &bOk)
@@ -194,15 +192,34 @@ CDairy CSqlOperate::getDairy(int did, bool &bOk)
     return dairy;
 }
 
-QList<CDairy> CSqlOperate::getListDairyByDate(QString strFormatDate)
+QList<CDairy> CSqlOperate::getListDairyByLimit(QString strFormatDate, QString strTagName)
 {
     // eg: select * from tDairy where substr(date(datetime),1,7) = '2019-09';
     //
     QList<CDairy> lstDairy;
     QSqlQuery query;
-    QString strSql = QString("select * from tDairy where substr(date(datetime),1,%1) = '%2'")
-                     .arg(strFormatDate.length())
-                     .arg(strFormatDate);
+    QString strSql;
+    if (!strFormatDate.isEmpty() && strTagName.isEmpty())
+    {
+        strSql = QString("select * from tDairy where substr(date(datetime),1,%1) = '%2'")
+                .arg(strFormatDate.length())
+                .arg(strFormatDate);
+    }
+    else if (strFormatDate.isEmpty() && !strTagName.isEmpty())
+    {
+        strSql = QString("select * from tDairy where tag = '%1'").arg(strTagName);
+    }
+    else if (!strFormatDate.isEmpty() && !strTagName.isEmpty())
+    {
+        strSql = QString("select * from tDairy where substr(date(datetime),1,%1) = '%2' and tag = '%3'")
+                .arg(strFormatDate.length())
+                .arg(strFormatDate)
+                .arg(strTagName);
+    }
+    else
+    {
+        strSql = QString("select * from tDairy");
+    }
     bool ok = query.exec(strSql);
 
     if (!ok)
@@ -224,47 +241,60 @@ QList<CDairy> CSqlOperate::getListDairyByDate(QString strFormatDate)
     return lstDairy;
 }
 
-void CSqlOperate::saveDairy(CDairy dairy)
+bool CSqlOperate::saveDairy(const CDairy & dairyModify, CDairy & dairySaved)
 {
     QSqlQuery query;
-    if (dairy.isNewDairy())
+    dairySaved = dairyModify;
+    if (dairyModify.isNewDairy())
     {
         bool ok = query.prepare("INSERT INTO tDairy(uid, title,datetime,tag,weather,content) "
                                 "VALUES (?, ?, ?, ?, ?, ?)");
         query.bindValue(0, CUser::getInstance()->getUid());
-        query.bindValue(1, dairy.getTitle());
-        query.bindValue(2, dairy.getDateTime());
-        query.bindValue(3, dairy.getTag());
-        query.bindValue(4, dairy.getWeather());
-        query.bindValue(5, dairy.getContent());
+        query.bindValue(1, dairyModify.getTitle());
+        query.bindValue(2, dairyModify.getDateTime());
+        query.bindValue(3, dairyModify.getTag());
+        query.bindValue(4, dairyModify.getWeather());
+        query.bindValue(5, dairyModify.getContent());
         ok = query.exec();
         if (!ok)
         {
             qDebug() << query.lastError();
-            return;
+            return false;
         }
 
-        // 重新获取今天的日记
+        // 重新获取今天的日记did
         //select max(did) from tDairy
         //select * from tDairy WHERE did = (select max(did) from tDairy)
         //select top 1 * From tDairy Order by did Desc #sqlite没有top函数
-        getDairyList(CUser::getInstance()->getUid());
+        //getDairyList(CUser::getInstance()->getUid());
+        ok = query.exec("select max(did) from tDairy");
+        if (!ok)
+        {
+            qDebug() << query.lastError();
+            return false;
+        }
+        if (query.next())
+        {
+            dairySaved.setDid(query.value(0).toInt());
+        }
     }
     else
     {
         QString strSql = QString("update tDairy set title='%1', tag='%2', weather='%3', content='%4' where did='%5'")
-                         .arg(dairy.getTitle())
-                         .arg(dairy.getTag())
-                         .arg(dairy.getWeather())
-                         .arg(dairy.getContent())
-                         .arg(dairy.getDid());
+                         .arg(dairyModify.getTitle())
+                         .arg(dairyModify.getTag())
+                         .arg(dairyModify.getWeather())
+                         .arg(dairyModify.getContent())
+                         .arg(dairyModify.getDid());
         bool ok = query.exec(strSql);
 
         if (!ok)
         {
             qDebug() << query.lastError();
+            return false;
         }
     }
+    return true;
 }
 
 
@@ -305,11 +335,11 @@ void CSqlOperate::SetXinXi(QString zhanghao, QString ziti, QString beijing, QStr
 
 void CSqlOperate::test()
 {
-    QSqlQuery query;
-    query.exec("select max(did) from tDairy");
-    while (query.next())
-    {
-        qDebug() << "maxid = " << query.value(0).toInt();
-    }
+//    QSqlQuery query;
+//    query.exec("select max(did) from tDairy");
+//    while (query.next())
+//    {
+//        qDebug() << "maxid = " << query.value(0).toInt();
+//    }
 
 }

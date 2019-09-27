@@ -80,7 +80,7 @@
         <item>
          <widget class="QStackedWidget" name="stackedWidget">
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="page_dairy">
            <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -158,7 +158,7 @@
                </spacer>
               </item>
               <item>
-               <widget class="QPushButton" name="btnOk">
+               <widget class="QPushButton" name="btnOpenDairy">
                 <property name="enabled">
                  <bool>false</bool>
                 </property>

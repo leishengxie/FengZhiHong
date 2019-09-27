@@ -51,22 +51,27 @@ void CDairyEditWidget::init()
 
 }
 
-void CDairyEditWidget::slot_save()
+void CDairyEditWidget::onSave()
 {
     QString strDateTimeDisplayer = ui->labelDateTime->text();
     QDateTime datetime = QDateTime::fromString(strDateTimeDisplayer, FORMAT_DATETIME_DISPLAYER);
     QString strDateTime = datetime.toString(FORMAT_DATETIME);
 
     CDairy dairy;
+    CDairy dairySaved;
+    dairy.setDid(did);
     dairy.setTitle(ui->leTitle->text());
     dairy.setDateTime(strDateTime);
     dairy.setTag(ui->comboBoxTag->currentText());
     dairy.setWeather(ui->comboBoxWeather->currentText());
     dairy.setContent(ui->dairyEdit->toPlainText()); //toPlainText 去除textEdit当中的纯文本
     QApplication::setOverrideCursor(Qt::WaitCursor);//设置整个应用程序的光标形状为等待形状，因为如果文件的内容非常多时可以提醒用户
-    CSqlOperate::saveDairy(dairy);
+    CSqlOperate::saveDairy(dairy, dairySaved);
     QApplication::restoreOverrideCursor();//恢复开始时的光标状态
 
+    emit saveDairyfinished(dairy, dairySaved);
+    did = dairySaved.getDid();
+    setWindowTitle(dairySaved.getTitle());
     ui->dairyEdit->document()->setModified(false);
 }
 
@@ -92,7 +97,7 @@ void CDairyEditWidget::closeEvent(QCloseEvent *event)
         switch (ret)
         {
         case QMessageBox::Save:
-            slot_save();
+            onSave();
             event->accept();
             break;
         case QMessageBox::Discard:
@@ -112,7 +117,7 @@ void CDairyEditWidget::closeEvent(QCloseEvent *event)
     event->accept();
 }
 
-void CDairyEditWidget::slot_copy()
+void CDairyEditWidget::onCopy()
 {
     ui->dairyEdit->copy();
 }

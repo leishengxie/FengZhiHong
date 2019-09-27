@@ -44,10 +44,23 @@ QVariant CDairyTagListModel::data(const QModelIndex &index, int role) const
 
 void CDairyTagListModel::loadDairyTag()
 {
-    m_lstDairyTag.append(T_DairyTagItem("全部日记", 0));
     QStringList strlstDairyTag = CUser::getInstance()->getLstDairyTag();
+    QList<CDairy> lstDairy = CUser::getInstance()->getLstDairy();
+
+    m_lstDairyTag.append(T_DairyTagItem("全部日记", lstDairy.size()));
+
     foreach (QString dairyTag, strlstDairyTag)
     {
         m_lstDairyTag.append(T_DairyTagItem(dairyTag, 0));
+    }
+    foreach (CDairy dairy, lstDairy)
+    {
+        for (int i = 0; i < m_lstDairyTag.size(); ++i)
+        {
+            if (m_lstDairyTag[i].strTagName == dairy.getTag())
+            {
+                ++m_lstDairyTag[i].nNum;
+            }
+        }
     }
 }

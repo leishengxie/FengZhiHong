@@ -43,7 +43,9 @@ void CDairyStatisticsModel::showDairyStatistics(const QList<CDairy> & lstDairy)
     m_lstDairyStatistics.clear();
     foreach (CDairy dairy, lstDairy)
     {
-        m_lstDairyStatistics.append(T_DairyStatisticsItem(dairy.getDateTime().left(10), dairy.getTitle() + " - " + dairy.getContent()));
+        m_lstDairyStatistics.append(T_DairyStatisticsItem(dairy.getDid()
+                                                          , dairy.getDateTime().left(10)
+                                                          , dairy.getTitle() + " - " + dairy.getContent()));
     }
     endResetModel();
 }

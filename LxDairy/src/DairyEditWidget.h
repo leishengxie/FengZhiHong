@@ -26,12 +26,16 @@ public:
 
     CDairyEdit* dairyEdit();
 
+signals:
+    void saveDairyfinished(const CDairy & dairySaveBefore, const CDairy & dairySaved);
+
 protected:
     void closeEvent(QCloseEvent *event);//重写关闭事件
 
 public slots:
-    void slot_save();
-    void slot_copy();
+    // 槽函数命名方式采用与qml一样的方式
+    void onSave();
+    void onCopy();
 
 private:
     Ui::CDairyEditWidget *ui;

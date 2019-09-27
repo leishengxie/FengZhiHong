@@ -253,16 +253,46 @@ QString T_DairyDateItem::text()
     return strText;
 }
 
-void T_DairyDateItem::updateDairyByDid(const CDairy &dairy)
+///
+/// \brief T_DairyDateItem::dairyModify 递归找到更新节点
+/// \param dairyBefore
+/// \param dairyAfter
+///
+void T_DairyDateItem::dairyModify(const CDairy &dairyBefore, const CDairy &dairyAfter
+                                  , T_DairyDateItem* & pDairyDateItem)
 {
+    if (did == dairyBefore.getDid() && eDairyDateNodeType == ED_Day)
+    {
+        did = dairyAfter.getDid();
+        strTitle = dairyAfter.getTitle();
+        pDairyDateItem = this;
+    }
+    if (m_setChildItems.empty())
+    {
+        return;
+    }
     for (T_DairyDateItem* pItem: m_setChildItems)
     {
-        if (pItem->did == dairy.getDid())
-        {
-            pItem->strTitle = dairy.getTitle();
-        }
+        pItem->dairyModify(dairyBefore, dairyAfter, pDairyDateItem);
     }
 }
+
+void T_DairyDateItem::findItemById(int did, T_DairyDateItem *&pDairyDateItem)
+{
+    if (this->did == did && eDairyDateNodeType == ED_Day)
+    {
+        pDairyDateItem = this;
+    }
+    if (m_setChildItems.empty())
+    {
+        return;
+    }
+    for (T_DairyDateItem* pItem: m_setChildItems)
+    {
+        pItem->findItemById(did, pDairyDateItem);
+    }
+}
+
 
 //uint qHash(const T_DairyDateItem key, uint seed)
 //{
@@ -433,15 +463,20 @@ bool CDairyDateTreeModel::hasChildren(const QModelIndex &parent) const
     return nCount > 0;
 }
 
-void CDairyDateTreeModel::loadDairy()
+void CDairyDateTreeModel::loadAllDairy()
 {
     QList<CDairy> lstDairy = CUser::getInstance()->getLstDairy();
+    loadDairy(lstDairy);
+}
 
+void CDairyDateTreeModel::loadDairy(const QList<CDairy> &lstDairy)
+{
     // 如果列表中没有今天的日记则添加今天的空日记
     bool bHaveTodayDairy = false;
     QString strDateTime = QDateTime::currentDateTime().toString(FORMAT_DATETIME);
+    QList<CDairy> lstDairyAddToday = lstDairy;
     CDairy dairyToday;
-    foreach (CDairy dairy, lstDairy)
+    foreach (CDairy dairy, lstDairyAddToday)
     {
         if (dairy.getDateTime().mid(0, 10) == strDateTime.mid(0, 10))
         {
@@ -454,13 +489,38 @@ void CDairyDateTreeModel::loadDairy()
     {
         CDairy dairyEmpty;
         dairyToday = dairyEmpty;
-        lstDairy.append(dairyEmpty);
+        lstDairyAddToday.append(dairyEmpty);
     }
     emit loadTodayDairyFinished(dairyToday);
-    createDateTree(lstDairy);
+    createDateTree(lstDairyAddToday);
 }
 
-void CDairyDateTreeModel::createDateTree(QList<CDairy> lstDairy)
+void CDairyDateTreeModel::reloadDairyByTag(const QString &strTagName)
+{
+    m_pDairyDateItemRoot->deleteChildren();
+    if ( "全部日记" == strTagName)
+    {
+        beginResetModel();
+        loadAllDairy();
+        endResetModel();
+        return;
+    }
+
+    QList<CDairy> lstDairy = CUser::getInstance()->getLstDairy();
+    QList<CDairy> lstDairyLoad;
+    for (CDairy dairy : lstDairy)
+    {
+        if (strTagName == dairy.getTag())
+        {
+            lstDairyLoad.append(dairy);
+        }
+    }
+    beginResetModel();
+    loadDairy(lstDairyLoad);
+    endResetModel();
+}
+
+void CDairyDateTreeModel::createDateTree(const QList<CDairy> & lstDairy)
 {
     m_pDairyDateItemRoot = new T_DairyDateItem(ED_Root);
     foreach (CDairy dairy, lstDairy)
@@ -518,14 +578,44 @@ void CDairyDateTreeModel::insetDairy(CDairy dairy)
 
 }
 
-void CDairyDateTreeModel::updateDairyByDid(const CDairy &dairy)
+void CDairyDateTreeModel::dairyModify(const CDairy &dairyBefore, const CDairy &dairyAfter)
 {
     if (m_pDairyDateItemRoot == NULL)
     {
         return;
     }
-    //m_pDairyDateItemRoot->m_setChildItems
+    //beginResetModel();
+    T_DairyDateItem* pDairyDateItem = NULL;
+    m_pDairyDateItemRoot->dairyModify(dairyBefore, dairyAfter, pDairyDateItem);
+    //endResetModel();
+    //QModelIndex indexTopleft = index(0, 0);
+    //emit(dataChanged(indexChanged, indexChanged));
+    // 没有找到就不用更新
+    if (pDairyDateItem == NULL)
+    {
+        return;
+    }
+    QModelIndex indexModify = createIndex(pDairyDateItem->row(), 0, pDairyDateItem);
+    emit(dataChanged(indexModify, indexModify));
 }
+
+void CDairyDateTreeModel::expandDairy(int did)
+{
+    if (m_pDairyDateItemRoot == NULL)
+    {
+        return;
+    }
+    T_DairyDateItem* pDairyDateItem = NULL;
+    m_pDairyDateItemRoot->findItemById(did, pDairyDateItem);
+    if (pDairyDateItem == NULL)
+    {
+        return;
+    }
+    QModelIndex indexExpand = createIndex(pDairyDateItem->row(), 0, pDairyDateItem);
+    emit requireExpand(indexExpand);
+
+}
+
 
 
 
