@@ -99,6 +99,12 @@ private slots:
 
     void on_calendarWidget_clicked(const QDate &date);
 
+    void on_listViewPrivate_clicked(const QModelIndex &index);
+
+private:
+    void initPageDairy();
+    void initPagePrivate();
+
 private:
     Ui::DairyMainWindow *ui;
     CSkinWidget* m_pSkinWidget;

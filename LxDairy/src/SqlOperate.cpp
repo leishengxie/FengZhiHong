@@ -86,6 +86,18 @@ void CSqlOperate::createTable()
     {
         qDebug() << query.lastError();
     }
+
+    strSql = "CREATE TABLE IF NOT EXISTS tAPasswd(" \
+    "aid INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL DEFAULT 1," \
+    "uid INTEGER NOT NULL," \
+    "item TEXT," \
+    "account  TEXT," \
+    "passwd TEXT," \
+    "CONSTRAINT 'fk_user_uid' FOREIGN KEY ('uid') REFERENCES 'tUser' ('uid') ON DELETE CASCADE ON UPDATE CASCADE)";
+    if (!query.exec(strSql))
+    {
+        qDebug() << query.lastError();
+    }
 }
 
 

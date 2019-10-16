@@ -35,5 +35,6 @@
         <file>img/css/radio_selected.png</file>
         <file>img/css/sub-line_horizontal.png</file>
         <file>img/css/sub-line_vertical.png</file>
+        <file>img/account_passwd.png</file>
     </qresource>
 </RCC>

@@ -3,12 +3,15 @@
 #include <QIcon>
 #include <QtDebug>
 #include <QMdiSubWindow>
+#include <QSqlTableModel>
+
 #include "LoginWidget.h"
 #include "SqlOperate.h"
 #include "SkinWidget.h"
 #include "model/DairyTagListModel.h"
 #include "model/DairyDateTreeModel.h"
 #include "model/DairyStatisticsModel.h"
+#include "model/PrivateMenuModel.h"
 #include "delegate/DairyTagDelegate.h"
 #include "delegate/DairyDateDelegate.h"
 #include "delegate/DairyStatisticsDelegate.h"
@@ -28,6 +31,18 @@ CDairyMainWindow::CDairyMainWindow(QWidget *parent)
     pal.setBrush(QPalette::Background, QBrush(QPixmap(":/img/bg/1.jpg").scaled(size())));
     setPalette(pal);
 
+    initPageDairy();
+    initPagePrivate();
+
+}
+
+CDairyMainWindow::~CDairyMainWindow()
+{
+    delete ui;
+}
+
+void CDairyMainWindow::initPageDairy()
+{
     // 初始化listViewTag
     CDairyTagListModel* pDairyTagListModel = new CDairyTagListModel(this);
     CDairyTagDelegate* pDairyTagDelegate = new CDairyTagDelegate;
@@ -60,13 +75,49 @@ CDairyMainWindow::CDairyMainWindow(QWidget *parent)
     //QMdiArea::AreaOption option;
     //ui->mdiArea->setOption(option, true);
     //connect(ui->mdiArea, SIGNAL(customContextMenuRequested(QPoint))
-
 }
 
-CDairyMainWindow::~CDairyMainWindow()
+void CDairyMainWindow::initPagePrivate()
 {
-    delete ui;
+    CPrivateMenuModel *pModel = new CPrivateMenuModel(this);
+    ui->listViewPrivate->setModel(pModel);
+    ui->listViewPrivate->setViewMode(QListView::IconMode);
+
+    //直接操作数据库
+    QSqlTableModel* pApasswdTableModel = new QSqlTableModel(this);
+    pApasswdTableModel->setTable("tAPasswd");
+    // 三种提交方式，改动即提交，选择其他行时提交，手动提交；经实际测试，其中只有手动提交在显示效果上是最好的
+        pApasswdTableModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
+
+    //pApasswdTableModel->setFilter();
+//    pApasswdTableModel->setQuery("select item account passwd form tAPasswd where uid ="
+//                                 + QString::number(CUser::getInstance()->getUid()));
+    pApasswdTableModel->select();
+    pApasswdTableModel->removeColumns(0, 2); // 不显示aid, uid 2列
+    pApasswdTableModel->setHeaderData(0, Qt::Horizontal, "栏目");
+    pApasswdTableModel->setHeaderData(1, Qt::Horizontal, "账号");
+    pApasswdTableModel->setHeaderData(2, Qt::Horizontal, "密码");
+    ui->tableViewPrivate->setModel(pApasswdTableModel);
+
+    // grid原本就是有多少格显示多少格，
+ //    ui->tableView->setShowGrid(false); // 可隐藏grid
+     // 只能单选
+     ui->tableView->setSelectionMode(QAbstractItemView::SingleSelection);
+     // 以行作为选择标准
+     ui->tableView->setSelectionBehavior(QAbstractItemView::QAbstractItemView::SelectRows);
+     // 行头隐藏
+     ui->tableView->verticalHeader()->hide();
+     // 让列头可被点击，触发点击事件
+     ui->tableView->horizontalHeader()->setSectionsClickable(true);
+     // 去掉选中表格时，列头的文字高亮
+     ui->tableView->horizontalHeader()->setHighlightSections(false);
+     ui->tableView->horizontalHeader()->setBackgroundRole(QPalette::Background);
+     // 列头灰色
+     ui->tableView->horizontalHeader()->setStyleSheet("QHeaderView::section{background-color:rgb(225,225,225)};");
+     connect(ui->tableView->horizontalHeader(), SIGNAL(sectionClicked(int)), this, SLOT(sortByColumn(int)));
+
 }
+
 
 void CDairyMainWindow::closeEvent(QCloseEvent *event)
 {
@@ -226,7 +277,22 @@ void CDairyMainWindow::on_action_save_triggered()
 {
 //    CSqlOperate::test();
 //    return;
-    //
+    // 个人隐私
+    QSqlTableModel *pModel = dynamic_cast<QSqlTableModel *>(ui->tableViewPrivate->model());
+        pModel->database().transaction(); //开始事务操作
+        if (pModel->submitAll()) // 提交所有被修改的数据到数据库中
+        {
+            pModel->database().commit(); //提交成功，事务将真正修改数据库数据
+        }
+        else
+        {
+            pModel->database().rollback(); //提交失败，事务回滚
+            QMessageBox::warning(this, tr("tableModel"),tr("数据库错误: %1").arg(pModel->lastError().text()));
+        }
+        pModel->revertAll(); //撤销修改
+
+
+    // 日记部分
     QMdiSubWindow* pMdiSubWindow = ui->mdiArea->currentSubWindow();
     if (pMdiSubWindow == NULL)
     {
@@ -394,6 +460,12 @@ void CDairyMainWindow::on_listViewTag_clicked(const QModelIndex &index)
 }
 
 void CDairyMainWindow::on_calendarWidget_clicked(const QDate &date)
+{
+
+}
+
+
+void CDairyMainWindow::on_listViewPrivate_clicked(const QModelIndex &index)
 {
 
 }
