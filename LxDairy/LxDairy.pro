@@ -54,7 +54,9 @@ HEADERS += \
     src/DairyEdit.h \
     src/DairyEditWidget.h \
     src/model/DairyStatisticsModel.h \
-    src/delegate/DairyStatisticsDelegate.h
+    src/delegate/DairyStatisticsDelegate.h \
+    src/model/PrivateMenuModel.h \
+    src/model/APasswdTableModel.h
 
 SOURCES += \
     src/delegate/DairyTagDelegate.cpp \
@@ -76,7 +78,9 @@ SOURCES += \
     src/DairyEdit.cpp \
     src/DairyEditWidget.cpp \
     src/model/DairyStatisticsModel.cpp \
-    src/delegate/DairyStatisticsDelegate.cpp
+    src/delegate/DairyStatisticsDelegate.cpp \
+    src/model/PrivateMenuModel.cpp \
+    src/model/APasswdTableModel.cpp
 
 FORMS += \
     src/AboutDialog.ui \
