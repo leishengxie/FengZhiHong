@@ -4,6 +4,7 @@
 #include <QtDebug>
 #include <QMdiSubWindow>
 #include <QSqlTableModel>
+#include <QSqlError>
 
 #include "LoginWidget.h"
 #include "SqlOperate.h"
@@ -79,11 +80,37 @@ void CDairyMainWindow::initPageDairy()
 
 void CDairyMainWindow::initPagePrivate()
 {
-    CPrivateMenuModel *pModel = new CPrivateMenuModel(this);
-    ui->listViewPrivate->setModel(pModel);
-    ui->listViewPrivate->setViewMode(QListView::IconMode);
+    ui->btnAdd->setEnabled();
+    ui->listWidgetPrivate->setIconSize(QSize(64,64));
+    ui->listWidgetPrivate->setGridSize(QSize(96,96));
+    //ui->listWidgetPrivate->set
+    //ui->listWidgetPrivate->setResizeMode(QListView::Adjust); //设置QListView大小改变时，图标的调整模式，默认是固定的，但可以改成自动调整：
+//    CPrivateMenuModel *pModel = new CPrivateMenuModel(this);
+//    ui->listViewPrivate->setModel(pModel);
+//    ui->listViewPrivate->setViewMode(QListView::IconMode);
+    // 此处用listWidget替代listView
 
     //直接操作数据库
+//    ui->tableViewPrivate->setShowGrid(false); //设置不显示格子线
+    ui->tableViewPrivate->horizontalHeader()->setStyleSheet( \
+                "QHeaderView::section{font:14px 'Microsoft YaHei UI';" \
+                                      "border-bottom:3px solid #DEE1E4;}"); //设置表头背景色
+    ui->tableViewPrivate->setSelectionMode(QAbstractItemView::SingleSelection);
+    ui->tableViewPrivate->setSelectionBehavior(QAbstractItemView::QAbstractItemView::SelectRows);
+    ui->tableViewPrivate->verticalHeader()->hide();
+
+    ui->tableViewPrivate->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+
+
+    // 让列头可被点击，触发点击事件
+    //ui->tableViewPrivate->horizontalHeader()->setSectionsClickable(true);
+    // 去掉选中表格时，列头的文字高亮
+    //ui->tableViewPrivate->horizontalHeader()->setHighlightSections(false);
+    //ui->tableViewPrivate->horizontalHeader()->setBackgroundRole(QPalette::Background);
+    // 列头灰色
+   // ui->tableViewPrivate->horizontalHeader()->setStyleSheet("QHeaderView::section{background-color:rgb(225,225,225)};");
+    //connect(ui->tableViewPrivate->horizontalHeader(), SIGNAL(sectionClicked(int)), this, SLOT(sortByColumn(int)));
+
     QSqlTableModel* pApasswdTableModel = new QSqlTableModel(this);
     pApasswdTableModel->setTable("tAPasswd");
     // 三种提交方式，改动即提交，选择其他行时提交，手动提交；经实际测试，其中只有手动提交在显示效果上是最好的
@@ -98,23 +125,6 @@ void CDairyMainWindow::initPagePrivate()
     pApasswdTableModel->setHeaderData(1, Qt::Horizontal, "账号");
     pApasswdTableModel->setHeaderData(2, Qt::Horizontal, "密码");
     ui->tableViewPrivate->setModel(pApasswdTableModel);
-
-    // grid原本就是有多少格显示多少格，
- //    ui->tableView->setShowGrid(false); // 可隐藏grid
-     // 只能单选
-     ui->tableView->setSelectionMode(QAbstractItemView::SingleSelection);
-     // 以行作为选择标准
-     ui->tableView->setSelectionBehavior(QAbstractItemView::QAbstractItemView::SelectRows);
-     // 行头隐藏
-     ui->tableView->verticalHeader()->hide();
-     // 让列头可被点击，触发点击事件
-     ui->tableView->horizontalHeader()->setSectionsClickable(true);
-     // 去掉选中表格时，列头的文字高亮
-     ui->tableView->horizontalHeader()->setHighlightSections(false);
-     ui->tableView->horizontalHeader()->setBackgroundRole(QPalette::Background);
-     // 列头灰色
-     ui->tableView->horizontalHeader()->setStyleSheet("QHeaderView::section{background-color:rgb(225,225,225)};");
-     connect(ui->tableView->horizontalHeader(), SIGNAL(sectionClicked(int)), this, SLOT(sortByColumn(int)));
 
 }
 
