@@ -80,7 +80,7 @@ void CDairyMainWindow::initPageDairy()
 
 void CDairyMainWindow::initPagePrivate()
 {
-    ui->btnAdd->setEnabled();
+    //ui->btnAdd->setEnabled();
     ui->listWidgetPrivate->setIconSize(QSize(64,64));
     ui->listWidgetPrivate->setGridSize(QSize(96,96));
     //ui->listWidgetPrivate->set
@@ -120,10 +120,11 @@ void CDairyMainWindow::initPagePrivate()
 //    pApasswdTableModel->setQuery("select item account passwd form tAPasswd where uid ="
 //                                 + QString::number(CUser::getInstance()->getUid()));
     pApasswdTableModel->select();
-    pApasswdTableModel->removeColumns(0, 2); // 不显示aid, uid 2列
-    pApasswdTableModel->setHeaderData(0, Qt::Horizontal, "栏目");
-    pApasswdTableModel->setHeaderData(1, Qt::Horizontal, "账号");
-    pApasswdTableModel->setHeaderData(2, Qt::Horizontal, "密码");
+    pApasswdTableModel->removeColumn(0); // 不显示aid列
+    pApasswdTableModel->setHeaderData(0, Qt::Horizontal, "当前账户");
+    pApasswdTableModel->setHeaderData(1, Qt::Horizontal, "栏目");
+    pApasswdTableModel->setHeaderData(2, Qt::Horizontal, "账号");
+    pApasswdTableModel->setHeaderData(3, Qt::Horizontal, "密码");
     ui->tableViewPrivate->setModel(pApasswdTableModel);
 
 }
@@ -478,4 +479,47 @@ void CDairyMainWindow::on_calendarWidget_clicked(const QDate &date)
 void CDairyMainWindow::on_listViewPrivate_clicked(const QModelIndex &index)
 {
 
+
+}
+
+void CDairyMainWindow::on_btnAdd_clicked()
+{
+    QSqlTableModel* model = (QSqlTableModel*)ui->tableViewPrivate->model();
+    int rowNum = model->rowCount(); //获得表的行数
+        model->insertRow(rowNum); //添加一行
+        model->setData(model->index(rowNum, 0), CUser::getInstance()->getUid());
+        //model->submitAll(); //可以直接提交
+}
+
+void CDairyMainWindow::on_btnCommit_clicked()
+{
+    QSqlTableModel* model = (QSqlTableModel*)ui->tableViewPrivate->model();
+    model->database().transaction(); //开始事务操作
+    if (model->submitAll())
+    {
+        model->database().commit(); //提交
+    }
+    else
+    {
+        model->database().rollback(); //回滚
+        QMessageBox::warning(this, tr("tableModel"), tr("数据库错误: %1").arg(model->lastError().text()));
+    }
+}
+
+void CDairyMainWindow::on_btnDelete_clicked()
+{
+    QSqlTableModel* model = (QSqlTableModel*)ui->tableViewPrivate->model();
+    int curRow = ui->tableViewPrivate->currentIndex().row();
+        //获取选中的行
+        model->removeRow(curRow);
+        //删除该行
+        int ok = QMessageBox::warning(this,tr("删除当前行!"),tr("你确定删除当前行吗？"), QMessageBox::Yes, QMessageBox::No);
+        if(ok == QMessageBox::No)
+        {
+           model->revertAll(); //如果不删除，则撤销
+        }
+        else
+        {
+            model->submitAll(); //否则提交，在数据库中删除该行
+        }
 }

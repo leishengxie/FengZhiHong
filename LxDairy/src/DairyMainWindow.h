@@ -101,6 +101,12 @@ private slots:
 
     void on_listViewPrivate_clicked(const QModelIndex &index);
 
+    void on_btnAdd_clicked();
+
+    void on_btnCommit_clicked();
+
+    void on_btnDelete_clicked();
+
 private:
     void initPageDairy();
     void initPagePrivate();
