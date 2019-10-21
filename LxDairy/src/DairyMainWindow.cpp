@@ -141,6 +141,7 @@ void CDairyMainWindow::closeEvent(QCloseEvent *event)
     {
         event->accept();//关闭
     }
+
 }
 
 

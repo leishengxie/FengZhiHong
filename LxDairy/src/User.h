@@ -15,6 +15,8 @@ class CUser : public QObject, public CSingleton<CUser>
 {
     Q_OBJECT
 public:
+    CUser();
+
     SETGET(int, nUid, Uid)
     SETGET(QString, strUserName, UserName)
     SETGET(QList<CDairy>, m_lstDairy, LstDairy)
@@ -24,7 +26,6 @@ public:
 
     void appendDairy(CDairy dairy);
 
-    CUser();
 
     void loadDairyList(const QList<CDairy> & lstDairy);
 

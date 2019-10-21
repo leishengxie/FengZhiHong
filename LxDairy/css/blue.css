@@ -1,24 +1,3 @@
-QWidget#frmLogin,QWidget#frmPopup,QWidget#frmHostInfo,QWidget#frmLogout,QWidget#frmConfig,QWidget#frmData,QWidget#frmDefence,QWidget#frmHost,QWidget#frmMain,QWidget#frmPwd,QWidget#frmSelect,QWidget#frmMessageBox{
-	border:1px solid #1B89CA;
-	border-radius:0px;	
-}
-
-.QFrame{
-	border:1px solid #5CACEE;
-	border-radius:5px;
-}
-
-QWidget#widget_title{
-	background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #1B89CA, stop:1 #1077B5);
-}
-
-QLabel#lab_Ico,QLabel#lab_Title{
-	border-radius:0px;
-	color: #F0F0F0;
-	background-color:rgba(0,0,0,0);
-	border-style:none;
-}
-
 QLineEdit {
 	border: 1px solid #5CACEE;
 	border-radius: 5px;
@@ -132,30 +111,6 @@ QComboBox::drop-down,QDateEdit::drop-down {
 
 QComboBox::down-arrow,QDateEdit::down-arrow {
         image: url(:/img/css/array_down.png);
-}
-
-QMenu {
-	background-color:#F0F0F0;
-	margin: 2px;
-}
-
-QMenu::item {	
-	padding: 2px 12px 2px 12px;
-}
-
-QMenu::indicator {
-	width: 13px;
-	height: 13px;
-}
-
-QMenu::item:selected {
-	color: #FFFFFF;
-	background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #1B89CA, stop:1 #1077B5); 
-}
-
-QMenu::separator {
-	height: 1px;
-	background: #5CACEE;
 }
 
 QProgressBar {
