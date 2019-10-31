@@ -7,6 +7,7 @@
 #include "SqlOperate.h"
 #include "User.h"
 #include "model/DairyTagListModel.h"
+#include "tts/windows/LWindowsTTSS.h"
 
 CDairyEditWidget::CDairyEditWidget(QWidget *parent) :
     QWidget(parent),
@@ -32,6 +33,10 @@ CDairyEditWidget::CDairyEditWidget(CDairy dairy, QWidget *parent) :
     ui->labelDateTime->setText(strDateTimeDisplay);
     ui->leTitle->setText(dairy.getTitle());
     ui->dairyEdit->setPlainText(dairy.getContent());
+
+    //tts
+    m_pITTS = new CLWindowsTTSS(this);
+    m_pITTS->initSpeech();
 }
 
 CDairyEditWidget::~CDairyEditWidget()
@@ -120,4 +125,9 @@ void CDairyEditWidget::closeEvent(QCloseEvent *event)
 void CDairyEditWidget::onCopy()
 {
     ui->dairyEdit->copy();
+}
+
+void CDairyEditWidget::on_btnTTSPlay_clicked()
+{
+    m_pITTS->speak(QString("3张全票"));
 }

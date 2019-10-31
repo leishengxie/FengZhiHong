@@ -47,7 +47,10 @@
        <item row="0" column="0">
         <widget class="QLabel" name="label">
          <property name="text">
-          <string>用户名:</string>
+          <string>用户名:(&amp;U)</string>
+         </property>
+         <property name="buddy">
+          <cstring>leUserName</cstring>
          </property>
         </widget>
        </item>
@@ -57,7 +60,10 @@
        <item row="1" column="0">
         <widget class="QLabel" name="label_2">
          <property name="text">
-          <string>密码:</string>
+          <string>密码:(&amp;P)</string>
+         </property>
+         <property name="buddy">
+          <cstring>lePasswd</cstring>
          </property>
         </widget>
        </item>

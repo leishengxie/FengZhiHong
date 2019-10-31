@@ -5,6 +5,7 @@
 #include "DairyMainWindow.h"
 
 #include <QSettings>
+#include <QResizeEvent>
 
 CLoginWidget::CLoginWidget(QWidget *parent) :
     QWidget(parent),
@@ -99,4 +100,11 @@ void CLoginWidget::on_ckboxRememberPasswd_clicked(bool checked)
     QSettings conf("conf.ini", QSettings::IniFormat);
     conf.beginGroup("user");
     conf.setValue("remember_passwd", checked);
+}
+
+void CLoginWidget::resizeEvent(QResizeEvent *event)
+{
+    QPalette pal;
+    pal.setBrush(QPalette::Background, QBrush(QPixmap(":/img/bg/1.jpg").scaled(size())));
+    setPalette(pal);
 }

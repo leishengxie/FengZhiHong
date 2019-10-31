@@ -168,6 +168,13 @@
     </layout>
    </item>
    <item>
+    <widget class="QPushButton" name="btnTTSPlay">
+     <property name="text">
+      <string>播放日记语音</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="CDairyEdit" name="dairyEdit"/>
    </item>
   </layout>

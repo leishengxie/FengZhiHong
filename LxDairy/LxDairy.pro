@@ -56,7 +56,9 @@ HEADERS += \
     src/model/DairyStatisticsModel.h \
     src/delegate/DairyStatisticsDelegate.h \
     src/model/PrivateMenuModel.h \
-    src/model/APasswdTableModel.h
+    src/model/APasswdTableModel.h \
+    src/tts/TTS.h \
+    src/tts/windows/LWindowsTTSS.h
 
 SOURCES += \
     src/delegate/DairyTagDelegate.cpp \
@@ -80,7 +82,9 @@ SOURCES += \
     src/model/DairyStatisticsModel.cpp \
     src/delegate/DairyStatisticsDelegate.cpp \
     src/model/PrivateMenuModel.cpp \
-    src/model/APasswdTableModel.cpp
+    src/model/APasswdTableModel.cpp \
+    src/tts/TTS.cpp \
+    src/tts/windows/LWindowsTTS.cpp
 
 FORMS += \
     src/AboutDialog.ui \

@@ -24,6 +24,9 @@ private slots:
 
     void on_ckboxRememberPasswd_clicked(bool checked);
 
+protected:
+    void resizeEvent(QResizeEvent *event);
+
 private:
     Ui::CLoginWidget *ui;
 };
