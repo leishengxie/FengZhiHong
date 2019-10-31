@@ -13,7 +13,7 @@ TEMPLATE = app
 DESTDIR = $$PWD/bin
 message("hello LxDairy!")
 
-
+RC_FILE += icon.rc
 
 RESOURCES += \
     res.qrc
