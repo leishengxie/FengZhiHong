@@ -13,24 +13,37 @@ TEMPLATE = app
 DESTDIR = $$PWD/bin
 message("hello LxDairy!")
 
-RC_FILE += icon.rc
+#RC_FILE += icon.rc
+#RC_FILE += version.rc
 
 RESOURCES += \
     res.qrc
 
+#VERSION = 0.1.1
+#QMAKE_TARGET_PRODUCT = LxDairy
+#QMAKE_TARGET_COMPANY = Lx
+#QMAKE_TARGET_DESCRIPTION = 个人日记本
+#QMAKE_TARGET_COPYRIGHT = Lx
+
+#链接库
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../LxTool/LQtTool/bin/ -lLQtTool
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../LxTool/LQtTool/bin/ -lLQtToold
 else:unix: LIBS += -L$$PWD/../../LxTool/LQtTool/bin/ -lLQtTool
-
-INCLUDEPATH += $$PWD/../../LxTool/LQtTool/include
-DEPENDPATH += $$PWD/../../LxTool/LQtTool/include
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../LxTool/LStdTool/bin/ -lLStdTool
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../LxTool/LStdTool/bin/ -lLStdToold
 else:unix: LIBS += -L$$PWD/../../LxTool/LStdTool/bin/ -lLStdTool
 
+win32: LIBS += -L$$PWD/../../LxMultimedia/LxTTS/lib/ -lTTS_Win32
+
+
+#依赖头文件
 INCLUDEPATH += $$PWD/../../LxTool/LStdTool/include
 DEPENDPATH += $$PWD/../../LxTool/LStdTool/include
+INCLUDEPATH += $$PWD/../../LxTool/LQtTool/include
+DEPENDPATH += $$PWD/../../LxTool/LQtTool/include
+INCLUDEPATH += $$PWD/../../LxMultimedia/LxTTS/include
+DEPENDPATH += $$PWD/../../LxMultimedia/LxTTS/include
 
 INCLUDEPATH += $$PWD/src
 DEPENDPATH += $$PWD/src
@@ -93,3 +106,5 @@ FORMS += \
     src/RegisterDialog.ui \
     src/SkinWidget.ui \
     src/DairyEditWidget.ui
+
+

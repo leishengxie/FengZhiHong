@@ -129,5 +129,7 @@ void CDairyEditWidget::onCopy()
 
 void CDairyEditWidget::on_btnTTSPlay_clicked()
 {
-    m_pITTS->speak(QString("3张全票"));
+    QString strContent = ui->dairyEdit->toPlainText();
+    m_pITTS->speak(strContent);
+   // m_pITTS->speak(QString("3张全票，你好，我叫雷胜协，风吹柳花满店香，吴姬压酒劝客尝。日照香炉生紫烟，遥看瀑布挂前川。飞流直下三千尺，疑是银河落九天。"));
 }
