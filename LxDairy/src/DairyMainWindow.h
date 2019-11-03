@@ -33,6 +33,9 @@ class DairyMainWindow;
 class CSkinWidget;
 class CLoginWidget;
 class QMdiSubWindow;
+class CLMusicPlayer;
+class CMusicSettingDialog;
+class ITTS;
 
 class CDairyMainWindow : public QMainWindow
 {
@@ -107,6 +110,12 @@ private slots:
 
     void on_btnDelete_clicked();
 
+    void on_action_music_triggered();
+
+    void on_btnPlayMusic_clicked();
+
+    void on_btnTTSPlay_clicked();
+
 private:
     void initPageDairy();
     void initPagePrivate();
@@ -117,6 +126,9 @@ private:
     CLoginWidget* m_pLoginWidget;
     // 当前活动的日记
     CDairy m_dairyActive;
+    CLMusicPlayer* m_pMusicPlayer;
+    CMusicSettingDialog* m_pMusicSettingDialog;
+    ITTS* m_pITTS;
 };
 
 #endif // MAINWINDOW_H

@@ -5,7 +5,7 @@
 #include <QMdiSubWindow>
 #include <QSqlTableModel>
 #include <QSqlError>
-
+#include <QTimer>
 #include "LoginWidget.h"
 #include "SqlOperate.h"
 #include "SkinWidget.h"
@@ -19,12 +19,16 @@
 #include "User.h"
 #include "DairyEdit.h"
 #include "DairyEditWidget.h"
-
+#include "music/LMusicPlayer.h"
+#include "MusicSettingDialog.h"
+#include "tts/windows/LWindowsTTSS.h"
 
 CDairyMainWindow::CDairyMainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::DairyMainWindow)
     , m_pSkinWidget(new CSkinWidget())
+    , m_pMusicPlayer(new CLMusicPlayer(this, this))
+    , m_pMusicSettingDialog(new CMusicSettingDialog())
 {
     ui->setupUi(this);
     setWindowTitle("LxDairy - " + CUser::getInstance()->getUserName());
@@ -39,6 +43,7 @@ CDairyMainWindow::CDairyMainWindow(QWidget *parent)
 
 CDairyMainWindow::~CDairyMainWindow()
 {
+    m_pMusicSettingDialog->deleteLater();
     delete ui;
 }
 
@@ -58,10 +63,10 @@ void CDairyMainWindow::initPageDairy()
     ui->treeDairy->setItemDelegate(pDairyDateDelegate);
     connect(pDairyDateTreeModel, SIGNAL(loadTodayDairyFinished(CDairy)), this, SLOT(slot_displayDairy(CDairy)));
     connect(pDairyDateTreeModel, SIGNAL(requireExpand(QModelIndex)), this, SLOT(onRequireExpand(QModelIndex)));
-    pDairyDateTreeModel->loadAllDairy();
+
     //connect(ui->treeDairy, SIGNAL(clicked(QModelIndex))
 
-
+    // 初始化日记统计
     CDairyStatisticsModel* pDairyStatisticsModel = new CDairyStatisticsModel(this);
     CDairyStatisticsDelegate* pDairyStatisticsDelegate = new CDairyStatisticsDelegate;
     ui->listViewStatistics->setModel(pDairyStatisticsModel);
@@ -76,6 +81,20 @@ void CDairyMainWindow::initPageDairy()
     //QMdiArea::AreaOption option;
     //ui->mdiArea->setOption(option, true);
     //connect(ui->mdiArea, SIGNAL(customContextMenuRequested(QPoint))
+
+
+    // 音乐播放模块
+    statusBar()->addWidget((QWidget*)m_pMusicPlayer->getLrcWidget());
+    statusBar()->setStyleSheet(QString("QStatusBar::item{border: 0px}"));
+    //tts
+    m_pITTS = new CLWindowsTTSS(this);
+    m_pITTS->initSpeech();
+
+    // 等所有初始化完成
+    QTimer::singleShot(1000,[=](){
+        pDairyDateTreeModel->loadAllDairy();
+    });
+
 }
 
 void CDairyMainWindow::initPagePrivate()
@@ -127,6 +146,7 @@ void CDairyMainWindow::initPagePrivate()
     pApasswdTableModel->setHeaderData(3, Qt::Horizontal, "密码");
     ui->tableViewPrivate->setModel(pApasswdTableModel);
 
+
 }
 
 
@@ -150,6 +170,7 @@ void CDairyMainWindow::setLoginWidget(CLoginWidget *pLoginWidget)
 {
     m_pLoginWidget = pLoginWidget;
 }
+
 
 void CDairyMainWindow::slot_displayDairy(const CDairy &dairy)
 {
@@ -523,4 +544,34 @@ void CDairyMainWindow::on_btnDelete_clicked()
         {
             model->submitAll(); //否则提交，在数据库中删除该行
         }
+}
+
+// setting
+void CDairyMainWindow::on_action_music_triggered()
+{
+    m_pMusicSettingDialog->exec();
+}
+
+
+
+
+void CDairyMainWindow::on_btnPlayMusic_clicked()
+{
+    m_pMusicPlayer->onPlay(m_pMusicSettingDialog->getMusicListPath());
+}
+
+void CDairyMainWindow::on_btnTTSPlay_clicked()
+{
+
+    QMdiSubWindow* pMdiSubWindow = ui->mdiArea->activeSubWindow();
+    if (pMdiSubWindow == NULL)
+    {
+        return;
+    }
+    // 停止音乐播放
+    //m_pMusicPlayer->stop();
+
+    CDairyEditWidget* pDairyEditWidget = qobject_cast<CDairyEditWidget*>(pMdiSubWindow->widget());
+    QString strContent = pDairyEditWidget->dairyEdit()->toPlainText();
+    m_pITTS->speak(strContent);
 }

@@ -10,7 +10,7 @@ class CDairyEditWidget;
 }
 
 class CDairyEdit;
-class ITTS;
+
 
 class CDairyEditWidget : public QWidget
 {
@@ -39,11 +39,11 @@ public slots:
     void onCopy();
 
 private slots:
-    void on_btnTTSPlay_clicked();
+
 
 private:
     Ui::CDairyEditWidget *ui;
-    ITTS* m_pITTS;
+
 };
 
 #endif // DAIRYEDITWIDGET_H

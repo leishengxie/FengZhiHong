@@ -4,17 +4,19 @@
 #
 #-------------------------------------------------
 
-QT       += core gui sql
+QT       += core gui sql multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
+CONFIG  += c++11
 
 TARGET = LxDairy
 TEMPLATE = app
 DESTDIR = $$PWD/bin
 message("hello LxDairy!")
 
-#RC_FILE += icon.rc
-#RC_FILE += version.rc
+RC_FILE += icon.rc
+RC_FILE += version.rc
 
 RESOURCES += \
     res.qrc
@@ -22,10 +24,10 @@ RESOURCES += \
 #VERSION = 0.1.1
 #QMAKE_TARGET_PRODUCT = LxDairy
 #QMAKE_TARGET_COMPANY = Lx
-#QMAKE_TARGET_DESCRIPTION = 个人日记本
+#QMAKE_TARGET_DESCRIPTION = 个人日记#
 #QMAKE_TARGET_COPYRIGHT = Lx
 
-#链接库
+#链接#
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../LxTool/LQtTool/bin/ -lLQtTool
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../LxTool/LQtTool/bin/ -lLQtToold
 else:unix: LIBS += -L$$PWD/../../LxTool/LQtTool/bin/ -lLQtTool
@@ -37,7 +39,7 @@ else:unix: LIBS += -L$$PWD/../../LxTool/LStdTool/bin/ -lLStdTool
 win32: LIBS += -L$$PWD/../../LxMultimedia/LxTTS/lib/ -lTTS_Win32
 
 
-#依赖头文件
+#依赖头文#
 INCLUDEPATH += $$PWD/../../LxTool/LStdTool/include
 DEPENDPATH += $$PWD/../../LxTool/LStdTool/include
 INCLUDEPATH += $$PWD/../../LxTool/LQtTool/include
@@ -71,7 +73,11 @@ HEADERS += \
     src/model/PrivateMenuModel.h \
     src/model/APasswdTableModel.h \
     src/tts/TTS.h \
-    src/tts/windows/LWindowsTTSS.h
+    src/tts/windows/LWindowsTTSS.h \
+    src/MusicSettingDialog.h \
+    src/music/LLrc.h \
+    src/music/LLrcWidget.h \
+    src/music/LMusicPlayer.h
 
 SOURCES += \
     src/delegate/DairyTagDelegate.cpp \
@@ -97,7 +103,11 @@ SOURCES += \
     src/model/PrivateMenuModel.cpp \
     src/model/APasswdTableModel.cpp \
     src/tts/TTS.cpp \
-    src/tts/windows/LWindowsTTS.cpp
+    src/tts/windows/LWindowsTTS.cpp \
+    src/MusicSettingDialog.cpp \
+    src/music/LLrc.cpp \
+    src/music/LLrcWidget.cpp \
+    src/music/LMusicPlayer.cpp
 
 FORMS += \
     src/AboutDialog.ui \
@@ -105,6 +115,7 @@ FORMS += \
     src/LoginWidget.ui \
     src/RegisterDialog.ui \
     src/SkinWidget.ui \
-    src/DairyEditWidget.ui
+    src/DairyEditWidget.ui \
+    src/MusicSettingDialog.ui
 
 

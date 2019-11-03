@@ -500,9 +500,7 @@ void CDairyDateTreeModel::reloadDairyByTag(const QString &strTagName)
     m_pDairyDateItemRoot->deleteChildren();
     if ( "全部日记" == strTagName)
     {
-        beginResetModel();
         loadAllDairy();
-        endResetModel();
         return;
     }
 
@@ -515,18 +513,18 @@ void CDairyDateTreeModel::reloadDairyByTag(const QString &strTagName)
             lstDairyLoad.append(dairy);
         }
     }
-    beginResetModel();
     loadDairy(lstDairyLoad);
-    endResetModel();
 }
 
 void CDairyDateTreeModel::createDateTree(const QList<CDairy> & lstDairy)
 {
+    beginResetModel();
     m_pDairyDateItemRoot = new T_DairyDateItem(ED_Root);
     foreach (CDairy dairy, lstDairy)
     {
         insetDairy(dairy);
     }
+    endResetModel();
 }
 
 void CDairyDateTreeModel::insetDairy(CDairy dairy)
@@ -584,7 +582,7 @@ void CDairyDateTreeModel::dairyModify(const CDairy &dairyBefore, const CDairy &d
     {
         return;
     }
-    //beginResetModel();
+
     T_DairyDateItem* pDairyDateItem = NULL;
     m_pDairyDateItemRoot->dairyModify(dairyBefore, dairyAfter, pDairyDateItem);
     //endResetModel();

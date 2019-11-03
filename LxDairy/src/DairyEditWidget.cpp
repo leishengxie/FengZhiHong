@@ -7,7 +7,6 @@
 #include "SqlOperate.h"
 #include "User.h"
 #include "model/DairyTagListModel.h"
-#include "tts/windows/LWindowsTTSS.h"
 
 CDairyEditWidget::CDairyEditWidget(QWidget *parent) :
     QWidget(parent),
@@ -34,9 +33,7 @@ CDairyEditWidget::CDairyEditWidget(CDairy dairy, QWidget *parent) :
     ui->leTitle->setText(dairy.getTitle());
     ui->dairyEdit->setPlainText(dairy.getContent());
 
-    //tts
-    m_pITTS = new CLWindowsTTSS(this);
-    m_pITTS->initSpeech();
+
 }
 
 CDairyEditWidget::~CDairyEditWidget()
@@ -127,9 +124,6 @@ void CDairyEditWidget::onCopy()
     ui->dairyEdit->copy();
 }
 
-void CDairyEditWidget::on_btnTTSPlay_clicked()
-{
-    QString strContent = ui->dairyEdit->toPlainText();
-    m_pITTS->speak(strContent);
-   // m_pITTS->speak(QString("3张全票，你好，我叫雷胜协，风吹柳花满店香，吴姬压酒劝客尝。日照香炉生紫烟，遥看瀑布挂前川。飞流直下三千尺，疑是银河落九天。"));
-}
+
+
+
