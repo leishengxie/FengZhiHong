@@ -3,12 +3,24 @@
 #include "SqlOperate.h"
 #include "SkinWidget.h"
 #include <QApplication>
+#include <QProcess>
 #include <QMessageBox>
 
+static const QString s_strUpder = "LxDairyUpd.exe";
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+
+    if (argc == 1)
+    {
+        if(!QProcess::startDetached(s_strUpder))
+        {
+            QWidget widget;
+            QMessageBox::warning(&widget,"警告信息","启动更新程序错误!\n可能主程序不存在或者被破坏!\n解决办法：重新安装程序!");
+        }
+        return 0;
+    }
 
     if (!CSqlOperate::connect("LxDairy.db"))
     {
@@ -17,6 +29,10 @@ int main(int argc, char *argv[])
     }
     CSqlOperate::createTable();
     CSkinWidget::loadQssStyle();
+
+//    QApplication::setOrganizationName("Lx");
+//    QApplication::setApplicationName("LxDairy");
+//    QApplication::setApplicationVersion("0.1.0");
 
     CLoginWidget l;
     l.show();
