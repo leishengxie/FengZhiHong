@@ -16,6 +16,8 @@ CLDefaultResponder::~CLDefaultResponder()
 
 }
 
+//http://127.0.0.1:8080/?action=show
+//http://127.0.0.1:8080/?action=show&name=LiLei
 int CLDefaultResponder::handle()
 {
     m_resp->setHeader("Content-Type", "text/html; charset=ISO-8859-1");

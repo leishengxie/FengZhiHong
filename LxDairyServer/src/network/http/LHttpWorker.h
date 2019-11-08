@@ -4,7 +4,7 @@
 #include <QThread>
 #include <QPointer>
 #include <QList>
-#include "LResponderFactory.h"
+#include "IResponderCreator.h"
 #include <QTcpSocket>
 #include "LHttpEvent.h"
 

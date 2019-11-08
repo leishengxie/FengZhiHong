@@ -1,7 +1,7 @@
 ﻿#include "LHttpServer.h"
 //#include "httpRequest.h"
 //#include "httpResponse.h"
-#include "LResponderFactory.h"
+#include "IResponderCreator.h"
 #include <QSettings>
 #include <QFile>
 #include <QStringList>

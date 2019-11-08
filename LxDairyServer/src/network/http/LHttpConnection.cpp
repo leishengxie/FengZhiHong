@@ -7,7 +7,9 @@
 
 #include "LHttpRequest.h"
 #include "LHttpResponse.h"
+#include "IResponderCreator.h"
 #include "LResponderFactory.h"
+#include "IResponder.h"
 
 #ifdef Q_OS_WIN
     #include <winsock2.h>
@@ -109,9 +111,9 @@ void CLHttpConnection::parseRequest()
             // Call the request mapper
             try
             {
-                IResponder* pResponder = CLResponderFactory::createResponder(m_pRequest, &response);
-                pResponder->handle();
-                pResponder->deleteLater();
+                 IResponder* pResponder = CLResponderFactory::createResponder(m_pRequest, &response);
+                 pResponder->handle();
+                 pResponder->deleteLater();
             }
             catch (...)
             {

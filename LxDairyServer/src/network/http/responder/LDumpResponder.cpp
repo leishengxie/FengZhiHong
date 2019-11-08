@@ -10,6 +10,7 @@ CLDumpResponder::CLDumpResponder(CLHttpRequest *req, CLHttpResponse *resp)
 
 }
 
+// http://127.0.0.1:8080/dump
 int CLDumpResponder::handle()
 {
     m_resp->setHeader("Content-Type", "text/html; charset=ISO-8859-1");

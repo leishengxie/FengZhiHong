@@ -11,6 +11,8 @@
 #include <signal.h>
 #include "LHttpConfig.h"
 #include "LHttpDef.h"
+#include "LDiaryResponderCreator.h"
+#include "LResponderFactory.h"
 
 ///
 /// \brief 信号处理函数
@@ -83,12 +85,16 @@ int main(int argc, char *argv[])
 
 	QCoreApplication a(argc, argv);
 
-    // 加载全局配置文件
+    // 加载全局配置文件, 加载失败需要退出程序
     CLHttpServerConfig & config = CLHttpServerConfig::instance();
     if(!config.loadConfig(CONFIG_FILE_NAME))
     {
         return -1;
     }
+
+    // 设置样本
+    CLDiaryResponderCreator* pDiaryResponderCreator = new CLDiaryResponderCreator();
+    CLResponderFactory::setCreatorSample(pDiaryResponderCreator);
 
     // 启动服务线程
     CLWorkerHostThread<CLHttpServer> *serverThread = new CLWorkerHostThread<CLHttpServer>(0);
