@@ -8,6 +8,12 @@ CLResponderFactory::CLResponderFactory(QObject *parent) : QObject(parent)
 
 }
 
+CLResponderFactory::~CLResponderFactory()
+{
+    delete s_pResponderCreator;
+    s_pResponderCreator == NULL;
+}
+
 void CLResponderFactory::setCreatorSample(IResponderCreator *responderCreator)
 {
     s_pResponderCreator = responderCreator;

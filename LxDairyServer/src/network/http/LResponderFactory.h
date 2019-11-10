@@ -13,6 +13,7 @@ class CLResponderFactory : public QObject
     Q_OBJECT
 public:
     explicit CLResponderFactory(QObject *parent = 0);
+    ~CLResponderFactory();
 
     static void setCreatorSample(IResponderCreator* responderCreator);
 

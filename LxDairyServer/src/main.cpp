@@ -1,18 +1,5 @@
-﻿
-/***********************************************************************************
-说明：
-	httpserver的简单实现
-联系：
-	haoer715@gmail.com
-***********************************************************************************/
-
-#include "LHttpServer.h"
-#include <QtCore/QCoreApplication>
+﻿#include "LDairyService.h"
 #include <signal.h>
-#include "LHttpConfig.h"
-#include "LHttpDef.h"
-#include "LDiaryResponderCreator.h"
-#include "LResponderFactory.h"
 
 ///
 /// \brief 信号处理函数
@@ -77,28 +64,21 @@ static void register_signal()
 }
 
 
+//-i -install 安装服务。
+//-u -uninstall 卸载服务。
+//-e -exec 作为独立应用程序执行。
+//-t -terminate 停止服务。
+//-p -pause 暂停服务。
+//-r -resume 恢复暂停的服务。
+//-c cmd --command cmd 将用户定义的命令代码cmd发送到服务应用程序。
+//-v -version 显示版本和状态信息。
+// 具体看代码
 int main(int argc, char *argv[])
 {
     // 注册信号处理函数
-    register_signal();
+    //register_signal();
 
 
-	QCoreApplication a(argc, argv);
-
-    // 加载全局配置文件, 加载失败需要退出程序
-    CLHttpServerConfig & config = CLHttpServerConfig::instance();
-    if(!config.loadConfig(CONFIG_FILE_NAME))
-    {
-        return -1;
-    }
-
-    // 设置样本
-    CLDiaryResponderCreator* pDiaryResponderCreator = new CLDiaryResponderCreator();
-    CLResponderFactory::setCreatorSample(pDiaryResponderCreator);
-
-    // 启动服务线程
-    CLWorkerHostThread<CLHttpServer> *serverThread = new CLWorkerHostThread<CLHttpServer>(0);
-    serverThread->start();
-
-    return a.exec();
+    CLDairyService service(argc, argv);
+    return service.exec();
 }

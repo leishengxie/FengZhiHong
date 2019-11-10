@@ -3,10 +3,14 @@
 QT += core gui network
 
 TEMPLATE = app
+CONFIG += console
 
 TARGET = LxDairyServer
 
 DESTDIR = $$PWD/bin
+
+QMAKE_LFLAGS += /MANIFESTUAC:\"level=\'requireAdministrator\' uiAccess=\'false\'\" #以管理员运行
+QMAKE_LFLAGS += /SUBSYSTEM:WINDOWS,\"5.01\" #VS2013 在XP运行
 
 #import path to system
 SRC = ./src
@@ -16,6 +20,7 @@ INCLUDEPATH += \
     $$SRC/network/http \
     $$SRC/network/http/responder \
     $$SRC/utils
+
 
 HEADERS += \
     src/stdc/HttpParser.h \
@@ -39,7 +44,8 @@ HEADERS += \
     src/network/LNetDef.h \
     src/network/http/LResponderFactory.h \
     src/network/http/IResponderCreator.h \
-    src/LDiaryResponderCreator.h
+    src/LDiaryResponderCreator.h \
+    src/LDairyService.h
 
 SOURCES += \
     src/main.cpp \
@@ -60,4 +66,9 @@ SOURCES += \
     src/network/http/LHttpDef.cpp \
     src/network/http/LResponderFactory.cpp \
     src/network/http/IResponderCreator.cpp \
-    src/LDiaryResponderCreator.cpp
+    src/LDiaryResponderCreator.cpp \
+    src/LDairyService.cpp
+
+
+include(qtservice/qtservice.pri)
+include(logging/logging.pri)
