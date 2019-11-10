@@ -2,34 +2,12 @@
 #define WIDGET_H
 
 #include <QWidget>
+#include "LVersionXmlTool.h"
 #include "network/LHttpDownload.h"
 
 namespace Ui {
 class Widget;
 }
-
-
-///
-/// \brief The T_BinFileNodeMsg struct 序列化的xml节点为版本信息文件
-///
-struct T_BinFileNodeMsg
-{
-    QString name;
-    QString dir;
-    QString version;
-    T_BinFileNodeMsg()
-    {
-        init();
-    }
-
-    void init()
-    {
-        name = "";
-        dir = "";
-        version = "";
-    }
-};
-
 
 
 class Widget : public QWidget
@@ -41,10 +19,7 @@ public:
     ~Widget();
 
 
-
-    T_BinFileNodeMsg getElementMsgByName(QString strXmlFile, QString strBinName);
-    void checkVersion(const T_BinFileNodeMsg & tBinFileMsgNew, const T_BinFileNodeMsg & tBinFileMsgOld);
-    bool checkUpdateFiles(QString strNewFile, QString strOldFile);
+    bool checkUpdateFiles(const QString & strNewFile, const QString & strOldFile);
 
 
     void executeMainApp(QString strMain);

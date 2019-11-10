@@ -4,13 +4,13 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network xml
+QT       += core gui network multimedia axcontainer xml
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = LxDairyUpd
 TEMPLATE = app
-
+DESTDIR = $$PWD/../LxDairy/bin
 
 SOURCES += main.cpp\
         widget.cpp
@@ -25,14 +25,7 @@ win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../LxTool/LQtTool/bin/ 
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../LxTool/LQtTool/bin/ -lLQtToold
 else:unix: LIBS += -L$$PWD/../../LxTool/LQtTool/bin/ -lLQtTool
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../LxTool/LStdTool/bin/ -lLStdTool
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../LxTool/LStdTool/bin/ -lLStdToold
-else:unix: LIBS += -L$$PWD/../../LxTool/LStdTool/bin/ -lLStdTool
-
-
 
 #依赖头文#
-INCLUDEPATH += $$PWD/../../LxTool/LStdTool/include
-DEPENDPATH += $$PWD/../../LxTool/LStdTool/include
 INCLUDEPATH += $$PWD/../../LxTool/LQtTool/include
 DEPENDPATH += $$PWD/../../LxTool/LQtTool/include

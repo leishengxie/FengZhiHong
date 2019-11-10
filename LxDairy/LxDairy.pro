@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui sql multimedia
+QT       += core gui sql multimedia axcontainer xml
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -15,17 +15,23 @@ TEMPLATE = app
 DESTDIR = $$PWD/bin
 message("hello LxDairy!")
 
-RC_FILE += icon.rc
-RC_FILE += version.rc
+#只能指定一个rc文件, 如果一个也不指定将会默认在build目录下生成
+#RC_FILE += icon.rc
+#RC_FILE += version.rc
 
 RESOURCES += \
     res.qrc
 
-#VERSION = 0.1.1
-#QMAKE_TARGET_PRODUCT = LxDairy
-#QMAKE_TARGET_COMPANY = Lx
-#QMAKE_TARGET_DESCRIPTION = 个人日记#
-#QMAKE_TARGET_COPYRIGHT = Lx
+
+RC_ICONS = "img/appIcon/app.ico"
+VERSION = 0.1.0.0
+QMAKE_TARGET_PRODUCT = LxDairy
+QMAKE_TARGET_COMPANY = Lx
+QMAKE_TARGET_DESCRIPTION = this is a personal diary
+# 版权信息
+QMAKE_TARGET_COPYRIGHT = Lx
+# 中文（简体）
+RC_LANG = 0x0004
 
 #链接#
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../LxTool/LQtTool/bin/ -lLQtTool

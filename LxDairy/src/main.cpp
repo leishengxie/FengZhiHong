@@ -6,6 +6,7 @@
 #include <QProcess>
 #include <QMessageBox>
 
+
 static const QString s_strUpder = "LxDairyUpd.exe";
 
 int main(int argc, char *argv[])
