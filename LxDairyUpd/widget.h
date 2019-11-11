@@ -2,8 +2,9 @@
 #define WIDGET_H
 
 #include <QWidget>
+#include <QHostInfo>
 #include "LVersionXmlTool.h"
-#include "network/LHttpDownload.h"
+#include "LHttpDownload.h"
 
 namespace Ui {
 class Widget;
@@ -32,8 +33,10 @@ private slots:
     void onFinishedAllTask();
 
     void downLoadUpdateFiles();
+    void onLookupHost(QHostInfo host);
 private:
     void init();
+    void checkNetWorkOnline();
     void downLoadVersionFile();
 
 

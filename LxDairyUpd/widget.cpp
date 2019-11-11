@@ -8,13 +8,14 @@
 #include <QDir>
 #include <QDomDocument>
 #include <QTimer>
+#include "LQt.h"
 
 
 //const QString c_strUrlDownloadRoot = "http://47.104.141.61:8080/LxDiaryUpdateDir/"; 自己的web服务端口
 const QString c_strUrlDownloadRoot = "http://47.104.141.61/LxDiaryUpdateDir/";  //apache
 const QString c_strLocalVersionFile = "version_msg.xml";
 const QString c_strUrlVersionFile = "version_msg.xml";
-const QString c_strDownloadDirName= "tempDir";
+const QString c_strDownloadDirName = "tempDir";
 const QString c_strMainAppName = "LxDairy.exe";
 
 // 思路
@@ -23,18 +24,12 @@ const QString c_strMainAppName = "LxDairy.exe";
 // 2、法二:先删除主程序目录里所有需要更新的目录文件，然后直接下载需要更新的文件到主程序目录
 // 2、法三:下载过程中直接写入更新文件的内容到旧文件当中
 
-Widget::Widget(QWidget *parent) :
+Widget::Widget(QWidget* parent) :
     QWidget(parent),
     ui(new Ui::Widget)
 {
     ui->setupUi(this);
-    //init();
-    m_httpDownload = new LHttpDownload(this);
-    connect(m_httpDownload, SIGNAL(downloadCompleted(T_TaskDownloadInfo)), this, SLOT(onDownloadCompleted(T_TaskDownloadInfo)));
-    connect(m_httpDownload, SIGNAL(downloadProgress(qint64,qint64)), this, SLOT(onDownloadProgress(qint64,qint64)));
-    connect(m_httpDownload, SIGNAL(downloadProgressAll(qint64,qint64)), this, SLOT(onDownloadProgressAll(qint64,qint64)));
-    connect(m_httpDownload, SIGNAL(finishedAllTask()), this, SLOT(onFinishedAllTask()));
-    downLoadVersionFile();
+    init();
 }
 
 Widget::~Widget()
@@ -47,20 +42,45 @@ Widget::~Widget()
 void Widget::init()
 {
     //应用程序在屏幕中间
-    QDesktopWidget *deskdop = QApplication::desktop();
-    move((deskdop->width() -this->width())/2, (deskdop->height() - this->height())/2);
+    QDesktopWidget* deskdop = QApplication::desktop();
+    move((deskdop->width() - width()) / 2, (deskdop->height() - height()) / 2);
 
-    setWindowFlags(Qt::FramelessWindowHint);//没有标题栏
-
-    //固定高和宽：
-    setFixedSize(400,200);
 
     //设置背景颜色（两种方法都可以）
-    //this->setStyleSheet("QMainWindow{background:rgb(240,250,250)}");
     QPalette pal;
-    pal.setColor(QPalette::Background,QColor(255,245,225) );
+    pal.setColor(QPalette::Background, QColor(255, 245, 225) );
     setPalette(pal);
     setAutoFillBackground(true);
+
+    m_httpDownload = new LHttpDownload(this);
+    connect(m_httpDownload, SIGNAL(downloadCompleted(T_TaskDownloadInfo)), this, SLOT(onDownloadCompleted(T_TaskDownloadInfo)));
+    connect(m_httpDownload, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(onDownloadProgress(qint64, qint64)));
+    connect(m_httpDownload, SIGNAL(downloadProgressAll(qint64, qint64)), this, SLOT(onDownloadProgressAll(qint64, qint64)));
+    connect(m_httpDownload, SIGNAL(finishedAllTask()), this, SLOT(onFinishedAllTask()));
+
+    // 检测网络连接
+    //ui->labelTitle->setText("正在检测网络……");
+    //checkNetWorkOnline();
+
+    downLoadVersionFile();
+
+}
+
+void Widget::checkNetWorkOnline()
+{
+    QHostInfo::lookupHost("47.104.141.61", this, SLOT(onLookupHost(QHostInfo)));
+}
+
+void Widget::onLookupHost(QHostInfo host)
+{
+    if (host.error() == QHostInfo::NoError)
+    {
+        downLoadVersionFile();
+    }
+    else
+    {
+        ui->labelTitle->setText("网络连接失败……");
+    }
 
 }
 
@@ -82,15 +102,24 @@ void Widget::onDownloadCompleted(T_TaskDownloadInfo tTaskDownloadInfo)
         return;
     }
 
+    ui->labelTitle->setText("正在校验更新文件……");
+    QString strLocalXmlFile = QDir::currentPath() + "/" + c_strLocalVersionFile;
+    QString strRemoteXmlFile = QDir::currentPath() + "/" + c_strDownloadDirName + "/" + c_strUrlVersionFile;
+    QFile file(strLocalXmlFile);
+    if (!file.exists())
+    {
+        // 校验文件失败
+        return;
+    }
+
     m_lstBinFileMsg.clear();
-    m_lstBinFileMsg = CLVersionXmlTool::getListVersionDownload(QDir::currentPath() + "/" + c_strLocalVersionFile
-                     , QDir::currentPath() + "/" + c_strDownloadDirName + "/" + c_strUrlVersionFile);
+    m_lstBinFileMsg = CLVersionXmlTool::getListVersionDownload(strLocalXmlFile, strRemoteXmlFile);
     if (m_lstBinFileMsg.empty())
     {
         executeMainApp(c_strMainAppName);
         return;
     }
-    //QTimer::singleShot(1000, this, SLOT(downLoadUpdateFiles()));
+
     downLoadUpdateFiles();
 }
 
@@ -112,7 +141,7 @@ void Widget::downLoadUpdateFiles()
         QString strUrlFull;
         if (tBinFileMsg.dir.isEmpty())
         {
-        strUrlFull = c_strUrlDownloadRoot + tBinFileMsg.dir + tBinFileMsg.name;
+            strUrlFull = c_strUrlDownloadRoot + tBinFileMsg.dir + tBinFileMsg.name;
         }
         else
         {
@@ -120,8 +149,10 @@ void Widget::downLoadUpdateFiles()
         }
         urlsStringList.append(strUrlFull);
     }
-    m_httpDownload->downloadList(urlsStringList);
+    m_httpDownload->downloadList(urlsStringList, "");
 }
+
+
 
 
 void Widget::executeMainApp(QString strMain)
@@ -133,7 +164,7 @@ void Widget::executeMainApp(QString strMain)
         strlstArg << "1";
         if(!QProcess::startDetached(strMain, strlstArg))//启动主程序，主程序在其上一级目录, 程序不能使用exit(0),会发生线程错误
         {
-            QMessageBox::warning(this,"警告信息","启动主程序错误!\n可能主程序不存在或者被破坏!\n解决办法：重新安装程序!");
+            QMessageBox::warning(this, "警告信息", "启动主程序错误!\n可能主程序不存在或者被破坏!\n解决办法：重新安装程序!");
         }
     }
     close();
@@ -141,13 +172,20 @@ void Widget::executeMainApp(QString strMain)
 
 void Widget::onDownloadProgress(qint64 bytesReceived, qint64 bytesTotal)
 {
-    ui->progressBarCur->setValue(bytesReceived / bytesTotal * 100);
-    // 下载内容 速度 (已下载/总大小)
+    T_TaskDownloadInfo* pTaskDownloadInfo = m_httpDownload->getCurTask();
+    QString strTip = QString("下载内容:%1 速度%2 (已下载%3/总大小%4)")
+            .arg(pTaskDownloadInfo->rename)
+            .arg(/*pTaskDownloadInfo->speed*/"")
+            .arg(CLQt::formatBytes(bytesReceived, 2))
+            .arg(CLQt::formatBytes(bytesTotal, 2));
+    ui->labelTip->setText(strTip);
+    ui->progressBarCur->setValue((bytesReceived / (double)bytesTotal) * 100);
+
 }
 
 void Widget::onDownloadProgressAll(qint64 bytesReceived, qint64 bytesTotal)
 {
-    ui->progressBarTotal->setValue(bytesReceived / bytesTotal * 100);
+    ui->progressBarTotal->setValue(bytesReceived / (double)bytesTotal * 100);
 
 }
 

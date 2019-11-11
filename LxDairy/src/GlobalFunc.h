@@ -51,14 +51,7 @@ public:
 //        return msg->exec();
 //    }
 
-//    //延时
-//    static void Sleep(int sec)
-//    {
-//        QTime dieTime = QTime::currentTime().addMSecs(sec);
-//        while ( QTime::currentTime() < dieTime ) {
-//            QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
-//        }
-//    }
+
 
     //窗体居中显示
     static void moveToCenter(QWidget *widget)
