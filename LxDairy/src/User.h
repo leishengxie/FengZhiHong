@@ -4,8 +4,8 @@
 #include <QObject>
 #include <QString>
 #include <QList>
-#include "patterns/Singleton.h"
-#include "def/func.h"
+#include "Singleton.h"
+#include "func.h"
 #include "Dairy.h"
 
 ///

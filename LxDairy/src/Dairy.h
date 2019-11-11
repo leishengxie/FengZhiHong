@@ -2,7 +2,7 @@
 #define CDAIRY_H
 
 #include <QString>
-#include "def/func.h"
+#include "func.h"
 
 #define FORMAT_DATETIME                 "yyyy-MM-dd hh:mm:ss"
 #define FORMAT_DATETIME_DISPLAYER       "yyyy年MM月dd日 hh:mm"
