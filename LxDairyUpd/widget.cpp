@@ -81,7 +81,6 @@ void Widget::onLookupHost(QHostInfo host)
     {
         ui->labelTitle->setText("网络连接失败……");
     }
-
 }
 
 ///
