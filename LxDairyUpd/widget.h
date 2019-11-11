@@ -2,7 +2,7 @@
 #define WIDGET_H
 
 #include <QWidget>
-#include <QHostInfo>
+//#include <QHostInfo>
 #include "LVersionXmlTool.h"
 #include "LHttpDownload.h"
 
@@ -19,6 +19,12 @@ public:
     explicit Widget(QWidget *parent = 0);
     ~Widget();
 
+    enum E_StepUpd
+    {
+        ES_CheckXml,
+        ES_CheckUpdFiles
+    };
+
 
     bool checkUpdateFiles(const QString & strNewFile, const QString & strOldFile);
 
@@ -33,10 +39,10 @@ private slots:
     void onFinishedAllTask();
 
     void downLoadUpdateFiles();
-    void onLookupHost(QHostInfo host);
+    //void onLookupHost(QHostInfo host);
 private:
     void init();
-    void checkNetWorkOnline();
+    //void checkNetWorkOnline();
     void downLoadVersionFile();
 
 
@@ -49,6 +55,8 @@ private:
 
     bool  m_bIsFinished;
     QString m_strTip;
+
+    E_StepUpd m_eStepUpd;
 };
 
 

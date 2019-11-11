@@ -6,7 +6,6 @@
 #include <QMessageBox>
 #include <QFile>
 #include <QDir>
-#include <QDomDocument>
 #include <QTimer>
 #include "LQt.h"
 
@@ -66,28 +65,29 @@ void Widget::init()
 
 }
 
-void Widget::checkNetWorkOnline()
-{
-    QHostInfo::lookupHost("47.104.141.61", this, SLOT(onLookupHost(QHostInfo)));
-}
+//void Widget::checkNetWorkOnline()
+//{
+//    QHostInfo::lookupHost("47.104.141.61", this, SLOT(onLookupHost(QHostInfo)));
+//}
 
-void Widget::onLookupHost(QHostInfo host)
-{
-    if (host.error() == QHostInfo::NoError)
-    {
-        downLoadVersionFile();
-    }
-    else
-    {
-        ui->labelTitle->setText("网络连接失败……");
-    }
-}
+//void Widget::onLookupHost(QHostInfo host)
+//{
+//    if (host.error() == QHostInfo::NoError)
+//    {
+//        downLoadVersionFile();
+//    }
+//    else
+//    {
+//        ui->labelTitle->setText("网络连接失败……");
+//    }
+//}
 
 ///
 /// \brief Widget::downLoadVersionFile 下载version_msg.xml
 ///
 void Widget::downLoadVersionFile()
 {
+    m_eStepUpd = ES_CheckXml;
     m_httpDownload->download(c_strUrlDownloadRoot + c_strUrlVersionFile
                              , c_strUrlVersionFile
                              , QDir::currentPath() + "/" + c_strDownloadDirName);
@@ -102,6 +102,7 @@ void Widget::onDownloadCompleted(T_TaskDownloadInfo tTaskDownloadInfo)
     }
 
     ui->labelTitle->setText("正在校验更新文件……");
+    CLQt::Sleep(1000);
     QString strLocalXmlFile = QDir::currentPath() + "/" + c_strLocalVersionFile;
     QString strRemoteXmlFile = QDir::currentPath() + "/" + c_strDownloadDirName + "/" + c_strUrlVersionFile;
     QFile file(strLocalXmlFile);
@@ -119,12 +120,19 @@ void Widget::onDownloadCompleted(T_TaskDownloadInfo tTaskDownloadInfo)
         return;
     }
 
+    // 替换掉旧的xml文件
+    QFile::remove(strLocalXmlFile);
+    QFile::copy(strRemoteXmlFile, strLocalXmlFile);
     downLoadUpdateFiles();
 }
 
 
 void Widget::onFinishedAllTask()
 {
+    if ( m_eStepUpd == ES_CheckXml)
+    {
+        return;
+    }
     ui->labelTitle->setText("更新完成……");
     executeMainApp(c_strMainAppName);
 }
@@ -133,6 +141,7 @@ void Widget::onFinishedAllTask()
 // 根据更新列表下载
 void Widget::downLoadUpdateFiles()
 {
+    m_eStepUpd = ES_CheckUpdFiles;
     ui->labelTitle->setText("正在下载更新文件……");
     QStringList urlsStringList;
     foreach (T_BinFileNodeMsg tBinFileMsg, m_lstBinFileMsg)
@@ -156,15 +165,16 @@ void Widget::downLoadUpdateFiles()
 
 void Widget::executeMainApp(QString strMain)
 {
-    if(!strMain.isEmpty())
+    if(strMain.isEmpty())
     {
-        /**运行主程序，并且退出当前更新程序(说明：主程序在上上一级目录中)**/
-        QStringList strlstArg;
-        strlstArg << "1";
-        if(!QProcess::startDetached(strMain, strlstArg))//启动主程序，主程序在其上一级目录, 程序不能使用exit(0),会发生线程错误
-        {
-            QMessageBox::warning(this, "警告信息", "启动主程序错误!\n可能主程序不存在或者被破坏!\n解决办法：重新安装程序!");
-        }
+        return;
+    }
+    /**运行主程序，并且退出当前更新程序(说明：主程序在上上一级目录中)**/
+    QStringList strlstArg;
+    strlstArg << "1";
+    if(!QProcess::startDetached(strMain, strlstArg))//启动主程序，主程序在其上一级目录, 程序不能使用exit(0),会发生线程错误
+    {
+        QMessageBox::warning(this, "警告信息", "启动主程序错误!\n可能主程序不存在或者被破坏!\n解决办法：重新安装程序!");
     }
     close();
 }

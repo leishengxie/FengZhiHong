@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-    if (!CSqlOperate::connect("LxDairy.db"))
+    if (!CSqlOperate::connect(QCoreApplication::applicationDirPath() + "/" + "LxDairy.db"))
     {
         QMessageBox::information(NULL, "ERROR", "数据库连接失败！");
         return -1;

@@ -2,14 +2,14 @@
 
 ::设置变量
 set PRO_DIR=%cd%
-set EXE_NAME=""
+set EXE_NAME="LxDairy.exe"
 
 if not exist release md release
 cd release
 copy ..\bin\* .
 
 ::for循环格式: for %%I in (command1) do command2
-for %%A in (*.exe) do set EXE_NAME=%%A
+::for %%A in (*.exe) do set EXE_NAME=%%A
 windeployqt %EXE_NAME%
 cd %PRO_DIR%
 
