@@ -41,6 +41,15 @@ else:unix: LIBS += -L$$PWD/../../LxTool/LQtTool/bin/ -lLQtTool
 win32: LIBS += -L$$PWD/../../LxMultimedia/LxTTS/lib/ -lTTS_Win32
 
 #copy dll
+win32{
+# PRE_TARGETDEPS 在构建工程前执行的指令
+# POST_TARGETDEPS 工程构建后依赖动作
+copy_deps.target=copy_lqttool
+copy_deps.depends=FORCE
+copy_deps.command = copy $$PWD/../../LxTool/LQtTool/bin/LQtTool.dll $$PWD/bin
+POST_TARGETDEPS += copy_lqttool
+QMAKE_EXTRA_TARGETS += copy_deps
+}
 
 
 #依赖头文#
