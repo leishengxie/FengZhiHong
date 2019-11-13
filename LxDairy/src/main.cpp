@@ -9,6 +9,11 @@
 
 static const QString s_strUpder = "LxDairyUpd.exe";
 
+static const QString s_strDataDirDB = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/" + "LxDairy.db";
+static const QString s_strUserDirDB = QStandardPaths::writableLocation(QStandardPaths::HomeLocation) + "/" + "LxDairy.db";
+static const QString s_strDocDirDB = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/" + "LxDairy.db";
+
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -23,7 +28,9 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-    if (!CSqlOperate::connect(QCoreApplication::applicationDirPath() + "/" + "LxDairy.db"))
+    // 为了保证用户卸载程序时，不删除用户的数据,本程序使用用户文档路径
+    static const QString s_strAppDirDB = QCoreApplication::applicationDirPath() + "/" + "LxDairy.db";
+    if (!CSqlOperate::connect(s_strDocDirDB))
     {
         QMessageBox::information(NULL, "ERROR", "数据库连接失败！");
         return -1;
