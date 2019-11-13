@@ -15,16 +15,21 @@ DESTDIR = $$PWD/bin
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+    FileEncodingType.cpp \
+    FileEncodingTypeFacotry.cpp \
+    FileEncodingWidget.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += \
+    FileEncodingType.h \
+    FileEncodingTypeFacotry.h \
+    FileEncodingWidget.h
 
 FORMS    += mainwindow.ui
 
 RC_FILE += icon.rc
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../LxTool/LQtTool/bin/ -lLQtTool
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../LxTool/LQtTool/bin/ -lLQtToold
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../LxTool/LQtTool/bin/ -lLQtTool
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../LxTool/LQtTool/bin/ -lLQtToold
 
-INCLUDEPATH += $$PWD/../LxTool/LQtTool/include
-DEPENDPATH += $$PWD/../LxTool/LQtTool/include
+INCLUDEPATH += $$PWD/../../LxTool/LQtTool/include
+DEPENDPATH += $$PWD/../../LxTool/LQtTool/include

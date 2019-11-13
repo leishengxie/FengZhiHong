@@ -156,54 +156,77 @@
      <string>RadioButton</string>
     </property>
    </widget>
-   <widget class="QComboBox" name="srcComboBox">
+   <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>10</y>
-      <width>141</width>
-      <height>22</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_3">
-    <property name="geometry">
-     <rect>
-      <x>160</x>
-      <y>10</y>
-      <width>84</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>  =&gt;  转化为  </string>
-    </property>
-   </widget>
-   <widget class="QComboBox" name="destComboBox">
-    <property name="geometry">
-     <rect>
-      <x>238</x>
-      <y>10</y>
-      <width>131</width>
-      <height>22</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="btnConvert">
-    <property name="geometry">
-     <rect>
-      <x>460</x>
+      <x>30</x>
       <y>10</y>
       <width>75</width>
       <height>23</height>
      </rect>
     </property>
-    <property name="cursor">
-     <cursorShape>PointingHandCursor</cursorShape>
+    <property name="text">
+     <string>打开目录</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_2">
+    <property name="geometry">
+     <rect>
+      <x>450</x>
+      <y>40</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
     </property>
     <property name="text">
-     <string>开始转换</string>
+     <string>去掉代码注释</string>
     </property>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>10</y>
+      <width>362</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>当前编码:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>  =&gt;  转化为  </string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="destComboBox"/>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnConvert">
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="text">
+        <string>开始转换</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">

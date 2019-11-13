@@ -15,14 +15,12 @@ TEMPLATE = app
 DESTDIR = $$PWD/bin
 message("hello LxDairy!")
 
-#只能指定一个rc文件, 如果一个也不指定将会默认在build目录下生成
-#RC_FILE += icon.rc
-#RC_FILE += version.rc
-
 RESOURCES += \
     res.qrc
 
-
+#it must be only one .rc file. if has no one, it will create one in build path
+#RC_FILE += icon.rc
+#RC_FILE += version.rc
 RC_ICONS = "img/appIcon/app.ico"
 VERSION = 0.1.0.0
 QMAKE_TARGET_PRODUCT = LxDairy
@@ -42,13 +40,20 @@ win32: LIBS += -L$$PWD/../../LxMultimedia/LxTTS/lib/ -lTTS_Win32
 
 #copy dll
 win32{
-# PRE_TARGETDEPS 在构建工程前执行的指令
-# POST_TARGETDEPS 工程构建后依赖动作
+# PRE_TARGETDEPS:The target will run before build
+# PRE_TARGETDEPS
 copy_deps.target=copy_lqttool
 copy_deps.depends=FORCE
-copy_deps.command = copy $$PWD/../../LxTool/LQtTool/bin/LQtTool.dll $$PWD/bin
+copy_deps.commands = copy $$PWD/../../LxTool/LQtTool/bin/LQtTool.dll $$PWD/bin && \
+                     copy $$PWD/../../LxMultimedia/LxTTS/lib/TTS_Win32.dll $$PWD/bin
+# POST_TARGETDEPS:The target will run after build finished
 POST_TARGETDEPS += copy_lqttool
 QMAKE_EXTRA_TARGETS += copy_deps
+}
+
+#replace/ to \
+win32 {
+    copy_deps.commands ~= s,/,\\\\,g
 }
 
 
@@ -69,7 +74,6 @@ HEADERS += \
     src/AwesomeFont.h \
     src/Dairy.h \
     src/DairyMainWindow.h \
-    src/GlobalFunc.h \
     src/LoginWidget.h \
     src/RegisterDialog.h \
     src/SkinWidget.h \
@@ -98,7 +102,6 @@ SOURCES += \
     src/AwesomeFont.cpp \
     src/Dairy.cpp \
     src/DairyMainWindow.cpp \
-    src/GlobalFunc.cpp \
     src/LoginWidget.cpp \
     src/main.cpp \
     src/RegisterDialog.cpp \

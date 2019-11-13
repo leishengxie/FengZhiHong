@@ -5,8 +5,7 @@
 #include <QListWidgetItem>
 #include <QFile>
 #include <QSettings>
-
-#include "GlobalFunc.h"
+#include "LQt.h"
 
 static QString s_aSkin[] =
 {
@@ -28,7 +27,7 @@ CSkinWidget::CSkinWidget(QWidget *parent)
     connect(ui->btnCancel, SIGNAL(clicked()), this, SLOT(close()));
     connect(ui->btnOk, SIGNAL(clicked()), this, SLOT(slot_saveCurrentSet()));
     connect(ui->listWidget, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(slot_list_clicked(QListWidgetItem*)));
-    CGlobalFunc::moveToCenter(this);
+    CLQt::moveToDeskCenter(this);
 }
 
 CSkinWidget::~CSkinWidget()

@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+#include "FileEncodingWidget.h"
 #include "ui_mainwindow.h"
 #include <QFileDialog>
 #include <QDebug>
@@ -18,6 +18,7 @@ MainWindow::MainWindow(QWidget* parent) :
     fileMenu->addAction("打开目录");
     ui->mainToolBar->addAction("GBKToUtf-8");
     ui->mainToolBar->addAction("Utf-8ToGBK");
+
     ui->mainToolBar->addAction("去掉代码注释");
     connect(fileMenu, SIGNAL(triggered(QAction*)), this, SLOT(openFile(QAction*)));
     connect(ui->mainToolBar, SIGNAL(actionTriggered(QAction*)), this, SLOT(onToolBar(QAction*)));
