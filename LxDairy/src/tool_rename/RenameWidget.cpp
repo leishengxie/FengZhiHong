@@ -4,17 +4,21 @@
 #include <QFileDialog>
 #include <QFile>
 #include <QStandardItemModel>
-#include "OriginNum.h"
-
+#include <QHeaderView>
+#include <QButtonGroup>
 
 CRenameWidget::CRenameWidget(QWidget *parent)
     : QWidget(parent)
-    //, m_nOriginValue(1)
-    , m_bAddFore(true)
+    , m_originNum("1")
+    , m_eIncrementPos(EI_Tail)
+    , m_nIncrement(1)
+    , m_strNewBaseName("")
+    , m_strReplacePrevious("")
+    , m_strReplaceAfter("")
     , ui(new Ui::CRenameWidget)
 {
     ui->setupUi(this);
-    initToolBar();
+    initButtons();
     initTabWidget();
     initTable();
     setWindowTitle("批命名工具");
@@ -27,17 +31,18 @@ CRenameWidget::~CRenameWidget()
 
 
 
-void CRenameWidget::initToolBar()
+void CRenameWidget::initButtons()
 {
 
     connect(ui->btnAdd, SIGNAL(clicked()), this, SLOT(addFile()));
     connect(ui->btnDelete, SIGNAL(clicked()), this, SLOT(delFile()));
     connect(ui->btnHandle, SIGNAL(clicked()), this, SLOT(beginHandle()));
+    ui->btnDelete->hide();
 }
 
 void CRenameWidget::initTabWidget()
 {
-    ui->tabWidget->setMaximumWidth(300);
+
     connect(ui->lineEditOldFile, SIGNAL(textChanged(QString)), SLOT(oldFileChanged(QString)));
     connect(ui->lineEditOriginValue, SIGNAL(textChanged(QString)), SLOT(originValueChanged(QString)));
     connect(ui->spinBoxIncrement, SIGNAL(valueChanged(int)), SLOT(incrementChanged(int)));
@@ -45,15 +50,21 @@ void CRenameWidget::initTabWidget()
     connect(ui->radioAddFore, SIGNAL(clicked(bool)), SLOT(addForeClicked(bool)));
     connect(ui->lineEditReplacePrevious, SIGNAL(textChanged(QString)), SLOT(replacePreviousChanged(QString)));
     connect(ui->lineEditReplaceAfter, SIGNAL(textChanged(QString)), SLOT(replaceAfterChanged(QString)));
-    //connect(ui->checkBoxZero, SIGNAL(clicked(bool)),
+    QButtonGroup* pButtonGroup = new QButtonGroup(this);
+    pButtonGroup->addButton(ui->rBtnNoOne);
+    pButtonGroup->addButton(ui->rBtnAllLowper);
+    pButtonGroup->addButton(ui->rBtnAllUper);
+    pButtonGroup->addButton(ui->rBtnFrontUper);
+    connect(pButtonGroup, SIGNAL(buttonClicked(int)), this, SLOT(onButtonGroupClicked(int)));
+
 }
 
 void CRenameWidget::initTable()
 {
     m_model = new QStandardItemModel();
     ui->tableView->setModel(m_model);
-    //ui->tableView->horizontalHeader()->setSectionResizeMode (0,QHeaderView::Stretch); //设置列宽可伸缩
-    //ui->tableView->horizontalHeader()->setSectionResizeMode (1,QHeaderView::Stretch);
+    ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+
     QStringList lstHead = {"原文件名", "新文件名", "状态"}; //c++ 98 不支持 c++ 11支持
     //lstHead << "原文件名" << "新文件名" << "状态";
     //ui->tableView->setColumnCount(3);
@@ -130,6 +141,10 @@ void CRenameWidget::beginHandle()
 {
     for (int i = 0; i < m_lstFileMsg.size(); ++i)
     {
+        if(m_lstFileMsg[i].bHandle)
+        {
+            continue;
+        }
         if (QFile::rename(m_lstFileMsg[i].strFilePath, m_lstFileMsg[i].newFilePath()))
         {
             m_lstFileMsg[i].bHandle = true;
@@ -137,6 +152,12 @@ void CRenameWidget::beginHandle()
     }
     updateTableList();
     //QFile::rename
+}
+
+void CRenameWidget::onButtonGroupClicked(int id)
+{
+    Q_UNUSED(id)
+    update();
 }
 
 
@@ -170,54 +191,72 @@ void CRenameWidget::updateDataList()
     {
         m_lstFileMsg[i].strNewBaseName = m_lstFileMsg[i].strBaseName;
     }
+
     // 操作前改名
-    QString strNewBaseName = ui->lineEditOldFile->text();
-    for (int i = 0; i < m_lstFileMsg.size(); ++i)
+    if (!m_strNewBaseName.isEmpty())
     {
-        QString strNewBaseNameTemp = strNewBaseName;
-        strNewBaseNameTemp.replace("原文件名", m_lstFileMsg[i].strBaseName);
-        m_lstFileMsg[i].strNewBaseName = strNewBaseNameTemp;
+        for (int i = 0; i < m_lstFileMsg.size(); ++i)
+        {
+            QString strNewBaseNameTemp = m_strNewBaseName;
+            strNewBaseNameTemp.replace("原文件名", m_lstFileMsg[i].strBaseName);
+            m_lstFileMsg[i].strNewBaseName = strNewBaseNameTemp;
+        }
     }
 
     // 起始值
-    QString strOriginValue = ui->lineEditOriginValue->text();
-    COriginNum originNum(strOriginValue);
 
-    // add 20180905
-    // 是否用0占位，本次采用自动根据文件最大数确定占位数，而不需要用户输入001等手动确定控制
-    bool bUseZero = ui->checkBoxZero->isChecked();
 
     // 递增量
-    int nIncrement = ui->spinBoxIncrement->value();
     int nTotalIncrement = 0;
-    m_bAddFore = ui->radioAddFore->isChecked();
     for (int i = 0; i < m_lstFileMsg.size(); ++i)
     {
-        if (m_bAddFore)
+        if (m_eIncrementPos == EI_Front)
         {
-            m_lstFileMsg[i].strNewBaseName = originNum.add(nTotalIncrement) + m_lstFileMsg[i].strNewBaseName;
+            m_lstFileMsg[i].strNewBaseName = m_originNum.after(nTotalIncrement) + m_lstFileMsg[i].strNewBaseName;
         }
         else
         {
-            m_lstFileMsg[i].strNewBaseName = m_lstFileMsg[i].strNewBaseName + originNum.add(nTotalIncrement);
+            m_lstFileMsg[i].strNewBaseName = m_lstFileMsg[i].strNewBaseName + m_originNum.after(nTotalIncrement);
         }
-        nTotalIncrement += nIncrement;
+        nTotalIncrement += m_nIncrement;
     }
 
 
     // 替换
-    QString strReplacePrevious = ui->lineEditReplacePrevious->text();
-    QString strReplaceAfter = ui->lineEditReplaceAfter->text();
-    if (strReplacePrevious.isEmpty() || strReplaceAfter.isEmpty())
+    if (!m_strReplacePrevious.isEmpty() && !m_strReplaceAfter.isEmpty())
     {
-        return;
+        for (int i = 0; i < m_lstFileMsg.size(); ++i)
+        {
+            if (m_lstFileMsg[i].strNewBaseName.contains(m_strReplacePrevious))
+            {
+                m_lstFileMsg[i].strNewBaseName = m_lstFileMsg[i].strNewBaseName.replace(m_strReplacePrevious, m_strReplaceAfter);
+            }
+        }
     }
 
+
+
+    // 格式化
     for (int i = 0; i < m_lstFileMsg.size(); ++i)
     {
-        if (m_lstFileMsg[i].strNewBaseName.contains(strReplacePrevious))
+        if (ui->rBtnAllUper->isChecked())
         {
-            m_lstFileMsg[i].strNewBaseName = m_lstFileMsg[i].strNewBaseName.replace(strReplacePrevious, strReplaceAfter);
+            m_lstFileMsg[i].strNewBaseName = m_lstFileMsg[i].strNewBaseName.toUpper();
+            m_lstFileMsg[i].strNewExtenName = m_lstFileMsg[i].strNewExtenName.toUpper();
+        }
+        else if (ui->rBtnAllLowper->isChecked())
+        {
+            m_lstFileMsg[i].strNewBaseName = m_lstFileMsg[i].strNewBaseName.toLower();
+            m_lstFileMsg[i].strNewExtenName = m_lstFileMsg[i].strNewExtenName.toLower();
+        }
+        else if (ui->rBtnFrontUper->isChecked())
+        {
+            if (m_lstFileMsg[i].strNewBaseName.isEmpty())
+            {
+                continue;
+            }
+            QChar ch = m_lstFileMsg[i].strNewBaseName.at(0).toUpper();
+            m_lstFileMsg[i].strNewBaseName = QString(ch) + m_lstFileMsg[i].strNewBaseName.toLower().mid(1);
         }
     }
 
@@ -225,40 +264,46 @@ void CRenameWidget::updateDataList()
 
 void CRenameWidget::oldFileChanged(QString strOldFile)
 {
+    m_strNewBaseName = strOldFile;
     update();
 }
 
 void CRenameWidget::originValueChanged(QString strOriginValue)
 {
+    m_originNum = COriginNum(strOriginValue);
     update();
 }
 
 void CRenameWidget::incrementChanged(int nIncrement)
 {
+    m_nIncrement = nIncrement;
     update();
 }
 
 void CRenameWidget::addBackClicked(bool checked)
 {
+    Q_UNUSED(checked)
+    m_eIncrementPos = EI_Tail;
     update();
 }
 
 void CRenameWidget::addForeClicked(bool checked)
 {
+    Q_UNUSED(checked)
+    m_eIncrementPos = EI_Front;
     update();
 }
 
 void CRenameWidget::replacePreviousChanged(QString strPrev)
 {
+    m_strReplacePrevious = strPrev;
     update();
 }
 
 void CRenameWidget::replaceAfterChanged(QString strAfter)
 {
+    m_strReplaceAfter = strAfter;
     update();
 }
 
-void CRenameWidget::useZero(bool bUse)
-{
-    update();
-}
+

@@ -56,6 +56,22 @@ win32 {
     copy_deps.commands ~= s,/,\\\\,g
 }
 
+#win32 { #
+#    #src_dir = $$PWD\Resources\*.*
+#    CONFIG(debug, debug|release) {
+#        dst_dir = $$OUT_PWD\\..\\bin\\
+#        #dst_dir = $$OUT_PWD\\debug\\Resources\\
+#    } else {
+#        dst_dir = $$OUT_PWD\\..\\bin\\
+#        #dst_dir = $$OUT_PWD\\release\\Resources\\
+#    }
+
+#    # Replace slashes in paths with backslashes for Windows
+#    #src_dir ~= s,/,\\,g
+#    dst_dir ~= s,/,\\,g
+
+#    #!exists($$dst_dir):system(xcopy $$src_dir $$dst_dir /y /e)
+#}
 
 #依赖头文#
 INCLUDEPATH += $$PWD/../../LxTool/LQtTool/include
@@ -92,7 +108,9 @@ HEADERS += \
     src/MusicSettingDialog.h \
     src/music/LLrc.h \
     src/music/LLrcWidget.h \
-    src/music/LMusicPlayer.h
+    src/music/LMusicPlayer.h \
+    src/tool_rename/OriginNum.h \
+    src/tool_rename/RenameWidget.h
 
 SOURCES += \
     src/delegate/DairyTagDelegate.cpp \
@@ -121,7 +139,9 @@ SOURCES += \
     src/MusicSettingDialog.cpp \
     src/music/LLrc.cpp \
     src/music/LLrcWidget.cpp \
-    src/music/LMusicPlayer.cpp
+    src/music/LMusicPlayer.cpp \
+    src/tool_rename/OriginNum.cpp \
+    src/tool_rename/RenameWidget.cpp
 
 FORMS += \
     src/AboutDialog.ui \
@@ -130,6 +150,7 @@ FORMS += \
     src/RegisterDialog.ui \
     src/SkinWidget.ui \
     src/DairyEditWidget.ui \
-    src/MusicSettingDialog.ui
+    src/MusicSettingDialog.ui \
+    src/tool_rename/RenameWidget.ui
 
 

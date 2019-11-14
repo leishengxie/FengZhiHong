@@ -39,7 +39,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -267,10 +267,15 @@
              <normaloff>:/img/account_passwd.png</normaloff>:/img/account_passwd.png</iconset>
            </property>
           </item>
+          <item>
+           <property name="text">
+            <string>批量重命名</string>
+           </property>
+          </item>
          </widget>
         </item>
         <item>
-         <widget class="QStackedWidget" name="stackedWidget_2">
+         <widget class="QStackedWidget" name="stackedWidgetTool">
           <widget class="QWidget" name="page">
            <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,6">
             <property name="leftMargin">
@@ -331,7 +336,6 @@
             </item>
            </layout>
           </widget>
-          <widget class="QWidget" name="page_2"/>
          </widget>
         </item>
        </layout>

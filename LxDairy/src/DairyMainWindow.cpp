@@ -22,6 +22,7 @@
 #include "music/LMusicPlayer.h"
 #include "MusicSettingDialog.h"
 #include "tts/windows/LWindowsTTSS.h"
+#include "tool_rename/RenameWidget.h"
 
 CDairyMainWindow::CDairyMainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -145,6 +146,9 @@ void CDairyMainWindow::initPagePrivate()
     pApasswdTableModel->setHeaderData(2, Qt::Horizontal, "账号");
     pApasswdTableModel->setHeaderData(3, Qt::Horizontal, "密码");
     ui->tableViewPrivate->setModel(pApasswdTableModel);
+
+    CRenameWidget* pRenameWidget = new CRenameWidget(ui->stackedWidgetTool);
+    ui->stackedWidgetTool->addWidget(pRenameWidget);
 
 
 }
@@ -498,11 +502,6 @@ void CDairyMainWindow::on_calendarWidget_clicked(const QDate &date)
 }
 
 
-void CDairyMainWindow::on_listViewPrivate_clicked(const QModelIndex &index)
-{
-
-
-}
 
 void CDairyMainWindow::on_btnAdd_clicked()
 {
@@ -574,4 +573,9 @@ void CDairyMainWindow::on_btnTTSPlay_clicked()
     CDairyEditWidget* pDairyEditWidget = qobject_cast<CDairyEditWidget*>(pMdiSubWindow->widget());
     QString strContent = pDairyEditWidget->dairyEdit()->toPlainText();
     m_pITTS->speak(strContent);
+}
+
+void CDairyMainWindow::on_listWidgetPrivate_clicked(const QModelIndex &index)
+{
+   ui->stackedWidgetTool->setCurrentIndex(index.row());
 }

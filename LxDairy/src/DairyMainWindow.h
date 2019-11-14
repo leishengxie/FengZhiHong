@@ -102,8 +102,6 @@ private slots:
 
     void on_calendarWidget_clicked(const QDate &date);
 
-    void on_listViewPrivate_clicked(const QModelIndex &index);
-
     void on_btnAdd_clicked();
 
     void on_btnCommit_clicked();
@@ -115,6 +113,8 @@ private slots:
     void on_btnPlayMusic_clicked();
 
     void on_btnTTSPlay_clicked();
+
+    void on_listWidgetPrivate_clicked(const QModelIndex &index);
 
 private:
     void initPageDairy();

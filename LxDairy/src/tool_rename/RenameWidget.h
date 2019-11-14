@@ -2,6 +2,7 @@
 #define RENAMEWIDGET_H
 
 #include <QWidget>
+#include "OriginNum.h"
 
 namespace Ui {
 class CRenameWidget;
@@ -36,6 +37,7 @@ struct T_FileMsg
     {
         return strDir + "/" + newFileName();
     }
+
 };
 
 class CRenameWidget : public QWidget
@@ -45,6 +47,13 @@ class CRenameWidget : public QWidget
 public:
     explicit CRenameWidget(QWidget *parent = 0);
     ~CRenameWidget();
+
+    enum E_IncrementPos
+    {
+        EI_Front,   // 递增量在前部
+        EI_Tail     // 递增量在尾部
+    };
+
 private slots:
 
     void update();
@@ -57,7 +66,7 @@ private slots:
     void addForeClicked(bool checked);
     void replacePreviousChanged(QString strPrev);
     void replaceAfterChanged(QString strAfter);
-    void useZero(bool bUse); // 是否使用0占位
+
 
     //void addExtenBackClicked(bool checked);
    // void addExtenForeClicked(bool checked);
@@ -65,20 +74,27 @@ private slots:
 private slots:
 //    QTabWidget* m_TabWidget;
 //    QTableWidget* m_TableWidget;
-    void initToolBar();
+    void initButtons();
     void initTabWidget();
     void initTable();
     void addFile();
     void addFileToList(QString strFilePath);
     void delFile();
     void beginHandle();
+    void onButtonGroupClicked(int id);
 
 private:
     Ui::CRenameWidget *ui;
     QList<T_FileMsg> m_lstFileMsg;
     QStandardItemModel* m_model;
-    //int m_nOriginValue;
-    bool m_bAddFore;
+
+    COriginNum m_originNum;
+    int m_nIncrement;   // 递增量
+    E_IncrementPos m_eIncrementPos;    // 递增量是否在前面
+    QString m_strNewBaseName;   // 新文件基础名
+    // 替换
+    QString m_strReplacePrevious;
+    QString m_strReplaceAfter;
 
 };
 

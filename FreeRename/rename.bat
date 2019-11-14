@@ -1,1 +1,0 @@
-ren FreeRename.exe 重命名工具.exe
