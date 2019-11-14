@@ -54,6 +54,7 @@ public slots:
 
 protected:
     void closeEvent(QCloseEvent *event);
+    void resizeEvent(QResizeEvent *event);
 
 private slots:
 

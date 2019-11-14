@@ -150,6 +150,8 @@ void CDairyMainWindow::initPagePrivate()
     CRenameWidget* pRenameWidget = new CRenameWidget(ui->stackedWidgetTool);
     ui->stackedWidgetTool->addWidget(pRenameWidget);
 
+    QWidget* pWidget = new QWidget(ui->stackedWidgetTool);
+    ui->stackedWidgetTool->addWidget(pWidget);
 
 }
 
@@ -166,6 +168,13 @@ void CDairyMainWindow::closeEvent(QCloseEvent *event)
         event->accept();//关闭
     }
 
+}
+
+void CDairyMainWindow::resizeEvent(QResizeEvent *event)
+{
+    QPalette pal;
+    pal.setBrush(QPalette::Background, QBrush(QPixmap(":/img/bg/1.jpg").scaled(size())));
+    setPalette(pal);
 }
 
 

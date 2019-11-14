@@ -36,5 +36,10 @@
         <file>img/css/sub-line_horizontal.png</file>
         <file>img/css/sub-line_vertical.png</file>
         <file>img/account_passwd.png</file>
+        <file>img/tool_img/maple_leaf_0_0.png</file>
+        <file>img/tool_img/maple_leaf_0_1.png</file>
+        <file>img/tool_img/maple_leaf_1_0.png</file>
+        <file>img/tool_img/maple_leaf_1_1.png</file>
+        <file>img/tool_img/maple_leaf_book.png</file>
     </qresource>
 </RCC>

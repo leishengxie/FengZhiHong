@@ -39,7 +39,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -214,7 +214,7 @@
       </widget>
       <widget class="QWidget" name="tab_2">
        <attribute name="title">
-        <string>个人隐私</string>
+        <string>实用工具</string>
        </attribute>
        <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="0,0">
         <property name="spacing">
@@ -264,12 +264,25 @@
            </property>
            <property name="icon">
             <iconset resource="../res.qrc">
-             <normaloff>:/img/account_passwd.png</normaloff>:/img/account_passwd.png</iconset>
+             <normaloff>:/img/tool_img/maple_leaf_book.png</normaloff>:/img/tool_img/maple_leaf_book.png</iconset>
            </property>
           </item>
           <item>
            <property name="text">
             <string>批量重命名</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../res.qrc">
+             <normaloff>:/img/tool_img/maple_leaf_book.png</normaloff>:/img/tool_img/maple_leaf_book.png</iconset>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>归纳本</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../res.qrc">
+             <normaloff>:/img/tool_img/maple_leaf_book.png</normaloff>:/img/tool_img/maple_leaf_book.png</iconset>
            </property>
           </item>
          </widget>
@@ -277,7 +290,7 @@
         <item>
          <widget class="QStackedWidget" name="stackedWidgetTool">
           <widget class="QWidget" name="page">
-           <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,6">
+           <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,6">
             <property name="leftMargin">
              <number>0</number>
             </property>
@@ -295,6 +308,19 @@
               <property name="leftMargin">
                <number>6</number>
               </property>
+              <item>
+               <spacer name="horizontalSpacer_3">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
               <item>
                <widget class="QPushButton" name="btnAdd">
                 <property name="text">
@@ -332,6 +358,13 @@
              </layout>
             </item>
             <item>
+             <widget class="Line" name="line">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
              <widget class="QTableView" name="tableViewPrivate"/>
             </item>
            </layout>
@@ -355,7 +388,7 @@
      <x>0</x>
      <y>0</y>
      <width>1050</width>
-     <height>23</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_F">
