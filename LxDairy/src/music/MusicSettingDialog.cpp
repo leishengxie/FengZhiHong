@@ -12,6 +12,7 @@ CMusicSettingDialog::CMusicSettingDialog(QWidget *parent) :
     QDialog(parent)
   , ui(new Ui::CMusicSettingDialog)
   , m_eMusicMood(EM_Happy)
+  , m_nMode(Sequential)
 {
     ui->setupUi(this);
     initSignalMap();
@@ -111,6 +112,19 @@ void CMusicSettingDialog::loadSetting()
     m_mapPath[EM_Lonely] = QStringList(strMoodPath);
     ui->leLonely->setText(strMoodPath);
 
+    int size = conf.beginReadArray("mood_user_define_path");
+    QStringList strlstUserDefine;
+     for (int i = 0; i < size; ++i)
+     {
+         conf.setArrayIndex(i);
+         strlstUserDefine << conf.value("single_song_path").toString();
+     }
+     conf.endArray();
+     m_mapPath[EM_UserDefine] = strlstUserDefine;
+     ui->listWidgetSongs->addItems(strlstUserDefine);
+
+    conf.endGroup();
+
 }
 
 void CMusicSettingDialog::onRadioButtonClicked(int id)
@@ -119,6 +133,7 @@ void CMusicSettingDialog::onRadioButtonClicked(int id)
     QSettings conf(s_strIniPath, QSettings::IniFormat);
     conf.beginGroup("mood_type");
     conf.setValue("mood_index", id);
+    conf.endGroup();
 }
 
 void CMusicSettingDialog::onBtnClicked(int id)
@@ -160,4 +175,35 @@ void CMusicSettingDialog::on_btnUserListMusic_clicked()
 {
     QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open Files"), ".", "MP3 file (*.mp3)");
     m_mapPath[EM_UserDefine] = fileNames;
+    ui->listWidgetSongs->addItems(fileNames);
+    QSettings settings(s_strIniPath, QSettings::IniFormat);
+    settings.beginGroup("mood_path");
+    settings.beginWriteArray("mood_user_define_path");
+    //    for (int i = 0; i < ui->listWidgetSongs->count(); ++i)
+    //    {
+    //        ui->listWidgetSongs->item(i)->text();
+    //    }
+    for (int i = 0; i < fileNames.size(); ++i)
+    {
+        settings.setArrayIndex(i);
+        settings.setValue("single_song_path", fileNames.at(i));
+    }
+    settings.endArray();
+    settings.endGroup();
+
+}
+
+void CMusicSettingDialog::on_radioBtnOrder_clicked()
+{
+    m_nMode = Sequential;
+}
+
+void CMusicSettingDialog::on_radioBtnCycleList_clicked()
+{
+    m_nMode = Loop;
+}
+
+void CMusicSettingDialog::on_radioBtnCycleSingle_clicked()
+{
+    m_nMode = CurrentItemInLoop;
 }

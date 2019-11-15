@@ -359,7 +359,7 @@
          </layout>
         </item>
         <item>
-         <widget class="QListView" name="listViewSongs"/>
+         <widget class="QListWidget" name="listWidgetSongs"/>
         </item>
         <item>
          <spacer name="horizontalSpacer_12">

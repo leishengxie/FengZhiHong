@@ -7,7 +7,7 @@
 class QMediaPlaylist;
 //class QMediaPlayer;
 class CLLrcWidget;
-
+class CMusicSettingDialog;
 //enum class QMediaPlayer::State :int;
 //enum class QMediaPlayer::State;
 
@@ -25,6 +25,7 @@ public:
 
     bool isPlaying();
     void stop();
+    void showSetting();
 
 signals:
 
@@ -32,7 +33,7 @@ public slots:
     void onOpenFile();
     void onPlayOtherListPath(QStringList strlstPath);
     void onPlay();
-    void onPlay(QStringList strlstPath);
+    void onPlaybackMode(int nMode);
 
 
 private slots:
@@ -59,6 +60,8 @@ private:
     qint64 m_llCurDuration;
 
     CLLrcWidget* m_pLrcWidget;
+
+    CMusicSettingDialog* m_pMusicSettingDialog;
 };
 
 #endif // CLMUSICPLAYER_H

@@ -1,16 +1,17 @@
 #include "LMusicPlayer.h"
 
 #include <QMediaService>
-#include <QMediaPlaylist>
 #include <QFileDialog>
-
+#include <QMediaPlaylist>
 #include "LLrcWidget.h"
+#include "MusicSettingDialog.h"
 
 CLMusicPlayer::CLMusicPlayer(QObject *parent, QWidget *pWgtParent)
     : QObject(parent)
     , m_llCurDuration(0)
     , m_pMediaPlaylist(new QMediaPlaylist(this))
     , m_pMediaPlayer(new QMediaPlayer(this))
+    , m_pMusicSettingDialog(new CMusicSettingDialog())
 {
 
     m_pMediaPlayer->setPlaylist(m_pMediaPlaylist);
@@ -44,6 +45,7 @@ CLMusicPlayer::~CLMusicPlayer()
     {
         m_pLrcWidget->deleteLater();
     }
+    m_pMusicSettingDialog->deleteLater();
 }
 
 bool CLMusicPlayer::isPlaying()
@@ -60,9 +62,13 @@ bool CLMusicPlayer::isPlaying()
 
 void CLMusicPlayer::stop()
 {
-        m_pMediaPlayer->stop();
+    m_pMediaPlayer->stop();
 }
 
+void CLMusicPlayer::showSetting()
+{
+     m_pMusicSettingDialog->exec();
+}
 
 
 void CLMusicPlayer::onOpenFile()
@@ -103,21 +109,10 @@ void CLMusicPlayer::onCurrentIndexChanged(int index)
 
 }
 
+
 void CLMusicPlayer::onPlay()
 {
-    switch (m_pMediaPlayer->state())
-    {
-    case QMediaPlayer::PlayingState:
-        m_pMediaPlayer->pause();
-        break;
-    default:
-        m_pMediaPlayer->play();
-        break;
-    }
-}
-
-void CLMusicPlayer::onPlay(QStringList strlstPath)
-{
+    QStringList strlstPath = m_pMusicSettingDialog->getMusicListPath();
     switch (m_pMediaPlayer->state())
     {
     case QMediaPlayer::PlayingState:
@@ -131,6 +126,11 @@ void CLMusicPlayer::onPlay(QStringList strlstPath)
         m_pMediaPlayer->play();
         break;
     }
+}
+
+void CLMusicPlayer::onPlaybackMode(int nMode)
+{
+    m_pMediaPlaylist->setPlaybackMode((QMediaPlaylist::PlaybackMode)nMode);
 }
 
 void CLMusicPlayer::onMediaStateChanged(QMediaPlayer::State)

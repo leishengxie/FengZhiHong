@@ -39,9 +39,9 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
-      <widget class="QWidget" name="tab">
+      <widget class="CDairyWidget" name="tabDairy">
        <attribute name="title">
         <string>日记</string>
        </attribute>
@@ -61,162 +61,13 @@
         <property name="bottomMargin">
          <number>0</number>
         </property>
-        <item>
-         <layout class="QVBoxLayout" name="verticalLayout" stretch="1,1,2">
-          <property name="spacing">
-           <number>0</number>
-          </property>
-          <item>
-           <widget class="QCalendarWidget" name="calendarWidget"/>
-          </item>
-          <item>
-           <widget class="QListView" name="listViewTag"/>
-          </item>
-          <item>
-           <widget class="QTreeView" name="treeDairy"/>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <widget class="QStackedWidget" name="stackedWidget">
-          <property name="currentIndex">
-           <number>0</number>
-          </property>
-          <widget class="QWidget" name="page_dairy">
-           <layout class="QVBoxLayout" name="verticalLayout_6">
-            <property name="spacing">
-             <number>0</number>
-            </property>
-            <property name="leftMargin">
-             <number>0</number>
-            </property>
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <property name="rightMargin">
-             <number>0</number>
-            </property>
-            <property name="bottomMargin">
-             <number>0</number>
-            </property>
-            <item>
-             <widget class="QMdiArea" name="mdiArea">
-              <property name="viewMode">
-               <enum>QMdiArea::TabbedView</enum>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_8">
-              <property name="leftMargin">
-               <number>12</number>
-              </property>
-              <item>
-               <widget class="QPushButton" name="btnTTSPlay">
-                <property name="text">
-                 <string>播放日记语音</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="btnPlayMusic">
-                <property name="text">
-                 <string>播放心情音乐</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <spacer name="horizontalSpacer_6">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-             </layout>
-            </item>
-           </layout>
-          </widget>
-          <widget class="QWidget" name="page_dairy_statistics">
-           <layout class="QVBoxLayout" name="verticalLayout_3">
-            <property name="spacing">
-             <number>0</number>
-            </property>
-            <property name="leftMargin">
-             <number>0</number>
-            </property>
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <property name="rightMargin">
-             <number>0</number>
-            </property>
-            <property name="bottomMargin">
-             <number>0</number>
-            </property>
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_5">
-              <property name="spacing">
-               <number>0</number>
-              </property>
-              <item>
-               <widget class="QLabel" name="labelTitle">
-                <property name="text">
-                 <string>2019年的日记</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel" name="labelDairyTotal">
-                <property name="text">
-                 <string>（共3项）</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <spacer name="horizontalSpacer">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item>
-               <widget class="QPushButton" name="btnOpenDairy">
-                <property name="enabled">
-                 <bool>false</bool>
-                </property>
-                <property name="text">
-                 <string>打开</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <widget class="QListView" name="listViewStatistics"/>
-            </item>
-           </layout>
-          </widget>
-         </widget>
-        </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tab_2">
+      <widget class="CGeneralToolsWidget" name="tabTool">
        <attribute name="title">
         <string>实用工具</string>
        </attribute>
-       <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="0,0">
+       <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="">
         <property name="spacing">
          <number>0</number>
         </property>
@@ -232,148 +83,9 @@
         <property name="bottomMargin">
          <number>0</number>
         </property>
-        <item>
-         <widget class="QListWidget" name="listWidgetPrivate">
-          <property name="maximumSize">
-           <size>
-            <width>100</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>64</width>
-            <height>64</height>
-           </size>
-          </property>
-          <property name="resizeMode">
-           <enum>QListView::Adjust</enum>
-          </property>
-          <property name="gridSize">
-           <size>
-            <width>96</width>
-            <height>96</height>
-           </size>
-          </property>
-          <property name="viewMode">
-           <enum>QListView::IconMode</enum>
-          </property>
-          <item>
-           <property name="text">
-            <string>账号密码簿</string>
-           </property>
-           <property name="icon">
-            <iconset resource="../res.qrc">
-             <normaloff>:/img/tool_img/maple_leaf_book.png</normaloff>:/img/tool_img/maple_leaf_book.png</iconset>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>批量重命名</string>
-           </property>
-           <property name="icon">
-            <iconset resource="../res.qrc">
-             <normaloff>:/img/tool_img/maple_leaf_book.png</normaloff>:/img/tool_img/maple_leaf_book.png</iconset>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>归纳本</string>
-           </property>
-           <property name="icon">
-            <iconset resource="../res.qrc">
-             <normaloff>:/img/tool_img/maple_leaf_book.png</normaloff>:/img/tool_img/maple_leaf_book.png</iconset>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item>
-         <widget class="QStackedWidget" name="stackedWidgetTool">
-          <widget class="QWidget" name="page">
-           <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,6">
-            <property name="leftMargin">
-             <number>0</number>
-            </property>
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <property name="rightMargin">
-             <number>0</number>
-            </property>
-            <property name="bottomMargin">
-             <number>0</number>
-            </property>
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout">
-              <property name="leftMargin">
-               <number>6</number>
-              </property>
-              <item>
-               <spacer name="horizontalSpacer_3">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item>
-               <widget class="QPushButton" name="btnAdd">
-                <property name="text">
-                 <string> 添加</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="btnCommit">
-                <property name="text">
-                 <string>提交</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="btnDelete">
-                <property name="text">
-                 <string> 删除</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <spacer name="horizontalSpacer_2">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <widget class="Line" name="line">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QTableView" name="tableViewPrivate"/>
-            </item>
-           </layout>
-          </widget>
-         </widget>
-        </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tab_3">
+      <widget class="QWidget" name="tabGather">
        <attribute name="title">
         <string>集</string>
        </attribute>
@@ -388,7 +100,7 @@
      <x>0</x>
      <y>0</y>
      <width>1050</width>
-     <height>26</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_F">
@@ -577,6 +289,20 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>CDairyWidget</class>
+   <extends>QWidget</extends>
+   <header>module_dairy/DairyWidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>CGeneralToolsWidget</class>
+   <extends>QWidget</extends>
+   <header>module_tool/GeneralToolsWidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../res.qrc"/>
  </resources>

@@ -11,7 +11,7 @@ class CMusicSettingDialog;
 class CMusicSettingDialog : public QDialog
 {
     Q_OBJECT
-
+    enum PlaybackMode { CurrentItemOnce, CurrentItemInLoop, Sequential, Loop, Random };
 public:
     enum E_MusicMood
     {
@@ -44,10 +44,17 @@ private slots:
 
     void on_btnUserListMusic_clicked();
 
+    void on_radioBtnOrder_clicked();
+
+    void on_radioBtnCycleList_clicked();
+
+    void on_radioBtnCycleSingle_clicked();
+
 private:
     Ui::CMusicSettingDialog *ui;
     E_MusicMood m_eMusicMood;
     QMap< qint32, QStringList > m_mapPath;
+    int m_nMode;
 };
 
 #endif // MUSICSETTINGDIALOG_H

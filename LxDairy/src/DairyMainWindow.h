@@ -1,30 +1,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QMainWindow>
-#include <QDebug>
-#include <QMessageBox>
-#include <QFile>
-#include <QFileDialog>
-#include <QString>
-#include <QDir> //目录头文件
-#include <QTextStream>
-#include <QFont>
-#include <QFontDialog>
-#include <QColor>
-#include <QColorDialog>
-#include <QDateTime>
-#include <QUrl>
-#include <QDesktopServices>
-#include "AboutDialog.h"
-#include "Dairy.h"
-#include <QCloseEvent>
-
-//当程序需要关闭的时候所处理的内容
-//所有的事件都是受保护的 成员函数
-//protected
-//QWidget closeEvent() QMainWindow closeEvent();
-
 
 namespace Ui {
 class DairyMainWindow;
@@ -32,10 +8,7 @@ class DairyMainWindow;
 
 class CSkinWidget;
 class CLoginWidget;
-class QMdiSubWindow;
-class CLMusicPlayer;
-class CMusicSettingDialog;
-class ITTS;
+
 
 class CDairyMainWindow : public QMainWindow
 {
@@ -48,20 +21,12 @@ public:
 public:
     void setLoginWidget(CLoginWidget* pLoginWidget);
 
-public slots:
-    void slot_displayDairy(const CDairy &dairy);
-    void onRequireExpand(const QModelIndex & index);
 
 protected:
-    void closeEvent(QCloseEvent *event);
+
     void resizeEvent(QResizeEvent *event);
 
 private slots:
-
-    void slotUpdateMenu(QMdiSubWindow *pMdiSubWindow);
-    void slotSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
-    void onSaveDairyfinished(const CDairy & dairySaveBefore, const CDairy & dairySaved);
-
 
     void on_action_logout_triggered();
 
@@ -93,43 +58,17 @@ private slots:
 
     void on_action_font_triggered();
 
-    void on_treeDairy_clicked(const QModelIndex &index);
-
     void on_action_save_all_triggered();
-
-    void on_btnOpenDairy_clicked();
-
-    void on_listViewTag_clicked(const QModelIndex &index);
-
-    void on_calendarWidget_clicked(const QDate &date);
-
-    void on_btnAdd_clicked();
-
-    void on_btnCommit_clicked();
-
-    void on_btnDelete_clicked();
 
     void on_action_music_triggered();
 
-    void on_btnPlayMusic_clicked();
 
-    void on_btnTTSPlay_clicked();
-
-    void on_listWidgetPrivate_clicked(const QModelIndex &index);
-
-private:
-    void initPageDairy();
-    void initPagePrivate();
 
 private:
     Ui::DairyMainWindow *ui;
     CSkinWidget* m_pSkinWidget;
     CLoginWidget* m_pLoginWidget;
-    // 当前活动的日记
-    CDairy m_dairyActive;
-    CLMusicPlayer* m_pMusicPlayer;
-    CMusicSettingDialog* m_pMusicSettingDialog;
-    ITTS* m_pITTS;
+
 };
 
 #endif // MAINWINDOW_H

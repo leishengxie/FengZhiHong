@@ -83,12 +83,30 @@ INCLUDEPATH += $$PWD/src
 DEPENDPATH += $$PWD/src
 
 HEADERS += \
-    src/delegate/DairyTagDelegate.h \
-    src/model/DairyDateTreeModel.h \
-    src/model/DairyTagListModel.h \
+    src/core/LBaseWidget.h \
+    src/module_dairy/Dairy.h \
+    src/module_dairy/DairyEdit.h \
+    src/module_dairy/DairyEditWidget.h \
+    src/module_dairy/delegate/DairyDateDelegate.h \
+    src/module_dairy/delegate/DairyStatisticsDelegate.h \
+    src/module_dairy/delegate/DairyTagDelegate.h \
+    src/module_dairy/model/DairyDateTreeModel.h \
+    src/module_dairy/model/DairyStatisticsModel.h \
+    src/module_dairy/model/DairyTagListModel.h \
+    src/module_dairy/model/PrivateMenuModel.h \
+    src/module_tool/GeneralToolsWidget.h \
+    src/module_tool/tool_accpasswd_book/AccPasswdWidget.h \
+    src/module_tool/tool_accpasswd_book/APasswdTableModel.h \
+    src/module_tool/tool_rename/OriginNum.h \
+    src/module_tool/tool_rename/RenameWidget.h \
+    src/music/LLrc.h \
+    src/music/LLrcWidget.h \
+    src/music/LMusicPlayer.h \
+    src/music/MusicSettingDialog.h \
+    src/tts/TTS.h \
+    src/tts/windows/LWindowsTTSS.h \
     src/AboutDialog.h \
     src/AwesomeFont.h \
-    src/Dairy.h \
     src/DairyMainWindow.h \
     src/LoginWidget.h \
     src/RegisterDialog.h \
@@ -96,29 +114,34 @@ HEADERS += \
     src/SqlOperate.h \
     src/TextVerifier.h \
     src/User.h \
-    src/delegate/DairyDateDelegate.h \
-    src/DairyEdit.h \
-    src/DairyEditWidget.h \
-    src/model/DairyStatisticsModel.h \
-    src/delegate/DairyStatisticsDelegate.h \
-    src/model/PrivateMenuModel.h \
-    src/model/APasswdTableModel.h \
-    src/tts/TTS.h \
-    src/tts/windows/LWindowsTTSS.h \
-    src/MusicSettingDialog.h \
-    src/music/LLrc.h \
-    src/music/LLrcWidget.h \
-    src/music/LMusicPlayer.h \
-    src/tool_rename/OriginNum.h \
-    src/tool_rename/RenameWidget.h
+    src/module_dairy/DairyWidget.h \
+    src/core/LEvent.h
 
 SOURCES += \
-    src/delegate/DairyTagDelegate.cpp \
-    src/model/DairyDateTreeModel.cpp \
-    src/model/DairyTagListModel.cpp \
+    src/core/LBaseWidget.cpp \
+    src/module_dairy/Dairy.cpp \
+    src/module_dairy/DairyEdit.cpp \
+    src/module_dairy/DairyEditWidget.cpp \
+    src/module_dairy/delegate/DairyDateDelegate.cpp \
+    src/module_dairy/delegate/DairyStatisticsDelegate.cpp \
+    src/module_dairy/delegate/DairyTagDelegate.cpp \
+    src/module_dairy/model/DairyDateTreeModel.cpp \
+    src/module_dairy/model/DairyStatisticsModel.cpp \
+    src/module_dairy/model/DairyTagListModel.cpp \
+    src/module_dairy/model/PrivateMenuModel.cpp \
+    src/module_tool/GeneralToolsWidget.cpp \
+    src/module_tool/tool_accpasswd_book/AccPasswdWidget.cpp \
+    src/module_tool/tool_accpasswd_book/APasswdTableModel.cpp \
+    src/module_tool/tool_rename/OriginNum.cpp \
+    src/module_tool/tool_rename/RenameWidget.cpp \
+    src/music/LLrc.cpp \
+    src/music/LLrcWidget.cpp \
+    src/music/LMusicPlayer.cpp \
+    src/music/MusicSettingDialog.cpp \
+    src/tts/TTS.cpp \
+    src/tts/windows/LWindowsTTS.cpp \
     src/AboutDialog.cpp \
     src/AwesomeFont.cpp \
-    src/Dairy.cpp \
     src/DairyMainWindow.cpp \
     src/LoginWidget.cpp \
     src/main.cpp \
@@ -127,30 +150,22 @@ SOURCES += \
     src/SqlOperate.cpp \
     src/TextVerifier.cpp \
     src/User.cpp \
-    src/delegate/DairyDateDelegate.cpp \
-    src/DairyEdit.cpp \
-    src/DairyEditWidget.cpp \
-    src/model/DairyStatisticsModel.cpp \
-    src/delegate/DairyStatisticsDelegate.cpp \
-    src/model/PrivateMenuModel.cpp \
-    src/model/APasswdTableModel.cpp \
-    src/tts/TTS.cpp \
-    src/tts/windows/LWindowsTTS.cpp \
-    src/MusicSettingDialog.cpp \
-    src/music/LLrc.cpp \
-    src/music/LLrcWidget.cpp \
-    src/music/LMusicPlayer.cpp \
-    src/tool_rename/OriginNum.cpp \
-    src/tool_rename/RenameWidget.cpp
+    src/module_dairy/DairyWidget.cpp \
+    src/core/LEvent.cpp
 
 FORMS += \
+    src/module_dairy/DairyEditWidget.ui \
+    src/module_tool/GeneralToolsWidget.ui \
+    src/module_tool/tool_accpasswd_book/AccPasswdWidget.ui \
+    src/module_tool/tool_rename/RenameWidget.ui \
+    src/music/MusicSettingDialog.ui \
     src/AboutDialog.ui \
     src/DairyMainWindow.ui \
     src/LoginWidget.ui \
     src/RegisterDialog.ui \
     src/SkinWidget.ui \
-    src/DairyEditWidget.ui \
-    src/MusicSettingDialog.ui \
-    src/tool_rename/RenameWidget.ui
+    src/module_dairy/DairyWidget.ui
+
+
 
 
