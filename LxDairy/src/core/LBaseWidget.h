@@ -3,6 +3,8 @@
 
 #include <QWidget>
 
+class CSaveEvent;
+
 class CLBaseWidget : public QWidget
 {
     Q_OBJECT
@@ -15,6 +17,11 @@ signals:
 public slots:
 
 protected:
+
+    //void event(QEvent *event);
+    void customEvent(QEvent *event);
+    //重写的以上两个函数都可以处理自定义事件，可以二选一
+
     // 自定义来自action的事件
     virtual void actSaveEvent(){}
 };

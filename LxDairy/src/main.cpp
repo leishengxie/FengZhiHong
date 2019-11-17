@@ -5,6 +5,7 @@
 #include <QApplication>
 #include <QProcess>
 #include <QMessageBox>
+#include <QStandardPaths>
 
 
 static const QString s_strUpder = "LxDairyUpd.exe";
@@ -18,6 +19,8 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
+#ifdef QT_NO_DEBUG
+    //release mode
     if (argc == 1)
     {
         if(!QProcess::startDetached(s_strUpder))
@@ -27,9 +30,12 @@ int main(int argc, char *argv[])
         }
         return 0;
     }
+#else
+
+#endif
 
     // 为了保证用户卸载程序时，不删除用户的数据,本程序使用用户文档路径
-    static const QString s_strAppDirDB = QCoreApplication::applicationDirPath() + "/" + "LxDairy.db";
+    //static const QString s_strAppDirDB = QCoreApplication::applicationDirPath() + "/" + "LxDairy.db";
     if (!CSqlOperate::connect(s_strDocDirDB))
     {
         QMessageBox::information(NULL, "ERROR", "数据库连接失败！");

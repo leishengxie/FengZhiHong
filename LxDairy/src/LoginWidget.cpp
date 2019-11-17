@@ -3,7 +3,7 @@
 #include "RegisterDialog.h"
 #include "SqlOperate.h"
 #include "DairyMainWindow.h"
-
+#include <QMessageBox>
 #include <QSettings>
 #include <QResizeEvent>
 

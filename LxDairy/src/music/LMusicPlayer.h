@@ -59,8 +59,10 @@ private:
     // 当前播放的媒体总长度
     qint64 m_llCurDuration;
 
+    // 歌词
     CLLrcWidget* m_pLrcWidget;
 
+    // 设置
     CMusicSettingDialog* m_pMusicSettingDialog;
 };
 

@@ -82,6 +82,13 @@ DEPENDPATH += $$PWD/../../LxMultimedia/LxTTS/include
 INCLUDEPATH += $$PWD/src
 DEPENDPATH += $$PWD/src
 
+INCLUDEPATH += \
+    src/core \
+    src/module_dairy \
+    src/module_tool \
+    src/music \
+    src/tts
+
 HEADERS += \
     src/core/LBaseWidget.h \
     src/module_dairy/Dairy.h \

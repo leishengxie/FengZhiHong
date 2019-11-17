@@ -1,32 +1,32 @@
 #include "DairyMainWindow.h"
 #include "ui_DairyMainWindow.h"
-#include <QIcon>
-#include <QtDebug>
-#include <QMdiSubWindow>
-#include <QTimer>
+
+#include <QMessageBox>
+#include <QColorDialog>
+#include <QFontDialog>
+
 #include "LoginWidget.h"
-#include "SqlOperate.h"
 #include "SkinWidget.h"
 #include "User.h"
 #include "music/LMusicPlayer.h"
-#include "tts/windows/LWindowsTTSS.h"
+#include "AboutDialog.h"
 
 
 CDairyMainWindow::CDairyMainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::DairyMainWindow)
     , m_pSkinWidget(new CSkinWidget())
-    , m_pMusicPlayer(new CLMusicPlayer(this, this))
 {
     ui->setupUi(this);
     setWindowTitle("LxDairy - " + CUser::getInstance()->getUserName());
+
     QPalette pal;
     pal.setBrush(QPalette::Background, QBrush(QPixmap(":/img/bg/1.jpg").scaled(size())));
     setPalette(pal);
 
 
     // 音乐播放模块
-    statusBar()->addWidget((QWidget*)m_pMusicPlayer->getLrcWidget());
+    statusBar()->addWidget((QWidget*)ui->tabDairy->musicPlayer()->getLrcWidget());
     statusBar()->setStyleSheet(QString("QStatusBar::item{border: 0px}"));
 
 
@@ -68,18 +68,8 @@ void CDairyMainWindow::on_action_new_dairy_triggered()
 
 void CDairyMainWindow::on_action_save_triggered()
 {
-
     // 个人隐私, 已经连接信号槽
-
-
     // 日记部分
-    QMdiSubWindow* pMdiSubWindow = ui->mdiArea->currentSubWindow();
-    if (pMdiSubWindow == NULL)
-    {
-        return;
-    }
-    CDairyEditWidget* pDairyEditWidget = qobject_cast<CDairyEditWidget*>(pMdiSubWindow->widget());
-    pDairyEditWidget->onSave();
 
 }
 
@@ -169,19 +159,14 @@ void CDairyMainWindow::on_action_font_triggered()
 
 void CDairyMainWindow::on_action_save_all_triggered()
 {
-    QList<QMdiSubWindow *> lstSubWindow = ui->mdiArea->subWindowList();
-    foreach (QMdiSubWindow *pMdiSubWindow, lstSubWindow)
-    {
-        CDairyEditWidget* pDairyEditWidget = qobject_cast<CDairyEditWidget*>(pMdiSubWindow->widget());
-        pDairyEditWidget->onSave();
-    }
+    ui->tabDairy->saveAllDairy();
 }
 
 
-// setting
+// music setting
 void CDairyMainWindow::on_action_music_triggered()
 {
-   m_pMusicPlayer->showSetting();
+   ui->tabDairy->musicPlayer()->showSetting();
 }
 
 

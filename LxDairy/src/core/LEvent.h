@@ -2,24 +2,22 @@
 #define CLEVENT_H
 #include <QEvent>
 
-class CLEvent
+
+enum E_ActionEvent
 {
-public:
-    CLEvent();
+    EA_Save = QEvent::User + 1,
+    EA_SaveAll
 };
 
-///
-/// \brief The TaskEvent class
-///
-class TaskEvent : public QEvent
+
+class CSaveEvent : public QEvent
 {
 public:
-    TaskEvent(Type type)
-        : QEvent(evType())
-        , m_socket(socket)
+    CSaveEvent(Type type)
+        : QEvent(eventType())
     {}
 
-    static QEvent::Type evType()
+    static QEvent::Type eventType()
     {
         if(s_evType == QEvent::None)
         {
@@ -27,8 +25,6 @@ public:
         }
         return s_evType;
     }
-
-    qintptr m_socket;
 
 private:
     static QEvent::Type s_evType;

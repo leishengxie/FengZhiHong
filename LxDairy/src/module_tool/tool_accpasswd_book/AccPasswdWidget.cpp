@@ -2,6 +2,8 @@
 #include "ui_AccPasswdWidget.h"
 #include <QSqlTableModel>
 #include <QSqlError>
+#include <QMessageBox>
+#include "User.h"
 
 CAccPasswdWidget::CAccPasswdWidget(QWidget *parent) :
     QWidget(parent),
@@ -10,14 +12,8 @@ CAccPasswdWidget::CAccPasswdWidget(QWidget *parent) :
     ui->setupUi(this);
 
     //ui->btnAdd->setEnabled();
-    ui->listWidgetPrivate->setIconSize(QSize(64,64));
-    ui->listWidgetPrivate->setGridSize(QSize(96,96));
-    //ui->listWidgetPrivate->set
-    //ui->listWidgetPrivate->setResizeMode(QListView::Adjust); //设置QListView大小改变时，图标的调整模式，默认是固定的，但可以改成自动调整：
-//    CPrivateMenuModel *pModel = new CPrivateMenuModel(this);
-//    ui->listViewPrivate->setModel(pModel);
-//    ui->listViewPrivate->setViewMode(QListView::IconMode);
-    // 此处用listWidget替代listView
+
+
 
     //直接操作数据库
 //    ui->tableViewPrivate->setShowGrid(false); //设置不显示格子线

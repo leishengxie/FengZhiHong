@@ -9,10 +9,20 @@
 #include "delegate/DairyStatisticsDelegate.h"
 #include "DairyEdit.h"
 #include "DairyEditWidget.h"
+#include "music/LMusicPlayer.h"
+#include "tts/windows/LWindowsTTSS.h"
+#include "SqlOperate.h"
 
-CDairyWidget::CDairyWidget(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::CDairyWidget)
+#include <QIcon>
+#include <QtDebug>
+#include <QMdiSubWindow>
+#include <QTimer>
+#include <QCloseEvent>
+
+CDairyWidget::CDairyWidget(QWidget *parent)
+    :QWidget(parent)
+  , ui(new Ui::CDairyWidget)
+      , m_pMusicPlayer(new CLMusicPlayer(this, this))
 {
     ui->setupUi(this);
 
@@ -34,6 +44,8 @@ CDairyWidget::CDairyWidget(QWidget *parent) :
     //connect(ui->treeDairy, SIGNAL(clicked(QModelIndex))
 
     // 初始化日记统计
+    ui->btnOpenDairy->hide();
+
     CDairyStatisticsModel* pDairyStatisticsModel = new CDairyStatisticsModel(this);
     CDairyStatisticsDelegate* pDairyStatisticsDelegate = new CDairyStatisticsDelegate;
     ui->listViewStatistics->setModel(pDairyStatisticsModel);
@@ -49,19 +61,44 @@ CDairyWidget::CDairyWidget(QWidget *parent) :
     //ui->mdiArea->setOption(option, true);
     //connect(ui->mdiArea, SIGNAL(customContextMenuRequested(QPoint))
 
+    //tts
+    m_pITTS = new CLWindowsTTSS(this);
+    m_pITTS->initSpeech();
+
     // 等所有初始化完成
     QTimer::singleShot(1000,[=](){
         pDairyDateTreeModel->loadAllDairy();
     });
 
-    //tts
-    m_pITTS = new CLWindowsTTSS(this);
-    m_pITTS->initSpeech();
+
 }
 
 CDairyWidget::~CDairyWidget()
 {
     delete ui;
+}
+
+
+
+void CDairyWidget::saveDairy()
+{
+    QMdiSubWindow* pMdiSubWindow = ui->mdiArea->currentSubWindow();
+    if (pMdiSubWindow == NULL)
+    {
+        return;
+    }
+    CDairyEditWidget* pDairyEditWidget = qobject_cast<CDairyEditWidget*>(pMdiSubWindow->widget());
+    pDairyEditWidget->onSave();
+}
+
+void CDairyWidget::saveAllDairy()
+{
+    QList<QMdiSubWindow *> lstSubWindow = ui->mdiArea->subWindowList();
+    foreach (QMdiSubWindow *pMdiSubWindow, lstSubWindow)
+    {
+        CDairyEditWidget* pDairyEditWidget = qobject_cast<CDairyEditWidget*>(pMdiSubWindow->widget());
+        pDairyEditWidget->onSave();
+    }
 }
 
 void CDairyWidget::closeEvent(QCloseEvent *event)
@@ -77,7 +114,7 @@ void CDairyWidget::closeEvent(QCloseEvent *event)
     }
 }
 
-void CDairyMainWindow::slot_displayDairy(const CDairy &dairy)
+void CDairyWidget::slot_displayDairy(const CDairy &dairy)
 {
     // 确定日记
     if (dairy.isNewDairy())
@@ -125,7 +162,7 @@ void CDairyMainWindow::slot_displayDairy(const CDairy &dairy)
 
 }
 
-void CDairyMainWindow::onRequireExpand(const QModelIndex &index)
+void CDairyWidget::onRequireExpand(const QModelIndex &index)
 {
     ui->treeDairy->expand(index);
     QList<QModelIndex> lstIndex;
@@ -143,7 +180,7 @@ void CDairyMainWindow::onRequireExpand(const QModelIndex &index)
 
 }
 
-void CDairyMainWindow::slotUpdateMenu(QMdiSubWindow* pMdiSubWindow)
+void CDairyWidget::slotUpdateMenu(QMdiSubWindow* pMdiSubWindow)
 {
     // 关闭时会调用当前函数，指针为NULL
     bool bHasActiveWindow = pMdiSubWindow == NULL ? false : true;
@@ -172,18 +209,18 @@ void CDairyMainWindow::slotUpdateMenu(QMdiSubWindow* pMdiSubWindow)
 /// \param selected 新选择的项目
 /// \param deselected 刚刚被取消选择的项目
 ///
-void CDairyMainWindow::slotSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
+void CDairyWidget::slotSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
 {
     Q_UNUSED(deselected)
     int nSelected = selected.indexes().size();
     qDebug() << "nSelected：" << nSelected;
     if (nSelected == 1)
     {
-        ui->btnOpenDairy->setEnabled(true);
+        ui->btnOpenDairy->show();
     }
     else
     {
-        ui->btnOpenDairy->setEnabled(false);
+        ui->btnOpenDairy->hide();
     }
     QItemSelectionModel *selectionModel = ui->listViewStatistics->selectionModel();
     QModelIndexList listSelected = selectionModel->selectedIndexes();
@@ -191,13 +228,13 @@ void CDairyMainWindow::slotSelectionChanged(const QItemSelection &selected, cons
 }
 
 
-void CDairyMainWindow::onSaveDairyfinished(const CDairy &dairySaveBefore, const CDairy &dairySaved)
+void CDairyWidget::onSaveDairyfinished(const CDairy &dairySaveBefore, const CDairy &dairySaved)
 {
     ((CDairyDateTreeModel*)ui->treeDairy->model())->dairyModify(dairySaveBefore, dairySaved);
 }
 
 
-void CDairyMainWindow::on_treeDairy_clicked(const QModelIndex &index)
+void CDairyWidget::on_treeDairy_clicked(const QModelIndex &index)
 {
     qDebug() << "tree click " << "row=" << index.row() << " column=" << index.column();
     T_DairyDateItem* tDairyTagItem = qvariant_cast<T_DairyDateItem*>(index.data());
@@ -241,15 +278,16 @@ void CDairyMainWindow::on_treeDairy_clicked(const QModelIndex &index)
 
 
 
-void CDairyMainWindow::on_btnOpenDairy_clicked()
+void CDairyWidget::on_btnOpenDairy_clicked()
 {
     QModelIndex indexCur = ui->listViewStatistics->currentIndex();
     T_DairyStatisticsItem tDairyStatisticsItem = qvariant_cast<T_DairyStatisticsItem>(indexCur.data());
     ((CDairyDateTreeModel*)ui->treeDairy->model())->expandDairy(tDairyStatisticsItem.did);
 }
 
-void CDairyMainWindow::on_listViewTag_clicked(const QModelIndex &index)
+void CDairyWidget::on_listViewTag_clicked(const QModelIndex &index)
 {
+    ui->btnOpenDairy->hide();
     ui->mdiArea->closeAllSubWindows();
     ui->stackedWidget->setCurrentIndex(1);
     T_DairyTagItem tDairyTagItem = qvariant_cast<T_DairyTagItem>(index.data());
@@ -262,7 +300,7 @@ void CDairyMainWindow::on_listViewTag_clicked(const QModelIndex &index)
     ui->btnOpenDairy->setEnabled(false);
 }
 
-void CDairyMainWindow::on_calendarWidget_clicked(const QDate &date)
+void CDairyWidget::on_calendarWidget_clicked(const QDate &date)
 {
 
 }
@@ -273,11 +311,6 @@ void CDairyMainWindow::on_calendarWidget_clicked(const QDate &date)
 
 
 void CDairyWidget::on_btnTTSPlay_clicked()
-{
-    m_pMusicPlayer->onPlay();
-}
-
-void CDairyWidget::on_btnPlayMusic_clicked()
 {
     QMdiSubWindow* pMdiSubWindow = ui->mdiArea->activeSubWindow();
     if (pMdiSubWindow == NULL)
@@ -290,4 +323,10 @@ void CDairyWidget::on_btnPlayMusic_clicked()
     CDairyEditWidget* pDairyEditWidget = qobject_cast<CDairyEditWidget*>(pMdiSubWindow->widget());
     QString strContent = pDairyEditWidget->dairyEdit()->toPlainText();
     m_pITTS->speak(strContent);
+
+}
+
+void CDairyWidget::on_btnPlayMusic_clicked()
+{
+    m_pMusicPlayer->onPlay();
 }
