@@ -19,6 +19,7 @@ public:
     explicit Widget(QWidget *parent = 0);
     ~Widget();
 
+    // 更新步骤
     enum E_StepUpd
     {
         ES_CheckXml,

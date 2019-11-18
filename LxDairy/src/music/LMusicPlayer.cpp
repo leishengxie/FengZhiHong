@@ -30,7 +30,7 @@ CLMusicPlayer::CLMusicPlayer(QObject *parent, QWidget *pWgtParent)
 //    connect(nextButton, SIGNAL(clicked()), m_pMediaPlaylist, SLOT(next()));
 //     connect(volumeSlider, SIGNAL(valueChanged(int)), m_pMediaPlayer, SLOT(setVolume(int)));
 //    connect(m_pMediaPlayer, SIGNAL(metaDataChanged()), this, SLOT(title()));
-    connect(m_pMediaPlayer, SIGNAL(stateChanged(QMediaPlayer::State)), this, SLOT(mediaStateChanged(QMediaPlayer::State)));
+    connect(m_pMediaPlayer, SIGNAL(stateChanged(QMediaPlayer::State)), this, SLOT(onMediaStateChanged(QMediaPlayer::State)));
     connect(m_pMediaPlayer, SIGNAL(durationChanged(qint64)), this, SLOT(onDurationChanged(qint64)));
     connect(m_pMediaPlayer, SIGNAL(positionChanged(qint64)), this, SLOT(onPositionChanged(qint64)));
     connect(m_pMediaPlaylist, SIGNAL(currentIndexChanged(int)), this, SLOT(onCurrentIndexChanged(int)));

@@ -1,7 +1,7 @@
 #ifndef DAIRYWIDGET_H
 #define DAIRYWIDGET_H
 
-#include <QWidget>
+#include "LBaseWidget.h"
 #include <QItemSelection>
 #include "Dairy.h"
 
@@ -14,7 +14,7 @@ class CLMusicPlayer;
 class ITTS;
 class QCloseEvent;
 
-class CDairyWidget : public QWidget
+class CDairyWidget : public CLBaseWidget
 {
     Q_OBJECT
 
@@ -30,12 +30,14 @@ public:
         return m_pMusicPlayer;
     }
 
+    bool closeAllSubWindows();
 public slots:
     void slot_displayDairy(const CDairy &dairy);
     void onRequireExpand(const QModelIndex & index);
 
 protected:
     void closeEvent(QCloseEvent *event);
+    void actSaveEvent();
 
 private slots:
     void slotUpdateMenu(QMdiSubWindow *pMdiSubWindow);

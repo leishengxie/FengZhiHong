@@ -4,12 +4,15 @@
 #include <QMessageBox>
 #include <QColorDialog>
 #include <QFontDialog>
+#include <QCloseEvent>
 
 #include "LoginWidget.h"
 #include "SkinWidget.h"
 #include "User.h"
 #include "music/LMusicPlayer.h"
 #include "AboutDialog.h"
+#include "DairyApp.h"
+#include "LEvent.h"
 
 
 CDairyMainWindow::CDairyMainWindow(QWidget *parent)
@@ -54,6 +57,19 @@ void CDairyMainWindow::setLoginWidget(CLoginWidget *pLoginWidget)
     m_pLoginWidget = pLoginWidget;
 }
 
+void CDairyMainWindow::closeEvent(QCloseEvent *event)
+{
+    //CDairyApp::postEvent(ui->tabDairy, (QEvent *)event);
+    if(ui->tabDairy->closeAllSubWindows())
+    {
+        event->accept();//关闭
+    }
+    else
+    {
+        event->ignore();
+    }
+}
+
 
 void CDairyMainWindow::on_action_logout_triggered()
 {
@@ -70,6 +86,7 @@ void CDairyMainWindow::on_action_save_triggered()
 {
     // 个人隐私, 已经连接信号槽
     // 日记部分
+    CDairyApp::postEvent(ui->tabDairy, new CSaveEvent());
 
 }
 

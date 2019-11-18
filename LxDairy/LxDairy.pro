@@ -122,7 +122,8 @@ HEADERS += \
     src/TextVerifier.h \
     src/User.h \
     src/module_dairy/DairyWidget.h \
-    src/core/LEvent.h
+    src/core/LEvent.h \
+    src/DairyApp.h
 
 SOURCES += \
     src/core/LBaseWidget.cpp \
@@ -158,7 +159,8 @@ SOURCES += \
     src/TextVerifier.cpp \
     src/User.cpp \
     src/module_dairy/DairyWidget.cpp \
-    src/core/LEvent.cpp
+    src/core/LEvent.cpp \
+    src/DairyApp.cpp
 
 FORMS += \
     src/module_dairy/DairyEditWidget.ui \

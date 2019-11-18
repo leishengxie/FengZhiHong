@@ -2,7 +2,7 @@
 #include "LoginWidget.h"
 #include "SqlOperate.h"
 #include "SkinWidget.h"
-#include <QApplication>
+#include "DairyApp.h"
 #include <QProcess>
 #include <QMessageBox>
 #include <QStandardPaths>
@@ -17,7 +17,7 @@ static const QString s_strDocDirDB = QStandardPaths::writableLocation(QStandardP
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
+    CDairyApp a(argc, argv);
 
 #ifdef QT_NO_DEBUG
     //release mode

@@ -22,7 +22,6 @@ private slots:
 
     void on_btnDelete_clicked();
 
-
 private:
     Ui::CAccPasswdWidget *ui;
 };

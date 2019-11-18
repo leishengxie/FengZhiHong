@@ -13,7 +13,7 @@ enum E_ActionEvent
 class CSaveEvent : public QEvent
 {
 public:
-    CSaveEvent(Type type)
+    CSaveEvent()
         : QEvent(eventType())
     {}
 
