@@ -84,8 +84,7 @@ CDairyEdit *CDairyEditWidget::dairyEdit()
 
 void CDairyEditWidget::closeEvent(QCloseEvent *event)
 {
-    qDebug() << this->parent() << "调用了子控件的close";
-    //ui->dairyEdit->close();
+    //qDebug() << parent() << "调用了子控件的close";
     if(ui->dairyEdit->document()->isModified())
     {
         QMessageBox msgBox;
@@ -100,21 +99,15 @@ void CDairyEditWidget::closeEvent(QCloseEvent *event)
         {
         case QMessageBox::Save:
             onSave();
-            event->accept();
             break;
         case QMessageBox::Discard:
-            event->accept();
             break;
         case QMessageBox::Cancel:
             event->ignore();
-            break;
+            return;
         default:
             break;
         }
-    }
-    else
-    {
-        event->accept();
     }
     event->accept();
 }

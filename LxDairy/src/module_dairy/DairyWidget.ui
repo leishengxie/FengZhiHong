@@ -33,7 +33,7 @@
    <item>
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="page_dairy">
       <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -146,9 +146,6 @@
          </item>
          <item>
           <widget class="QPushButton" name="btnOpenDairy">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
            <property name="text">
             <string>打开</string>
            </property>

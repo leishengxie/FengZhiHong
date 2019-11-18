@@ -20,7 +20,7 @@
 #include <QCloseEvent>
 
 CDairyWidget::CDairyWidget(QWidget *parent)
-    :QWidget(parent)
+    : CLBaseWidget(parent)
   , ui(new Ui::CDairyWidget)
       , m_pMusicPlayer(new CLMusicPlayer(this, this))
 {
@@ -101,17 +101,41 @@ void CDairyWidget::saveAllDairy()
     }
 }
 
-void CDairyWidget::closeEvent(QCloseEvent *event)
+bool CDairyWidget::closeAllSubWindows()
 {
+    // 作为顶层窗口时用，不是顶层窗口无意义
     ui->mdiArea->closeAllSubWindows();
     if(ui->mdiArea->currentSubWindow())
     {
-        event->ignore();
+        return false;
     }
-    else
+    return true;
+}
+
+// 当前控件作为顶层窗口时用，不是顶层窗口无意义
+// 父类 与 父对象
+void CDairyWidget::closeEvent(QCloseEvent *event)
+{
+    if (!isWindow())
+    {
+        event->accept();//关闭
+        return;
+    }
+
+    if(closeAllSubWindows())
     {
         event->accept();//关闭
     }
+    else
+    {
+        event->ignore();
+    }
+}
+
+void CDairyWidget::actSaveEvent()
+{
+    qDebug() << "-----actSaveEvent()";
+    saveDairy();
 }
 
 void CDairyWidget::slot_displayDairy(const CDairy &dairy)
@@ -246,7 +270,7 @@ void CDairyWidget::on_treeDairy_clicked(const QModelIndex &index)
         ((CDairyStatisticsModel*)ui->listViewStatistics->model())->showDairyStatistics(lstDairy);
         ui->labelDairyTotal->setText(QString("(共%1项)").arg(lstDairy.size()));
         ui->labelTitle->setText(QString("%1年的日记").arg(tDairyTagItem->strYear));
-        ui->btnOpenDairy->setEnabled(false);
+        //ui->btnOpenDairy->setEnabled(false);
         ui->stackedWidget->setCurrentIndex(1);
         break;
     }
@@ -257,7 +281,7 @@ void CDairyWidget::on_treeDairy_clicked(const QModelIndex &index)
         ((CDairyStatisticsModel*)ui->listViewStatistics->model())->showDairyStatistics(lstDairy);
         ui->labelDairyTotal->setText(QString("(共%1项)").arg(lstDairy.size()));
         ui->labelTitle->setText(QString("%1年%2月的日记").arg(tDairyTagItem->strYear).arg(tDairyTagItem->strMonth));
-        ui->btnOpenDairy->setEnabled(false);
+        //ui->btnOpenDairy->setEnabled(false);
         ui->stackedWidget->setCurrentIndex(1);
         break;
     }
@@ -288,6 +312,7 @@ void CDairyWidget::on_btnOpenDairy_clicked()
 void CDairyWidget::on_listViewTag_clicked(const QModelIndex &index)
 {
     ui->btnOpenDairy->hide();
+    //ui->btnOpenDairy->setEnabled(false);
     ui->mdiArea->closeAllSubWindows();
     ui->stackedWidget->setCurrentIndex(1);
     T_DairyTagItem tDairyTagItem = qvariant_cast<T_DairyTagItem>(index.data());
@@ -297,7 +322,7 @@ void CDairyWidget::on_listViewTag_clicked(const QModelIndex &index)
     ((CDairyStatisticsModel*)ui->listViewStatistics->model())->showDairyStatistics(lstDairy);
     ui->labelDairyTotal->setText(QString("(共%1项)").arg(lstDairy.size()));
     ui->labelTitle->setText(tDairyTagItem.strTagName);
-    ui->btnOpenDairy->setEnabled(false);
+
 }
 
 void CDairyWidget::on_calendarWidget_clicked(const QDate &date)
