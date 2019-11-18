@@ -15,6 +15,7 @@ public:
     explicit Widget(QWidget *parent = 0);
     ~Widget();
 
+    QString picToWord(const QString &path);
 private:
     Ui::Widget *ui;
 };
