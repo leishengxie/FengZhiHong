@@ -80,7 +80,7 @@
      <item>
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>纠正文字:</string>
+        <string>局部纠正:</string>
        </property>
       </widget>
      </item>

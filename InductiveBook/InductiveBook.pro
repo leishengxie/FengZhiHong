@@ -18,14 +18,16 @@ SOURCES += main.cpp \
     InductiveBookWidget.cpp \
     ListViewEx.cpp \
     ArticleListModel.cpp \
-    CheckButton.cpp
+    CheckButton.cpp \
+    screenshot/ScreenWidget.cpp
 
 HEADERS  += \
     OcrHandleWidget.h \
     InductiveBookWidget.h \
     ListViewEx.h \
     ArticleListModel.h \
-    CheckButton.h
+    CheckButton.h \
+    screenshot/ScreenWidget.h
 
 FORMS    += \
     OcrHandleWidget.ui \
