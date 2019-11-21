@@ -31,6 +31,8 @@ private slots:
 
     void on_switchButton_checkedChanged(bool bChecked);
 
+    void on_btnOcr_clicked();
+
 private:
     void showInductive();
 

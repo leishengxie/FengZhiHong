@@ -3,7 +3,7 @@
 #include<QPalette>
 #include"screen.h"
 using namespace Qt;
-QSLabel::QSLabel(QWidget* parent)
+CImageLabel::CImageLabel(QWidget* parent)
 {
     setMouseTracking(true);
     ispressed = false;
@@ -25,7 +25,7 @@ QSLabel::QSLabel(QWidget* parent)
                                   );
 }
 
-void QSLabel::ontextchanged()
+void CImageLabel::ontextchanged()
 {
     if(m_plaintextedit->toPlainText().size() < 10)
     {
@@ -38,7 +38,7 @@ void QSLabel::ontextchanged()
     }
 }
 
-void QSLabel::mouseMoveEvent(QMouseEvent* event)
+void CImageLabel::mouseMoveEvent(QMouseEvent* event)
 {
     if(isdrawline || isdrawrectangle || isdrawround || istextedit || isdrawarrow)
     {
@@ -64,7 +64,7 @@ void QSLabel::mouseMoveEvent(QMouseEvent* event)
     }
 }
 
-void QSLabel::mousePressEvent(QMouseEvent* event)
+void CImageLabel::mousePressEvent(QMouseEvent* event)
 {
     startPoint = event->pos();
     endPoint = event->pos();
@@ -85,7 +85,7 @@ void QSLabel::mousePressEvent(QMouseEvent* event)
     }
 }
 
-void QSLabel::mouseReleaseEvent(QMouseEvent* event)
+void CImageLabel::mouseReleaseEvent(QMouseEvent* event)
 {
     //setCursor(ArrowCursor);
     ispressed = false;
@@ -119,7 +119,7 @@ void QSLabel::mouseReleaseEvent(QMouseEvent* event)
 }
 
 
-void QSLabel::paintEvent(QPaintEvent* event)
+void CImageLabel::paintEvent(QPaintEvent* event)
 {
     QPainter painter(this);
     painter.drawImage(0, 0, selectimage); //表示是在selectimage上面做编辑
@@ -154,7 +154,7 @@ void QSLabel::paintEvent(QPaintEvent* event)
     {
         myArrow* arrow = arrows[m];
 
-        drawarrow(arrow->startPoint, arrow->endPoint, painter);
+        drawArrow(arrow->startPoint, arrow->endPoint, painter);
 
     }
     for (int l = 0; l < texts.size(); l++)
@@ -175,11 +175,11 @@ void QSLabel::paintEvent(QPaintEvent* event)
     }
     else if(isdrawarrow)
     {
-        drawarrow(startPoint, endPoint, painter);
+        drawArrow(startPoint, endPoint, painter);
     }
 }
 
-void QSLabel::drawarrow(QPoint startpoint, QPoint endpoint, QPainter & p)
+void CImageLabel::drawArrow(QPoint startpoint, QPoint endpoint, QPainter & p)
 {
     double par = 15.0;
     double slopy = atan2((endpoint.y() - startpoint.y()), (endpoint.x() - startpoint.x()));
@@ -204,7 +204,7 @@ void QSLabel::drawarrow(QPoint startpoint, QPoint endpoint, QPainter & p)
 
 }
 
-void QSLabel::setimagetolabel(const QImage & image)
+void CImageLabel::setImageToLabel(const QImage & image)
 {
     selectimage = image;
 
@@ -213,9 +213,9 @@ void QSLabel::setimagetolabel(const QImage & image)
 }
 
 
-void QSLabel::setdrawlineenable()
+void CImageLabel::setDrawLineEnable()
 {
-    settextedittovector();
+    setTextEditToVector();
 
     isdrawline = true;
     isdrawrectangle = false;
@@ -225,9 +225,9 @@ void QSLabel::setdrawlineenable()
     m_plaintextedit->hide();
 }
 
-void QSLabel::setrectangleenable()
+void CImageLabel::setRectAngleEnable()
 {
-    settextedittovector();
+    setTextEditToVector();
     isdrawline = false;
     isdrawrectangle = true;
     isdrawround = false;
@@ -237,9 +237,9 @@ void QSLabel::setrectangleenable()
     m_plaintextedit->hide();
 }
 
-void QSLabel::setdrawarrowenable()
+void CImageLabel::setDrawArrowEnable()
 {
-    settextedittovector();
+    setTextEditToVector();
     isdrawline = false;
     isdrawarrow = true;
     isdrawrectangle = false;
@@ -249,9 +249,9 @@ void QSLabel::setdrawarrowenable()
     m_plaintextedit->hide();
 }
 
-void QSLabel::setroundenable()
+void CImageLabel::setRoundEnable()
 {
-    settextedittovector();
+    setTextEditToVector();
     isdrawline = false;
     isdrawrectangle = false;
     isdrawround = true;
@@ -261,9 +261,9 @@ void QSLabel::setroundenable()
     m_plaintextedit->hide();
 }
 
-void QSLabel::settexteditenable()
+void CImageLabel::setTextEditEnable()
 {
-    settextedittovector();
+    setTextEditToVector();
     isdrawline = false;
     isdrawrectangle = false;
     isdrawround = false;
@@ -273,7 +273,7 @@ void QSLabel::settexteditenable()
     m_plaintextedit->hide();
 }
 
-void QSLabel::settextedittovector()
+void CImageLabel::setTextEditToVector()
 {
     if (istextedit && m_plaintextedit->toPlainText().size())
     {
@@ -285,7 +285,7 @@ void QSLabel::settextedittovector()
     }
 }
 
-QImage QSLabel::resultimage()
+QImage CImageLabel::resultImage()
 {
     return QImage(QPixmap::grabWidget(this).toImage());
 

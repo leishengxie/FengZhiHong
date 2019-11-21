@@ -16,6 +16,9 @@ public:
     ~COcrHandleWidget();
 
     QString picToWord(const QString &path);
+private slots:
+    void on_btnScreenshot_clicked();
+
 private:
     Ui::COcrHandleWidget *ui;
 };

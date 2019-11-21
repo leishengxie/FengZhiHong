@@ -4,7 +4,9 @@
 #include "myrect.h"
 #include"qslabel.h"
 #include"controlwidget.h"
-enum Type
+
+// 四个角上的顶点矩形区域
+enum E_VertexType
 {
     RECT1,
     RECT2,
@@ -15,7 +17,7 @@ enum Type
 };
 
 
-class QSLabel;
+class CImageLabel;
 class ControlWidget;
 
 class Screen : public QWidget
@@ -46,9 +48,9 @@ public:
 
     bool compareRect(QRectF & r1, QRectF & r2);
 
-    Type pointInWhere(QPoint p);
+    E_VertexType pointInWhere(QPoint p);
     //返回截取之后的图片
-    QPixmap getGrabPixmap();
+    QPixmap getSelectPixmap();
 
     QPainterPath getPath();
     //保存截图
@@ -78,12 +80,13 @@ private:
     QRectF       rect4;           //第四象限的正方形
 
     QRectF       rect;            //代表选区的正方形
-    Type         type;
+    E_VertexType         m_eVertexType;
     QPoint       oldPoint;        //原先的坐标
+
     QWidget*     control;
     ControlWidget* controlUi;
-    QRect rec;
-    QSLabel* labelimage;
+
+    CImageLabel* m_pSLabel;
 
 };
 

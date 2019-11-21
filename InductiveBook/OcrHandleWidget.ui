@@ -148,9 +148,9 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="btnScreenshot">
        <property name="text">
-        <string>cut</string>
+        <string>screenshot</string>
        </property>
       </widget>
      </item>

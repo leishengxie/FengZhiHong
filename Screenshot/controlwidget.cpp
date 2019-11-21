@@ -44,7 +44,7 @@ void ControlWidget::saveBtn_slot()
 void ControlWidget::finishBtn_slot()
 {
     QClipboard *board = QApplication::clipboard();
-    QPixmap pix = screen->getGrabPixmap();
+    QPixmap pix = screen->getSelectPixmap();
     board->setImage(pix.toImage());
     cancelBtn_slot();
 }

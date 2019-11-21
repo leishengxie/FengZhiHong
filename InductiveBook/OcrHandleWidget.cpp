@@ -1,5 +1,6 @@
 #include "OcrHandleWidget.h"
 #include "ui_OcrHandleWidget.h"
+#include "screenshot/ScreenWidget.h"
 
 ////OpenCV
 //#include "opencv2/core/core.hpp"
@@ -109,3 +110,10 @@ QString COcrHandleWidget::picToWord(const QString &path)
     return outText;
 }
 
+
+void COcrHandleWidget::on_btnScreenshot_clicked()
+{
+    CScreenWidget* pScreenWidget = new CScreenWidget();
+    pScreenWidget->show();
+
+}

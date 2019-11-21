@@ -19,7 +19,8 @@ SOURCES += main.cpp \
     ListViewEx.cpp \
     ArticleListModel.cpp \
     CheckButton.cpp \
-    screenshot/ScreenWidget.cpp
+    screenshot/ScreenWidget.cpp \
+    screenshot/ImageLabel.cpp
 
 HEADERS  += \
     OcrHandleWidget.h \
@@ -27,11 +28,13 @@ HEADERS  += \
     ListViewEx.h \
     ArticleListModel.h \
     CheckButton.h \
-    screenshot/ScreenWidget.h
+    screenshot/ScreenWidget.h \
+    screenshot/ImageLabel.h
 
 FORMS    += \
     OcrHandleWidget.ui \
-    InductiveBookWidget.ui
+    InductiveBookWidget.ui \
+    screenshot/ScreenWidget.ui
 
 
 #依赖头文#
@@ -60,5 +63,8 @@ else:unix: LIBS += -L$$PWD/../../LxTool/LQtTool/bin/ -lLQtTool
 
 ##win32: LIBS += -L$$PWD/thirdParty/leptonica/lib/ -llibleptonica-1.76.0.dll
 #win32: LIBS += -L$$PWD/thirdParty/leptonica/lib/ -lliblept.dll
+
+RESOURCES += \
+    res.qrc
 
 

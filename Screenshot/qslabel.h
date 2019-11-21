@@ -40,26 +40,29 @@ typedef struct myText
 
 } myText;
 
-class QSLabel : public QLabel
+class CImageLabel : public QLabel
 {
     Q_OBJECT
 public:
-    QSLabel(QWidget* parent);
+    CImageLabel(QWidget* parent);
     void mouseMoveEvent(QMouseEvent* event);
     void mousePressEvent(QMouseEvent* event);
     void mouseReleaseEvent(QMouseEvent* event);
     void paintEvent(QPaintEvent* event);
-    void setdrawlineenable();
-    void setrectangleenable();
-    void setdrawarrowenable();
-    void setroundenable();
-    void settexteditenable();
-    void settextedittovector();
-    void drawarrow(QPoint startpoint, QPoint endpoint, QPainter & p);
-    void setimagetolabel(const QImage & image);
-    QImage resultimage();
+
+    void setDrawLineEnable();
+    void setRectAngleEnable();
+    void setDrawArrowEnable();
+    void setRoundEnable();
+    void setTextEditEnable();
+    void setTextEditToVector();
+    void drawArrow(QPoint startpoint, QPoint endpoint, QPainter & p);
+    void setImageToLabel(const QImage & image);
+    QImage resultImage();
+
 public slots:
     void ontextchanged();
+
 private:
     QPoint startPoint;
     QPoint endPoint;

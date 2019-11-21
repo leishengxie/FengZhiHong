@@ -35,11 +35,11 @@ Screen::Screen(QWidget* parent)
     m_bFirstLeftPress = true;
 
     //想到了添加一个bool labelimageShow()的函数的方法，找时间试一下
-    labelimage = new QSLabel(this);
+    m_pSLabel = new CImageLabel(this);
     Qt::WindowFlags nType = Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint;
-    labelimage->setWindowFlags(nType);
+    m_pSLabel->setWindowFlags(nType);
 
-    type = NO;
+    m_eVertexType = NO;
 
 }
 
@@ -151,7 +151,7 @@ void Screen::mouseReleaseEvent(QMouseEvent* e)
 void Screen::mouseMoveEvent(QMouseEvent* e)
 {
     QPoint tempPoint = e->pos();     //当前鼠标位置
-    setselectimagelabel(e);
+    setSelectImageLabel();
 
     if(e->buttons() & Qt::LeftButton)   //如果左键按下
     {
@@ -176,6 +176,7 @@ void Screen::mouseMoveEvent(QMouseEvent* e)
             rect.setWidth(m_ptPress.x() - m_ptMove.x());
             rect.setHeight(m_ptPress.y() - m_ptMove.y());
         }
+
         if( m_bFirstLeftPress )    //如果是第一次按下时候，
         {
             m_ptMove = e->pos();   //终点即为鼠标此时位置
@@ -190,7 +191,7 @@ void Screen::mouseMoveEvent(QMouseEvent* e)
             }
             int moveX = tempPoint.x() - oldPoint.x();  //鼠标移动的x距离
             int moveY = tempPoint.y() - oldPoint.y();   //鼠标移动的y距离
-            switch( type )         //选区角落四个小矩形的位置
+            switch( m_eVertexType )         //选区角落四个小矩形的位置
             {
                 case RECT1:               //意思是第一次选区之后，分别拖动四个角落的小矩形时候，截图选区的变化
                     m_ptPress.setY(m_ptPress.y() + moveY);  //右上角的矩形
@@ -272,35 +273,35 @@ void Screen::mouseMoveEvent(QMouseEvent* e)
     }
     else                            //指的是当鼠标位于四个角落小矩形中和选区中时候鼠标的图标变化
     {
-        Type r = pointInWhere(e->pos());
+        E_VertexType r = pointInWhere(e->pos());
         if( r == RECT1)
         {
-            type = RECT1;
+            m_eVertexType = RECT1;
             setCursor(Qt::SizeBDiagCursor);
         }
         else if( r == RECT2)
         {
-            type = RECT2;
+            m_eVertexType = RECT2;
             setCursor(Qt::SizeFDiagCursor);
         }
         else if( r == RECT3)
         {
-            type = RECT3;
+            m_eVertexType = RECT3;
             setCursor(Qt::SizeBDiagCursor);
         }
         else if( r == RECT4)
         {
-            type = RECT4;
+            m_eVertexType = RECT4;
             setCursor(Qt::SizeFDiagCursor);
         }
         else if( r == RECT)
         {
-            type = RECT;
+            m_eVertexType = RECT;
             setCursor(Qt::SizeAllCursor);
         }
         else
         {
-            type = NO;
+            m_eVertexType = NO;
             setCursor(Qt::ArrowCursor);
         }
     }
@@ -315,7 +316,7 @@ bool Screen::compareRect(QRectF & r1, QRectF & r2)
 }
 
 //计算此时鼠标移动在哪个选区上面
-Type Screen::pointInWhere(QPoint p)
+E_VertexType Screen::pointInWhere(QPoint p)
 {
     if( pointInRect(p, rect1))
     {
@@ -398,10 +399,10 @@ void Screen::setselectimagelabel(QMouseEvent* event)
     int y = m_ptPress.y() < m_ptMove.y() ? m_ptPress.y() : m_ptMove.y();
     QImage selectimage = m_pixmapScreen.copy(x, y, wid, hei).toImage();
 
-    labelimage->setimagetolabel(selectimage);
-    labelimage->setFixedSize(wid, hei);
-    labelimage->move(QPoint(x, y));
-    labelimage->show();
+    m_pSLabel->setImageToLabel(selectimage);
+    m_pSLabel->setFixedSize(wid, hei);
+    m_pSLabel->move(QPoint(x, y));
+    m_pSLabel->show();
 }
 
 //保存截取出来的图片
@@ -423,12 +424,12 @@ void Screen::savePixmap()
 
     if(filename.length() > 0)
     {
-        QImage pimage = labelimage->resultimage();
+        QImage pimage = m_pSLabel->resultImage();
         pimage.save(filename, "jpg");
     }
 }
 
-QPixmap Screen::getGrabPixmap()   //返回截到的图片
+QPixmap Screen::getSelectPixmap()   //返回截到的图片
 {
     return m_pixmapScreen.copy(m_ptPress.x(), m_ptPress.y(), m_ptMove.x() - m_ptPress.x(),
                        m_ptMove.y() - m_ptPress.y());   //这个地方是关键，可以从这里入手了，得到了pixmap之后，进行toimage，然后进行编辑操作
@@ -437,35 +438,35 @@ QPixmap Screen::getGrabPixmap()   //返回截到的图片
 void Screen::drawline()
 {
 
-    labelimage->setdrawlineenable();
+    m_pSLabel->setDrawLineEnable();
 
 }
 
 void Screen::textedit()
 {
-    labelimage->settexteditenable();
+    m_pSLabel->setTextEditEnable();
 }
 
 void Screen::drawarrow()
 {
-    labelimage->setdrawarrowenable();
+    m_pSLabel->setDrawArrowEnable();
 }
 
 void Screen::drawround()
 {
-    labelimage->setroundenable();
+    m_pSLabel->setRoundEnable();
 }
 
 void Screen::drawrectang()
 {
-    labelimage->setrectangleenable();
+    m_pSLabel->setRectAngleEnable();
 }
 
 void Screen::Exit()
 {
-    if(labelimage)
+    if(m_pSLabel)
     {
-        labelimage->close();
+        m_pSLabel->close();
     }
 }
 

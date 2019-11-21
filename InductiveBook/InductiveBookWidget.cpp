@@ -272,3 +272,8 @@ void CInductiveBookWidget::showInductive()
     }
 
 }
+
+void CInductiveBookWidget::on_btnOcr_clicked()
+{
+
+}

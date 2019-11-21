@@ -1,0 +1,17 @@
+<RCC>
+    <qresource prefix="/">
+        <file>img/screenshot/control_arrow.jpg</file>
+        <file>img/screenshot/control_cancel.jpg</file>
+        <file>img/screenshot/control_draw_line.jpg</file>
+        <file>img/screenshot/control_edit.jpg</file>
+        <file>img/screenshot/control_finish.jpg</file>
+        <file>img/screenshot/control_mosiac.jpg</file>
+        <file>img/screenshot/control_phone.jpg</file>
+        <file>img/screenshot/control_rect.jpg</file>
+        <file>img/screenshot/control_return.jpg</file>
+        <file>img/screenshot/control_round.jpg</file>
+        <file>img/screenshot/control_save.jpg</file>
+        <file>img/screenshot/control_share.jpg</file>
+        <file>img/screenshot/control_star.jpg</file>
+    </qresource>
+</RCC>
