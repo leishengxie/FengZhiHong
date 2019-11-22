@@ -24,6 +24,7 @@ public slots:
     void OnTest();
     void OnContentChange( int position, int charsRemoved, int charsAdded );
     void onCurrentCharFormatChanged(const QTextCharFormat & charFormat);
+    void onFinishOcr(const QString & strText);
 
 private slots:
     void mergeFormat(QTextCharFormat fmt);
@@ -32,6 +33,8 @@ private slots:
     void on_switchButton_checkedChanged(bool bChecked);
 
     void on_btnOcr_clicked();
+
+    void on_btnSave_clicked();
 
 private:
     void showInductive();
@@ -44,7 +47,7 @@ private:
     QTextDocument* m_docBackup;
 
     int m_nFontWeightInductive;
-    QColor m_ColorInductive;
+    QColor m_colorInductive;
 };
 
 #endif // INDUCTIVEBOOKWIDGET_H

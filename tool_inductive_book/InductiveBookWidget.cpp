@@ -4,21 +4,26 @@
 #include <QTextFormat>
 #include <QTextBlock>
 #include <QStack>
+#include <QDateTime>
 #include "OcrHandleWidget.h"
+#include "ArticleListModel.h"
 
 CInductiveBookWidget::CInductiveBookWidget(QWidget* parent) :
     QWidget(parent),
     ui(new Ui::CInductiveBookWidget)
     , m_pOcrHandleWidget(new COcrHandleWidget)
     , m_nFontWeightInductive(QFont::Bold)
-    , m_ColorInductive(QColor(100, 184, 255))
+    , m_colorInductive(QColor(100, 184, 255))
 {
     ui->setupUi(this);
     //QListView
 
     ui->checkButton->setText("标记归纳文本");
     connect(ui->checkButton, SIGNAL(clicked(bool)), this, SLOT(bold(bool)));
-    connect(ui->btnOcr, SIGNAL(clicked()), m_pOcrHandleWidget, SLOT(show()));
+    //connect(ui->btnOcr, SIGNAL(clicked()), m_pOcrHandleWidget, SLOT(show()));
+
+    CArticleListModel* pArticleListModel = new CArticleListModel(this);
+    ui->listView->setModel(pArticleListModel);
     connect(ui->listView, SIGNAL(btnAddClicked()), this, SLOT(addInductiveArticle()));
 
 //    QTextDocument* document = ui->textEdit->document();
@@ -27,6 +32,11 @@ CInductiveBookWidget::CInductiveBookWidget(QWidget* parent) :
 
     connect(ui->textEdit, SIGNAL(currentCharFormatChanged(QTextCharFormat))
             , this, SLOT(onCurrentCharFormatChanged(QTextCharFormat)));
+
+    connect(m_pOcrHandleWidget, SIGNAL(finishOcr(QString)), this, SLOT(onFinishOcr(QString)));
+
+    ui->btnSave->setVisible(isWindow());
+
 }
 
 CInductiveBookWidget::~CInductiveBookWidget()
@@ -38,6 +48,11 @@ CInductiveBookWidget::~CInductiveBookWidget()
 void CInductiveBookWidget::addInductiveArticle()
 {
     //QTextCharFormat
+    T_InductiveArticle tInductiveArticle;
+    tInductiveArticle.strDate = QDateTime::currentDateTime().toString();
+    tInductiveArticle.strTitle = "new Article";
+    ui->lineEdit->setText("new Article");
+    ((CArticleListModel*)ui->listView->model())->onAddArticle(tInductiveArticle);
 }
 
 void CInductiveBookWidget::mergeFormat(QTextCharFormat fmt)
@@ -58,7 +73,7 @@ void CInductiveBookWidget::bold(bool bBold)
     {
 
         charFormat.setFontWeight(m_nFontWeightInductive);
-        charFormat.setForeground(m_ColorInductive);
+        charFormat.setForeground(m_colorInductive);
     }
     else
     {
@@ -174,9 +189,14 @@ void CInductiveBookWidget::OnContentChange( int position, int charsRemoved, int 
 
 }
 
-void CInductiveBookWidget::onCurrentCharFormatChanged(const QTextCharFormat &charFormat)
+void CInductiveBookWidget::onCurrentCharFormatChanged(const QTextCharFormat & charFormat)
 {
     ui->checkButton->setChecked(m_nFontWeightInductive == charFormat.fontWeight());
+}
+
+void CInductiveBookWidget::onFinishOcr(const QString & strText)
+{
+    ui->textEdit->append(strText);
 }
 
 void CInductiveBookWidget::on_switchButton_checkedChanged(bool bChecked)
@@ -243,7 +263,7 @@ void CInductiveBookWidget::showInductive()
             if (charFormat.isValid())
             {
                 if ( m_nFontWeightInductive == charFormat.fontWeight()
-                        && m_ColorInductive == charFormat.foreground().color())
+                        && m_colorInductive == charFormat.foreground().color())
                 {
 
                 }
@@ -274,6 +294,11 @@ void CInductiveBookWidget::showInductive()
 }
 
 void CInductiveBookWidget::on_btnOcr_clicked()
+{
+    m_pOcrHandleWidget->show();
+}
+
+void CInductiveBookWidget::on_btnSave_clicked()
 {
 
 }

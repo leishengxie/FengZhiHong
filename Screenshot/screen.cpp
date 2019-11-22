@@ -151,7 +151,7 @@ void Screen::mouseReleaseEvent(QMouseEvent* e)
 void Screen::mouseMoveEvent(QMouseEvent* e)
 {
     QPoint tempPoint = e->pos();     //当前鼠标位置
-    setSelectImageLabel();
+    setselectimagelabel(e);
 
     if(e->buttons() & Qt::LeftButton)   //如果左键按下
     {

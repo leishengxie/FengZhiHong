@@ -8,7 +8,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = InductiveBook
+TARGET = tool_inductive_book
 TEMPLATE = app
 
 DESTDIR = $$PWD/bin

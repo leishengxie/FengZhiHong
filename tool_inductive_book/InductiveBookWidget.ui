@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>归纳本</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -58,7 +58,7 @@
      <item>
       <widget class="QLineEdit" name="lineEdit">
        <property name="placeholderText">
-        <string>标题</string>
+        <string>请输入文本标题</string>
        </property>
       </widget>
      </item>
@@ -115,6 +115,13 @@
       <widget class="QPushButton" name="btnOcr">
        <property name="text">
         <string>识图</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnSave">
+       <property name="text">
+        <string>保存</string>
        </property>
       </widget>
      </item>

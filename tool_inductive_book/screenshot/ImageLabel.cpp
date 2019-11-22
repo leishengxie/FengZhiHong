@@ -23,9 +23,7 @@ CImageLabel::CImageLabel(QWidget* parent)
     m_plaintextedit->setPalette(p1);
     connect(m_plaintextedit, SIGNAL(textChanged()), this, SLOT(ontextchanged()));
     m_plaintextedit->setStyleSheet("QTextEdit{ border: 1px solid #dadada; }"
-                                   "QTextEdit{font-family:'Microsoft YaHei'; font-size:14px;color:#ff0000;}"
-                                   ""
-                                  );
+                                   "QTextEdit{font-family:'Microsoft YaHei'; font-size:14px;color:#ff0000;}");
 }
 
 void CImageLabel::ontextchanged()
@@ -36,8 +34,8 @@ void CImageLabel::ontextchanged()
     }
     else
     {
-        m_plaintextedit->resize(m_plaintextedit->toPlainText().size() * 15 + 20, m_plaintextedit->document()->size().rheight() + 10);
-
+        m_plaintextedit->resize(m_plaintextedit->toPlainText().size() * 15 + 20
+                                , m_plaintextedit->document()->size().rheight() + 10);
     }
 }
 
@@ -122,20 +120,20 @@ void CImageLabel::paintEvent(QPaintEvent* event)
     int y = 0;
     foreach (T_DarwData tDarwData, m_vecDarwData)
     {
+        x = tDarwData.ptStart.x() < tDarwData.ptEnd.x() ? tDarwData.ptStart.x() : tDarwData.ptEnd.x();
+        y = tDarwData.ptStart.y() < tDarwData.ptEnd.y() ? tDarwData.ptStart.y() : tDarwData.ptEnd.y();
         switch (tDarwData.eDrawType)
         {
             case ED_Line:
                 painter.drawLine(tDarwData.ptStart, tDarwData.ptEnd);
                 break;
             case ED_Rectangle:
-                x = tDarwData.ptStart.x() < tDarwData.ptEnd.x() ? tDarwData.ptStart.x() : tDarwData.ptEnd.x();
-                y = tDarwData.ptStart.y() < tDarwData.ptEnd.y() ? tDarwData.ptStart.y() : tDarwData.ptEnd.y();
-                painter.drawRect(x, y, abs(tDarwData.ptEnd.x() - tDarwData.ptStart.x()), abs(tDarwData.ptEnd.y() - tDarwData.ptStart.y()));
+                painter.drawRect(x, y, abs(tDarwData.ptEnd.x() - tDarwData.ptStart.x())
+                                 , abs(tDarwData.ptEnd.y() - tDarwData.ptStart.y()));
                 break;
             case ED_Round:
-                x = tDarwData.ptStart.x() < tDarwData.ptEnd.x() ? tDarwData.ptStart.x() : tDarwData.ptEnd.x();
-                y = tDarwData.ptStart.y() < tDarwData.ptEnd.y() ? tDarwData.ptStart.y() : tDarwData.ptEnd.y();
-                painter.drawEllipse(x, y, abs(tDarwData.ptEnd.x() - tDarwData.ptStart.x()), abs(tDarwData.ptEnd.y() - tDarwData.ptStart.y()));
+                painter.drawEllipse(x, y, abs(tDarwData.ptEnd.x() - tDarwData.ptStart.x())
+                                    , abs(tDarwData.ptEnd.y() - tDarwData.ptStart.y()));
                 break;
             case ED_Arrow:
                 drawArrow(tDarwData.ptStart, tDarwData.ptEnd, painter);
@@ -173,8 +171,10 @@ void CImageLabel::drawArrow(QPoint startpoint, QPoint endpoint, QPainter & p)
     double slopy = atan2((endpoint.y() - startpoint.y()), (endpoint.x() - startpoint.x()));
     double cosy = cos(slopy);
     double siny = sin(slopy);
-    QPoint point1 = QPoint(endpoint.x() + int(-par * cosy - (par / 2.0 * siny)), endpoint.y() + int(-par * siny + (par / 2.0 * cosy)));
-    QPoint point2 = QPoint(endpoint.x() + int(-par * cosy + (par / 2.0 * siny)), endpoint.y() - int(par / 2.0 * cosy + par * siny));
+    QPoint point1 = QPoint(endpoint.x() + int(-par * cosy - (par / 2.0 * siny))
+                           , endpoint.y() + int(-par * siny + (par / 2.0 * cosy)));
+    QPoint point2 = QPoint(endpoint.x() + int(-par * cosy + (par / 2.0 * siny))
+                           , endpoint.y() - int(par / 2.0 * cosy + par * siny));
     QPoint points[3] = {endpoint, point1, point2};
     p.setRenderHint(QPainter::Antialiasing, true);
     QPen drawtrianglepen;
@@ -185,8 +185,10 @@ void CImageLabel::drawArrow(QPoint startpoint, QPoint endpoint, QPainter & p)
     int offsetx = int(par * siny / 3);
     int offsety = int(par * cosy / 3);
     QPoint point3, point4;
-    point3 = QPoint(endpoint.x() + int(-par * cosy - (par / 2.0 * siny)) + offsetx, endpoint.y() + int(-par * siny + (par / 2.0 * cosy)) - offsety);
-    point4 = QPoint(endpoint.x() + int(-par * cosy + (par / 2.0 * siny) - offsetx), endpoint.y() - int(par / 2.0 * cosy + par * siny) + offsety);
+    point3 = QPoint(endpoint.x() + int(-par * cosy - (par / 2.0 * siny)) + offsetx
+                    , endpoint.y() + int(-par * siny + (par / 2.0 * cosy)) - offsety);
+    point4 = QPoint(endpoint.x() + int(-par * cosy + (par / 2.0 * siny) - offsetx)
+                    , endpoint.y() - int(par / 2.0 * cosy + par * siny) + offsety);
     QPoint arrbodypoints[3] = {startpoint, point3, point4};
     p.drawPolygon(arrbodypoints, 3);
 

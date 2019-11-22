@@ -100,7 +100,6 @@ HEADERS += \
     src/module_dairy/model/DairyDateTreeModel.h \
     src/module_dairy/model/DairyStatisticsModel.h \
     src/module_dairy/model/DairyTagListModel.h \
-    src/module_dairy/model/PrivateMenuModel.h \
     src/module_tool/GeneralToolsWidget.h \
     src/module_tool/tool_accpasswd_book/AccPasswdWidget.h \
     src/module_tool/tool_accpasswd_book/APasswdTableModel.h \
@@ -123,7 +122,8 @@ HEADERS += \
     src/User.h \
     src/module_dairy/DairyWidget.h \
     src/core/LEvent.h \
-    src/DairyApp.h
+    src/DairyApp.h \
+    src/module_tool/PrivateMenuModel.h
 
 SOURCES += \
     src/core/LBaseWidget.cpp \
@@ -136,7 +136,6 @@ SOURCES += \
     src/module_dairy/model/DairyDateTreeModel.cpp \
     src/module_dairy/model/DairyStatisticsModel.cpp \
     src/module_dairy/model/DairyTagListModel.cpp \
-    src/module_dairy/model/PrivateMenuModel.cpp \
     src/module_tool/GeneralToolsWidget.cpp \
     src/module_tool/tool_accpasswd_book/AccPasswdWidget.cpp \
     src/module_tool/tool_accpasswd_book/APasswdTableModel.cpp \
@@ -160,7 +159,8 @@ SOURCES += \
     src/User.cpp \
     src/module_dairy/DairyWidget.cpp \
     src/core/LEvent.cpp \
-    src/DairyApp.cpp
+    src/DairyApp.cpp \
+    src/module_tool/PrivateMenuModel.cpp
 
 FORMS += \
     src/module_dairy/DairyEditWidget.ui \

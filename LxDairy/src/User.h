@@ -17,12 +17,20 @@ class CUser : public QObject, public CSingleton<CUser>
 public:
     CUser();
 
+    //////////////////////// 用户数据////////////////////
+
+    // 用户id
     SETGET(int, nUid, Uid)
+    // 用户昵称
     SETGET(QString, strUserName, UserName)
+    // 用户日记数据
     SETGET(QList<CDairy>, m_lstDairy, LstDairy)
     // 当前活动的日记
     SETGET(CDairy, ActiveDairy, ActiveDairy)
+    // 用户标签数据
     SETGET(QStringList, m_lstDairyTag, LstDairyTag)
+
+
 
     void appendDairy(CDairy dairy);
 
@@ -31,6 +39,7 @@ public:
 
 signals:
     void dairyListChanged(const QList<CDairy> & lstDairy);
+
 
 private:
 

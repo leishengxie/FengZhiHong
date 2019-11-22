@@ -25,9 +25,8 @@ class CScreenWidget : public QWidget
 public:
     explicit CScreenWidget(QWidget* parent = 0);
 
-    QPixmap getSelectPixmap();
-
 signals:
+    void finishScreenshot(const QPixmap & pixmap);
 
 public slots:
 
@@ -43,9 +42,19 @@ private slots:
 
     void on_btnSave_clicked();
 
-private:
-    void setSelectImageLabel();
+    void on_btnCancel_clicked();
 
+    void on_btnDrawLine_clicked();
+
+    void on_btnRectangle_clicked();
+
+    void on_btnDrawRound_clicked();
+
+    void on_btnArrow_clicked();
+
+    void on_btnTextEdit_clicked();
+
+private:
     void drawOutSideSlelectArea(QPainter & painter);
     void drawRectTip(QPainter & painter);
     void drawControlArea(QPainter & painter);
@@ -54,14 +63,13 @@ private:
     Ui::CScreenWidget* ui;
 
     QPixmap m_pixmapScreen;               //全屏
-    QPainterPath m_painterPathScreen;      //保存全局路径
 
+    bool m_bFirstLeftPress;       //是不是第一次左键按下
     QPoint m_ptPress;          //鼠标左键按下后的坐标
     QPoint m_ptMove;             //终点坐标
 
     // 选区
-    QRectF m_rectf;            //代表选区的正方形
-
+    QRectF m_rectf;
     // 选区大小提示
     QRectF m_rectfTip;
     QString m_strTip;
@@ -71,13 +79,13 @@ private:
 //    QRectF m_rectfTopRight;
 //    QRectF m_rectfBottomRight;
 //    QRectF m_rectfBottomLeft;
-    QRectF       rect1;           //第一象限的正方形
-    QRectF       rect2;           //第二象限的正方形
-    QRectF       rect3;           //第三象限的正方形
-    QRectF       rect4;           //第四象限的正方形
+    QRectF rect1;           //第一象限的正方形
+    QRectF rect2;           //第二象限的正方形
+    QRectF rect3;           //第三象限的正方形
+    QRectF rect4;           //第四象限的正方形
     E_VertexType m_eVertexType;
 
-    QPoint       oldPoint;        //原先的坐标
+    QPoint oldPoint;        //原先的坐标
 
 };
 

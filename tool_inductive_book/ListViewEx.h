@@ -3,6 +3,9 @@
 
 #include <QListView>
 
+///
+/// \brief The CListViewEx class    画列表为空时列表的内容显示
+///
 class CListViewEx : public QListView
 {
     Q_OBJECT

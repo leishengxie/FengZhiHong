@@ -24,6 +24,8 @@ COcrHandleWidget::COcrHandleWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
+
+
     // test opencv ---ok
 //    Mat im = imread("lena.png");
 //    namedWindow("Image");
@@ -110,10 +112,22 @@ QString COcrHandleWidget::picToWord(const QString &path)
     return outText;
 }
 
+void COcrHandleWidget::onFinishScreenshot(const QPixmap &pixmap)
+{
+    ui->label->setPixmap(pixmap);
+}
+
 
 void COcrHandleWidget::on_btnScreenshot_clicked()
 {
     CScreenWidget* pScreenWidget = new CScreenWidget();
+    connect(pScreenWidget, SIGNAL(finishScreenshot(QPixmap)), this, SLOT(onFinishScreenshot(QPixmap)));
     pScreenWidget->show();
 
+}
+
+void COcrHandleWidget::on_btnSure_clicked()
+{
+    emit finishOcr(ui->textEdit->toPlainText());
+    close();
 }
