@@ -15,7 +15,6 @@ public:
     explicit COcrHandleWidget(QWidget *parent = 0);
     ~COcrHandleWidget();
 
-    QString picToWord(const QString &path);
 
 signals:
     void finishOcr(const QString & strText);
