@@ -258,9 +258,8 @@ void COcrHandleWidget::onFinishScreenshot(const QPixmap &pixmap)
 //        exit(1);
 //    }
 
-    //QString strTestPath = QCoreApplication::applicationDirPath() + "/tessdata";
     QString strTestPath = "./tessdata";
-    if (api->Init(strTestPath.toLatin1().constData(), "eng"))//chi_sim which is Chinese/eng
+    if (api->Init(strTestPath.toLatin1().constData(), "chi_sim"))//chi_sim which is Chinese/eng
     {
         //fprintf(stderr, "Could not initialize tesseract.\n");
         //exit(1);
@@ -269,16 +268,16 @@ void COcrHandleWidget::onFinishScreenshot(const QPixmap &pixmap)
     }
 
 
-    //QString path = "OCR.png";
-    QString path = "ocr2.jpg";
-    std::string str = path.toStdString();
-    const char* ch = str.c_str();
-    Pix *image = pixRead(ch); //absolute path of file //ba.data()
-    api->SetImage(image);
-
-//    cv::Mat mat = CVS::QPixmapToCvMat(pixmap);
-//    Pix *image = cvtMat2PIX(mat);
+//    //QString path = "OCR.png";
+//    QString path = "ocr2.jpg";
+//    std::string str = path.toStdString();
+//    const char* ch = str.c_str();
+//    Pix *image = pixRead(ch); //absolute path of file //ba.data()
 //    api->SetImage(image);
+
+    cv::Mat mat = CVS::QPixmapToCvMat(pixmap);
+    Pix *image = cvtMat2PIX(mat);
+    api->SetImage(image);
 
     // Get OCR result
     outText = api->GetUTF8Text();
