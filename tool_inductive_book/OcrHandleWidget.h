@@ -7,6 +7,10 @@ namespace Ui {
 class COcrHandleWidget;
 }
 
+class CTextExtractor;
+class CTextRecognition;
+
+
 class COcrHandleWidget : public QWidget
 {
     Q_OBJECT
@@ -30,7 +34,8 @@ private slots:
 private:
     Ui::COcrHandleWidget *ui;
 
-
+    CTextExtractor* m_pTextExtractor;
+    CTextRecognition* m_pTextRecognition;
 };
 
 #endif // _OCR_HANDLE_WIDGET_H

@@ -20,7 +20,9 @@ SOURCES += main.cpp \
     ArticleListModel.cpp \
     CheckButton.cpp \
     screenshot/ScreenWidget.cpp \
-    screenshot/ImageLabel.cpp
+    screenshot/ImageLabel.cpp \
+    text_extractor/TextExtractor.cpp \
+    text_recognition/TextRecognition.cpp
 
 HEADERS  += \
     OcrHandleWidget.h \
@@ -29,7 +31,9 @@ HEADERS  += \
     ArticleListModel.h \
     CheckButton.h \
     screenshot/ScreenWidget.h \
-    screenshot/ImageLabel.h
+    screenshot/ImageLabel.h \
+    text_extractor/TextExtractor.h \
+    text_recognition/TextRecognition.h
 
 FORMS    += \
     OcrHandleWidget.ui \
