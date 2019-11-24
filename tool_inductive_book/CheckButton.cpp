@@ -1,6 +1,9 @@
 #include "CheckButton.h"
 #include <QPainter>
 
+static const int s_nWidthThis = 80;
+static const int s_nHeightThis = 28;
+
 CCheckButton::CCheckButton(QWidget* parent)
     : QWidget(parent)
 {
@@ -56,7 +59,13 @@ void CCheckButton::mouseReleaseEvent(QMouseEvent* event)
 
 QSize CCheckButton::sizeHint() const
 {
-    return QSize(80, 28);
+    QFont font = this->font();
+    font.setBold(true);
+    QFontMetrics fontMetrics(font);
+    int nWidthText = fontMetrics.width(Text());
+    int nWidthThisLarger = qMax(nWidthText, s_nWidthThis);
+
+    return QSize(nWidthThisLarger, s_nHeightThis);
 }
 
 void CCheckButton::init()

@@ -15,7 +15,7 @@ signals:
     void clicked(bool bChecked);
 
 public:
-    bool isChecked()
+    bool isChecked() const
     {
         return m_bCkecked;
     }
@@ -26,7 +26,7 @@ public:
         update();
     }
 
-    QString Text()
+    QString Text() const
     {
         return m_strText;
     }
