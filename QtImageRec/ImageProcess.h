@@ -26,7 +26,7 @@ enum
  *  img = Scalar(0, 0, 255);
  ***************************************************/
 CH_DLL_EXPORT
-s32 chSetMat(IN Mat& img, IN Scalar s);
+s32 chSetMat(IN Mat & img, IN Scalar s);
 
 
 /***************************************************
@@ -34,7 +34,7 @@ s32 chSetMat(IN Mat& img, IN Scalar s);
  * 功能  ： 图像取反
  ***************************************************/
 CH_DLL_EXPORT
-s32 chSetMatInv(IN Mat img, OUT Mat& dst);
+s32 chSetMatInv(IN Mat img, OUT Mat & dst);
 
 
 /***************************************************
@@ -47,7 +47,7 @@ s32 chSetMatInv(IN Mat img, OUT Mat& dst);
  *	 iChannels  B:0; G:1; R:2
  ***************************************************/
 CH_DLL_EXPORT
-u8 chGetPixel(IN Mat& img, IN s32 iRows, IN s32 jCols, IN s32 iChannels = 0);
+u8 chGetPixel(IN Mat & img, IN s32 iRows, IN s32 jCols, IN s32 iChannels = 0);
 
 
 /***************************************************
@@ -61,7 +61,7 @@ u8 chGetPixel(IN Mat& img, IN s32 iRows, IN s32 jCols, IN s32 iChannels = 0);
  *	 iChannels  B:0; G:1; R:2
  ***************************************************/
 CH_DLL_EXPORT
-s32 chSetPixel(IN u8 val, IN OUT Mat& img, IN s32 iRows, IN s32 jCols, IN s32 iChannels = 0);
+s32 chSetPixel(IN u8 val, IN OUT Mat & img, IN s32 iRows, IN s32 jCols, IN s32 iChannels = 0);
 
 
 /***************************************************
@@ -69,7 +69,7 @@ s32 chSetPixel(IN u8 val, IN OUT Mat& img, IN s32 iRows, IN s32 jCols, IN s32 iC
  * 功能  ：二值图像行求和( 白点数目)
  ***************************************************/
 CH_DLL_EXPORT
-s32 chBwRowSum(IN Mat img, OUT vector<s32>& vRowSum);
+s32 chBwRowSum(IN Mat img, OUT vector<s32> & vRowSum);
 
 
 /***************************************************
@@ -77,7 +77,7 @@ s32 chBwRowSum(IN Mat img, OUT vector<s32>& vRowSum);
  * 功能  ：二值图像列求和（白点数目）
  ***************************************************/
 CH_DLL_EXPORT
-s32 chBwColSum(IN Mat img, OUT vector<s32>& vColSum);
+s32 chBwColSum(IN Mat img, OUT vector<s32> & vColSum);
 
 
 /***************************************************
@@ -85,7 +85,7 @@ s32 chBwColSum(IN Mat img, OUT vector<s32>& vColSum);
  * 功能  ：灰度图像行求和
  ***************************************************/
 CH_DLL_EXPORT
-s32 chGrayRowSum(IN Mat img, OUT vector<s32>& vRowSum);
+s32 chGrayRowSum(IN Mat img, OUT vector<s32> & vRowSum);
 
 
 /***************************************************
@@ -93,7 +93,7 @@ s32 chGrayRowSum(IN Mat img, OUT vector<s32>& vRowSum);
  * 功能  ：灰度图像列求和
  ***************************************************/
 CH_DLL_EXPORT
-s32 chGrayColSum(IN Mat img, OUT vector<s32>& vColSum);
+s32 chGrayColSum(IN Mat img, OUT vector<s32> & vColSum);
 
 
 /**********************************************************
@@ -104,12 +104,12 @@ s32 chGrayColSum(IN Mat img, OUT vector<s32>& vColSum);
  *  vCounts			直方图统计结果
 ***********************************************************/
 CH_DLL_EXPORT
-s32 chHist(IN Mat src, OUT vector<s32>& vCounts );
+s32 chHist(IN Mat src, OUT vector<s32> & vCounts );
 
 
 // 直方图显示
 CH_DLL_EXPORT
-s32 chHistImage(Mat src, Mat& dst );
+s32 chHistImage(Mat src, Mat & dst );
 
 
 /****************************************************
@@ -128,7 +128,7 @@ s32 ImageHistLevelCheck(IN Mat grayImg, IN s32 thresh);
  *
  ******************************************************/
 CH_DLL_EXPORT
-s32 chResize2(IN Mat grayImg, OUT Mat& sizeImg, IN s32 pixelLimit, OUT f32& ratio);
+s32 chResize2(IN Mat grayImg, OUT Mat & sizeImg, IN s32 pixelLimit, OUT f32 & ratio);
 
 
 /******************************************************
@@ -140,7 +140,7 @@ CH_DLL_EXPORT
 s32 chTargetRawSize(IN Mat src,
                     IN Rect sizeRt,
                     IN f32 ratio,
-                    OUT Rect& rt,
+                    OUT Rect & rt,
                     IN s32 iBorder = 30,
                     IN s32 jBorder = 10);
 
@@ -154,7 +154,7 @@ s32 chTargetRawSize(IN Mat src,
  *	pt		等比例图像中数据起点
  ******************************************************/
 CH_DLL_EXPORT
-s32 chGetEqualWHImage(IN Mat src, Mat& dst, Point& pt);
+s32 chGetEqualWHImage(IN Mat src, Mat & dst, Point & pt);
 
 
 /******************************************************
@@ -163,7 +163,7 @@ s32 chGetEqualWHImage(IN Mat src, Mat& dst, Point& pt);
  * 说明：
  ******************************************************/
 CH_DLL_EXPORT
-s32 chBGR2Gray(IN Mat ColorImg, OUT Mat& GrayImg);
+s32 chBGR2Gray(IN Mat ColorImg, OUT Mat & GrayImg);
 
 
 /******************************************************
@@ -172,7 +172,7 @@ s32 chBGR2Gray(IN Mat ColorImg, OUT Mat& GrayImg);
  * 说明：
  ******************************************************/
 CH_DLL_EXPORT
-s32 chResize(IN Mat& img, OUT Mat& sizeImg,
+s32 chResize(IN Mat & img, OUT Mat & sizeImg,
              IN Size sz,
              IN s32 type = CH_INTER_NEAREST);
 
@@ -193,7 +193,7 @@ s32 chResize(IN Mat& img, OUT Mat& sizeImg,
  *	5	模板数据类型不是32sc1或32fc1
  ************************************************************************************/
 CH_DLL_EXPORT
-s32 chImfilter2(IN Mat& img, IN Mat& model, OUT Mat& dst, IN s32 border = CH_BORDER_ZERO);
+s32 chImfilter2(IN Mat & img, IN Mat & model, OUT Mat & dst, IN s32 border = CH_BORDER_ZERO);
 
 
 

@@ -15,7 +15,9 @@ void chImshow(Mat img1, Mat img2, Mat img3, Mat img4, Mat img5)
 {
     // 输入检测
     if(img1.empty())
+    {
         return;
+    }
 
     vector<s32> vRows(4);
     vRows[0] = img2.rows;
@@ -30,12 +32,12 @@ void chImshow(Mat img1, Mat img2, Mat img3, Mat img4, Mat img5)
     vImgs[3] = img5;
 
     chImshow1("1", img1);
-    for(u32 i=0; i<vRows.size(); i++)
+    for(u32 i = 0; i < vRows.size(); i++)
     {
-        if(vRows[i] != i+2)
+        if(vRows[i] != i + 2)
         {
             char filename[100];
-            sprintf(filename, "%d", i+2);
+            sprintf(filename, "%d", i + 2);
             chImshow1(filename, vImgs[i]);
         }
     }
@@ -58,14 +60,18 @@ void chImshow1(string str, Mat img, s32 flag)
  * 功能  ：显示图像目标区域
  ***************************************************/
 CH_DLL_EXPORT
-s32 chImshowTargets(Mat img, const vector<TargetInfo>& targets, bool writeFlag)
+s32 chImshowTargets(Mat img, const vector<TargetInfo> & targets, bool writeFlag)
 {
     // 输入检测
     if(img.empty())
+    {
         return -1;
+    }
 
     if(targets.size() == (u32)0)
+    {
         return -1;
+    }
 
     Mat showImg;
     //img.copyTo(showImg);
@@ -76,13 +82,13 @@ s32 chImshowTargets(Mat img, const vector<TargetInfo>& targets, bool writeFlag)
     img.copyTo(vImg[2]);
     cv::merge(vImg, showImg);
 
-    for(u32 i=0; i<targets.size(); i++)
+    for(u32 i = 0; i < targets.size(); i++)
     {
-        rectangle(showImg, targets[i].rt, Scalar(0,0,255), 1);
+        rectangle(showImg, targets[i].rt, Scalar(0, 0, 255), 1);
         if(writeFlag)
         {
             char filename[100];
-            sprintf(filename, "../Data/sample/%d.bmp", i+1);
+            sprintf(filename, "../Data/sample/%d.bmp", i + 1);
             Mat saveImg = showImg(targets[i].rt);
             imwrite(filename, saveImg);
         }
@@ -98,14 +104,18 @@ s32 chImshowTargets(Mat img, const vector<TargetInfo>& targets, bool writeFlag)
  * 功能  ：显示图像目标区域
  ***************************************************/
 CH_DLL_EXPORT
-s32 chImshowTargetsImg(Mat img, const vector<TargetInfo>& targets, Mat& dst)
+s32 chImshowTargetsImg(Mat img, const vector<TargetInfo> & targets, Mat & dst)
 {
     // 输入检测
     if(img.empty())
+    {
         return -1;
+    }
 
     if(targets.size() == (u32)0)
+    {
         return -1;
+    }
 
     Mat showImg;
     //img.copyTo(showImg);
@@ -116,9 +126,9 @@ s32 chImshowTargetsImg(Mat img, const vector<TargetInfo>& targets, Mat& dst)
     img.copyTo(vImg[2]);
     cv::merge(vImg, showImg);
 
-    for(u32 i=0; i<targets.size(); i++)
+    for(u32 i = 0; i < targets.size(); i++)
     {
-        rectangle(showImg, targets[i].rt, Scalar(0,0,255), 1);
+        rectangle(showImg, targets[i].rt, Scalar(0, 0, 255), 1);
     }
 
     showImg.copyTo(dst);
@@ -136,7 +146,9 @@ s32 chImshowTarget_Single(Mat img,
 {
     // 输入检测
     if(img.empty())
+    {
         return -1;
+    }
 
     Mat showImg;
     vector<Mat> vImg(3);
@@ -146,7 +158,7 @@ s32 chImshowTarget_Single(Mat img,
     cv::merge(vImg, showImg);
 
     Rect rt = targets.rt;
-    rectangle(showImg, rt, Scalar(0,0,255), 1);
+    rectangle(showImg, rt, Scalar(0, 0, 255), 1);
     if(writeFlag)
     {
         char filename[100];
@@ -165,10 +177,14 @@ s32 chImshowRects(Mat img, vector<Rect> vRects)
 {
     // 输入检测
     if(img.empty())
+    {
         return -1;
+    }
 
     if(vRects.size() == (u32)0)
+    {
         return -1;
+    }
 
     Mat showImg;
 //	img.copyTo(showImg);
@@ -179,7 +195,7 @@ s32 chImshowRects(Mat img, vector<Rect> vRects)
     img.copyTo(vImg[2]);
     cv::merge(vImg, showImg);
 
-    for(u32 i=0; i<vRects.size(); i++)
+    for(u32 i = 0; i < vRects.size(); i++)
     {
         rectangle(showImg, vRects[i], Scalar(0, 0, 255), 1);
     }
@@ -198,7 +214,9 @@ s32 chImshowRect_Single(Mat img, Rect rt)
 {
     // 输入检测
     if(img.empty())
+    {
         return -1;
+    }
 
     Mat showImg;
     img.copyTo(showImg);
@@ -209,7 +227,7 @@ s32 chImshowRect_Single(Mat img, Rect rt)
 
 
 CH_DLL_EXPORT
-s32 GrayImgColorRect(Mat grayImg, Rect rt, Mat& dst)
+s32 GrayImgColorRect(Mat grayImg, Rect rt, Mat & dst)
 {
     Mat colorImg;
     if(grayImg.channels() == 1)
@@ -225,7 +243,7 @@ s32 GrayImgColorRect(Mat grayImg, Rect rt, Mat& dst)
         grayImg.copyTo(colorImg);
     }
 
-    rectangle(colorImg, rt, Scalar(0,0,255), 1);
+    rectangle(colorImg, rt, Scalar(0, 0, 255), 1);
 
     colorImg.copyTo(dst);
     return 0;
@@ -241,28 +259,34 @@ s32 GrayImgColorRect(Mat grayImg, Rect rt, Mat& dst)
  *******************************************************/
 CH_DLL_EXPORT
 s32 chThumbnail(IN vector<Mat> vImg,
-                 OUT Mat& dst,
-                 IN s32 iSubImgW,
-                 IN s32 iSubImgH,
-                 IN s32 cols,
-                 IN s32 rows,
-                 IN s32 iGap)
+                OUT Mat & dst,
+                IN s32 iSubImgW,
+                IN s32 iSubImgH,
+                IN s32 cols,
+                IN s32 rows,
+                IN s32 iGap)
 {
     // 输入检测
     if(vImg.size() == (u32)0)
+    {
         return -1;
+    }
 
-    if(iSubImgH <=0 || iSubImgW <=0 || cols <=0 || rows <=0 || iGap<0)
+    if(iSubImgH <= 0 || iSubImgW <= 0 || cols <= 0 || rows <= 0 || iGap < 0)
+    {
         return -1;
+    }
 
     s32 imgNum = vImg.size();
     s32 sz = imgNum;
-    if(sz> (cols*rows))
-        sz = cols*rows;
+    if(sz > (cols * rows))
+    {
+        sz = cols * rows;
+    }
 
     //创建缩略图
     Mat mtImg = vImg[0];
-    Mat image(iSubImgH*rows + iGap*(rows - 1), iSubImgW*cols + iGap*(cols - 1), mtImg.type(), cv::Scalar::all(0));
+    Mat image(iSubImgH * rows + iGap * (rows - 1), iSubImgW * cols + iGap * (cols - 1), mtImg.type(), cv::Scalar::all(0));
     for (int i = 0; i < sz; i++)
     {
         mtImg = vImg[i];
@@ -312,7 +336,7 @@ s32 chImgFileCheck(string strFileName)
     szPos = strFileName.find_last_of(".", strFileName.length());
     strNameFilter = strFileName.substr(szPos + 1, strFileName.length() - szPos - 1);
 
-    char *pFilter[] = {(char*)"bmp", (char*)"BMP",  (char*)"jpg", (char*)"JPG", (char*)"png", (char*)"PNG", (char*)"tif"};
+    char* pFilter[] = {(char*)"bmp", (char*)"BMP",  (char*)"jpg", (char*)"JPG", (char*)"png", (char*)"PNG", (char*)"tif"};
     s32 bImg = 0;
 
     //过滤扩展名不是bmp的文件
@@ -340,9 +364,9 @@ s32 chImgFileCheck(string strFileName)
  *
  ***************************************************/
 CH_DLL_EXPORT
-s32 chSearchDir(const string& directoryName,
-                 vector<string>& filenames,
-                 bool addDirectoryName)
+s32 chSearchDir(const string & directoryName,
+                vector<string> & filenames,
+                bool addDirectoryName)
 {
     filenames.clear();
 
@@ -356,10 +380,15 @@ s32 chSearchDir(const string& directoryName,
         do
         {
             if (addDirectoryName)
+            {
                 filenames.push_back(directoryName + "\\" + s_file.name);
+            }
             else
+            {
                 filenames.push_back((string)s_file.name);
-        } while (_findnext(h_file, &s_file) == 0);
+            }
+        }
+        while (_findnext(h_file, &s_file) == 0);
     }
     _findclose(h_file);
 #else
@@ -370,9 +399,13 @@ s32 chSearchDir(const string& directoryName,
         while ((dent = readdir(dir)) != NULL)
         {
             if (addDirectoryName)
+            {
                 filenames.push_back(directoryName + "/" + string(dent->d_name));
+            }
             else
+            {
                 filenames.push_back(string(dent->d_name));
+            }
         }
     }
 #endif
@@ -392,8 +425,8 @@ s32 chSearchDir(const string& directoryName,
  *
  ***************************************************/
 CH_DLL_EXPORT
-s32 chSearchDirForImage(const string& directoryName,
-                        vector<string>& filenames)
+s32 chSearchDirForImage(const string & directoryName,
+                        vector<string> & filenames)
 {
     vector<string> vFileNames;
     chSearchDir(directoryName, vFileNames, 1);
@@ -416,7 +449,9 @@ s32 chSearchDirForImage(const string& directoryName,
 
         //过滤扩展名不是图像的文件
         if (!chImgFileCheck(strNameFilter))
+        {
             continue;
+        }
 
         vImgFileName[iCn++] = vFileNames[i];
 
@@ -441,7 +476,7 @@ s32 chClearDirectory(string DirPath)
     vector<string> vFileList;
     chSearchDir(DirPath, vFileList);
 
-    for(u32 i=0; i<vFileList.size(); i++)
+    for(u32 i = 0; i < vFileList.size(); i++)
     {
         DeleteFile(vFileList[i].c_str());
     }
@@ -456,11 +491,13 @@ s32 chClearDirectory(string DirPath)
  * 功能  ：vector向量的归一化
  ***************************************************/
 CH_DLL_EXPORT
-s32 chVecNormlize(vector<f32>& vSrc, vector<f32>& vDst)
+s32 chVecNormlize(vector<f32> & vSrc, vector<f32> & vDst)
 {
     // 输入检测
     if(vSrc.size() == (u32)0)
+    {
         return -1;
+    }
 
     Mat src = Mat(vSrc);
     Mat dst;
@@ -468,7 +505,7 @@ s32 chVecNormlize(vector<f32>& vSrc, vector<f32>& vDst)
     normalize(src, dst, 0, 1, CV_MINMAX);
 
     vDst.clear();
-    for(s32 i=0; i< dst.rows; i++)
+    for(s32 i = 0; i < dst.rows; i++)
     {
         vDst.push_back(dst.at<f32>(i));
     }
@@ -503,7 +540,7 @@ s32 chMatToXml(Mat img, string strFilePath)
  * 功能  ：从xml中读出Mat数据
  ***************************************************/
 CH_DLL_EXPORT
-s32 chXmlToMat(string strFilePath, Mat& img)
+s32 chXmlToMat(string strFilePath, Mat & img)
 {
     s32 bRead = 0;
     if (strFilePath != "")
@@ -519,7 +556,9 @@ s32 chXmlToMat(string strFilePath, Mat& img)
     }
 
     if (!img.empty())
+    {
         bRead = 1;
+    }
 
     return bRead;
 }
@@ -557,7 +596,7 @@ s32 chSyntheticTwoImage(string ImageName1, string ImageName2, string SyntheticIm
  * 功能  ：开始计时
  ***************************************************/
 CH_DLL_EXPORT
-bool chTic(f64& t)
+bool chTic(f64 & t)
 {
     t = (f64)getTickCount();
     return true;
@@ -569,10 +608,10 @@ bool chTic(f64& t)
  * 说明： 输出时间单位为ms
  ***************************************************/
 CH_DLL_EXPORT
-bool chToc(f64& t)
+bool chToc(f64 & t)
 {
     f64 timeStart = t;
-    t = (getTickCount() - timeStart)/getTickFrequency()*1000;
+    t = (getTickCount() - timeStart) / getTickFrequency() * 1000;
     return true;
 }
 
@@ -581,18 +620,20 @@ bool chToc(f64& t)
 CH_DLL_EXPORT
 s32 chSort_SP1(IN vector<s32> vIndex,
                IN vector<f32> vConf,
-               OUT vector<s32>& vSortIndex,
-               OUT vector<f32>& vSortConf)
+               OUT vector<s32> & vSortIndex,
+               OUT vector<f32> & vSortConf)
 {
     // 输入检测
     vSortIndex.clear();
     vSortConf.clear();
-    if(vConf.size()==0 || vIndex.size()==0 || vConf.size()!=vConf.size())
+    if(vConf.size() == 0 || vIndex.size() == 0 || vConf.size() != vConf.size())
+    {
         return 0;
+    }
 
     vector<s32> vSort;
     chSortIdx(vConf, vSort, CH_SORT_DESCENDING);
-    for(u32 i=0; i<vSort.size(); i++)
+    for(u32 i = 0; i < vSort.size(); i++)
     {
         vSortIndex.push_back(vIndex[vSort[i]]);
         vSortConf.push_back(vConf[vSort[i]]);

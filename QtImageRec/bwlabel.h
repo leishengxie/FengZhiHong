@@ -14,7 +14,7 @@
 CH_DLL_EXPORT
 s32 bwlabel(IN const Mat bw,
             IN s32 MinArea,
-            OUT vector<TargetInfo>& target);
+            OUT vector<TargetInfo> & target);
 
 
 /***********************************************
@@ -25,8 +25,8 @@ s32 bwlabel(IN const Mat bw,
 *	DstTargets	输出目标
 ***********************************************/
 CH_DLL_EXPORT
-s32 TargetMerge(IN const vector<TargetInfo>& SrcTargets,
-                OUT vector<TargetInfo>& DstTargets);
+s32 TargetMerge(IN const vector<TargetInfo> & SrcTargets,
+                OUT vector<TargetInfo> & DstTargets);
 
 /***********************************************
 * 函数：TargetMerge
@@ -36,8 +36,8 @@ s32 TargetMerge(IN const vector<TargetInfo>& SrcTargets,
 *	DstTargets	输出目标
 ***********************************************/
 CH_DLL_EXPORT
-s32 TargetMerge1(IN const vector<TargetInfo>& SrcTargets,
-                OUT vector<TargetInfo>& DstTargets);
+s32 TargetMerge1(IN const vector<TargetInfo> & SrcTargets,
+                 OUT vector<TargetInfo> & DstTargets);
 
 
 /***********************************************
@@ -48,8 +48,8 @@ s32 TargetMerge1(IN const vector<TargetInfo>& SrcTargets,
 *	DstTargets	输出目标
 ***********************************************/
 CH_DLL_EXPORT
-s32 TargetMerge2(IN const vector<TargetInfo>& SrcTargets,
-                OUT vector<TargetInfo>& DstTargets);
+s32 TargetMerge2(IN const vector<TargetInfo> & SrcTargets,
+                 OUT vector<TargetInfo> & DstTargets);
 
 
 /***********************************************
@@ -60,8 +60,8 @@ s32 TargetMerge2(IN const vector<TargetInfo>& SrcTargets,
 *	DstTargets	输出目标
 ***********************************************/
 CH_DLL_EXPORT
-s32 TargetMerge3(IN const vector<TargetInfo>& SrcTargets,
-                OUT vector<TargetInfo>& DstTargets);
+s32 TargetMerge3(IN const vector<TargetInfo> & SrcTargets,
+                 OUT vector<TargetInfo> & DstTargets);
 
 
 
@@ -75,8 +75,8 @@ s32 TargetMerge3(IN const vector<TargetInfo>& SrcTargets,
 ***********************************************/
 CH_DLL_EXPORT
 s32	GetTargetsMask(IN const Mat src,
-                   IN const vector<TargetInfo>& targets,
-                   OUT Mat& mask);
+                   IN const vector<TargetInfo> & targets,
+                   OUT Mat & mask);
 
 
 /***********************************************
@@ -84,8 +84,8 @@ s32	GetTargetsMask(IN const Mat src,
 * 功能：获取目标掩码
 ***********************************************/
 CH_DLL_EXPORT
-s32 GetTargetsRect(IN const vector<TargetInfo>& targets,
-                   OUT Rect& rt);
+s32 GetTargetsRect(IN const vector<TargetInfo> & targets,
+                   OUT Rect & rt);
 
 
 /***********************************************
@@ -93,8 +93,8 @@ s32 GetTargetsRect(IN const vector<TargetInfo>& targets,
 * 功能：目标转化为矩形框
 ***********************************************/
 CH_DLL_EXPORT
-s32 TargetToRect(IN const vector<TargetInfo>& targets,
-                 OUT vector<Rect>& vRt);
+s32 TargetToRect(IN const vector<TargetInfo> & targets,
+                 OUT vector<Rect> & vRt);
 
 
 /***********************************************
@@ -103,8 +103,8 @@ s32 TargetToRect(IN const vector<TargetInfo>& targets,
 ***********************************************/
 CH_DLL_EXPORT
 s32 GetTargetsImg(IN Mat img,
-                  IN const vector<TargetInfo>& targets,
-                  OUT vector<Mat>& vImg);
+                  IN const vector<TargetInfo> & targets,
+                  OUT vector<Mat> & vImg);
 
 
 /***********************************************
@@ -112,17 +112,17 @@ s32 GetTargetsImg(IN Mat img,
 * 功能：目标过滤
 ***********************************************/
 CH_DLL_EXPORT
-s32 TargetFilter(IN const vector<TargetInfo>& srcTargets,
-                 OUT vector<TargetInfo>& dstTargets,
+s32 TargetFilter(IN const vector<TargetInfo> & srcTargets,
+                 OUT vector<TargetInfo> & dstTargets,
                  IN s32 minArea = 10,
                  IN f32 AreaRatio = 0.0,
                  IN f32 whRatio = 0.0);
 
 
 CH_DLL_EXPORT
-s32 Target2to1(IN TargetInfo& target1,
-               IN TargetInfo& target2,
-               IN TargetInfo& dstTarget);
+s32 Target2to1(IN TargetInfo & target1,
+               IN TargetInfo & target2,
+               IN TargetInfo & dstTarget);
 
 
 #endif

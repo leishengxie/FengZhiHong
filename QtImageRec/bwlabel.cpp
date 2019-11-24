@@ -7,24 +7,24 @@
 #define LABELMODE_2  2
 
 #if 0
-#define MAXSLINK     (256*4)   /* 0 --- 255  */
-#define MAXLINK      (1024*4)  /* 0 --- 1023 */
-#define MAXSUBBLOCK  (1023*4)  /* 1 --- 1023 */
-#define MAXBLOCK     (255*4)   /* 1 --- 255  */
-#define MAXGREYLEVEL (255*4)   /* 0 --- 255  */
+    #define MAXSLINK     (256*4)   /* 0 --- 255  */
+    #define MAXLINK      (1024*4)  /* 0 --- 1023 */
+    #define MAXSUBBLOCK  (1023*4)  /* 1 --- 1023 */
+    #define MAXBLOCK     (255*4)   /* 1 --- 255  */
+    #define MAXGREYLEVEL (255*4)   /* 0 --- 255  */
 #else
-#define MAXSLINK     (1024)
-#define MAXLINK      (100000)
-#define MAXSUBBLOCK  (8192)  /* 1 --- 1023 */
-#define MAXBLOCK     (8192)
+    #define MAXSLINK     (1024)
+    #define MAXLINK      (100000)
+    #define MAXSUBBLOCK  (8192)  /* 1 --- 1023 */
+    #define MAXBLOCK     (8192)
 #endif
 
 s32 Gray[MAXSLINK];
 u16 stack[MAXSLINK];
-u16 TmpArea[MAXBLOCK+1];
-u16 TemArray[2000*2000];
-u16 mapArr[MAXSUBBLOCK+1];
-u16 neighbor[2*MAXLINK];
+u16 TmpArea[MAXBLOCK + 1];
+u16 TemArray[2000 * 2000];
+u16 mapArr[MAXSUBBLOCK + 1];
+u16 neighbor[2 * MAXLINK];
 
 
 /***********************************************
@@ -32,68 +32,69 @@ u16 neighbor[2*MAXLINK];
 * 功能：
 *
 ***********************************************/
-u16 GetNeighborTable(u8 *array,
+u16 GetNeighborTable(u8* array,
                      s32 RowLen,
                      s32 ColLen,
-                     u16 *neighbor,
-                     u16 *TemArray,
-                     s32 *TabLen,
-                     u16 *area)
+                     u16* neighbor,
+                     u16* TemArray,
+                     s32* TabLen,
+                     u16* area)
 {
     s32 StartPos, EndPos, GrayNoLastLine;
     s32 i, j, k;
-    s32 *pGray;
+    s32* pGray;
     u16 GrayNo = 0;
 
     pGray = Gray;
-    memset(pGray, 0, MAXSLINK*sizeof(s32));
+    memset(pGray, 0, MAXSLINK * sizeof(s32));
     *TabLen = 0;
 
-    for(i=0; i<RowLen; i++)
+    for(i = 0; i < RowLen; i++)
     {
-        for(j=0; j<ColLen; j++)
+        for(j = 0; j < ColLen; j++)
         {
-            if(array[i*ColLen+j] != 0)
+            if(array[i * ColLen + j] != 0)
             {
                 StartPos = j;
 
                 do
                 {
                     j++;
-                    if(j==ColLen)
+                    if(j == ColLen)
                     {
                         break;
                     }
-                }while(array[i*ColLen+j]!=0);
+                }
+                while(array[i * ColLen + j] != 0);
 
-                EndPos = j-1;
+                EndPos = j - 1;
                 GrayNoLastLine = 0;
 
-                for(k=StartPos-1; k<=EndPos+1; k++)
+                for(k = StartPos - 1; k <= EndPos + 1; k++)
                 {
                     //  第一行
-                    if(i-1<0)
+                    if(i - 1 < 0)
                     {
                         break;
                     }
 
                     // 第一列或最后一列
-                    if((k<0) || (k>=ColLen))
+                    if((k < 0) || (k >= ColLen))
                     {
                         continue;
                     }
 
-                    if(TemArray[(i-1)*ColLen+k]!=0)
+                    if(TemArray[(i - 1)*ColLen + k] != 0)
                     {
-                        if(GrayNoLastLine>=MAXSLINK)
+                        if(GrayNoLastLine >= MAXSLINK)
                         {
                             return 0;
                         }
 
-                        pGray[GrayNoLastLine] = TemArray[(i-1)*ColLen+k];
+                        pGray[GrayNoLastLine] = TemArray[(i - 1) * ColLen + k];
                         GrayNoLastLine++;
 
-                        while(TemArray[(i-1)*ColLen+k]!=0)
+                        while(TemArray[(i - 1)*ColLen + k] != 0)
                         {
                             k++;
                         }
@@ -101,7 +102,7 @@ u16 GetNeighborTable(u8 *array,
                 }
 
 
-                if(GrayNoLastLine==0)
+                if(GrayNoLastLine == 0)
                 {
                     GrayNo++;
                     if(GrayNo > MAXBLOCK)
@@ -115,34 +116,34 @@ u16 GetNeighborTable(u8 *array,
                     }
 
                     neighbor[*TabLen] = GrayNo;
-                    neighbor[*TabLen+MAXLINK] = GrayNo;
+                    neighbor[*TabLen + MAXLINK] = GrayNo;
                     (*TabLen)++;
 
                     area[GrayNo] = EndPos - StartPos + 1;
 
-                    for(k=StartPos; k<=EndPos; k++)
+                    for(k = StartPos; k <= EndPos; k++)
                     {
-                        TemArray[i*ColLen+k] = GrayNo;
+                        TemArray[i * ColLen + k] = GrayNo;
                     }
                 }
                 else
                 {
-                    for(k=StartPos; k<=EndPos; k++)
+                    for(k = StartPos; k <= EndPos; k++)
                     {
-                        TemArray[i*ColLen+k] = pGray[0];
+                        TemArray[i * ColLen + k] = pGray[0];
                     }
 
                     area[pGray[0]] += EndPos - StartPos + 1;
 
-                    for(k=1; k<GrayNoLastLine; k++)
+                    for(k = 1; k < GrayNoLastLine; k++)
                     {
-                        if(*TabLen>=MAXLINK)
+                        if(*TabLen >= MAXLINK)
                         {
                             return 0;
                         }
 
                         neighbor[*TabLen] = pGray[0];
-                        neighbor[*TabLen+MAXLINK] = pGray[k];
+                        neighbor[*TabLen + MAXLINK] = pGray[k];
                         (*TabLen)++;
                     }
                 }
@@ -159,15 +160,15 @@ u16 GetNeighborTable(u8 *array,
 * 功能：
 *
 ***********************************************/
-s32 GetMapTable(u16 *neighbor,
+s32 GetMapTable(u16* neighbor,
                 s32 TabLen,
-                u16 *map )
+                u16* map )
 {
     s32   i, j, TrueObj, StackPtr, TmpValue;
-    u16 *pstack,*pneighbor0,*pneighbor1,*pneighbor2,*pneighbor3;
+    u16* pstack, *pneighbor0, *pneighbor1, *pneighbor2, *pneighbor3;
 
     pstack = &(stack[0]);
-    for(i=0;i<MAXSLINK;i++)
+    for(i = 0; i < MAXSLINK; i++)
     {
         pstack[i] = 0;
     }
@@ -177,9 +178,9 @@ s32 GetMapTable(u16 *neighbor,
     pneighbor0 = &(neighbor[0]);
     pneighbor1 = &(neighbor[MAXLINK]);
 
-    for (i=0; i<TabLen; i++,pneighbor0++,pneighbor1++)
+    for (i = 0; i < TabLen; i++, pneighbor0++, pneighbor1++)
     {
-        if (*pneighbor0!=0)
+        if (*pneighbor0 != 0)
         {
             pstack[StackPtr] = *pneighbor0;
             StackPtr++;
@@ -188,7 +189,7 @@ s32 GetMapTable(u16 *neighbor,
             *pneighbor1 = 0;
         }
 
-        while (StackPtr!=0)
+        while (StackPtr != 0)
         {
             StackPtr--;
             TmpValue = pstack[StackPtr];
@@ -197,13 +198,13 @@ s32 GetMapTable(u16 *neighbor,
             pneighbor2 = pneighbor0;
             pneighbor3 = pneighbor1;
 
-            for (j=i; j<TabLen; j++, pneighbor2++, pneighbor3++)
+            for (j = i; j < TabLen; j++, pneighbor2++, pneighbor3++)
             {
                 if ((*pneighbor2 == TmpValue) || (*pneighbor3 == TmpValue))
                 {
-                    if (*pneighbor2!=*pneighbor3)
+                    if (*pneighbor2 != *pneighbor3)
                     {
-                        stack[StackPtr] = (*pneighbor2!=TmpValue)? *pneighbor2: *pneighbor3;
+                        stack[StackPtr] = (*pneighbor2 != TmpValue) ? *pneighbor2 : *pneighbor3;
                         StackPtr++;
                     }
 
@@ -223,8 +224,8 @@ s32 GetMapTable(u16 *neighbor,
 * 功能：
 *
 ***********************************************/
-s32 ModifyMapTable1(u16 *map,
-                    u16 *area,
+s32 ModifyMapTable1(u16* map,
+                    u16* area,
                     u16 GrayNo,
                     s32 TrueObj,
                     s32 MinArea )
@@ -233,31 +234,31 @@ s32 ModifyMapTable1(u16 *map,
     s32 i, j;
     s32 TmpArea;
 
-    u16 *pmap;
-    u16 *parea;
+    u16* pmap;
+    u16* parea;
 
     TrueTrueObj = 0;
-    for (i=1; i<=TrueObj; i++)
+    for (i = 1; i <= TrueObj; i++)
     {
         TmpArea = 0;
         pmap  = &(map[1]);
         parea = &(area[1]);
 
-        for (j=1; j<=GrayNo; j++, pmap++, parea++)
+        for (j = 1; j <= GrayNo; j++, pmap++, parea++)
         {
-            if (*pmap==i)
+            if (*pmap == i)
             {
                 TmpArea += *parea;
             }
         }
 
-        if (TmpArea<MinArea)
+        if (TmpArea < MinArea)
         {
             pmap  = &(map[1]);
 
-            for (j=1; j<=GrayNo; j++, pmap++)
+            for (j = 1; j <= GrayNo; j++, pmap++)
             {
-                if (*pmap==i)
+                if (*pmap == i)
                 {
                     *pmap = 0;
                 }
@@ -266,16 +267,16 @@ s32 ModifyMapTable1(u16 *map,
         else
         {
             TrueTrueObj++;
-            if (TrueTrueObj>MAXBLOCK)
+            if (TrueTrueObj > MAXBLOCK)
             {
                 return 0;
             }
 
             pmap  = &(map[1]);
 
-            for (j=1; j<=GrayNo; j++, pmap++)
+            for (j = 1; j <= GrayNo; j++, pmap++)
             {
-                if (*pmap==i)
+                if (*pmap == i)
                 {
                     *pmap = TrueTrueObj;
                 }
@@ -292,29 +293,29 @@ s32 ModifyMapTable1(u16 *map,
 * 功能：
 *
 ***********************************************/
-void ModifyMapTable2(u16 *map,
-                     u16 *area,
+void ModifyMapTable2(u16* map,
+                     u16* area,
                      u16 GrayNo,
                      s32 TrueObj)
 {
-    s32 MaxBlockNo=0;
+    s32 MaxBlockNo = 0;
     s32 i, j;
     s32 MaxBlockArea;
     long Tmp = 0;
 
-    for(i=0;i<MAXBLOCK+1;i++)
+    for(i = 0; i < MAXBLOCK + 1; i++)
     {
         TmpArea[i] = 0;
     }
 
     /* Get the area of all blocks */
-    for (i=1; i<=TrueObj; i++)
+    for (i = 1; i <= TrueObj; i++)
     {
         TmpArea[i] = 0;
 
-        for (j=1; j<=GrayNo; j++)
+        for (j = 1; j <= GrayNo; j++)
         {
-            if (map[j]==i)
+            if (map[j] == i)
             {
                 TmpArea[i] += area[j];
             }
@@ -325,18 +326,18 @@ void ModifyMapTable2(u16 *map,
 
     /* Find the block number of the max block */
     MaxBlockArea = 0;
-    for (i=1;i<=TrueObj;i++)
+    for (i = 1; i <= TrueObj; i++)
     {
-        if (TmpArea[i]>MaxBlockArea)
+        if (TmpArea[i] > MaxBlockArea)
         {
             MaxBlockArea = TmpArea[i];
             MaxBlockNo = i;
         }
     }
 
-    for (i=1;i<=GrayNo;i++)
+    for (i = 1; i <= GrayNo; i++)
     {
-        if (map[i]!=MaxBlockNo)
+        if (map[i] != MaxBlockNo)
         {
             map[i] = 0;
         }
@@ -353,21 +354,21 @@ void ModifyMapTable2(u16 *map,
 * 功能：
 *
 ***********************************************/
-void DoMap(u16 *labelDst,
-           u16 *TemArray,
+void DoMap(u16* labelDst,
+           u16* TemArray,
            s32 RowLen,
            s32 ColLen,
-           u16 *map)
+           u16* map)
 {
     s32 i;
-    u16  *pTemArray = &(TemArray[0]);
-    u16  *parray = &(labelDst[0]);
+    u16*  pTemArray = &(TemArray[0]);
+    u16*  parray = &(labelDst[0]);
 
     map[0] = 0;
 
-    for (i=0; i<RowLen*ColLen;i++,parray++, pTemArray++)
+    for (i = 0; i < RowLen * ColLen; i++, parray++, pTemArray++)
     {
-        if (map[*pTemArray]!=0)
+        if (map[*pTemArray] != 0)
         {
             *parray = map[*pTemArray];
         }
@@ -393,40 +394,40 @@ void DoMap(u16 *labelDst,
 *   -1:   图像尺寸过大
 *	-2：   标记异常
 ***********************************************/
-s32 Label(u8 *array,
-          u16 *labelDst,
+s32 Label(u8* array,
+          u16* labelDst,
           s32 RowLen,
           s32 ColLen,
           s32 MinArea)
 {
-    u16 *pmap = mapArr;
-    u16 *pneighbor = neighbor;
-    u16 *pTemArray = TemArray;
-    u16 *pTmpArea = TmpArea;
+    u16* pmap = mapArr;
+    u16* pneighbor = neighbor;
+    u16* pTemArray = TemArray;
+    u16* pTmpArea = TmpArea;
     s32 TabLen;
     s32 GrayNo;
     s32 TrueObj;
 
     /* 防止尺寸过大引起崩溃 */
-    if(RowLen*ColLen > (2000*2000))
+    if(RowLen * ColLen > (2000 * 2000))
     {
         return -1;
     }
 
-    memset(pmap, 0, (MAXSUBBLOCK+1)*2);
-    memset(pTmpArea, 0, (MAXBLOCK+1)*2);
-    memset(pneighbor, 0, (2*MAXLINK)*2);
-    memset(pTemArray, 0, (RowLen*ColLen)*2);
+    memset(pmap, 0, (MAXSUBBLOCK + 1) * 2);
+    memset(pTmpArea, 0, (MAXBLOCK + 1) * 2);
+    memset(pneighbor, 0, (2 * MAXLINK) * 2);
+    memset(pTemArray, 0, (RowLen * ColLen) * 2);
 
     GrayNo = GetNeighborTable(array, RowLen, ColLen, pneighbor, pTemArray, &TabLen, pTmpArea);
-    if ((GrayNo>MAXBLOCK)||(GrayNo==0))
+    if ((GrayNo > MAXBLOCK) || (GrayNo == 0))
     {
         return -2;
     }
 
     TrueObj = GetMapTable(pneighbor, TabLen, pmap);
     int LabelMode = 1;
-    if (LabelMode==1)
+    if (LabelMode == 1)
     {
         TrueObj = ModifyMapTable1(pmap, pTmpArea, GrayNo, TrueObj, MinArea);
     }
@@ -448,25 +449,25 @@ s32 Label(u8 *array,
 * 参数：
 *
 ***********************************************/
-s32 GetLabelCoordinate(IN u16 *labelDst,
+s32 GetLabelCoordinate(IN u16* labelDst,
                        IN s32 RowLen,
                        IN s32 ColLen,
                        IN s32 objNum,
-                       OUT vector<TargetInfo>& target)
+                       OUT vector<TargetInfo> & target)
 {
     TargetInfo tar;
     Point p;
     vector<Point> objArea;
     s32 matchVal;
 
-    for(s32 k=0; k<objNum; k++)
+    for(s32 k = 0; k < objNum; k++)
     {
-        matchVal = k+1;
-        for(s32 i=0; i<RowLen; i++)
+        matchVal = k + 1;
+        for(s32 i = 0; i < RowLen; i++)
         {
-            for(s32 j=0; j<ColLen; j++)
+            for(s32 j = 0; j < ColLen; j++)
             {
-                if( *(labelDst + i*ColLen + j) == matchVal )
+                if( *(labelDst + i * ColLen + j) == matchVal )
                 {
                     p.x = j;
                     p.y = i;
@@ -480,7 +481,7 @@ s32 GetLabelCoordinate(IN u16 *labelDst,
         s32 iMax = 0;
         s32 jMax = 0;
         Point left, top, right, bottom;
-        for(u32 l=0; l<objArea.size(); l++)
+        for(u32 l = 0; l < objArea.size(); l++)
         {
             if(objArea[l].x > jMax)
             {
@@ -519,8 +520,8 @@ s32 GetLabelCoordinate(IN u16 *labelDst,
         tar.bottom = bottom;
         tar.width = tar.xMax - tar.xMin + 1;
         tar.height = tar.yMax - tar.yMin + 1;
-        tar.AreaRatio = (f32)(tar.count*1.0/(tar.width*tar.height));
-        tar.whRatio = (f32)(tar.width*1.0/tar.height);
+        tar.AreaRatio = (f32)(tar.count * 1.0 / (tar.width * tar.height));
+        tar.whRatio = (f32)(tar.width * 1.0 / tar.height);
         tar.rt.x = tar.xMin;
         tar.rt.y = tar.yMin;
         tar.rt.width = tar.width;
@@ -544,22 +545,30 @@ s32 GetLabelCoordinate(IN u16 *labelDst,
 CH_DLL_EXPORT
 s32 bwlabel(IN const Mat bw,
             IN s32 MinArea,
-            OUT vector<TargetInfo>& target)
+            OUT vector<TargetInfo> & target)
 {
     // 输入检测
     if(bw.empty())
+    {
         return -1;
+    }
 
     if(MinArea <= 0)
+    {
         return -1;
+    }
 
-    if(bw.channels() !=1)
+    if(bw.channels() != 1)
+    {
         return -1;
+    }
 
     Mat temp(bw.rows, bw.cols, CV_16UC1);
     s32 num = Label(bw.data, (u16*)temp.data, bw.rows, bw.cols, MinArea);
-    if(num<0)
+    if(num < 0)
+    {
         return -1;
+    }
     target.clear();
     GetLabelCoordinate((u16*)temp.data, bw.rows, bw.cols, num, target);
     return (target.size());
@@ -574,12 +583,14 @@ s32 bwlabel(IN const Mat bw,
 *	DstTargets	输出目标
 ***********************************************/
 CH_DLL_EXPORT
-s32 TargetMerge(IN const vector<TargetInfo>& SrcTargets, OUT vector<TargetInfo>& DstTargets)
+s32 TargetMerge(IN const vector<TargetInfo> & SrcTargets, OUT vector<TargetInfo> & DstTargets)
 {
 #if 1
     // 输入检测
     if(SrcTargets.size() == (u32)0)
+    {
         return -1;
+    }
 
     Point p1;
     int len = SrcTargets.size();
@@ -587,9 +598,9 @@ s32 TargetMerge(IN const vector<TargetInfo>& SrcTargets, OUT vector<TargetInfo>&
     vector<int> similar;
 
     f32 xCenter, yCenter;
-    for(int i=0; i<len-1; i++)
+    for(int i = 0; i < len - 1; i++)
     {
-        for(int j=i+1; j<len; j++)
+        for(int j = i + 1; j < len; j++)
         {
             similar.clear();
             s32 xMin = MAX(SrcTargets[i].xMin, SrcTargets[j].xMin);
@@ -597,27 +608,27 @@ s32 TargetMerge(IN const vector<TargetInfo>& SrcTargets, OUT vector<TargetInfo>&
             s32 xMax = MIN(SrcTargets[i].xMax, SrcTargets[j].xMax);
             s32 yMax = MIN(SrcTargets[i].yMax, SrcTargets[j].yMax);
 
-            xCenter = (xMin + yMax)*1.0/2;
-            yCenter = (yMin + yMax)*1.0/2;
+            xCenter = (xMin + yMax) * 1.0 / 2;
+            yCenter = (yMin + yMax) * 1.0 / 2;
 
             Point pI, pJ;
-            pI.x = (SrcTargets[i].xMin + SrcTargets[i].xMax)/2;
-            pI.y = (SrcTargets[i].yMin + SrcTargets[i].yMax)/2;
-            pJ.x = (SrcTargets[j].xMin + SrcTargets[j].xMax)/2;
-            pJ.y = (SrcTargets[j].yMin + SrcTargets[j].yMax)/2;
+            pI.x = (SrcTargets[i].xMin + SrcTargets[i].xMax) / 2;
+            pI.y = (SrcTargets[i].yMin + SrcTargets[i].yMax) / 2;
+            pJ.x = (SrcTargets[j].xMin + SrcTargets[j].xMax) / 2;
+            pJ.y = (SrcTargets[j].yMin + SrcTargets[j].yMax) / 2;
 
             // 包含
             if((pI.x >= SrcTargets[j].xMin && pI.x <= SrcTargets[j].xMax && pI.y >= SrcTargets[j].yMin && pI.y <= SrcTargets[j].yMax) ||
-               (pJ.x >= SrcTargets[i].xMin && pJ.x <= SrcTargets[i].xMax && pJ.y >= SrcTargets[i].yMin && pJ.y <= SrcTargets[i].yMax))
+                    (pJ.x >= SrcTargets[i].xMin && pJ.x <= SrcTargets[i].xMax && pJ.y >= SrcTargets[i].yMin && pJ.y <= SrcTargets[i].yMax))
             {
                 similar.push_back(i);
                 similar.push_back(j);
                 vSimilar.push_back(similar);
             }
             else if((SrcTargets[i].xMin >= SrcTargets[j].xMin && SrcTargets[i].xMax <= SrcTargets[j].xMax &&
-                SrcTargets[i].yMin >= SrcTargets[j].yMin && SrcTargets[i].yMax <= SrcTargets[j].yMax) ||
-                (SrcTargets[i].xMin <= SrcTargets[j].xMin && SrcTargets[i].xMax >= SrcTargets[j].xMax &&
-                SrcTargets[i].yMin <= SrcTargets[j].yMin && SrcTargets[i].yMax >= SrcTargets[j].yMax))
+                     SrcTargets[i].yMin >= SrcTargets[j].yMin && SrcTargets[i].yMax <= SrcTargets[j].yMax) ||
+                    (SrcTargets[i].xMin <= SrcTargets[j].xMin && SrcTargets[i].xMax >= SrcTargets[j].xMax &&
+                     SrcTargets[i].yMin <= SrcTargets[j].yMin && SrcTargets[i].yMax >= SrcTargets[j].yMax))
             {
                 similar.push_back(i);
                 similar.push_back(j);
@@ -625,9 +636,9 @@ s32 TargetMerge(IN const vector<TargetInfo>& SrcTargets, OUT vector<TargetInfo>&
             }
             // 交叉
             else if(xCenter >= SrcTargets[i].xMin && xCenter <= SrcTargets[i].xMax &&
-                yCenter >= SrcTargets[i].yMin && yCenter <= SrcTargets[i].yMax &&
-                xCenter >= SrcTargets[j].xMin && xCenter <= SrcTargets[j].xMax &&
-                yCenter >= SrcTargets[j].yMin && yCenter <= SrcTargets[j].yMax)
+                    yCenter >= SrcTargets[i].yMin && yCenter <= SrcTargets[i].yMax &&
+                    xCenter >= SrcTargets[j].xMin && xCenter <= SrcTargets[j].xMax &&
+                    yCenter >= SrcTargets[j].yMin && yCenter <= SrcTargets[j].yMax)
             {
                 similar.push_back(i);
                 similar.push_back(j);
@@ -637,17 +648,19 @@ s32 TargetMerge(IN const vector<TargetInfo>& SrcTargets, OUT vector<TargetInfo>&
     }
 
     DstTargets = SrcTargets;
-    for(u32 i=0; i<vSimilar.size(); i++)
+    for(u32 i = 0; i < vSimilar.size(); i++)
     {
         TargetInfo target1 = DstTargets[vSimilar[i][0]];
         TargetInfo target2 = DstTargets[vSimilar[i][1]];
         TargetInfo newTarget;
 
-        if(target1.count==0 || target2.count==0)
+        if(target1.count == 0 || target2.count == 0)
+        {
             continue;
+        }
 
         newTarget.objArea = target1.objArea;
-        for(u32 m=0; m< target2.objArea.size(); m++)
+        for(u32 m = 0; m < target2.objArea.size(); m++)
         {
             newTarget.objArea.push_back(target2.objArea[m]);
         }
@@ -656,10 +669,10 @@ s32 TargetMerge(IN const vector<TargetInfo>& SrcTargets, OUT vector<TargetInfo>&
         newTarget.yMin = MIN(target1.yMin, target2.yMin);
         newTarget.xMax = MAX(target1.xMax, target2.xMax);
         newTarget.yMax = MAX(target1.yMax, target2.yMax);
-        newTarget.AreaRatio = (f32)(1.0*newTarget.count/((newTarget.xMax - newTarget.xMin)*(newTarget.yMax - newTarget.yMin)));
+        newTarget.AreaRatio = (f32)(1.0 * newTarget.count / ((newTarget.xMax - newTarget.xMin) * (newTarget.yMax - newTarget.yMin)));
         newTarget.width = newTarget.xMax - newTarget.xMin + 1;
         newTarget.height = newTarget.yMax - newTarget.yMin + 1;
-        newTarget.whRatio = (f32)(newTarget.width*1.0/newTarget.height);
+        newTarget.whRatio = (f32)(newTarget.width * 1.0 / newTarget.height);
         newTarget.rt.x = newTarget.xMin;
         newTarget.rt.y = newTarget.yMin;
         newTarget.rt.width = newTarget.width;
@@ -670,10 +683,12 @@ s32 TargetMerge(IN const vector<TargetInfo>& SrcTargets, OUT vector<TargetInfo>&
     }
 
     vector<TargetInfo> TempTargets;
-    for(u32 i=0; i< DstTargets.size(); i++)
+    for(u32 i = 0; i < DstTargets.size(); i++)
     {
         if(DstTargets[i].count == 0)
+        {
             continue;
+        }
 
         TempTargets.push_back(DstTargets[i]);
     }
@@ -683,16 +698,18 @@ s32 TargetMerge(IN const vector<TargetInfo>& SrcTargets, OUT vector<TargetInfo>&
 #else
     // 输入检测
     if(SrcTargets.size() == (u32)0)
+    {
         return -1;
+    }
 
     Point p1;
     int len = SrcTargets.size();
     vector<vector<int>> vSimilar;
     vector<int> similar;
 
-    for(int i=0; i<len-1; i++)
+    for(int i = 0; i < len - 1; i++)
     {
-        for(int j=i+1; j<len; j++)
+        for(int j = i + 1; j < len; j++)
         {
             similar.clear();
             s32 xMin = MAX(SrcTargets[i].xMin, SrcTargets[j].xMin);
@@ -701,16 +718,16 @@ s32 TargetMerge(IN const vector<TargetInfo>& SrcTargets, OUT vector<TargetInfo>&
             s32 yMax = MIN(SrcTargets[i].yMax, SrcTargets[j].yMax);
 
             Point pI, pJ;
-            pI.x = (SrcTargets[i].xMin + SrcTargets[i].xMax)/2;
-            pI.y = (SrcTargets[i].yMin + SrcTargets[i].yMax)/2;
-            pJ.x = (SrcTargets[j].xMin + SrcTargets[j].xMax)/2;
-            pJ.y = (SrcTargets[j].yMin + SrcTargets[j].yMax)/2;
-            f32 dist = sqrt(f32((pI.x - pJ.x)*(pI.x - pJ.x) + (pI.y - pJ.y)*(pI.y - pJ.y)));
+            pI.x = (SrcTargets[i].xMin + SrcTargets[i].xMax) / 2;
+            pI.y = (SrcTargets[i].yMin + SrcTargets[i].yMax) / 2;
+            pJ.x = (SrcTargets[j].xMin + SrcTargets[j].xMax) / 2;
+            pJ.y = (SrcTargets[j].yMin + SrcTargets[j].yMax) / 2;
+            f32 dist = sqrt(f32((pI.x - pJ.x) * (pI.x - pJ.x) + (pI.y - pJ.y) * (pI.y - pJ.y)));
 
-            p1.x = (xMin + xMax)/2;
-            p1.y = (yMin + yMax)/2;
+            p1.x = (xMin + xMax) / 2;
+            p1.y = (yMin + yMax) / 2;
             if( p1.x > SrcTargets[i].xMin && p1.x < SrcTargets[i].xMax &&
-                p1.y > SrcTargets[i].yMin && p1.y < SrcTargets[i].yMax )
+                    p1.y > SrcTargets[i].yMin && p1.y < SrcTargets[i].yMax )
             {
                 similar.push_back(i);
                 similar.push_back(j);
@@ -726,17 +743,19 @@ s32 TargetMerge(IN const vector<TargetInfo>& SrcTargets, OUT vector<TargetInfo>&
     }
 
     DstTargets = SrcTargets;
-    for(u32 i=0; i<vSimilar.size(); i++)
+    for(u32 i = 0; i < vSimilar.size(); i++)
     {
         TargetInfo target1 = DstTargets[vSimilar[i][0]];
         TargetInfo target2 = DstTargets[vSimilar[i][1]];
         TargetInfo newTarget;
 
-        if(target1.count==0 || target2.count==0)
+        if(target1.count == 0 || target2.count == 0)
+        {
             continue;
+        }
 
         newTarget.objArea = target1.objArea;
-        for(u32 m=0; m< target2.objArea.size(); m++)
+        for(u32 m = 0; m < target2.objArea.size(); m++)
         {
             newTarget.objArea.push_back(target2.objArea[m]);
         }
@@ -745,10 +764,10 @@ s32 TargetMerge(IN const vector<TargetInfo>& SrcTargets, OUT vector<TargetInfo>&
         newTarget.yMin = MIN(target1.yMin, target2.yMin);
         newTarget.xMax = MAX(target1.xMax, target2.xMax);
         newTarget.yMax = MAX(target1.yMax, target2.yMax);
-        newTarget.AreaRatio = (f32)(1.0*newTarget.count/((newTarget.xMax - newTarget.xMin)*(newTarget.yMax - newTarget.yMin)));
+        newTarget.AreaRatio = (f32)(1.0 * newTarget.count / ((newTarget.xMax - newTarget.xMin) * (newTarget.yMax - newTarget.yMin)));
         newTarget.width = newTarget.xMax - newTarget.xMin + 1;
         newTarget.height = newTarget.yMax - newTarget.yMin + 1;
-        newTarget.whRatio = (f32)(newTarget.width*1.0/newTarget.height);
+        newTarget.whRatio = (f32)(newTarget.width * 1.0 / newTarget.height);
         newTarget.rt.x = newTarget.xMin;
         newTarget.rt.y = newTarget.yMin;
         newTarget.rt.width = newTarget.width;
@@ -759,10 +778,12 @@ s32 TargetMerge(IN const vector<TargetInfo>& SrcTargets, OUT vector<TargetInfo>&
     }
 
     vector<TargetInfo> TempTargets;
-    for(u32 i=0; i< DstTargets.size(); i++)
+    for(u32 i = 0; i < DstTargets.size(); i++)
     {
         if(DstTargets[i].count == 0)
+        {
             continue;
+        }
 
         TempTargets.push_back(DstTargets[i]);
     }
@@ -780,13 +801,15 @@ s32 TargetMerge(IN const vector<TargetInfo>& SrcTargets, OUT vector<TargetInfo>&
 *	DstTargets	输出目标
 ***********************************************/
 CH_DLL_EXPORT
-s32 TargetMerge2(IN const vector<TargetInfo>& SrcTargets,
-                 OUT vector<TargetInfo>& DstTargets)
+s32 TargetMerge2(IN const vector<TargetInfo> & SrcTargets,
+                 OUT vector<TargetInfo> & DstTargets)
 {
 
     // 输入检测
     if(SrcTargets.size() == (u32)0)
+    {
         return -1;
+    }
 
     vector<TargetInfo> temp;
     vector<TargetInfo> temp1;
@@ -820,20 +843,24 @@ s32 TargetMerge2(IN const vector<TargetInfo>& SrcTargets,
 ***********************************************/
 CH_DLL_EXPORT
 s32	GetTargetsMask(IN const Mat src,
-                   IN const vector<TargetInfo>& targets,
-                   OUT Mat& mask)
+                   IN const vector<TargetInfo> & targets,
+                   OUT Mat & mask)
 {
     // 输入检测
     if(src.empty())
+    {
         return -1;
+    }
 
     if(targets.size() == (u32)0)
+    {
         return -1;
+    }
 
     mask = Mat::zeros(src.rows, src.cols, CV_8UC1);
-    for(u32 i=0; i<targets.size(); i++)
+    for(u32 i = 0; i < targets.size(); i++)
     {
-        for(u32 k=0; k< targets[i].objArea.size(); k++)
+        for(u32 k = 0; k < targets[i].objArea.size(); k++)
         {
             s32 x = targets[i].objArea[k].x;
             s32 y = targets[i].objArea[k].y;
@@ -853,23 +880,37 @@ s32	GetTargetsMask(IN const Mat src,
 * 功能：获取目标掩码
 ***********************************************/
 CH_DLL_EXPORT
-s32 GetTargetsRect(const vector<TargetInfo>& targets, Rect& rt)
+s32 GetTargetsRect(const vector<TargetInfo> & targets, Rect & rt)
 {
     // 输入检测
     if(targets.size() == (u32)0)
+    {
         return -1;
+    }
 
     s32 xMin = targets[0].xMin;
     s32 yMin = targets[0].yMin;
     s32 xMax = targets[0].xMax;
     s32 yMax = targets[0].yMax;
 
-    for(u32 i=1; i<targets.size(); i++)
+    for(u32 i = 1; i < targets.size(); i++)
     {
-        if( xMin > targets[i].xMin)  { xMin = targets[i].xMin; }
-        if( yMin > targets[i].yMin)  { yMin = targets[i].yMin; }
-        if( xMax < targets[i].xMax)  { xMax = targets[i].xMax;}
-        if( yMax < targets[i].yMax)  { yMax = targets[i].yMax;}
+        if( xMin > targets[i].xMin)
+        {
+            xMin = targets[i].xMin;
+        }
+        if( yMin > targets[i].yMin)
+        {
+            yMin = targets[i].yMin;
+        }
+        if( xMax < targets[i].xMax)
+        {
+            xMax = targets[i].xMax;
+        }
+        if( yMax < targets[i].yMax)
+        {
+            yMax = targets[i].yMax;
+        }
     }
 
     rt.x = xMin;
@@ -885,15 +926,19 @@ s32 GetTargetsRect(const vector<TargetInfo>& targets, Rect& rt)
 * 功能：目标转化为矩形框
 ***********************************************/
 CH_DLL_EXPORT
-s32 TargetToRect(const vector<TargetInfo>& targets,
-                 vector<Rect>& vRt)
+s32 TargetToRect(const vector<TargetInfo> & targets,
+                 vector<Rect> & vRt)
 {
     // 输入检测
     if(targets.size() == (u32)0)
+    {
         return -1;
+    }
 
-    for(u32 i=0; i<targets.size(); i++)
+    for(u32 i = 0; i < targets.size(); i++)
+    {
         vRt.push_back(targets[i].rt);
+    }
     return 0;
 }
 
@@ -904,19 +949,23 @@ s32 TargetToRect(const vector<TargetInfo>& targets,
 ***********************************************/
 CH_DLL_EXPORT
 s32 GetTargetsImg(Mat img,
-                  const vector<TargetInfo>& targets,
-                  vector<Mat>& vImg)
+                  const vector<TargetInfo> & targets,
+                  vector<Mat> & vImg)
 {
     // 输入检测
     if(img.empty())
+    {
         return -1;
+    }
 
     if(targets.size() == (u32)0)
+    {
         return -1;
+    }
 
     vector<Rect> vRt;
     TargetToRect(targets, vRt);
-    for(u32 i=0; i<vRt.size(); i++)
+    for(u32 i = 0; i < vRt.size(); i++)
     {
         Mat subImg(vRt[i].height, vRt[i].width, CV_8UC1);
         Mat temp = img(vRt[i]);
@@ -932,36 +981,50 @@ s32 GetTargetsImg(Mat img,
 * 功能：目标过滤
 ***********************************************/
 CH_DLL_EXPORT
-s32 TargetFilter(IN const vector<TargetInfo>& srcTargets,
-                 OUT vector<TargetInfo>& dstTargets,
+s32 TargetFilter(IN const vector<TargetInfo> & srcTargets,
+                 OUT vector<TargetInfo> & dstTargets,
                  IN s32 minArea,
                  IN f32 AreaRatio,
                  IN f32 whRatio)
 {
     // 输入检测
     if(srcTargets.size() == (u32)0)
+    {
         return -1;
+    }
 
     if(minArea < 0)
+    {
         return -1;
+    }
 
     if(AreaRatio < 0.0 || AreaRatio > 1.0)
+    {
         return -1;
+    }
 
     if(whRatio < 0.0)
+    {
         return -1;
+    }
 
     dstTargets.clear();
-    for(u32 i=0; i<srcTargets.size(); i++)
+    for(u32 i = 0; i < srcTargets.size(); i++)
     {
         if(srcTargets[i].count < minArea)
+        {
             continue;
+        }
 
         if(srcTargets[i].AreaRatio < AreaRatio)
+        {
             continue;
+        }
 
         if(srcTargets[i].whRatio < whRatio)
+        {
             continue;
+        }
 
         dstTargets.push_back(srcTargets[i]);
     }
@@ -971,9 +1034,9 @@ s32 TargetFilter(IN const vector<TargetInfo>& srcTargets,
 
 
 CH_DLL_EXPORT
-s32 Target2to1(IN TargetInfo& target1,
-    IN TargetInfo& target2,
-    IN TargetInfo& dstTarget)
+s32 Target2to1(IN TargetInfo & target1,
+               IN TargetInfo & target2,
+               IN TargetInfo & dstTarget)
 {
 
     dstTarget.xMin = MIN(target1.xMin, target2.xMin);
@@ -984,8 +1047,8 @@ s32 Target2to1(IN TargetInfo& target1,
     dstTarget.width = dstTarget.xMax - dstTarget.xMin + 1;
     dstTarget.height = dstTarget.yMax - dstTarget.yMin + 1;
     dstTarget.count = target1.count + target2.count;
-    dstTarget.whRatio = dstTarget.width * 1.0/dstTarget.height;
-    dstTarget.AreaRatio = dstTarget.count*1.0/(dstTarget.width*dstTarget.height);
+    dstTarget.whRatio = dstTarget.width * 1.0 / dstTarget.height;
+    dstTarget.AreaRatio = dstTarget.count * 1.0 / (dstTarget.width * dstTarget.height);
 
     dstTarget.rt.x = dstTarget.xMin;
     dstTarget.rt.y = dstTarget.yMin;
@@ -993,12 +1056,12 @@ s32 Target2to1(IN TargetInfo& target1,
     dstTarget.rt.height = dstTarget.height;
 
     vector<Point> objArea(dstTarget.count);
-    for(u32 i=0; i< target1.count; i++)
+    for(u32 i = 0; i < target1.count; i++)
     {
         objArea[i] = target1.objArea[i];
     }
 
-    for(u32 j=0; j<target2.count; j++)
+    for(u32 j = 0; j < target2.count; j++)
     {
         objArea[j + target1.count] = target2.objArea[j];
     }

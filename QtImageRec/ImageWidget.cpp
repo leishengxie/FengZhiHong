@@ -3,8 +3,8 @@
 
 #include <QDebug>
 
-ImageWidget::ImageWidget(QWidget *parent)
-    :QWidget(parent),image_cur_index(1),image_max_index(8),
+ImageWidget::ImageWidget(QWidget* parent)
+    : QWidget(parent), image_cur_index(1), image_max_index(8),
       image_path_prefix("./Data/Image/")
 {
     setupUi(this);
@@ -24,8 +24,8 @@ void ImageWidget::init()
     //originallabel->setScaleContents(true);
     //originallabel->setPixmap(QPixmap(getCurrentImagePath()));
 
-    connect(uppushButton,SIGNAL(clicked()),this,SLOT(click_UpPushButton()));
-    connect(downpushButton,SIGNAL(clicked()),this,SLOT(click_DownPushButton()));
+    connect(uppushButton, SIGNAL(clicked()), this, SLOT(click_UpPushButton()));
+    connect(downpushButton, SIGNAL(clicked()), this, SLOT(click_DownPushButton()));
 
     originalgroupBox->setTitle(QString::fromUtf8("原图片"));
     step8groupBox->setTitle(QString::fromUtf8("初次分割"));
@@ -38,15 +38,15 @@ void ImageWidget::init()
 
     QRect deskRect = QApplication::desktop()->availableGeometry();
     int w = deskRect.width() - 40 ;
-    int h = deskRect.height() -30;
+    int h = deskRect.height() - 30;
     //originalgroupBox->setFixedSize(w/2+10,h*2/3+20);
     //originallabel->setFixedSize(w/2,h*2/3);
-    originallabel->setGeometry(5,5,w/2-5,h*2/3-5);
-    setFixedSize(w,h);
+    originallabel->setGeometry(5, 5, w / 2 - 5, h * 2 / 3 - 5);
+    setFixedSize(w, h);
 
     // start the first thread
     startProcessThread(getCurrentImagePath());
-    displayImageInLabel(originallabel,getCurrentImagePath());
+    displayImageInLabel(originallabel, getCurrentImagePath());
     //qDebug() << "W : "  << originallabel->width() << "H :" << originallabel->height();
 
 }
@@ -60,11 +60,12 @@ QString ImageWidget::getCurrentImagePath()
 }
 
 
-void ImageWidget::displayImageInLabel(QLabel *label,const QString& imagename)
+void ImageWidget::displayImageInLabel(QLabel* label, const QString & imagename)
 {
     QPixmap pixmap;
-    if( !pixmap.load(imagename) ){
-        QMessageBox::warning(this,"Warning","Image " + imagename + " not exist !\n");
+    if( !pixmap.load(imagename) )
+    {
+        QMessageBox::warning(this, "Warning", "Image " + imagename + " not exist !\n");
         return;
     }
     int w = label->width();
@@ -74,7 +75,7 @@ void ImageWidget::displayImageInLabel(QLabel *label,const QString& imagename)
 
 }
 
-void ImageWidget::displayImageInLabel(QLabel *label,const QPixmap& pixmap)
+void ImageWidget::displayImageInLabel(QLabel* label, const QPixmap & pixmap)
 {
     int w = label->width();
     int h = label->height();
@@ -82,14 +83,14 @@ void ImageWidget::displayImageInLabel(QLabel *label,const QPixmap& pixmap)
     label->setPixmap(fitpixmap);
 }
 
-void ImageWidget::startProcessThread(const QString& filename)
+void ImageWidget::startProcessThread(const QString & filename)
 {
     //qDebug() << filename;
     QThread* thread = new ProcessThread(filename);
 
     //qDebug() << " 66 connetc  here!" << endl ;
-    connect(thread, SIGNAL(errorStringSignal(const QString&)), this, SLOT(errorStringSlot(const QString&)));
-    connect(thread, SIGNAL(sendResutlTextSignal(const QByteArray&)), this, SLOT(sendResutlTextSlot(const QByteArray&)));
+    connect(thread, SIGNAL(errorStringSignal(const QString &)), this, SLOT(errorStringSlot(const QString &)));
+    connect(thread, SIGNAL(sendResutlTextSignal(const QByteArray &)), this, SLOT(sendResutlTextSlot(const QByteArray &)));
     //qDebug() << " 68 connetc  here!" << endl ;
     connect(thread, SIGNAL(displayStepsImageSignal()), this, SLOT(displayStepsImageSlot()));
     //qDebug() << " 70 connetc  here!" << endl ;
@@ -101,7 +102,7 @@ void ImageWidget::startProcessThread(const QString& filename)
 void ImageWidget::deleteProcessThread()
 {
     QObject* obj = sender();
-    ProcessThread * th = qobject_cast<ProcessThread*>(obj);
+    ProcessThread* th = qobject_cast<ProcessThread*>(obj);
     obj->deleteLater();
 }
 
@@ -109,10 +110,11 @@ void ImageWidget::click_UpPushButton()
 {
     image_cur_index -= 1;
     //originallabel->setPixmap(QPixmap(getCurrentImagePath()));
-    displayImageInLabel(originallabel,getCurrentImagePath());
+    displayImageInLabel(originallabel, getCurrentImagePath());
     startProcessThread(getCurrentImagePath());
 
-    if( !downpushButton->isEnabled() ){
+    if( !downpushButton->isEnabled() )
+    {
         downpushButton->setEnabled(true);
     }
     if( image_cur_index == 1 )
@@ -127,10 +129,11 @@ void ImageWidget::click_DownPushButton()
 {
     image_cur_index += 1;
     //originallabel->setPixmap(QPixmap(getCurrentImagePath()));
-    displayImageInLabel(originallabel,getCurrentImagePath());
+    displayImageInLabel(originallabel, getCurrentImagePath());
     startProcessThread(getCurrentImagePath());
 
-    if( !uppushButton->isEnabled() ){
+    if( !uppushButton->isEnabled() )
+    {
         uppushButton->setEnabled(true);
     }
     if( image_cur_index == image_max_index )
@@ -141,35 +144,37 @@ void ImageWidget::click_DownPushButton()
 }
 
 
-void ImageWidget::errorStringSlot(const QString& err)
+void ImageWidget::errorStringSlot(const QString & err)
 {
-   QMessageBox::warning(this,"Warning",err);
+    QMessageBox::warning(this, "Warning", err);
 }
 
 void ImageWidget::displayStepsImageSlot()
 {
     //const QString steps_image_path_prefix = "./Data/Step/";
-    QPixmap step8_pixmap ,step9_pixmap;
+    QPixmap step8_pixmap, step9_pixmap;
     const QString step8_image_path = "./Data/Step/8.jpg";
     const QString step9_image_path = "./Data/Step/9.jpg";
 
-    if( !step8_pixmap.load(step8_image_path) ){
-         QMessageBox::warning(this,"Warning","Step 8 Image is not exist !");
-         return;
+    if( !step8_pixmap.load(step8_image_path) )
+    {
+        QMessageBox::warning(this, "Warning", "Step 8 Image is not exist !");
+        return;
     }
 
-    if( !step9_pixmap.load(step9_image_path) ){
-         QMessageBox::warning(this,"Warning","Step 9 Image is not exist !");
-         return;
+    if( !step9_pixmap.load(step9_image_path) )
+    {
+        QMessageBox::warning(this, "Warning", "Step 9 Image is not exist !");
+        return;
     }
     //step8label->setPixmap(step8_pixmap);
     //step9label->setPixmap(step9_pixmap);
-    displayImageInLabel(step8label,step8_pixmap);
-    displayImageInLabel(step9label,step9_pixmap);
+    displayImageInLabel(step8label, step8_pixmap);
+    displayImageInLabel(step9label, step9_pixmap);
 }
 
 
-void ImageWidget::sendResutlTextSlot(const QByteArray& text)
+void ImageWidget::sendResutlTextSlot(const QByteArray & text)
 {
     qDebug() << "text = " << text << endl;
     //QByteArray ba = text.toLatin1();

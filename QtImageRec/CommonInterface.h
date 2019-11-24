@@ -37,7 +37,7 @@ void chImshow1(string str, Mat img, s32 flag = CV_WINDOW_AUTOSIZE);
  ***************************************************/
 CH_DLL_EXPORT
 s32 chImshowTargets(Mat img,
-                    const vector<TargetInfo>& targets,
+                    const vector<TargetInfo> & targets,
                     bool writeFlag = false);
 
 /***************************************************
@@ -46,8 +46,8 @@ s32 chImshowTargets(Mat img,
  ***************************************************/
 CH_DLL_EXPORT
 s32 chImshowTargetsImg(Mat img,
-                       const vector<TargetInfo>& targets,
-                       Mat& dst);
+                       const vector<TargetInfo> & targets,
+                       Mat & dst);
 
 /***************************************************
  * 函数名：chImshowTarget_Single
@@ -76,7 +76,7 @@ s32 chImshowRect_Single(Mat img, Rect rt);
 
 
 CH_DLL_EXPORT
-s32 GrayImgColorRect(Mat grayImg, Rect rt, Mat& dst);
+s32 GrayImgColorRect(Mat grayImg, Rect rt, Mat & dst);
 
 /*******************************************************
  * 函数名： VisualImgs
@@ -88,12 +88,12 @@ s32 GrayImgColorRect(Mat grayImg, Rect rt, Mat& dst);
  *******************************************************/
 CH_DLL_EXPORT
 s32 chThumbnail(IN vector<Mat> vImg,
-                 OUT Mat& dst,
-                 IN s32 iSubImgW = 64,
-                 IN s32 iSubImgH = 64,
-                 IN s32 cols = 10,
-                 IN s32 rows = 10,
-                 IN s32 iGap = 2);
+                OUT Mat & dst,
+                IN s32 iSubImgW = 64,
+                IN s32 iSubImgH = 64,
+                IN s32 cols = 10,
+                IN s32 rows = 10,
+                IN s32 iGap = 2);
 
 
 /***************************************************
@@ -126,8 +126,8 @@ s32 chImgFileCheck(string strFileName);
  *
  ***************************************************/
 CH_DLL_EXPORT
-s32 chSearchDir(const string& directoryName,
-                vector<string>& filenames,
+s32 chSearchDir(const string & directoryName,
+                vector<string> & filenames,
                 bool addDirectoryName = true);
 
 
@@ -140,19 +140,19 @@ s32 chSearchDir(const string& directoryName,
  *
  ***************************************************/
 CH_DLL_EXPORT
-s32 chSearchDirForImage(const string& directoryName,
-                        vector<string>& filenames);
+s32 chSearchDirForImage(const string & directoryName,
+                        vector<string> & filenames);
 
 #if 0
-/***************************************************
- * 函数名：chClearDirectory
- * 功能  ：清空目录
- * 参数
- *	DirPath		目录路径
- *
- ***************************************************/
-CH_DLL_EXPORT
-s32 chClearDirectory(string DirPath);
+    /***************************************************
+    * 函数名：chClearDirectory
+    * 功能  ：清空目录
+    * 参数
+    *	DirPath		目录路径
+    *
+    ***************************************************/
+    CH_DLL_EXPORT
+    s32 chClearDirectory(string DirPath);
 #endif
 
 
@@ -162,7 +162,7 @@ s32 chClearDirectory(string DirPath);
  * 功能  ：vector向量的归一化
  ***************************************************/
 CH_DLL_EXPORT
-s32 chVecNormlize(vector<f32>& vSrc, vector<f32>& vDst);
+s32 chVecNormlize(vector<f32> & vSrc, vector<f32> & vDst);
 
 
 /***************************************************
@@ -178,7 +178,7 @@ s32 chMatToXml(Mat img, string strFilePath);
  * 功能  ：从xml中读出Mat数据
  ***************************************************/
 CH_DLL_EXPORT
-s32 chXmlToMat(string strFilePath, Mat& img);
+s32 chXmlToMat(string strFilePath, Mat & img);
 
 
 // 两张图像合成
@@ -191,7 +191,7 @@ s32 chSyntheticTwoImage(string ImageName1, string ImageName2, string SyntheticIm
  * 功能  ：开始计时
  ***************************************************/
 CH_DLL_EXPORT
-bool chTic(f64& t);
+bool chTic(f64 & t);
 
 
 /***************************************************
@@ -200,15 +200,15 @@ bool chTic(f64& t);
  * 说明： 输出时间单位为ms
  ***************************************************/
 CH_DLL_EXPORT
-bool chToc(f64& t);
+bool chToc(f64 & t);
 
 
 // 排序
 CH_DLL_EXPORT
 s32 chSort_SP1(IN vector<s32> vIndex,
                IN vector<f32> vConf,
-               OUT vector<s32>& vSortIndex,
-               OUT vector<f32>& vSortConf);
+               OUT vector<s32> & vSortIndex,
+               OUT vector<f32> & vSortConf);
 
 
 // 模版函数
@@ -217,8 +217,8 @@ s32 chSort_SP1(IN vector<s32> vIndex,
  * 功能  ：排序，输出排序序号
  ***************************************************/
 template <typename T>
-s32 chSortIdx(const vector<T>& vlabel,
-              vector<s32>& vIndex,
+s32 chSortIdx(const vector<T> & vlabel,
+              vector<s32> & vIndex,
               s32 flag = CH_SORT_ASCENDING)
 {
     Mat SrcData = Mat(vlabel);
@@ -226,11 +226,11 @@ s32 chSortIdx(const vector<T>& vlabel,
 
     if(flag == CH_SORT_ASCENDING) //升序
     {
-        sortIdx(SrcData, DstData, CV_SORT_EVERY_COLUMN+CV_SORT_ASCENDING);
+        sortIdx(SrcData, DstData, CV_SORT_EVERY_COLUMN + CV_SORT_ASCENDING);
     }
     else if(flag == CH_SORT_DESCENDING) //降序
     {
-        sortIdx(SrcData, DstData, CV_SORT_EVERY_COLUMN+CV_SORT_DESCENDING);
+        sortIdx(SrcData, DstData, CV_SORT_EVERY_COLUMN + CV_SORT_DESCENDING);
     }
     else
     {
@@ -238,7 +238,7 @@ s32 chSortIdx(const vector<T>& vlabel,
     }
 
     vIndex.clear();
-    for(s32 i=0; i< DstData.rows; i++)
+    for(s32 i = 0; i < DstData.rows; i++)
     {
         vIndex.push_back(DstData.at<s32>(i));
     }
@@ -252,8 +252,8 @@ s32 chSortIdx(const vector<T>& vlabel,
  * 功能  ：排序，输出排序结果
  ***************************************************/
 template <typename T>
-s32 chSort(const vector<T>& vlabel,
-           vector<T>& vSortLabel,
+s32 chSort(const vector<T> & vlabel,
+           vector<T> & vSortLabel,
            s32 flag = CH_SORT_ASCENDING)
 {
 
@@ -269,7 +269,7 @@ s32 chSort(const vector<T>& vlabel,
     }
 
     vSortLabel.clear();
-    for(u32 i=0; i< vIndex.size(); i++)
+    for(u32 i = 0; i < vIndex.size(); i++)
     {
         vSortLabel.push_back( vlabel[vIndex[i]]);
     }
@@ -283,7 +283,7 @@ s32 chSort(const vector<T>& vlabel,
  * 功能  ：将vector类型数据写入xml文件中
  ***************************************************/
 template <typename DataType>
-s32 chVecToXml(const vector<DataType>& vDataList, string strFilePath)
+s32 chVecToXml(const vector<DataType> & vDataList, string strFilePath)
 {
     if (strFilePath != "")
     {
@@ -306,7 +306,7 @@ s32 chVecToXml(const vector<DataType>& vDataList, string strFilePath)
  * 功能  ：从xml中读取vector类型数据
  ***************************************************/
 template <typename DataType>
-s32 chXmlToVec(string strFilePath, vector<DataType>& vDataList)
+s32 chXmlToVec(string strFilePath, vector<DataType> & vDataList)
 {
     s32 bRead = 0;
     if (strFilePath != "")
@@ -322,7 +322,9 @@ s32 chXmlToVec(string strFilePath, vector<DataType>& vDataList)
     }
 
     if (vDataList.size() != 0)
+    {
         bRead = 1;
+    }
 
     return bRead;
 }

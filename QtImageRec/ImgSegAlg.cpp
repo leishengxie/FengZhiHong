@@ -15,51 +15,67 @@
 *	2. 目标为暗色时，如果f(x,y) <= 阈值，则f(x,y)= 255, 否则f(x,y)=0；
 ********************************************************************************/
 CH_DLL_EXPORT
-s32 chThreshold(IN Mat img, IN u32 level, OUT Mat& bw, IN s32 flag)
+s32 chThreshold(IN Mat img, IN u32 level, OUT Mat & bw, IN s32 flag)
 {
     // 输入检测
     if(img.empty())
+    {
         return -1;
+    }
 
-    if(level <0 || level > 255)
+    if(level < 0 || level > 255)
+    {
         return -1;
+    }
 
     // 图像通道检测
     Mat grayImg;
     if( img.channels() == 1)
+    {
         grayImg = img;
+    }
     else if(img.channels() == 3)
+    {
         chBGR2Gray(img, grayImg);
+    }
 
     // 阈值分割
     bw.create(grayImg.rows, grayImg.cols, CV_8UC1);
     if(flag == CH_THRESHOLD)
     {
-        for(s32 i=0; i<grayImg.rows; i++)
+        for(s32 i = 0; i < grayImg.rows; i++)
         {
             u8* ptGray = grayImg.ptr<u8>(i);
             u8* ptBw = bw.ptr<u8>(i);
-            for(s32 j=0; j<grayImg.cols; j++)
+            for(s32 j = 0; j < grayImg.cols; j++)
             {
                 if( ptGray[j] >= level)
+                {
                     ptBw[j] = 255;
+                }
                 else
+                {
                     ptBw[j] = 0;
+                }
             }
         }
     }
     else if(flag == CH_THRESHOLD_INV)
     {
-        for(s32 i=0; i<grayImg.rows; i++)
+        for(s32 i = 0; i < grayImg.rows; i++)
         {
             u8* ptGray = grayImg.ptr<u8>(i);
             u8* ptBw = bw.ptr<u8>(i);
-            for(s32 j=0; j<grayImg.cols; j++)
+            for(s32 j = 0; j < grayImg.cols; j++)
             {
                 if( ptGray[j] <= level)
+                {
                     ptBw[j] = 255;
+                }
                 else
+                {
                     ptBw[j] = 0;
+                }
             }
         }
     }
@@ -83,18 +99,20 @@ s32 chThreshold(IN Mat img, IN u32 level, OUT Mat& bw, IN s32 flag)
 *	7. 取taoB(k)中的最大值所对应的k,作为分割阈值；
 ********************************************************************************/
 CH_DLL_EXPORT
-s32 OtsuMethod(IN const Mat& img, OUT u8& threshold)
+s32 OtsuMethod(IN const Mat & img, OUT u8 & threshold)
 {
     // 输入检测
     if(img.empty())
+    {
         return -1;
+    }
 
     Mat grayImg;
-    if(img.channels()==1)
+    if(img.channels() == 1)
     {
         grayImg = img;
     }
-    else if(img.channels()==3)
+    else if(img.channels() == 3)
     {
         chBGR2Gray(img, grayImg);
     }
@@ -106,25 +124,25 @@ s32 OtsuMethod(IN const Mat& img, OUT u8& threshold)
     s32 widthStep = grayImg.step;
 
     /* 直方图统计 */
-    for(s32 i=0; i<height; i++)
+    for(s32 i = 0; i < height; i++)
     {
-        for(s32 j=0; j<width; j++)
+        for(s32 j = 0; j < width; j++)
         {
-            val = *(grayImg.data + i*widthStep + j);
+            val = *(grayImg.data + i * widthStep + j);
             histArr[val]++;
         }
     }
 
-    for(s32 i=0; i<256; i++)
+    for(s32 i = 0; i < 256; i++)
     {
-        histArr[i] /= (width*height) ;
+        histArr[i] /= (width * height) ;
     }
 
     /* 累积概率 */
     vector<f32> Prob(256, 0.0);
-    for(s32 i=0; i<256; i++)
+    for(s32 i = 0; i < 256; i++)
     {
-        for(s32 j=0; j<=i; j++)
+        for(s32 j = 0; j <= i; j++)
         {
             Prob[i] += histArr[j] ;
         }
@@ -132,28 +150,32 @@ s32 OtsuMethod(IN const Mat& img, OUT u8& threshold)
 
     /* mk */
     vector<f32> mk(256, 0.0);
-    for(s32 i=0; i<256; i++)
+    for(s32 i = 0; i < 256; i++)
     {
-        for(s32 j=0; j<=i; j++)
+        for(s32 j = 0; j <= i; j++)
         {
-            mk[i] += j*histArr[j];
+            mk[i] += j * histArr[j];
         }
     }
 
     /* mG */
     f32 mG = mk[255];
     vector<f32> taoB(256, 0.0);
-    for(s32 i=0; i<256; i++)
+    for(s32 i = 0; i < 256; i++)
     {
-        if( histArr[i]>0 && histArr[i]<1)
-            taoB[i] = (mG*Prob[i] - mk[i])*(mG*Prob[i] - mk[i])/(Prob[i]*(1-Prob[i])) ;
+        if( histArr[i] > 0 && histArr[i] < 1)
+        {
+            taoB[i] = (mG * Prob[i] - mk[i]) * (mG * Prob[i] - mk[i]) / (Prob[i] * (1 - Prob[i])) ;
+        }
         else
+        {
             taoB[i] = 0;
+        }
     }
 
     /* 最大类间方差排序 */
     f32 MaxtaoB = 0.0;
-    for(s32 i=0; i<256; i++)
+    for(s32 i = 0; i < 256; i++)
     {
         if(taoB[i] > MaxtaoB)
         {
@@ -175,19 +197,25 @@ s32 OtsuMethod(IN const Mat& img, OUT u8& threshold)
                   CH_THRESHOLD_INV:目标为暗色
 ********************************************************************************/
 CH_DLL_EXPORT
-s32 OtsuMethod2(IN const Mat& img,
-                 OUT Mat& binImg,
-                 IN s32 flag)
+s32 OtsuMethod2(IN const Mat & img,
+                OUT Mat & binImg,
+                IN s32 flag)
 {
     // 输入检测
     if(img.empty())
+    {
         return -1;
+    }
 
     Mat grayImg;
     if(img.channels() == 1)
+    {
         grayImg = img;
+    }
     else if(img.channels() == 3)
+    {
         cvtColor(img, grayImg, CV_BGR2GRAY);
+    }
 
     u8 level;
     OtsuMethod(grayImg, level);
@@ -209,15 +237,19 @@ s32 OtsuMethod2(IN const Mat& img,
 *	1. 按照图像分块的数目，对每个子区域使用自动阈值分割算法，得出子区域阈值；
 *	2. 对应每个区域，按照子区域的阈值进行分割；
 *********************************************************************************/
-s32 OtsuMethodForBlocks(IN const Mat& img, OUT Mat& mask,
+s32 OtsuMethodForBlocks(IN const Mat & img, OUT Mat & mask,
                         IN int len1, IN int len2, IN int flag )
 {
     // 输入检测
     if(img.empty())
+    {
         return -1;
+    }
 
-    if(len1 <=0 || len2 <=0)
+    if(len1 <= 0 || len2 <= 0)
+    {
         return -1;
+    }
 
     int m = img.rows;
     int n = img.cols;
@@ -225,22 +257,26 @@ s32 OtsuMethodForBlocks(IN const Mat& img, OUT Mat& mask,
 
     // 图像通道检测
     if(img.channels() == 1)
+    {
         A = img;
+    }
     else if(img.channels() == 3)
+    {
         chBGR2Gray(img, A);
+    }
 
     int nRows, nCols;
-    nRows = (m - (m%len1))/len1;
-    nCols = (n - (n%len2))/len2;
+    nRows = (m - (m % len1)) / len1;
+    nCols = (n - (n % len2)) / len2;
 
     vector<u8> level;
-    for(int i=0; i<len1; i++)
+    for(int i = 0; i < len1; i++)
     {
-        for(int j=0; j<len2; j++)
+        for(int j = 0; j < len2; j++)
         {
             Rect rt;
-            rt.x = j*nCols;
-            rt.y = i*nRows;
+            rt.x = j * nCols;
+            rt.y = i * nRows;
             rt.width = nCols;
             rt.height = nRows;
 
@@ -253,33 +289,33 @@ s32 OtsuMethodForBlocks(IN const Mat& img, OUT Mat& mask,
     }
 
     Mat B = Mat::zeros(m, n, CV_8UC1);
-    for(int i=0; i<m; i++)
+    for(int i = 0; i < m; i++)
     {
         u8* ptA = A.ptr<u8>(i);
         u8* ptB = B.ptr<u8>(i);
-        for(int j=0; j<n; j++)
+        for(int j = 0; j < n; j++)
         {
             int ilabel = 0;
             int jlabel = 0;
-            for(int k=0; k<len1; k++)
+            for(int k = 0; k < len1; k++)
             {
-                if( i>=k*nRows && i<(k+1)*nRows )
+                if( i >= k * nRows && i < (k + 1)*nRows )
                 {
                     ilabel = k;
                     break;
                 }
             }
 
-            for(int k=0; k<len2; k++)
+            for(int k = 0; k < len2; k++)
             {
-                if( j>=k*nCols && j<(k+1)*nCols)
+                if( j >= k * nCols && j < (k + 1)*nCols)
                 {
                     jlabel = k;
                     break;
                 }
             }
 
-            u8 indexLevel = level[ilabel*len2 + jlabel];
+            u8 indexLevel = level[ilabel * len2 + jlabel];
             if(flag == THRESH_BINARY)
             {
                 if( ptA[j] > indexLevel)
@@ -317,17 +353,23 @@ s32 OtsuMethodForBlocks(IN const Mat& img, OUT Mat& mask,
 *			-1	0	1
 ********************************************************************************/
 CH_DLL_EXPORT
-s32 chSobel(IN Mat& img, OUT Mat& dst)
+s32 chSobel(IN Mat & img, OUT Mat & dst)
 {
     // 输入检测
     if(img.empty())
+    {
         return -1;
+    }
 
     Mat grayImg;
     if(img.channels() == 1)
+    {
         grayImg = img;
+    }
     else if(img.channels() == 3)
+    {
         chBGR2Gray(img, grayImg);
+    }
 
 #if 1
     s32 xVec[9] = {-1, -2, -1, 0, 0, 0, 1, 2, 1};
@@ -341,12 +383,12 @@ s32 chSobel(IN Mat& img, OUT Mat& dst)
     chImfilter2(grayImg, yModel, yDst, CH_BORDER_ZERO);
 
     dst.create(grayImg.rows, grayImg.cols, CV_8UC1);
-    for(s32 i=0; i<dst.rows; i++)
+    for(s32 i = 0; i < dst.rows; i++)
     {
         s32* ptxDst = xDst.ptr<s32>(i);
         s32* ptyDst = yDst.ptr<s32>(i);
         u8* ptDst = dst.ptr<u8>(i);
-        for(s32 j=0; j<dst.cols; j++)
+        for(s32 j = 0; j < dst.cols; j++)
         {
             s32 val1 = ABS(ptxDst[j]);
             s32 val2 = ABS(ptyDst[j]);
@@ -386,17 +428,23 @@ s32 chSobel(IN Mat& img, OUT Mat& dst)
 *			1	2	2
 ********************************************************************************/
 CH_DLL_EXPORT
-s32 chSobelX(IN Mat& img, OUT Mat& dst)
+s32 chSobelX(IN Mat & img, OUT Mat & dst)
 {
     // 输入检测
     if(img.empty())
+    {
         return -1;
+    }
 
     Mat grayImg;
     if(img.channels() == 1)
+    {
         grayImg = img;
+    }
     else if(img.channels() == 3)
+    {
         chBGR2Gray(img, grayImg);
+    }
 
     s32 xVec[9] = {-1, -2, -1, 0, 0, 0, 1, 2, 1};
 
@@ -406,11 +454,11 @@ s32 chSobelX(IN Mat& img, OUT Mat& dst)
     chImfilter2(grayImg, xModel, xDst, CH_BORDER_ZERO);
 
     dst.create(grayImg.rows, grayImg.cols, CV_8UC1);
-    for(s32 i=0; i<dst.rows; i++)
+    for(s32 i = 0; i < dst.rows; i++)
     {
         s32* ptxDst = xDst.ptr<s32>(i);
         u8* ptDst = dst.ptr<u8>(i);
-        for(s32 j=0; j<dst.cols; j++)
+        for(s32 j = 0; j < dst.cols; j++)
         {
             s32 val1 = ABS(ptxDst[j]);
             ptDst[j] = val1 > 255 ? 255 : val1;
@@ -426,17 +474,23 @@ s32 chSobelX(IN Mat& img, OUT Mat& dst)
 * 功能：在Y方向的Sobel算子检测
 ********************************************************************************/
 CH_DLL_EXPORT
-s32 chSobelY(IN Mat& img, OUT Mat& dst)
+s32 chSobelY(IN Mat & img, OUT Mat & dst)
 {
     // 输入检测
     if(img.empty())
+    {
         return -1;
+    }
 
     Mat grayImg;
     if(img.channels() == 1)
+    {
         grayImg = img;
+    }
     else if(img.channels() == 3)
+    {
         chBGR2Gray(img, grayImg);
+    }
 
     s32 yVec[9] = {-1, 0, 1, -2, 0, 2, -1, 0, 1};
 
@@ -446,11 +500,11 @@ s32 chSobelY(IN Mat& img, OUT Mat& dst)
     chImfilter2(grayImg, yModel, yDst, CH_BORDER_ZERO);
 
     dst.create(grayImg.rows, grayImg.cols, CV_8UC1);
-    for(s32 i=0; i<dst.rows; i++)
+    for(s32 i = 0; i < dst.rows; i++)
     {
         s32* ptyDst = yDst.ptr<s32>(i);
         u8* ptDst = dst.ptr<u8>(i);
-        for(s32 j=0; j<dst.cols; j++)
+        for(s32 j = 0; j < dst.cols; j++)
         {
             s32 val2 = ABS(ptyDst[j]);
             ptDst[j] = val2 > 255 ? 255 : val2;
@@ -472,25 +526,33 @@ s32 chSobelY(IN Mat& img, OUT Mat& dst)
 *    dst        检测结果
 **********************************************************************************/
 CH_DLL_EXPORT
-s32 EdgeDetection(IN const Mat& img, OUT Mat& dst,
+s32 EdgeDetection(IN const Mat & img, OUT Mat & dst,
                   IN int type,
                   IN s32 lowThresh,
                   IN s32 highThresh)
 {
     // 输入检测
     if(img.empty())
+    {
         return -1;
+    }
 
     if(lowThresh > highThresh)
+    {
         return -1;
+    }
 
     Mat temp;
     Mat grayImg;
 
     if(img.channels() == 1)
+    {
         grayImg = img;
+    }
     else if(img.channels() == 3)
+    {
         cvtColor(img, grayImg, CV_BGR2GRAY);
+    }
 
     // 处理
     if(type == CH_SOBEL)
@@ -525,33 +587,39 @@ s32 EdgeDetection(IN const Mat& img, OUT Mat& dst,
 
 
 CH_DLL_EXPORT
-s32 HoughCircleTransform(IN const Mat& img,
-                         OUT Mat& dst)
+s32 HoughCircleTransform(IN const Mat & img,
+                         OUT Mat & dst)
 {
     // 输入检测
     if(img.empty())
+    {
         return -1;
+    }
 
     Mat GrayImg;
     if(img.channels() == 3)
+    {
         cvtColor(img, GrayImg, CV_BGR2GRAY);
+    }
     else if(img.channels() == 1)
+    {
         GrayImg = img;
+    }
 
     GaussianBlur(GrayImg, GrayImg, Size(9, 9), 2, 2);
 
     vector<Vec3f> circles;
 
-    HoughCircles(GrayImg, circles, CV_HOUGH_GRADIENT, 1, GrayImg.rows/8, 200, 100, 0, 0);
+    HoughCircles(GrayImg, circles, CV_HOUGH_GRADIENT, 1, GrayImg.rows / 8, 200, 100, 0, 0);
 
     dst = img;
-    for(size_t i=0; i<circles.size(); i++)
+    for(size_t i = 0; i < circles.size(); i++)
     {
         Point center(cvRound(circles[i][0]), cvRound(circles[i][1]));
         int radius = cvRound(circles[i][2]);
 
         circle(dst, center, 3, Scalar(0, 255, 0), -1, 8, 0);
-        circle(dst, center, radius, Scalar(0,0,255), 3, 8, 0);
+        circle(dst, center, radius, Scalar(0, 0, 255), 3, 8, 0);
     }
 
     return 0;
@@ -567,16 +635,16 @@ s32 HoughCircleTransform(IN const Mat& img,
 *    dst        检测结果
 ***********************************************/
 CH_DLL_EXPORT
-s32 HoughLineTransform(IN const Mat& img,
-                       OUT Mat& dst)
+s32 HoughLineTransform(IN const Mat & img,
+                       OUT Mat & dst)
 {
     Canny(img, dst, 50, 200, 3);
 
     vector<Vec4i> lines;
 
-    HoughLinesP(dst, lines, 1, CV_PI/180, 50, 50, 10);
+    HoughLinesP(dst, lines, 1, CV_PI / 180, 50, 50, 10);
 
-    for(u32 i=0; i<lines.size(); i++)
+    for(u32 i = 0; i < lines.size(); i++)
     {
         Vec4i l = lines[i];
         line(dst, Point(l[0], l[1]), Point(l[2], l[3]), Scalar(200), 2 );
@@ -599,11 +667,13 @@ s32 HoughLineTransform(IN const Mat& img,
 *    dst        检测结果
 ***********************************************/
 CH_DLL_EXPORT
-    s32 TargetDectEB(IN const Mat& img, OUT Mat& dst )
+s32 TargetDectEB(IN const Mat & img, OUT Mat & dst )
 {
     // 输入检测
     if(img.empty())
+    {
         return -1;
+    }
 
     Mat temp, temp2, temp3;
     u8 level;
@@ -613,7 +683,7 @@ CH_DLL_EXPORT
 
     // 自动阈值分割
     OtsuMethod(temp, level);
-    threshold(temp, temp2, (level-20), 255, THRESH_BINARY);
+    threshold(temp, temp2, (level - 20), 255, THRESH_BINARY);
 
     // 形态学操作
     chMorOp(temp2, temp3, CH_MOR_CLOSE, Size(15, 15), CH_ELE_RECT);
@@ -634,15 +704,17 @@ CH_DLL_EXPORT
 *    bg    图像背景
 ***********************************************/
 CH_DLL_EXPORT
-    s32 ImageBackGround(IN const Mat& img, OUT Mat& bg)
+s32 ImageBackGround(IN const Mat & img, OUT Mat & bg)
 {
     // 输入检测
     if(img.empty())
+    {
         return -1;
+    }
 
     /* 获取结构元素 */
     s32 morpSize = 15;
-    Mat element = getStructuringElement(MORPH_RECT, Size(2*(morpSize-1)+1, 2*(morpSize-1)+1));
+    Mat element = getStructuringElement(MORPH_RECT, Size(2 * (morpSize - 1) + 1, 2 * (morpSize - 1) + 1));
 
     /* 开操作 */
     morphologyEx(img, bg, MORPH_OPEN, element);
@@ -657,8 +729,8 @@ CH_DLL_EXPORT
 *    binImg		二值图像
 ***********************************************/
 CH_DLL_EXPORT
-    void ImgSegNouniformIllumination(IN const Mat& img,
-    OUT Mat& binImg)
+void ImgSegNouniformIllumination(IN const Mat & img,
+                                 OUT Mat & binImg)
 {
     Mat bg, tmp1, tmp2, tmp3, tmp4;
     u8 thresh;

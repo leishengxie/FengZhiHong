@@ -14,35 +14,35 @@ using std::string;
 
 //#define CREATE_CH_DLL
 #ifdef CREATE_CH_DLL
-#define CH_DLL_EXPORT	extern "C" __declspec(dllexport)
+    #define CH_DLL_EXPORT	extern "C" __declspec(dllexport)
 #else
-#define CH_DLL_EXPORT
+    #define CH_DLL_EXPORT
 #endif
 
 //#define CREATE_CH_CLASS_DLL
 #ifdef CREATE_CH_CLASS_DLL
-#define CH_CLASS_DLL_EXPORT	__declspec(dllexport)
+    #define CH_CLASS_DLL_EXPORT	__declspec(dllexport)
 #else
-#define CH_CLASS_DLL_EXPORT
+    #define CH_CLASS_DLL_EXPORT
 #endif
 
 #define  IN
 #define  OUT
 
 #ifndef MAX
-#define MAX(a, b)			((a)>=(b) ? (a):(b))
+    #define MAX(a, b)			((a)>=(b) ? (a):(b))
 #endif
 
 #ifndef MIN
-#define MIN(a, b)			((a)<(b) ? (a):(b) )
+    #define MIN(a, b)			((a)<(b) ? (a):(b) )
 #endif
 
 #ifndef ABS
-#define ABS(a)				((a)>0 ? (a): -(a))
+    #define ABS(a)				((a)>0 ? (a): -(a))
 #endif
 
 #ifndef PI
-#define PI	3.1415926
+    #define PI	3.1415926
 #endif
 
 typedef  char				s8;
@@ -58,7 +58,7 @@ typedef struct TPoint
 {
     s32 x;
     s32 y;
-}TPoint;
+} TPoint;
 
 typedef struct TargetInfo
 {
@@ -77,7 +77,7 @@ typedef struct TargetInfo
     Point bottom;
     Rect rt;
     vector<Point> objArea;
-}TargetInfo;
+} TargetInfo;
 
 typedef struct TRect
 {
@@ -85,7 +85,7 @@ typedef struct TRect
     s32 bottom;
     s32 left;
     s32 right;
-}TRect;
+} TRect;
 
 typedef struct TRect2
 {
@@ -93,13 +93,13 @@ typedef struct TRect2
     s32 yMin;
     s32 xMax;
     s32 yMax;
-}TRect2;
+} TRect2;
 
 typedef struct TPair
 {
     s32 first;
     s32 sencond;
-}TPair;
+} TPair;
 
 typedef struct TagFrameInfo
 {
@@ -108,7 +108,7 @@ typedef struct TagFrameInfo
     s32 height;
     s32 depth;
     u8* imageBuf;
-}TFrameInfo;
+} TFrameInfo;
 
 #define IMGWIDTH	640
 #define IMGHEIGHT	480
@@ -126,20 +126,20 @@ typedef struct TagObjectInfo
     TPoint coordinateArray[MAX_COORDINATE_NUM];		/* 目标运动轨迹中心点的纪录 */
     s32 mean_x;
     s32 mean_y;
-}TObjectInfo;
+} TObjectInfo;
 
 /* 检测返回数据 */
 typedef struct TagTargetInfo
 {
     s32 nTarget;
     TObjectInfo TargetList[MAX_MOVING_OBJECTS];  /* 返回块 */
-}TTargetInfoSet;
+} TTargetInfoSet;
 
 typedef struct
 {
     u32 Handle;
     Mat frame;
-}TCallbackData;
+} TCallbackData;
 
 typedef s32 (*MT_CallBackFunc)(TCallbackData* val);
 

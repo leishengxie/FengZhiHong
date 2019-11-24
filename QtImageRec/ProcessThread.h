@@ -1,17 +1,9 @@
 #ifndef PROCESSTHREAD_H
 #define PROCESSTHREAD_H
 
-
-#include <QDir>
-#include <QFile>
 #include <QThread>
-#include <QImage>
-#include <QString>
-#include <QByteArray>
-#include <string>
 
 
-#include "TextRec.h"
 
 
 class ProcessThread: public QThread
@@ -26,7 +18,7 @@ public:
         ~ProcessThread();
 
 private:
-    std::string m_filename;
+    QString m_strFilename;
 private:
     void run();
 

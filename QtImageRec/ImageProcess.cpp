@@ -11,23 +11,27 @@
  *  img = Scalar(0, 0, 255);
  ***************************************************/
 CH_DLL_EXPORT
-s32 chSetMat(Mat& img, Scalar s)
+s32 chSetMat(Mat & img, Scalar s)
 {
     // 输入检测
     if(img.empty())
+    {
         return -1;
+    }
 
     if(s.val[0] < 0 || s.val[0] > 255 ||
-       s.val[1] < 0 || s.val[1] > 255 ||
-       s.val[2] < 0 || s.val[2] > 255)
-       return -1;
+            s.val[1] < 0 || s.val[1] > 255 ||
+            s.val[2] < 0 || s.val[2] > 255)
+    {
+        return -1;
+    }
 
     if( img.channels() == 1)	// Gray
     {
-        for(s32 i=0; i< img.rows; i++)
+        for(s32 i = 0; i < img.rows; i++)
         {
             u8* ptImg = img.ptr<u8>(i);
-            for(s32 j=0; j< img.cols; j++)
+            for(s32 j = 0; j < img.cols; j++)
             {
                 ptImg[j] = (u8)s.val[0];
             }
@@ -35,14 +39,14 @@ s32 chSetMat(Mat& img, Scalar s)
     }
     else if(img.channels() == 3) // BGR
     {
-        for(s32 i=0; i< img.rows; i++)
+        for(s32 i = 0; i < img.rows; i++)
         {
             u8* ptImg = img.ptr<u8>(i);
-            for(s32 j=0; j< img.cols; j++)
+            for(s32 j = 0; j < img.cols; j++)
             {
-                ptImg[3*j] = (u8)s.val[0];
-                ptImg[3*j + 1] = (u8)s.val[1];
-                ptImg[3*j + 2] = (u8)s.val[2];
+                ptImg[3 * j] = (u8)s.val[0];
+                ptImg[3 * j + 1] = (u8)s.val[1];
+                ptImg[3 * j + 2] = (u8)s.val[2];
             }
         }
     }
@@ -56,36 +60,38 @@ s32 chSetMat(Mat& img, Scalar s)
  * 功能  ： 矩阵取反
  ***************************************************/
 CH_DLL_EXPORT
-s32 chSetMatInv(Mat img, Mat& dst)
+s32 chSetMatInv(Mat img, Mat & dst)
 {
     // 输入检测
     if(img.empty())
+    {
         return -1;
+    }
 
     dst.create(img.rows, img.cols, img.type());
     if(img.channels() == 1)
     {
-        for(s32 i=0; i<img.rows; i++)
+        for(s32 i = 0; i < img.rows; i++)
         {
             u8* ptrImg = img.ptr<u8>(i);
             u8* ptrDst = dst.ptr<u8>(i);
-            for(s32 j=0; j<img.cols; j++)
+            for(s32 j = 0; j < img.cols; j++)
             {
-                ptrDst[j] = 255- ptrImg[j];
+                ptrDst[j] = 255 - ptrImg[j];
             }
         }
     }
     else if(img.channels() == 3)
     {
-        for(s32 i=0; i<img.rows; i++)
+        for(s32 i = 0; i < img.rows; i++)
         {
             u8* ptrImg = img.ptr<u8>(i);
             u8* ptrDst = dst.ptr<u8>(i);
-            for(s32 j=0; j<img.cols; j++)
+            for(s32 j = 0; j < img.cols; j++)
             {
-                ptrDst[3*j] = 255- ptrImg[3*j];
-                ptrDst[3*j+1] = 255 - ptrImg[3*j+1];
-                ptrDst[3*j+2] = 255 - ptrImg[3*j+2];
+                ptrDst[3 * j] = 255 - ptrImg[3 * j];
+                ptrDst[3 * j + 1] = 255 - ptrImg[3 * j + 1];
+                ptrDst[3 * j + 2] = 255 - ptrImg[3 * j + 2];
             }
         }
     }
@@ -104,14 +110,18 @@ s32 chSetMatInv(Mat img, Mat& dst)
  *	 iChannels  B:0; G:1; R:2
  ***************************************************/
 CH_DLL_EXPORT
-u8 chGetPixel(Mat& img, s32 iRows, s32 jCols, s32 iChannels)
+u8 chGetPixel(Mat & img, s32 iRows, s32 jCols, s32 iChannels)
 {
     // 输入检测
     if(img.empty())
+    {
         return -1;
+    }
 
     if(iRows < 0 || jCols < 0 || iChannels < 0 || iChannels > 2)
+    {
         return -1;
+    }
 
     u8* ptImg = img.ptr<u8>(iRows, jCols);
     return ptImg[iChannels];
@@ -129,14 +139,18 @@ u8 chGetPixel(Mat& img, s32 iRows, s32 jCols, s32 iChannels)
  *	 iChannels  B:0; G:1; R:2
  ***************************************************/
 CH_DLL_EXPORT
-s32 chSetPixel(u8 val, Mat& img, s32 iRows, s32 jCols, s32 iChannels)
+s32 chSetPixel(u8 val, Mat & img, s32 iRows, s32 jCols, s32 iChannels)
 {
     // 输入检测
     if(img.empty())
+    {
         return -1;
+    }
 
     if(iRows < 0 || jCols < 0 || iChannels < 0 || iChannels > 2)
+    {
         return -1;
+    }
 
     u8* ptImg = img.ptr<u8>(iRows, jCols);
     ptImg[iChannels] = val;
@@ -149,20 +163,24 @@ s32 chSetPixel(u8 val, Mat& img, s32 iRows, s32 jCols, s32 iChannels)
  * 功能  ：二值图像行求和( 白点数目)
  ***************************************************/
 CH_DLL_EXPORT
-s32 chBwRowSum(Mat img, vector<s32>& vRowSum)
+s32 chBwRowSum(Mat img, vector<s32> & vRowSum)
 {
     // 图像通道检测
     if(img.channels() != 1 )
+    {
         return -1;
+    }
 
     vRowSum.clear();
-    for(s32 i=0; i< img.rows; i++)
+    for(s32 i = 0; i < img.rows; i++)
     {
         s32 RowSum = 0;
-        for(s32 j=0; j<img.cols; j++)
+        for(s32 j = 0; j < img.cols; j++)
         {
-            if(chGetPixel(img, i, j)==255)
+            if(chGetPixel(img, i, j) == 255)
+            {
                 RowSum++;
+            }
         }
         vRowSum.push_back(RowSum);
     }
@@ -176,20 +194,24 @@ s32 chBwRowSum(Mat img, vector<s32>& vRowSum)
  * 功能  ：二值图像列求和（白点数目）
  ***************************************************/
 CH_DLL_EXPORT
-s32 chBwColSum(Mat img, vector<s32>& vColSum)
+s32 chBwColSum(Mat img, vector<s32> & vColSum)
 {
     // 图像通道检测
     if(img.channels() != 1 )
+    {
         return -1;
+    }
 
     vColSum.clear();
-    for(s32 j=0; j< img.cols; j++)
+    for(s32 j = 0; j < img.cols; j++)
     {
         s32 ColSum = 0;
-        for(s32 i=0; i<img.rows; i++)
+        for(s32 i = 0; i < img.rows; i++)
         {
-            if(chGetPixel(img, i, j)==255)
+            if(chGetPixel(img, i, j) == 255)
+            {
                 ColSum++;
+            }
         }
         vColSum.push_back(ColSum);
     }
@@ -203,18 +225,22 @@ s32 chBwColSum(Mat img, vector<s32>& vColSum)
  * 功能  ：灰度图像行求和
  ***************************************************/
 CH_DLL_EXPORT
-s32 chGrayRowSum(Mat img, vector<s32>& vRowSum)
+s32 chGrayRowSum(Mat img, vector<s32> & vRowSum)
 {
     // 图像通道检测
     if(img.channels() != 1 )
+    {
         return -1;
+    }
 
     vRowSum.clear();
-    for(s32 i=0; i< img.rows; i++)
+    for(s32 i = 0; i < img.rows; i++)
     {
         s32 RowSum = 0;
-        for(s32 j=0; j<img.cols; j++)
+        for(s32 j = 0; j < img.cols; j++)
+        {
             RowSum += chGetPixel(img, i, j);
+        }
         vRowSum.push_back(RowSum);
     }
 
@@ -227,18 +253,22 @@ s32 chGrayRowSum(Mat img, vector<s32>& vRowSum)
  * 功能  ：灰度图像列求和
  ***************************************************/
 CH_DLL_EXPORT
-s32 chGrayColSum(Mat img, vector<s32>& vColSum)
+s32 chGrayColSum(Mat img, vector<s32> & vColSum)
 {
     // 图像通道检测
     if(img.channels() != 1 )
+    {
         return -1;
+    }
 
     vColSum.clear();
-    for(s32 j=0; j< img.cols; j++)
+    for(s32 j = 0; j < img.cols; j++)
     {
         s32 ColSum = 0;
-        for(s32 i=0; i<img.rows; i++)
+        for(s32 i = 0; i < img.rows; i++)
+        {
             ColSum += chGetPixel(img, i, j);
+        }
         vColSum.push_back(ColSum);
     }
 
@@ -254,23 +284,29 @@ s32 chGrayColSum(Mat img, vector<s32>& vColSum)
  *  vCounts			直方图统计结果
 ***********************************************************/
 CH_DLL_EXPORT
-s32 chHist(Mat src, vector<s32>& vCounts )
+s32 chHist(Mat src, vector<s32> & vCounts )
 {
     // 检测
     if(src.channels() != 1)
+    {
         return -1;
+    }
 
     // 初始化
     vector<s32> vTemp(256);
-    for(u32 i=0; i<vTemp.size(); i++)
+    for(u32 i = 0; i < vTemp.size(); i++)
+    {
         vTemp[i] = 0;
+    }
 
     // 统计
-    for(s32 i=0; i<src.rows; i++)
+    for(s32 i = 0; i < src.rows; i++)
     {
         u8* ptSrc = src.ptr<u8>(i);
-        for(s32 j=0; j<src.cols; j++)
+        for(s32 j = 0; j < src.cols; j++)
+        {
             vTemp[ptSrc[j]]++;
+        }
     }
 
     vCounts = vTemp;
@@ -280,7 +316,7 @@ s32 chHist(Mat src, vector<s32>& vCounts )
 
 // 直方图显示
 CH_DLL_EXPORT
-s32 chHistImage(Mat src, Mat& dst )
+s32 chHistImage(Mat src, Mat & dst )
 {
     // 暂时未实现
     dst = src;
@@ -299,16 +335,20 @@ s32 ImageHistLevelCheck(Mat grayImg, s32 thresh)
 {
     // 输入检测
     if(grayImg.empty())
+    {
         return -1;
+    }
 
-    if(thresh <=0)
+    if(thresh <= 0)
+    {
         return -1;
+    }
 
     vector<s32> vCounts;
     chHist(grayImg, vCounts);
 
     s32	GrayNum = 0;
-    for(u32 i= 0; i<vCounts.size(); i++)
+    for(u32 i = 0; i < vCounts.size(); i++)
     {
         if(vCounts[i] > 10)	// 某个灰度级下，像素点个数小于10，则认为图像无该灰度级
         {
@@ -333,21 +373,25 @@ s32 ImageHistLevelCheck(Mat grayImg, s32 thresh)
  *
  ******************************************************/
 CH_DLL_EXPORT
-s32 chResize2(IN Mat grayImg, OUT Mat& sizeImg, IN s32 pixelLimit, OUT f32& ratio)
+s32 chResize2(IN Mat grayImg, OUT Mat & sizeImg, IN s32 pixelLimit, OUT f32 & ratio)
 {
     // 输入检测
     if(grayImg.empty())
+    {
         return -1;
+    }
 
     if(pixelLimit < 100)
+    {
         return -1;
+    }
 
-    s32 PixelCount = grayImg.rows*grayImg.cols;
+    s32 PixelCount = grayImg.rows * grayImg.cols;
     if(PixelCount > pixelLimit)
     {
-        ratio = (f32)(cv::sqrt(grayImg.rows * grayImg.cols*1.0/pixelLimit));
-        s32 wdith = (s32)(grayImg.cols/ratio);
-        s32 height = (s32)(grayImg.rows/ratio);
+        ratio = (f32)(cv::sqrt(grayImg.rows * grayImg.cols * 1.0 / pixelLimit));
+        s32 wdith = (s32)(grayImg.cols / ratio);
+        s32 height = (s32)(grayImg.rows / ratio);
         resize(grayImg, sizeImg, Size(wdith, height));
     }
     else
@@ -368,7 +412,7 @@ CH_DLL_EXPORT
 s32 chTargetRawSize(IN Mat src,
                     IN Rect sizeRt,
                     IN f32 ratio,
-                    OUT Rect& rt,
+                    OUT Rect & rt,
                     IN s32 iBorder,
                     IN s32 jBorder)
 {
@@ -386,8 +430,8 @@ s32 chTargetRawSize(IN Mat src,
 
     rt.x = MAX(1, rt.x - jBorder);
     rt.y = MAX(1, rt.y - iBorder);
-    rt.width = MIN(src.cols- rt.x-1, rt.width + 2*jBorder);
-    rt.height = MIN(src.rows- rt.y-1, rt.height + 2*iBorder);
+    rt.width = MIN(src.cols - rt.x - 1, rt.width + 2 * jBorder);
+    rt.height = MIN(src.rows - rt.y - 1, rt.height + 2 * iBorder);
 
     return 0;
 }
@@ -402,11 +446,13 @@ s32 chTargetRawSize(IN Mat src,
  *	pt		等比例图像中数据起点
  ******************************************************/
 CH_DLL_EXPORT
-s32 chGetEqualWHImage(IN Mat src, Mat& dst, Point& pt)
+s32 chGetEqualWHImage(IN Mat src, Mat & dst, Point & pt)
 {
     // 输入检测
     if(src.empty())
+    {
         return -1;
+    }
 
     Mat img = src;
     Mat ImgUse;
@@ -414,7 +460,7 @@ s32 chGetEqualWHImage(IN Mat src, Mat& dst, Point& pt)
     {
         ImgUse.create(img.rows, img.rows, img.type());
         ImgUse = Scalar(128, 128, 128);
-        s32 LeftLen = (img.rows - img.cols)/2;
+        s32 LeftLen = (img.rows - img.cols) / 2;
         img.copyTo(ImgUse(Rect(LeftLen, 0, img.cols, img.rows)));
         pt.x = LeftLen;
         pt.y = 0;
@@ -423,7 +469,7 @@ s32 chGetEqualWHImage(IN Mat src, Mat& dst, Point& pt)
     {
         ImgUse.create(img.cols, img.cols, img.type());
         ImgUse = Scalar(128, 128, 128);
-        s32 TopLen = (img.cols - img.rows)/2;
+        s32 TopLen = (img.cols - img.rows) / 2;
         img.copyTo(ImgUse(Rect(0, TopLen, img.cols, img.rows)));
         pt.x = 0;
         pt.y = TopLen;
@@ -441,10 +487,12 @@ s32 chGetEqualWHImage(IN Mat src, Mat& dst, Point& pt)
  *	1. 彩色转灰度采用如下公式：	Y = 0.299*R + 0.587*G + 0.114*B
  *************************************************************************************/
 CH_DLL_EXPORT
-s32 chBGR2Gray(IN Mat ColorImg, OUT Mat& GrayImg)
+s32 chBGR2Gray(IN Mat ColorImg, OUT Mat & GrayImg)
 {
     if(ColorImg.empty())
+    {
         return -1;
+    }
 
     if(ColorImg.channels() == 1)
     {
@@ -455,13 +503,13 @@ s32 chBGR2Gray(IN Mat ColorImg, OUT Mat& GrayImg)
 
         GrayImg.create(ColorImg.rows, ColorImg.cols, CV_8UC1);
 
-        for(s32 i = 0; i<ColorImg.rows; i++)
+        for(s32 i = 0; i < ColorImg.rows; i++)
         {
             u8* ptColor = ColorImg.ptr<u8>(i);
             u8* ptGray = GrayImg.ptr<u8>(i);
-            for(s32 j = 0; j<ColorImg.cols; j++)
+            for(s32 j = 0; j < ColorImg.cols; j++)
             {
-                ptGray[j] = (u8)(ptColor[3*j]*0.114 + ptColor[3*j+1]*0.587 + ptColor[3*j+2]*0.299);
+                ptGray[j] = (u8)(ptColor[3 * j] * 0.114 + ptColor[3 * j + 1] * 0.587 + ptColor[3 * j + 2] * 0.299);
             }
         }
     }
@@ -476,7 +524,7 @@ s32 chBGR2Gray(IN Mat ColorImg, OUT Mat& GrayImg)
  * 说明：
  ******************************************************/
 CH_DLL_EXPORT
-s32 chResize(IN Mat& img, OUT Mat& sizeImg,
+s32 chResize(IN Mat & img, OUT Mat & sizeImg,
              IN Size sz,
              IN s32 type)
 {
@@ -506,22 +554,30 @@ s32 chResize(IN Mat& img, OUT Mat& sizeImg,
  *	4. 为了简化处理流程，必须保证输入图像为单通道；
  ************************************************************************************/
 CH_DLL_EXPORT
-s32 chImfilter2(IN Mat& img, IN Mat& model, OUT Mat& dst, IN s32 border)
+s32 chImfilter2(IN Mat & img, IN Mat & model, OUT Mat & dst, IN s32 border)
 {
     // 输入检测
     if(img.empty() || model.empty())
+    {
         return 1;
+    }
 
-    if(img.channels() !=1)
+    if(img.channels() != 1)
+    {
         return 2;
+    }
 
-    if(model.channels()!=1 || model.rows != model.cols)
+    if(model.channels() != 1 || model.rows != model.cols)
+    {
         return 3;
+    }
 
-    if(model.rows%2==0)
+    if(model.rows % 2 == 0)
+    {
         return 4;
+    }
 
-    s32 radius = model.rows/2;
+    s32 radius = model.rows / 2;
     s32 widthStep = *img.step.p;
 
     if(model.type() == CV_32SC1)
@@ -529,37 +585,37 @@ s32 chImfilter2(IN Mat& img, IN Mat& model, OUT Mat& dst, IN s32 border)
         dst.create(img.rows, img.cols, CV_32SC1);
         s32* ptModel = (s32*)model.data;
         s32* ptDst = (s32*)dst.data;
-        for(s32 i= 0; i< img.rows; i++)
+        for(s32 i = 0; i < img.rows; i++)
         {
-            for(s32 j= 0; j<img.cols; j++)
+            for(s32 j = 0; j < img.cols; j++)
             {
-                if(i< radius || i >=(img.rows-radius) || j< radius || j>=(img.cols-radius))
+                if(i < radius || i >= (img.rows - radius) || j < radius || j >= (img.cols - radius))
                 {
                     if(border == CH_BORDER_ZERO)
                     {
-                        *(ptDst + i*dst.cols + j) = 0;
+                        *(ptDst + i * dst.cols + j) = 0;
                     }
                     else
                     {
-                        *(ptDst + i*dst.cols + j) = *(img.data + i*widthStep + j);
+                        *(ptDst + i * dst.cols + j) = *(img.data + i * widthStep + j);
                     }
                 }
                 else
                 {
                     s32 sum = 0;
-                    for(s32 x = i-radius; x <= i+radius ; x++)
+                    for(s32 x = i - radius; x <= i + radius ; x++)
                     {
-                        for(s32 y=j-radius; y <= j+radius; y++)
+                        for(s32 y = j - radius; y <= j + radius; y++)
                         {
-                            s32 m = x - (i-radius);
-                            s32 n = y - (j-radius);
-                            s32 val1 = *(img.data + x*widthStep + y);
-                            s32 val2 = *(ptModel + m*model.cols + n);
+                            s32 m = x - (i - radius);
+                            s32 n = y - (j - radius);
+                            s32 val1 = *(img.data + x * widthStep + y);
+                            s32 val2 = *(ptModel + m * model.cols + n);
                             sum += (val1 * val2);
                         }
                     }
 
-                    *(ptDst + i*dst.cols + j) = sum;
+                    *(ptDst + i * dst.cols + j) = sum;
                 }
             }
         }
@@ -569,37 +625,37 @@ s32 chImfilter2(IN Mat& img, IN Mat& model, OUT Mat& dst, IN s32 border)
         dst.create(img.rows, img.cols, CV_32FC1);
         f32* ptModel = (f32*)model.data;
         f32* ptDst = (f32*)dst.data;
-        for(s32 i= 0; i< img.rows; i++)
+        for(s32 i = 0; i < img.rows; i++)
         {
-            for(s32 j= 0; j<img.cols; j++)
+            for(s32 j = 0; j < img.cols; j++)
             {
-                if(i< radius || i >=(img.rows-radius) || j< radius || j>=(img.cols-radius))
+                if(i < radius || i >= (img.rows - radius) || j < radius || j >= (img.cols - radius))
                 {
                     if(border == CH_BORDER_ZERO)
                     {
-                        *(ptDst + i*dst.cols + j) = 0;
+                        *(ptDst + i * dst.cols + j) = 0;
                     }
                     else
                     {
-                        *(ptDst + i*dst.cols + j) = *(img.data + i*widthStep + j);
+                        *(ptDst + i * dst.cols + j) = *(img.data + i * widthStep + j);
                     }
                 }
                 else
                 {
                     f32 sum = 0;
-                    for(s32 x = i-radius; x <= i+radius ; x++)
+                    for(s32 x = i - radius; x <= i + radius ; x++)
                     {
-                        for(s32 y=j-radius; y <= j+radius; y++)
+                        for(s32 y = j - radius; y <= j + radius; y++)
                         {
-                            s32 m = x - (i-radius);
-                            s32 n = y - (j-radius);
-                            s32 val1 = *(img.data + x*widthStep + y);
-                            f32 val2 = *(ptModel + m*model.cols + n);
+                            s32 m = x - (i - radius);
+                            s32 n = y - (j - radius);
+                            s32 val1 = *(img.data + x * widthStep + y);
+                            f32 val2 = *(ptModel + m * model.cols + n);
                             sum += (val1 * val2);
                         }
                     }
 
-                    *(ptDst + i*dst.cols + j) = sum;
+                    *(ptDst + i * dst.cols + j) = sum;
                 }
             }
         }

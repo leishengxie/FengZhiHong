@@ -17,7 +17,6 @@ LIBS += -L$$PWD/thirdParty/opencv/x86/mingw/lib/ -llibopencv_core320.dll \
                                                 -llibopencv_imgcodecs320.dll \
                                                 -llibopencv_imgproc320.dll
 
-
 SOURCES += \
     main.cpp \
     bwlabel.cpp \
@@ -45,4 +44,5 @@ FORMS += \
     widget.ui
 
 RESOURCES +=
+
 

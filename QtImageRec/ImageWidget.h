@@ -13,11 +13,11 @@
 
 
 
-class ImageWidget : public QWidget ,  public Ui_Form
+class ImageWidget : public QWidget,  public Ui_Form
 {
     Q_OBJECT
 public:
-    explicit ImageWidget(QWidget *parent = 0);
+    explicit ImageWidget(QWidget* parent = 0);
     ~ImageWidget();
 private:
     int image_cur_index;
@@ -26,18 +26,18 @@ private:
 private:
     void init();
     QString getCurrentImagePath();
-    void displayImageInLabel(QLabel *label,const QString& imagename);
-    void displayImageInLabel(QLabel *label,const QPixmap& pixmap);
-    void startProcessThread(const QString& filename);
+    void displayImageInLabel(QLabel* label, const QString & imagename);
+    void displayImageInLabel(QLabel* label, const QPixmap & pixmap);
+    void startProcessThread(const QString & filename);
 
 private slots:
     void click_UpPushButton();
     void click_DownPushButton();
     void deleteProcessThread();
 
-    void errorStringSlot(const QString& err);
+    void errorStringSlot(const QString & err);
     void displayStepsImageSlot();
-    void sendResutlTextSlot(const QByteArray& text);
+    void sendResutlTextSlot(const QByteArray & text);
 protected:
 
 };

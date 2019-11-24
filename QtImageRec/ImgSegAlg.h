@@ -13,8 +13,8 @@ enum
 
 enum
 {
-    CH_THRESHOLD=0,
-    CH_THRESHOLD_INV=1
+    CH_THRESHOLD = 0,
+    CH_THRESHOLD_INV = 1
 };
 
 /******************************************************************************
@@ -26,7 +26,7 @@ enum
 *	flag	类型：目标亮色：CH_THRESHOLD 目标暗色：CH_THRESHOLD_INV
 ********************************************************************************/
 CH_DLL_EXPORT
-s32 chThreshold(IN Mat img, IN u32 level, OUT Mat& bw, IN s32 flag = CH_THRESHOLD);
+s32 chThreshold(IN Mat img, IN u32 level, OUT Mat & bw, IN s32 flag = CH_THRESHOLD);
 
 
 /******************************************************************************
@@ -36,7 +36,7 @@ s32 chThreshold(IN Mat img, IN u32 level, OUT Mat& bw, IN s32 flag = CH_THRESHOL
 *   threshold    图像阈值
 ********************************************************************************/
 CH_DLL_EXPORT
-s32 OtsuMethod(IN const Mat& img, OUT u8& threshold);
+s32 OtsuMethod(IN const Mat & img, OUT u8 & threshold);
 
 
 /******************************************************************************
@@ -48,7 +48,7 @@ s32 OtsuMethod(IN const Mat& img, OUT u8& threshold);
                   CH_THRESHOLD_INV:目标为暗色
 ********************************************************************************/
 CH_DLL_EXPORT
-s32 OtsuMethod2(IN const Mat& img, OUT Mat& binImg, IN s32 flag = CH_THRESHOLD);
+s32 OtsuMethod2(IN const Mat & img, OUT Mat & binImg, IN s32 flag = CH_THRESHOLD);
 
 
 /*******************************************************************************
@@ -62,11 +62,11 @@ s32 OtsuMethod2(IN const Mat& img, OUT Mat& binImg, IN s32 flag = CH_THRESHOLD);
 *    mask		分割后的二值图像
 ********************************************************************************/
 CH_DLL_EXPORT
-s32 OtsuMethodForBlocks(IN const Mat& img,
-                         OUT Mat& mask,
-                         IN int len1 = 4,
-                         IN int len2 = 4,
-                         IN int flag = THRESH_BINARY);
+s32 OtsuMethodForBlocks(IN const Mat & img,
+                        OUT Mat & mask,
+                        IN int len1 = 4,
+                        IN int len2 = 4,
+                        IN int flag = THRESH_BINARY);
 
 
 /*******************************************************************************
@@ -74,7 +74,7 @@ s32 OtsuMethodForBlocks(IN const Mat& img,
 * 功能：Sobel算子检测
 ********************************************************************************/
 CH_DLL_EXPORT
-s32 chSobel(IN Mat& img, OUT Mat& dst);
+s32 chSobel(IN Mat & img, OUT Mat & dst);
 
 
 /*******************************************************************************
@@ -82,7 +82,7 @@ s32 chSobel(IN Mat& img, OUT Mat& dst);
 * 功能：在X方向的Sobel算子检测
 ********************************************************************************/
 CH_DLL_EXPORT
-s32 chSobelX(IN Mat& img, OUT Mat& dst);
+s32 chSobelX(IN Mat & img, OUT Mat & dst);
 
 
 /*******************************************************************************
@@ -90,7 +90,7 @@ s32 chSobelX(IN Mat& img, OUT Mat& dst);
 * 功能：在Y方向的Sobel算子检测
 ********************************************************************************/
 CH_DLL_EXPORT
-s32 chSobelY(IN Mat& img, OUT Mat& dst);
+s32 chSobelY(IN Mat & img, OUT Mat & dst);
 
 
 /***********************************************
@@ -103,7 +103,7 @@ s32 chSobelY(IN Mat& img, OUT Mat& dst);
 *    dst        检测结果
 ***********************************************/
 CH_DLL_EXPORT
-s32 EdgeDetection(IN const Mat& img, OUT Mat& dst,
+s32 EdgeDetection(IN const Mat & img, OUT Mat & dst,
                   IN int type = CH_CANNY,
                   IN s32 lowThresh = 50,
                   IN s32 highThresh = 125);
@@ -118,8 +118,8 @@ s32 EdgeDetection(IN const Mat& img, OUT Mat& dst,
 *    dst        检测结果
 ***********************************************/
 CH_DLL_EXPORT
-s32 HoughCircleTransform(IN const Mat& img,
-                         OUT Mat& dst);
+s32 HoughCircleTransform(IN const Mat & img,
+                         OUT Mat & dst);
 
 
 /***********************************************
@@ -131,20 +131,20 @@ s32 HoughCircleTransform(IN const Mat& img,
 *    dst        检测结果
 ***********************************************/
 CH_DLL_EXPORT
-s32 HoughLineTransform(IN const Mat& img,
-                       OUT Mat& dst);
+s32 HoughLineTransform(IN const Mat & img,
+                       OUT Mat & dst);
 
 
 #if 0
-/***********************************************
-* 函数：ImageBackGround
-* 参数：
-*	img	灰度图像
-*	bg  图像背景
-* 说明：主要采用开操作，后期被替换
-***********************************************/
-CH_DLL_EXPORT
-    s32 ImageBackGround(IN const Mat& img, OUT Mat& bg);
+    /***********************************************
+    * 函数：ImageBackGround
+    * 参数：
+    *	img	灰度图像
+    *	bg  图像背景
+    * 说明：主要采用开操作，后期被替换
+    ***********************************************/
+    CH_DLL_EXPORT
+    s32 ImageBackGround(IN const Mat & img, OUT Mat & bg);
 #endif
 
 #endif

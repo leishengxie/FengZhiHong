@@ -1,11 +1,7 @@
 #include "TextExtractor.h"
-#include "opencv2/imgproc/imgproc.hpp"
-#include "opencv2/core/core.hpp"
-#include "opencv2/highgui/highgui.hpp"
-#include "opencv2/imgproc/imgproc.hpp"
-//#include "opencv2/imgproc/imgproc.hpp"
-#include "opencv2/opencv.hpp"
-#include "opencv2/imgproc/types_c.h"
+
+
+#include <QtDebug>
 
 using namespace cv;
 
@@ -14,26 +10,77 @@ CTextExtractor::CTextExtractor(QObject* parent) : QObject(parent)
 
 }
 
+// 提取文字部分
 cv::Mat CTextExtractor::extractor(const QPixmap & pixmap)
 {
+    cv::Mat mat = QPixmapToCvMat(pixmap);
+    return extractor(mat);
+}
+
+Mat CTextExtractor::extractor(const Mat & matSrc)
+{
+    return matSrc;
+    //return extractorHandle1(matSrc);
+    //return extractorHandle2(matSrc);
 
 }
 
+// 网上找到的处理方法一
+Mat CTextExtractor::extractorHandle1(const Mat & matSrc)
+{
+    // --step1 灰度转换
+    Mat matGray;
+    cvtColor(matSrc, matGray, CV_BGR2GRAY);
 
+    //二值化
+    Mat matBinary;
+    threshold(~matGray, matBinary, 100, 255, THRESH_OTSU);
+    Mat matVertical;
+    matBinary.copyTo(matVertical);
+
+    //定义形态学算子
+    int verticalSize = matVertical.rows / 30;
+    Mat matVerticalKernel = getStructuringElement(MORPH_RECT, Size(1, verticalSize));
+    erode(matVertical, matVertical, matVerticalKernel);
+    dilate(matVertical, matVertical, matVerticalKernel);
+
+    //寻找轮廓
+    vector<vector<Point>>contours;
+    vector<vector<Point>>detectorContours;
+    findContours(matVertical, contours, RETR_LIST, CHAIN_APPROX_SIMPLE);
+    for (int i = 0; i < contours.size(); i++)
+    {
+        //默认轮廓较大的是验证码
+        if (contours[i].size() > 50)
+        {
+            detectorContours.push_back(contours[i]);
+        }
+    }
+    Mat matResult = Mat::zeros(matSrc.size(), CV_8UC1);
+    drawContours(matResult, detectorContours, -1, Scalar::all(255), -1);
+    return matResult;
+
+}
+
+Mat CTextExtractor::extractorHandle2(const Mat &matSrc)
+{
+
+
+}
+
+// 分割
 void CTextExtractor::segmentText(cv::Mat & spineImage, cv::Mat & segSpine, bool removeNoise)
 {
 
+    // --step1 灰度转换
     cv::Mat spineGray;
     cvtColor(spineImage, spineGray, CV_BGR2GRAY);
-    imshow("gray source", spineGray);
-    spineGray = spineGray - 0.5;
-//    WriteData("/Users/eternity/Desktop/未命名文件夹/gray1.txt", spineGray);
-//    waitKey();
 
+    //直方图均衡
     cv::Mat spineAhe;
+    spineGray = spineGray - 0.5;
     adaptiveHistEqual(spineGray, spineAhe, 0.01);
-    imshow("ahe", spineAhe);
-//    WriteData("/Users/eternity/Desktop/未命名文件夹/gray2.txt", spineAhe);
+
 
     int window_num = 40;
     double window_h = (spineImage.rows / (double)window_num + 1e-3);
@@ -47,16 +94,16 @@ void CTextExtractor::segmentText(cv::Mat & spineImage, cv::Mat & segSpine, bool 
         cv::Mat window_img = cv::Mat::zeros(Size(cut_to_r - cut_from_r + 1, window_w), CV_8U);
         cv::Rect rect = cv::Rect(0, cut_from_r, window_w - 1, cut_to_r - cut_from_r + 1);
         window_img = cv::Mat(spineGray, rect);
-        imshow("window section", window_img);
 
-        sharpenImage(window_img, window_img);
-        imshow("sharpen", window_img);
-//        waitKey();
-//        WriteData("/Users/eternity/Desktop/未命名文件夹/gray4.txt", window_img);
+        // 锐化
+        //sharpenImage(window_img, window_img);
+
         double max_local, min_local;
         minMaxLoc(window_img, &min_local, &max_local);
         double color_diff = max_local - min_local;
         double thresh;
+
+        // threshold 二值化
         cv::Mat window_tmp;
         if (color_diff > 50)
         {
@@ -66,12 +113,12 @@ void CTextExtractor::segmentText(cv::Mat & spineImage, cv::Mat & segSpine, bool 
         {
             thresh = 0;
         }
-//        cout<<thresh<<endl;
+        ;
         cv::Mat seg_window(window_img.size(), CV_64F);
         imgQuantize(window_img, seg_window, thresh);
-//        WriteData("/Users/eternity/Desktop/未命名文件夹/quantize2.txt", seg_window);
+
         seg_window = seg_window == 1;
-//        seg_window = seg_window / 255;
+
         //处理0边界值
         vector<int> cols1, cols2, rows1, rows2;
         findKEdgeFirst(seg_window, 0, 5, rows1, cols1);
@@ -131,18 +178,12 @@ void CTextExtractor::segmentText(cv::Mat & spineImage, cv::Mat & segSpine, bool 
         }
 
         seg_window.copyTo(cv::Mat( spine_th, rect));
-//        imshow("spine_th", spine_th);
-//        waitKey();
-
-
     }
+
     //去除噪声
     if (removeNoise)
     {
         vector<vector<cv::Point>> contours;
-        imshow("spine_th", spine_th);
-//        WriteData("/Users/eternity/Desktop/未命名文件夹/quantize1.txt", spine_th);
-//        waitKey();
         findContours(spine_th, contours, RETR_EXTERNAL, CHAIN_APPROX_NONE);
 
         for (int i = 0; i < contours.size(); i ++)
@@ -151,6 +192,7 @@ void CTextExtractor::segmentText(cv::Mat & spineImage, cv::Mat & segSpine, bool 
             cv::Rect rect = boundingRect(contours[i]);
             double bbox_aspect = rect.width / (double)rect.height;
             int bbox_area = rect.width * rect.height;
+
             //compute solidity
             vector<vector<Point>> hull(1);
             convexHull( contours[i], hull[0] );
@@ -168,7 +210,7 @@ void CTextExtractor::segmentText(cv::Mat & spineImage, cv::Mat & segSpine, bool 
                 {
                     spine_th.at<int>(contours[i][j].x, contours[i][j].y) = 0;
                 }
-//                WriteData("/Users/eternity/Desktop/未命名文件夹/quantize2.txt", spine_th);
+
             }
 
 
@@ -253,7 +295,7 @@ void CTextExtractor::findKEdgeLast(cv::Mat & data, int edgeValue, int k, vector<
     }
 
 }
-//直方图均衡
+
 void CTextExtractor::adaptiveHistEqual(cv::Mat & src, cv::Mat & dst, double clipLimit)
 {
     Ptr<cv::CLAHE> clahe = createCLAHE();

@@ -60,7 +60,7 @@ else:unix: LIBS += -L$$PWD/../../LxTool/LQtTool/bin/ -lLQtTool
 
 #DEPENDPATH += $$PWD/thirdParty/opencv/include
 LIBS += -L$$PWD/thirdParty/opencv/x86/mingw/lib/ -llibopencv_core320.dll -llibopencv_ml320.dll -llibopencv_highgui320.dll \
-                                                -llibopencv_imgcodecs320.dll
+                                                -llibopencv_imgcodecs320.dll -llibopencv_imgproc320.dll
 
 
 win32: LIBS += -L$$PWD/thirdParty/tesseract/lib/ -llibtesseract.dll
