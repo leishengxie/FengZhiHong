@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>归纳本</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
     <widget class="CListViewEx" name="listView">
      <property name="maximumSize">
@@ -25,110 +25,193 @@
     </widget>
    </item>
    <item>
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Fixed</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
+    <widget class="CShrinkWidget" name="wgtArticle" native="true">
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="lineEdit">
+          <property name="placeholderText">
+           <string>请输入文本标题</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="CCheckButton" name="checkButton" native="true"/>
+        </item>
+        <item>
+         <widget class="CLSwitchButton" name="switchButton">
+          <property name="textOff">
+           <string>显示全文</string>
+          </property>
+          <property name="textOn">
+           <string>显示归纳</string>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+          <property name="buttonStyle">
+           <enum>CLSwitchButton::EBS_CircleIn</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnOcr">
+          <property name="text">
+           <string>识图</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnSave">
+          <property name="text">
+           <string>保存</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QTextEdit" name="textEdit"/>
+      </item>
+     </layout>
+    </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <item>
-      <spacer name="horizontalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="lineEdit">
-       <property name="placeholderText">
-        <string>请输入文本标题</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer_3">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="CCheckButton" name="checkButton" native="true"/>
-     </item>
-     <item>
-      <widget class="CLSwitchButton" name="switchButton">
-       <property name="textOff">
-        <string>显示全文</string>
-       </property>
-       <property name="textOn">
-        <string>显示归纳</string>
-       </property>
-       <property name="checked">
-        <bool>false</bool>
-       </property>
-       <property name="buttonStyle">
-        <enum>CLSwitchButton::EBS_CircleIn</enum>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="btnOcr">
-       <property name="text">
-        <string>识图</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="btnSave">
-       <property name="text">
-        <string>保存</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <widget class="QTextEdit" name="textEdit"/>
+    <widget class="QWidget" name="bottomWidget" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QScrollArea" name="scrollArea">
+        <property name="styleSheet">
+         <string notr="true"> QWidget#scrollAreaWidgetContents{
+	background-color: rgb(1, 255, 43);
+ }
+
+ QScrollBar:vertical {
+     background: #ffffff;
+     width: 6px;
+ }
+ QScrollBar::handle:vertical {
+     background:#cccccc;
+     border-radius:3px;
+     width: 6px;
+ }
+
+ QScrollBar::sub-line:vertical {
+     background:transparent;
+ }
+ QScrollBar::add-line:vertical {
+     background:transparent;
+ }
+
+
+ QScrollBar:horizontal {
+     background: #ffffff;
+     height: 6px;
+ }
+ QScrollBar::handle:horizontal {
+     background:#cccccc;
+     border-radius:3px;
+     height: 6px;
+ }
+
+ QScrollBar::sub-line:horizontal {
+     background:transparent;
+ }
+ QScrollBar::add-line:horizontal {
+     background:transparent;
+ }</string>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::NoFrame</enum>
+        </property>
+        <property name="verticalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOn</enum>
+        </property>
+        <property name="sizeAdjustPolicy">
+         <enum>QAbstractScrollArea::AdjustToContents</enum>
+        </property>
+        <property name="widgetResizable">
+         <bool>true</bool>
+        </property>
+        <widget class="QWidget" name="scrollAreaWidgetContents">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>888</width>
+           <height>269</height>
+          </rect>
+         </property>
+        </widget>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </item>
   </layout>
  </widget>
@@ -147,6 +230,12 @@
    <class>CCheckButton</class>
    <extends>QWidget</extends>
    <header>CheckButton.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>CShrinkWidget</class>
+   <extends>QWidget</extends>
+   <header>ShrinkWidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

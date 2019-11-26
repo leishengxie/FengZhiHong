@@ -5,6 +5,7 @@
 #include <QTextBlock>
 #include <QStack>
 #include <QDateTime>
+#include <QPropertyAnimation>
 #include "OcrHandleWidget.h"
 #include "ArticleListModel.h"
 
@@ -37,6 +38,16 @@ CInductiveBookWidget::CInductiveBookWidget(QWidget* parent) :
 
     ui->btnSave->setVisible(isWindow());
 
+    int nArticle = 0;
+    if ( 0 == nArticle)
+    {
+        ui->wgtArticle->setFixedHeight(0);
+    }
+    else
+    {
+        ui->bottomWidget->hide();
+    }
+
 }
 
 CInductiveBookWidget::~CInductiveBookWidget()
@@ -53,6 +64,15 @@ void CInductiveBookWidget::addInductiveArticle()
     tInductiveArticle.strTitle = "new Article";
     ui->lineEdit->setText("new Article");
     ((CArticleListModel*)ui->listView->model())->onAddArticle(tInductiveArticle);
+
+    QPropertyAnimation* animation = new QPropertyAnimation(ui->wgtArticle, "fixSizeHeight");
+    connect(animation, SIGNAL(finished()), ui->bottomWidget, SLOT(hide()));
+    animation->setDuration(1000);
+    animation->setEasingCurve(QEasingCurve::InQuad);
+    animation->setEndValue(height() - ui->listView->height());
+    animation->start(QAbstractAnimation::DeleteWhenStopped);
+
+
 }
 
 void CInductiveBookWidget::mergeFormat(QTextCharFormat fmt)
