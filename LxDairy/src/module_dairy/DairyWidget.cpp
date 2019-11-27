@@ -3,7 +3,6 @@
 #include "model/DairyTagListModel.h"
 #include "model/DairyDateTreeModel.h"
 #include "model/DairyStatisticsModel.h"
-#include "model/PrivateMenuModel.h"
 #include "delegate/DairyTagDelegate.h"
 #include "delegate/DairyDateDelegate.h"
 #include "delegate/DairyStatisticsDelegate.h"

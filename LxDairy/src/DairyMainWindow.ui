@@ -39,7 +39,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="CDairyWidget" name="tabDairy">
        <attribute name="title">
@@ -51,7 +51,7 @@
         <string>实用工具</string>
        </attribute>
       </widget>
-      <widget class="QWidget" name="tabGather">
+      <widget class="CCollectionWidget" name="tabCollection">
        <attribute name="title">
         <string>集</string>
        </attribute>
@@ -266,6 +266,12 @@
    <class>CGeneralToolsWidget</class>
    <extends>QWidget</extends>
    <header>module_tool/GeneralToolsWidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>CCollectionWidget</class>
+   <extends>QWidget</extends>
+   <header>module_collection/CollectionWidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
