@@ -6,7 +6,7 @@
 #include <QStyleOption>
 #include <qdrawutil.h>
 
-CLMapleLeafStyle::CLMapleLeafStyle(QStyle *style)
+CLMapleLeafStyle::CLMapleLeafStyle(QStyle* style)
     : QProxyStyle(style)
 {
 
@@ -36,7 +36,7 @@ CLMapleLeafStyle::CLMapleLeafStyle(QStyle *style)
 /// \brief CLColorStyle::polish     配置调色板
 /// \param palette
 ///
-void CLMapleLeafStyle::polish(QPalette &palette)
+void CLMapleLeafStyle::polish(QPalette & palette)
 {
 
 
@@ -61,24 +61,24 @@ void CLMapleLeafStyle::polish(QPalette &palette)
     return QProxyStyle::polish(palette);
 }
 
-void CLMapleLeafStyle::polish(QWidget *widget)
+void CLMapleLeafStyle::polish(QWidget* widget)
 {
 
 //    if (qobject_cast<QAbstractButton *>(widget) || qobject_cast<QAbstractSpinBox *>(widget))
 //    {
 //        widget->setAttribute(Qt::WA_Hover, true);
 //    }
-     return QProxyStyle::polish(widget);
+    return QProxyStyle::polish(widget);
 }
 
-void CLMapleLeafStyle::unpolish(QWidget *widget)
+void CLMapleLeafStyle::unpolish(QWidget* widget)
 {
 
 //    if (qobject_cast<QAbstractButton *>(widget) || qobject_cast<QAbstractSpinBox *>(widget))
 //    {
 //        widget->setAttribute(Qt::WA_Hover, false);
 //    }
-     return QProxyStyle::unpolish(widget);
+    return QProxyStyle::unpolish(widget);
 }
 
 ///
@@ -89,100 +89,115 @@ void CLMapleLeafStyle::unpolish(QWidget *widget)
 /// \param returnData
 /// \return
 ///
-int CLMapleLeafStyle::styleHint(QStyle::StyleHint which, const QStyleOption *option, const QWidget *widget, QStyleHintReturn *returnData) const
+int CLMapleLeafStyle::styleHint(QStyle::StyleHint which, const QStyleOption* option, const QWidget* widget, QStyleHintReturn* returnData) const
 {
-    switch (which) {
-    case SH_DialogButtonLayout:
-        return int(QDialogButtonBox::WinLayout);
-    default:
-        break;
-    }
-    return QProxyStyle::styleHint(which, option, widget,
-                                   returnData);
+//    switch (which)
+//    {
+//        case SH_DialogButtonLayout:
+//            return int(QDialogButtonBox::WinLayout);
+//        default:
+//            break;
+//    }
+    return QProxyStyle::styleHint(which, option, widget, returnData);
 }
 
-int CLMapleLeafStyle::pixelMetric(QStyle::PixelMetric which, const QStyleOption *option, const QWidget *widget) const
+int CLMapleLeafStyle::pixelMetric(QStyle::PixelMetric which, const QStyleOption* option, const QWidget* widget) const
 {
-    switch (which)
-    {
-    // 返回0是因为不希望在默认的按钮旁边保留额外的空间
-    case PM_ButtonDefaultIndicator:
-        return 0;
-        // 指示器大小是一个正方形
-    case PM_IndicatorWidth:
-    case PM_IndicatorHeight:
-        return 16;
-        // 控制指示器和其右边的文字之间的距离
-    case PM_CheckBoxLabelSpacing:
-        return 8;
-        // QFrame,QPushButton,QSpinBox以及其他的一些窗口部件的线宽.
-    case PM_DefaultFrameWidth:
-        return 2;
-        // 对于其他的PM_xxx值,从基类中继承像素规格的值
-    default:
-        break;
-    }
+//    switch (which)
+//    {
+//    // 返回0是因为不希望在默认的按钮旁边保留额外的空间
+//    case PM_ButtonDefaultIndicator:
+//        return 0;
+//        // 指示器大小是一个正方形
+//    case PM_IndicatorWidth:
+//    case PM_IndicatorHeight:
+//        return 16;
+//        // 控制指示器和其右边的文字之间的距离
+//    case PM_CheckBoxLabelSpacing:
+//        return 8;
+//        // QFrame,QPushButton,QSpinBox以及其他的一些窗口部件的线宽.
+//    case PM_DefaultFrameWidth:
+//        return 2;
+//        // 对于其他的PM_xxx值,从基类中继承像素规格的值
+//    default:
+//        break;
+//    }
     return QProxyStyle::pixelMetric(which, option, widget);
 }
 
-void CLMapleLeafStyle::drawPrimitive(QStyle::PrimitiveElement which, const QStyleOption *option
-                                     , QPainter *painter, const QWidget *widget) const
+void CLMapleLeafStyle::drawPrimitive(QStyle::PrimitiveElement which, const QStyleOption* option
+                                     , QPainter* painter, const QWidget* widget) const
 {
-    switch (which) {
-    //会被QCheckBox,QGroupBox和QItemDelegate用来绘制选择指示器
-//    case PE_IndicatorCheckBox:
-//        drawBronzeCheckBoxIndicator(option, painter);
-//        break;
-//    case PE_PanelButtonCommand:
-//        drawBronzeBevel(option, painter);
-//        break;
-//    case PE_Frame:
-//        drawBronzeFrame(option, painter);
-//        break;
-    case PE_FrameLineEdit:
+    switch (which)
     {
-        // 注意 commstyle源码里是这样的
+        case PE_FrameLineEdit:
+            {
+                painter->save();
+                painter->setRenderHint(QPainter::Antialiasing, true);
+                //painter->setPen(QPen(option->palette.foreground(), 1.0));
+                //QColor("#636363");
+                painter->setPen(QPen(QBrush(Qt::green), 1.0));
+                painter->setBrush(Qt::NoBrush);
+                painter->drawRoundedRect(option->rect, 5, 5);
+                painter->restore();
+                return;
 
+                // 注意 commstyle源码里是这样的
 //    case PE_FrameLineEdit:
 //        proxy()->drawPrimitive(PE_Frame, opt, p, widget);
+                break;
+            }
+        case PE_IndicatorCheckBox:
+            {
+                QPixmap pixmap;
+                if(option->state & State_On)
+                {
+                    if(option->state & State_MouseOver)
+                    {
+                        //pixmap.load(":/images/checkbox_checked_hover.png");
+                    }
+                    else
+                    {
+                        pixmap.load(":/img/css/checkbox_checked.png");
+                    }
+                }
+                else
+                {
+                    if(option->state & State_MouseOver)
+                    {
+                        //pixmap.load(":/images/checkbox_unchecked_hover.png");
+                    }
+                    else
+                    {
+                        pixmap.load(":/img/css/checkbox_unchecked.png");
+                    }
 
-        painter->save();
-        painter->setRenderHint(QPainter::Antialiasing, true);
-        painter->setPen(QPen(option->palette.foreground(), 1.0));
-        painter->drawRoundedRect(option->rect, 5, 5);
-        painter->restore();
-
-//        if (const QStyleOptionFrame *frame = qstyleoption_cast<const QStyleOptionFrame *>(opt)) {
-//            if (pe == PE_FrameMenu || (frame->state & State_Sunken) || (frame->state & State_Raised)) {
-//                qDrawShadePanel(painter, frame->rect, frame->palette, frame->state & State_Sunken,
-//                                frame->lineWidth);
-//            } else {
-//                qDrawPlainRect(painter, frame->rect, frame->palette.foreground().color(), frame->lineWidth);
-//            }
-//        }
-        break;
+                }
+                QRect pixmapRect = pixmap.rect(); //.translated(option->rect.topLeft()).translated(+2,-6);
+                painter->drawPixmap(pixmapRect, pixmap);
+                return;
+            }
+        default:
+            break;
     }
-    default:
-       break;
-    }
-     QProxyStyle::drawPrimitive(which, option, painter, widget);
+    QProxyStyle::drawPrimitive(which, option, painter, widget);
 
 }
 
-void CLMapleLeafStyle::drawControl(QStyle::ControlElement element, const QStyleOption *option
-                                   , QPainter *painter, const QWidget *widget) const
+void CLMapleLeafStyle::drawControl(QStyle::ControlElement element, const QStyleOption* option
+                                   , QPainter* painter, const QWidget* widget) const
 {
     QProxyStyle::drawControl(element, option, painter, widget);
 }
 
-void CLMapleLeafStyle::drawComplexControl(QStyle::ComplexControl which, const QStyleOptionComplex *option
-                                          , QPainter *painter, const QWidget *widget) const
+void CLMapleLeafStyle::drawComplexControl(QStyle::ComplexControl which, const QStyleOptionComplex* option
+        , QPainter* painter, const QWidget* widget) const
 {
     QProxyStyle::drawComplexControl(which, option, painter, widget);
 }
 
-QRect CLMapleLeafStyle::subControlRect(QStyle::ComplexControl whichControl, const QStyleOptionComplex *option
-                                       , QStyle::SubControl whichSubControl, const QWidget *widget) const
+QRect CLMapleLeafStyle::subControlRect(QStyle::ComplexControl whichControl, const QStyleOptionComplex* option
+                                       , QStyle::SubControl whichSubControl, const QWidget* widget) const
 {
     QProxyStyle::subControlRect(whichControl, option, whichSubControl, widget);
 }
