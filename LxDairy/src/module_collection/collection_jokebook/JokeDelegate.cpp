@@ -63,16 +63,31 @@ void CJokeDelegate::paint(QPainter* painter, const QStyleOptionViewItem & option
 
     if (index.column() == 0)
     {
-
+        QApplication::style()->drawItemText ( painter
+                                              , rect
+                                              , Qt::AlignLeft | Qt::AlignVCenter
+                                              , QApplication::palette()
+                                              , true
+                                              , tJoke.strTitle);
     }
 
     if (index.column() == 1)
     {
-
+        QApplication::style()->drawItemText ( painter
+                                              , rect
+                                              , Qt::AlignLeft | Qt::AlignVCenter
+                                              , QApplication::palette()
+                                              , true
+                                              , tJoke.strDate);
     }
     else if (index.column() == 2)
     {
-
+        QApplication::style()->drawItemText ( painter
+                                              , rect
+                                              , Qt::AlignLeft | Qt::AlignVCenter
+                                              , QApplication::palette()
+                                              , true
+                                              , tJoke.strContent);
     }
     else if (index.column() == 3)
     {

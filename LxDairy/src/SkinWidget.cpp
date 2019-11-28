@@ -7,6 +7,8 @@
 #include <QSettings>
 #include "LQt.h"
 
+#include "LMapleLeafStyle.h"
+
 static QString s_aSkin[] =
 {
     ":/css/black.css",
@@ -37,10 +39,12 @@ CSkinWidget::~CSkinWidget()
 
 void CSkinWidget::loadQssStyle()
 {
-    QSettings conf("conf.ini", QSettings::IniFormat);
-    conf.beginGroup("user");
-    uint unIndex = conf.value("skin_index", 0).toUInt();
-    setSkin(unIndex);
+//    QSettings conf("conf.ini", QSettings::IniFormat);
+//    conf.beginGroup("user");
+//    uint unIndex = conf.value("skin_index", 0).toUInt();
+//    setSkin(unIndex);
+
+    QApplication::setStyle(new CLMapleLeafStyle());
 }
 
 void CSkinWidget::slot_cancelCurrentSet()

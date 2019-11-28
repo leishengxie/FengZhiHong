@@ -86,6 +86,7 @@ INCLUDEPATH += \
     src/core \
     src/module_dairy \
     src/module_tool \
+    src/module_collection \
     src/music \
     src/tts
 
@@ -123,7 +124,13 @@ HEADERS += \
     src/module_dairy/DairyWidget.h \
     src/core/LEvent.h \
     src/DairyApp.h \
-    src/module_tool/PrivateMenuModel.h
+    src/module_tool/PrivateMenuModel.h \
+    src/module_collection/CollectionWidget.h \
+    src/module_collection/collection_jokebook/StarEditor.h \
+    src/module_collection/collection_jokebook/JokebookWidget.h \
+    src/module_collection/collection_jokebook/JokeModel.h \
+    src/module_collection/collection_jokebook/JokeDelegate.h \
+    src/LMapleLeafStyle.h
 
 SOURCES += \
     src/core/LBaseWidget.cpp \
@@ -160,7 +167,13 @@ SOURCES += \
     src/module_dairy/DairyWidget.cpp \
     src/core/LEvent.cpp \
     src/DairyApp.cpp \
-    src/module_tool/PrivateMenuModel.cpp
+    src/module_tool/PrivateMenuModel.cpp \
+    src/module_collection/CollectionWidget.cpp \
+    src/module_collection/collection_jokebook/StarEditor.cpp \
+    src/module_collection/collection_jokebook/JokebookWidget.cpp \
+    src/module_collection/collection_jokebook/JokeModel.cpp \
+    src/module_collection/collection_jokebook/JokeDelegate.cpp \
+    src/LMapleLeafStyle.cpp
 
 FORMS += \
     src/module_dairy/DairyEditWidget.ui \
@@ -173,7 +186,9 @@ FORMS += \
     src/LoginWidget.ui \
     src/RegisterDialog.ui \
     src/SkinWidget.ui \
-    src/module_dairy/DairyWidget.ui
+    src/module_dairy/DairyWidget.ui \
+    src/module_collection/CollectionWidget.ui \
+    src/module_collection/collection_jokebook/JokebookWidget.ui
 
 
 
