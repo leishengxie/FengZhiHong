@@ -4,6 +4,7 @@
 #include <QDialogButtonBox>
 #include <QPainter>
 #include <QStyleOption>
+#include <qdrawutil.h>
 
 CLMapleLeafStyle::CLMapleLeafStyle(QStyle *style)
     : QProxyStyle(style)
@@ -102,25 +103,25 @@ int CLMapleLeafStyle::styleHint(QStyle::StyleHint which, const QStyleOption *opt
 
 int CLMapleLeafStyle::pixelMetric(QStyle::PixelMetric which, const QStyleOption *option, const QWidget *widget) const
 {
-//    switch (which)
-//    {
-//    // 返回0是因为不希望在默认的按钮旁边保留额外的空间
-//    case PM_ButtonDefaultIndicator:
-//        return 0;
-//        // 指示器大小是一个正方形
-//    case PM_IndicatorWidth:
-//    case PM_IndicatorHeight:
-//        return 16;
-//        // 控制指示器和其右边的文字之间的距离
-//    case PM_CheckBoxLabelSpacing:
-//        return 8;
-//        // QFrame,QPushButton,QSpinBox以及其他的一些窗口部件的线宽.
-//    case PM_DefaultFrameWidth:
-//        return 2;
-//        // 对于其他的PM_xxx值,从基类中继承像素规格的值
-//    default:
-//        break;
-//    }
+    switch (which)
+    {
+    // 返回0是因为不希望在默认的按钮旁边保留额外的空间
+    case PM_ButtonDefaultIndicator:
+        return 0;
+        // 指示器大小是一个正方形
+    case PM_IndicatorWidth:
+    case PM_IndicatorHeight:
+        return 16;
+        // 控制指示器和其右边的文字之间的距离
+    case PM_CheckBoxLabelSpacing:
+        return 8;
+        // QFrame,QPushButton,QSpinBox以及其他的一些窗口部件的线宽.
+    case PM_DefaultFrameWidth:
+        return 2;
+        // 对于其他的PM_xxx值,从基类中继承像素规格的值
+    default:
+        break;
+    }
     return QProxyStyle::pixelMetric(which, option, widget);
 }
 
@@ -145,12 +146,20 @@ void CLMapleLeafStyle::drawPrimitive(QStyle::PrimitiveElement which, const QStyl
 //    case PE_FrameLineEdit:
 //        proxy()->drawPrimitive(PE_Frame, opt, p, widget);
 
-        //为了保证QPainter保存原来的状态
         painter->save();
         painter->setRenderHint(QPainter::Antialiasing, true);
+        painter->setPen(QPen(option->palette.foreground(), 1.0));
         painter->drawRoundedRect(option->rect, 5, 5);
-        //最后恢复
         painter->restore();
+
+//        if (const QStyleOptionFrame *frame = qstyleoption_cast<const QStyleOptionFrame *>(opt)) {
+//            if (pe == PE_FrameMenu || (frame->state & State_Sunken) || (frame->state & State_Raised)) {
+//                qDrawShadePanel(painter, frame->rect, frame->palette, frame->state & State_Sunken,
+//                                frame->lineWidth);
+//            } else {
+//                qDrawPlainRect(painter, frame->rect, frame->palette.foreground().color(), frame->lineWidth);
+//            }
+//        }
         break;
     }
     default:
