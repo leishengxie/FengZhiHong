@@ -5,6 +5,7 @@
 
 #include <QProxyStyle>
 
+
 class CLMapleLeafStyle : public QProxyStyle
 {
     Q_OBJECT
@@ -23,9 +24,7 @@ public:
                     const QWidget *widget = 0) const;
 
 
-    void drawPrimitive(PrimitiveElement which,
-                       const QStyleOption *option, QPainter *painter,
-                       const QWidget *widget = 0) const;
+    void drawPrimitive(PrimitiveElement which, const QStyleOption *option, QPainter *painter, const QWidget *widget) const;
 
     // 画控件(窗口部件)
     // drawControl()函数被各种 QStyle 的子类重新实现，用于绘制 QPushButiön 和其他的一些简单的 窗口部件
@@ -45,9 +44,24 @@ public:
                          SubControl whichSubControl,
                          const QWidget *widget = 0) const;
 
+    QPixmap standardPixmap(StandardPixmap standardPixmap, const QStyleOption *opt
+                           , const QWidget *widget = Q_NULLPTR) const Q_DECL_OVERRIDE;
+
+    QIcon standardIcon(StandardPixmap standardIcon, const QStyleOption *option = Q_NULLPTR
+            , const QWidget *widget = Q_NULLPTR) const Q_DECL_OVERRIDE;
+
 signals:
 
 public slots:
+
+protected:
+    bool event(QEvent *e);
+
+private:
+    void drawPECheckBoxIndicator(const QStyleOption *option, QPainter *painter) const;
+    void drawPERadioButtonIndicator(const QStyleOption *option, QPainter *painter) const;
+    void drawPEArrowDownIndicator(const QStyleOption *option, QPainter *painter) const;
+
 
 };
 

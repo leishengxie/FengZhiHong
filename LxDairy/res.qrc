@@ -41,5 +41,7 @@
         <file>img/tool_img/maple_leaf_1_0.png</file>
         <file>img/tool_img/maple_leaf_1_1.png</file>
         <file>img/tool_img/maple_leaf_book.png</file>
+        <file>img/css/checkbox_fix_checked.png</file>
+        <file>img/css/checkbox_fix_unchecked.png</file>
     </qresource>
 </RCC>

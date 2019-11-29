@@ -6,6 +6,8 @@
 #include <QProcess>
 #include <QMessageBox>
 #include <QStandardPaths>
+#include <QtDebug>
+#include <QStyle>
 
 
 static const QString s_strUpder = "LxDairyUpd.exe";
@@ -42,6 +44,7 @@ int main(int argc, char *argv[])
         return -1;
     }
     CSqlOperate::createTable();
+    qDebug() << a.style()->objectName();
     CSkinWidget::loadQssStyle();
 
 //    QApplication::setOrganizationName("Lx");

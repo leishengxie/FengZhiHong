@@ -145,59 +145,255 @@ void CLMapleLeafStyle::drawPrimitive(QStyle::PrimitiveElement which, const QStyl
                 // 注意 commstyle源码里是这样的
 //    case PE_FrameLineEdit:
 //        proxy()->drawPrimitive(PE_Frame, opt, p, widget);
-                break;
             }
         case PE_IndicatorCheckBox:
             {
-                QPixmap pixmap;
-                if(option->state & State_On)
-                {
-                    if(option->state & State_MouseOver)
-                    {
-                        //pixmap.load(":/images/checkbox_checked_hover.png");
-                    }
-                    else
-                    {
-                        pixmap.load(":/img/css/checkbox_checked.png");
-                    }
-                }
-                else
-                {
-                    if(option->state & State_MouseOver)
-                    {
-                        //pixmap.load(":/images/checkbox_unchecked_hover.png");
-                    }
-                    else
-                    {
-                        pixmap.load(":/img/css/checkbox_unchecked.png");
-                    }
-
-                }
-                QRect pixmapRect = pixmap.rect(); //.translated(option->rect.topLeft()).translated(+2,-6);
-                painter->drawPixmap(pixmapRect, pixmap);
+                drawPECheckBoxIndicator(option, painter);
                 return;
             }
+        case PE_IndicatorRadioButton:
+            {
+                //return QProxyStyle::drawPrimitive(which, option, painter, widget);
+                drawPERadioButtonIndicator(option, painter);
+                return;
+            }
+    case PE_IndicatorArrowDown:
+    {
+        // 要自定制的话就应该和up,right, left一起，不然风格不一致就别扭
+        break;
+//        drawPEArrowDownIndicator(option, painter);
+//        return;
+    }
         default:
             break;
     }
-    QProxyStyle::drawPrimitive(which, option, painter, widget);
+    return QProxyStyle::drawPrimitive(which, option, painter, widget);
 
 }
 
 void CLMapleLeafStyle::drawControl(QStyle::ControlElement element, const QStyleOption* option
                                    , QPainter* painter, const QWidget* widget) const
 {
-    QProxyStyle::drawControl(element, option, painter, widget);
+    return QProxyStyle::drawControl(element, option, painter, widget);
 }
 
 void CLMapleLeafStyle::drawComplexControl(QStyle::ComplexControl which, const QStyleOptionComplex* option
         , QPainter* painter, const QWidget* widget) const
 {
-    QProxyStyle::drawComplexControl(which, option, painter, widget);
+    switch (which) {
+    case CC_ComboBox:
+
+        break;
+    default:
+        break;
+    }
+    return QProxyStyle::drawComplexControl(which, option, painter, widget);
 }
 
 QRect CLMapleLeafStyle::subControlRect(QStyle::ComplexControl whichControl, const QStyleOptionComplex* option
                                        , QStyle::SubControl whichSubControl, const QWidget* widget) const
 {
-    QProxyStyle::subControlRect(whichControl, option, whichSubControl, widget);
+    switch (whichControl) {
+    case CC_ComboBox:
+    {
+        switch (whichSubControl) {
+        case SC_ComboBoxArrow:
+            break;
+        default:
+            break;
+        }
+        break;
+    }
+    default:
+        break;
+    }
+    // 注意要习惯性的加上return, 以免出现不必要的错误，习惯好也可以加快速度
+    return QProxyStyle::subControlRect(whichControl, option, whichSubControl, widget);
 }
+
+///
+/// \brief CLMapleLeafStyle::standardPixmap     Qt内置了一批图标，一共有70个，不同的平台图标有差异
+/// \param standardPixmap
+/// \param opt
+/// \param widget
+/// \return
+///
+QPixmap CLMapleLeafStyle::standardPixmap(QStyle::StandardPixmap standardPixmap, const QStyleOption *opt
+                                         , const QWidget *widget) const
+{
+    switch (standardPixmap) {
+    case SP_ArrowDown:
+        return QPixmap(":/img/css/array_down.png");
+    default:
+        break;
+    }
+    return QProxyStyle::standardPixmap(standardPixmap, opt, widget);
+}
+
+QIcon CLMapleLeafStyle::standardIcon(QStyle::StandardPixmap standardIcon, const QStyleOption *option
+                                     , const QWidget *widget) const
+{
+    switch (standardIcon) {
+    case SP_ArrowDown:
+        return QIcon(":/img/css/array_down.png");
+    default:
+        break;
+    }
+    return QProxyStyle::standardIcon(standardIcon, option, widget);
+}
+
+bool CLMapleLeafStyle::event(QEvent *e)
+{
+    return QProxyStyle::event(e);
+}
+
+void CLMapleLeafStyle::drawPECheckBoxIndicator(const QStyleOption* option, QPainter* painter) const
+{
+    //commonstyle源码
+//    if (opt->state & State_NoChange) {
+//        p->setPen(opt->palette.foreground().color());
+//        p->fillRect(opt->rect, opt->palette.brush(QPalette::Button));
+//        p->drawRect(opt->rect);
+//        p->drawLine(opt->rect.topLeft(), opt->rect.bottomRight());
+//    } else {
+//        qDrawShadePanel(p, opt->rect.x(), opt->rect.y(), opt->rect.width(), opt->rect.height(),
+//                        opt->palette, opt->state & (State_Sunken | State_On), 1,
+//                        &opt->palette.brush(QPalette::Button));
+//    }
+
+
+    // ohter
+//    painter->save();
+//    painter->setRenderHint(QPainter::Antialiasing, true);
+//    if (option->state & State_MouseOver)
+//    {
+//        painter->setBrush(option->palette.alternateBase());
+//    }
+//    else
+//    {
+//        painter->setBrush(option->palette.base());
+//    }
+//    painter->drawRoundRect(option->rect.adjusted(+1, +1, -1, -1));
+
+//    if (option->state & (State_On | State_NoChange))
+//    {
+//        QPixmap pixmap;
+//        if (!(option->state & State_Enabled))
+//        {
+//            //pixmap.load(":/images/checkbox_checked_hover.png");
+//            //pixmap.load(":/img/css/checkbox_checked.png");
+//            //pixmap.load(":/images/checkbox_unchecked_hover.png");
+//            // pixmap.load(":/img/css/checkbox_unchecked.png");
+//            pixmap.load(":/images/checkmark-disabled.png");
+//        }
+//        else if (option->state & State_NoChange)
+//        {
+//            pixmap.load(":/images/checkmark-partial.png");
+//        }
+//        else
+//        {
+//            pixmap.load(":/images/checkmark.png");
+//        }
+
+//        QRect pixmapRect = pixmap.rect().translated(option->rect.topLeft()).translated(+2, -6);
+//        QRect painterRect = visualRect(option->direction, option->rect, pixmapRect);
+//        if (option->direction == Qt::RightToLeft)
+//        {
+//            painter->scale(-1.0, +1.0);
+//            painterRect.moveLeft(-painterRect.right() - 1);
+//        }
+//        painter->drawPixmap(painterRect, pixmap);
+//    }
+//    painter->restore();
+
+
+    // now
+    QPixmap pixmap;
+    if(option->state & State_On)
+    {
+//        if(option->state & State_MouseOver)
+//        {
+//            //pixmap.load(":/images/checkbox_checked_hover.png");
+//        }
+//        else
+//        {
+        pixmap.load(":/img/css/checkbox_fix_checked.png");
+//        }
+    }
+    else
+    {
+//        if(option->state & State_MouseOver)
+//        {
+//            //pixmap.load(":/images/checkbox_unchecked_hover.png");
+//        }
+//        else
+//        {
+        pixmap.load(":/img/css/checkbox_fix_unchecked.png");
+//        }
+
+    }
+    painter->drawPixmap(option->rect, pixmap);
+}
+
+void CLMapleLeafStyle::drawPERadioButtonIndicator(const QStyleOption* option, QPainter* painter) const
+{
+    // 源码
+//    QRect ir = opt->rect;
+//    p->setPen(opt->palette.dark().color());
+//    p->drawArc(opt->rect, 0, 5760);
+//    if (opt->state & (State_Sunken | State_On)) {
+//        ir.adjust(2, 2, -2, -2);
+//        p->setBrush(opt->palette.foreground());
+//        bool oldQt4CompatiblePainting = p->testRenderHint(QPainter::Qt4CompatiblePainting);
+//        p->setRenderHint(QPainter::Qt4CompatiblePainting);
+//        p->drawEllipse(ir);
+//        p->setRenderHint(QPainter::Qt4CompatiblePainting, oldQt4CompatiblePainting);
+//    }
+
+    painter->save();
+    painter->setRenderHint(QPainter::Antialiasing, true);
+    painter->drawPixmap(option->rect, QPixmap(":/img/css/radio_normal.png"));
+    if (option->state & (State_Sunken | State_On))
+    {
+        painter->drawPixmap(option->rect, QPixmap(":/img/css/radio_selected.png"));
+    }
+    painter->restore();
+
+}
+
+void CLMapleLeafStyle::drawPEArrowDownIndicator(const QStyleOption *option, QPainter *painter) const
+{
+
+}
+
+////绘制微调框向上向下按钮
+//void CLBronzeStyle::drawBronzeSpinBoxButton(SubControl which, const QStyleOptionComplex *option
+//                                            , QPainter *painter) const
+//{
+//    PrimitiveElement arrow = PE_IndicatorArrowLeft;
+//    QRect buttonRect = option->rect;
+//    if ((which == SC_SpinBoxUp) != (option->direction == Qt::RightToLeft))
+//    {
+//        arrow = PE_IndicatorArrowRight;
+//        buttonRect.translate(buttonRect.width() / 2, 0);
+//    }
+//    buttonRect.setWidth((buttonRect.width() + 1) / 2);
+
+//    QStyleOption buttonOpt(*option);
+
+//    painter->save();
+//    painter->setClipRect(buttonRect, Qt::IntersectClip);
+//    if (!(option->activeSubControls & which))
+//    {
+//        buttonOpt.state &= ~(State_MouseOver | State_On | State_Sunken);
+//    }
+//    drawBronzeBevel(&buttonOpt, painter);
+
+//    QStyleOption arrowOpt(buttonOpt);
+//    arrowOpt.rect = subControlRect(CC_SpinBox, option, which).adjusted(+3, +3, -3, -3);
+//    if (arrowOpt.rect.isValid())
+//    {
+//        drawPrimitive(arrow, &arrowOpt, painter);
+//    }
+//    painter->restore();
+//}

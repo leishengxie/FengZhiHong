@@ -44,7 +44,11 @@ void CSkinWidget::loadQssStyle()
 //    uint unIndex = conf.value("skin_index", 0).toUInt();
 //    setSkin(unIndex);
 
-    QApplication::setStyle(new CLMapleLeafStyle());
+    //QApplication::setStyle(new CCustomStyle());
+    //QApplication::setStyle(new CLMapleLeafStyle());
+   // QApplication::setStyle(new QProxyStyle());
+//    qApp->setStyleSheet("");
+//    qApp->setPalette(QPalette(QColor("#F0F0F0")));
 }
 
 void CSkinWidget::slot_cancelCurrentSet()

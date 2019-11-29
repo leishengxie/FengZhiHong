@@ -18,10 +18,10 @@
 #include <QTimer>
 #include <QCloseEvent>
 
-CDairyWidget::CDairyWidget(QWidget *parent)
+CDairyWidget::CDairyWidget(QWidget* parent)
     : CLBaseWidget(parent)
-  , ui(new Ui::CDairyWidget)
-      , m_pMusicPlayer(new CLMusicPlayer(this, this))
+    , ui(new Ui::CDairyWidget)
+    , m_pMusicPlayer(new CLMusicPlayer(this, this))
 {
     ui->setupUi(this);
 
@@ -49,8 +49,8 @@ CDairyWidget::CDairyWidget(QWidget *parent)
     CDairyStatisticsDelegate* pDairyStatisticsDelegate = new CDairyStatisticsDelegate;
     ui->listViewStatistics->setModel(pDairyStatisticsModel);
     ui->listViewStatistics->setItemDelegate(pDairyStatisticsDelegate);
-    connect(ui->listViewStatistics->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
-            this, SLOT(slotSelectionChanged(QItemSelection,QItemSelection)));
+    connect(ui->listViewStatistics->selectionModel(), SIGNAL(selectionChanged(QItemSelection, QItemSelection)),
+            this, SLOT(slotSelectionChanged(QItemSelection, QItemSelection)));
 
 
     connect(ui->mdiArea, SIGNAL(subWindowActivated(QMdiSubWindow*)), this, SLOT(slotUpdateMenu(QMdiSubWindow*)));
@@ -65,10 +65,20 @@ CDairyWidget::CDairyWidget(QWidget *parent)
     m_pITTS->initSpeech();
 
     // 等所有初始化完成
-    QTimer::singleShot(1000,[=](){
+    QTimer::singleShot(1000, [ = ]()
+    {
         pDairyDateTreeModel->loadAllDairy();
     });
 
+
+    // 测试stackwidget 切换时界面刷新效率
+//        ui->calendarWidget->hide();
+//        //ui->treeDairy->hide();
+//        //ui->listViewTag->hide();
+//        ui->stackedWidget->hide();
+//        QStack s;
+//                QStackedWidget t;
+//                QStackedLayout d;
 
 }
 
@@ -92,8 +102,8 @@ void CDairyWidget::saveDairy()
 
 void CDairyWidget::saveAllDairy()
 {
-    QList<QMdiSubWindow *> lstSubWindow = ui->mdiArea->subWindowList();
-    foreach (QMdiSubWindow *pMdiSubWindow, lstSubWindow)
+    QList<QMdiSubWindow*> lstSubWindow = ui->mdiArea->subWindowList();
+    foreach (QMdiSubWindow* pMdiSubWindow, lstSubWindow)
     {
         CDairyEditWidget* pDairyEditWidget = qobject_cast<CDairyEditWidget*>(pMdiSubWindow->widget());
         pDairyEditWidget->onSave();
@@ -113,7 +123,7 @@ bool CDairyWidget::closeAllSubWindows()
 
 // 当前控件作为顶层窗口时用，不是顶层窗口无意义
 // 父类 与 父对象
-void CDairyWidget::closeEvent(QCloseEvent *event)
+void CDairyWidget::closeEvent(QCloseEvent* event)
 {
     if (!isWindow())
     {
@@ -137,7 +147,7 @@ void CDairyWidget::actSaveEvent()
     saveDairy();
 }
 
-void CDairyWidget::slot_displayDairy(const CDairy &dairy)
+void CDairyWidget::slot_displayDairy(const CDairy & dairy)
 {
     // 确定日记
     if (dairy.isNewDairy())
@@ -157,9 +167,9 @@ void CDairyWidget::slot_displayDairy(const CDairy &dairy)
 
     // 根据did确定是否已经加载了edit，否则创建新的edit
     bool bNeedCreateEdit = true;
-    QMdiSubWindow *pMdiSubWindowDest = NULL;
-    QList<QMdiSubWindow *> lstSubWindow = ui->mdiArea->subWindowList();
-    foreach (QMdiSubWindow *pMdiSubWindow, lstSubWindow)
+    QMdiSubWindow* pMdiSubWindowDest = NULL;
+    QList<QMdiSubWindow*> lstSubWindow = ui->mdiArea->subWindowList();
+    foreach (QMdiSubWindow* pMdiSubWindow, lstSubWindow)
     {
         CDairyEditWidget* pDairyEditWidget = qobject_cast<CDairyEditWidget*>(pMdiSubWindow->widget());
         if (pDairyEditWidget->getDid() == m_dairyActive.getDid())
@@ -172,11 +182,11 @@ void CDairyWidget::slot_displayDairy(const CDairy &dairy)
 
     if (bNeedCreateEdit)
     {
-    // 创建edit
-    CDairyEditWidget* pDairyEditWidget = new CDairyEditWidget(m_dairyActive);
-    connect(pDairyEditWidget, SIGNAL(saveDairyfinished(CDairy,CDairy)), this, SLOT(onSaveDairyfinished(CDairy,CDairy)));
-    QMdiSubWindow * pSubWindow = ui->mdiArea->addSubWindow(pDairyEditWidget);
-    pSubWindow->showMaximized();
+        // 创建edit
+        CDairyEditWidget* pDairyEditWidget = new CDairyEditWidget(m_dairyActive);
+        connect(pDairyEditWidget, SIGNAL(saveDairyfinished(CDairy, CDairy)), this, SLOT(onSaveDairyfinished(CDairy, CDairy)));
+        QMdiSubWindow* pSubWindow = ui->mdiArea->addSubWindow(pDairyEditWidget);
+        pSubWindow->showMaximized();
     }
     else
     {
@@ -185,7 +195,7 @@ void CDairyWidget::slot_displayDairy(const CDairy &dairy)
 
 }
 
-void CDairyWidget::onRequireExpand(const QModelIndex &index)
+void CDairyWidget::onRequireExpand(const QModelIndex & index)
 {
     ui->treeDairy->expand(index);
     QList<QModelIndex> lstIndex;
@@ -195,7 +205,7 @@ void CDairyWidget::onRequireExpand(const QModelIndex &index)
         lstIndex.push_front(indexParent);
         indexParent = indexParent.parent();
     }
-    for(QModelIndex index: lstIndex)
+    for(QModelIndex index : lstIndex)
     {
         ui->treeDairy->expand(index);
     }
@@ -232,7 +242,7 @@ void CDairyWidget::slotUpdateMenu(QMdiSubWindow* pMdiSubWindow)
 /// \param selected 新选择的项目
 /// \param deselected 刚刚被取消选择的项目
 ///
-void CDairyWidget::slotSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
+void CDairyWidget::slotSelectionChanged(const QItemSelection & selected, const QItemSelection & deselected)
 {
     Q_UNUSED(deselected)
     int nSelected = selected.indexes().size();
@@ -245,55 +255,55 @@ void CDairyWidget::slotSelectionChanged(const QItemSelection &selected, const QI
     {
         ui->btnOpenDairy->hide();
     }
-    QItemSelectionModel *selectionModel = ui->listViewStatistics->selectionModel();
+    QItemSelectionModel* selectionModel = ui->listViewStatistics->selectionModel();
     QModelIndexList listSelected = selectionModel->selectedIndexes();
     qDebug() << QString("%1 item selected").arg(listSelected.size()); //不能用items,即使是没有选择的数目也不对
 }
 
 
-void CDairyWidget::onSaveDairyfinished(const CDairy &dairySaveBefore, const CDairy &dairySaved)
+void CDairyWidget::onSaveDairyfinished(const CDairy & dairySaveBefore, const CDairy & dairySaved)
 {
     ((CDairyDateTreeModel*)ui->treeDairy->model())->dairyModify(dairySaveBefore, dairySaved);
 }
 
 
-void CDairyWidget::on_treeDairy_clicked(const QModelIndex &index)
+void CDairyWidget::on_treeDairy_clicked(const QModelIndex & index)
 {
     qDebug() << "tree click " << "row=" << index.row() << " column=" << index.column();
     T_DairyDateItem* tDairyTagItem = qvariant_cast<T_DairyDateItem*>(index.data());
     switch (tDairyTagItem->eDairyDateNodeType)
     {
-    case ED_Year:
-    {
-        QList<CDairy> lstDairy = CSqlOperate::getListDairyByLimit(tDairyTagItem->strYear);
-        ((CDairyStatisticsModel*)ui->listViewStatistics->model())->showDairyStatistics(lstDairy);
-        ui->labelDairyTotal->setText(QString("(共%1项)").arg(lstDairy.size()));
-        ui->labelTitle->setText(QString("%1年的日记").arg(tDairyTagItem->strYear));
-        //ui->btnOpenDairy->setEnabled(false);
-        ui->stackedWidget->setCurrentIndex(1);
-        break;
-    }
-    case ED_Month:
-    {
-        QString strDate = QString("%1-%2").arg(tDairyTagItem->strYear).arg(tDairyTagItem->strMonth);
-        QList<CDairy> lstDairy = CSqlOperate::getListDairyByLimit(strDate);
-        ((CDairyStatisticsModel*)ui->listViewStatistics->model())->showDairyStatistics(lstDairy);
-        ui->labelDairyTotal->setText(QString("(共%1项)").arg(lstDairy.size()));
-        ui->labelTitle->setText(QString("%1年%2月的日记").arg(tDairyTagItem->strYear).arg(tDairyTagItem->strMonth));
-        //ui->btnOpenDairy->setEnabled(false);
-        ui->stackedWidget->setCurrentIndex(1);
-        break;
-    }
-    case ED_Day:
-    {
-        CDairy dairy;
-        dairy.setDid(tDairyTagItem->did);
-        slot_displayDairy(dairy);
-        ui->stackedWidget->setCurrentIndex(0);
-        break;
-    }
-    default:
-        break;
+        case ED_Year:
+            {
+                QList<CDairy> lstDairy = CSqlOperate::getListDairyByLimit(tDairyTagItem->strYear);
+                ((CDairyStatisticsModel*)ui->listViewStatistics->model())->showDairyStatistics(lstDairy);
+                ui->labelDairyTotal->setText(QString("(共%1项)").arg(lstDairy.size()));
+                ui->labelTitle->setText(QString("%1年的日记").arg(tDairyTagItem->strYear));
+                //ui->btnOpenDairy->setEnabled(false);
+                ui->stackedWidget->setCurrentIndex(1);
+                break;
+            }
+        case ED_Month:
+            {
+                QString strDate = QString("%1-%2").arg(tDairyTagItem->strYear).arg(tDairyTagItem->strMonth);
+                QList<CDairy> lstDairy = CSqlOperate::getListDairyByLimit(strDate);
+                ((CDairyStatisticsModel*)ui->listViewStatistics->model())->showDairyStatistics(lstDairy);
+                ui->labelDairyTotal->setText(QString("(共%1项)").arg(lstDairy.size()));
+                ui->labelTitle->setText(QString("%1年%2月的日记").arg(tDairyTagItem->strYear).arg(tDairyTagItem->strMonth));
+                //ui->btnOpenDairy->setEnabled(false);
+                ui->stackedWidget->setCurrentIndex(1);
+                break;
+            }
+        case ED_Day:
+            {
+                CDairy dairy;
+                dairy.setDid(tDairyTagItem->did);
+                slot_displayDairy(dairy);
+                ui->stackedWidget->setCurrentIndex(0);
+                break;
+            }
+        default:
+            break;
     }
 
 
@@ -308,7 +318,7 @@ void CDairyWidget::on_btnOpenDairy_clicked()
     ((CDairyDateTreeModel*)ui->treeDairy->model())->expandDairy(tDairyStatisticsItem.did);
 }
 
-void CDairyWidget::on_listViewTag_clicked(const QModelIndex &index)
+void CDairyWidget::on_listViewTag_clicked(const QModelIndex & index)
 {
     ui->btnOpenDairy->hide();
     //ui->btnOpenDairy->setEnabled(false);
@@ -324,7 +334,7 @@ void CDairyWidget::on_listViewTag_clicked(const QModelIndex &index)
 
 }
 
-void CDairyWidget::on_calendarWidget_clicked(const QDate &date)
+void CDairyWidget::on_calendarWidget_clicked(const QDate & date)
 {
 
 }
