@@ -38,7 +38,8 @@ CLMapleLeafStyle::CLMapleLeafStyle(QStyle* style)
 ///
 void CLMapleLeafStyle::polish(QPalette & palette)
 {
-
+    // 测试黑色调色板
+    //QPalette paDark;
 
 //    QColor colorBronze = QColor(207, 155, 95);
 //    QColor colorVeryLightBlue = QColor(239, 239, 247);
@@ -55,10 +56,44 @@ void CLMapleLeafStyle::polish(QPalette & palette)
 //    palette.setBrush(QPalette::AlternateBase, colorLightBlue);
 //    //设置选中高亮的颜色
 //    palette.setBrush(QPalette::Highlight, colorDarkBlue);
+
 //    //设置禁用的样式
 //    palette.setBrush(QPalette::Disabled, QPalette::Highlight, Qt::darkGray);
 
-    return QProxyStyle::polish(palette);
+    QColor brown(212, 140, 95);
+    QColor beige(236, 182, 120);
+    QColor slightlyOpaqueBlack(0, 0, 0, 63);
+
+//    QPixmap backgroundImage(":/img/bg/1.jpg");
+//    QPixmap buttonImage(":/img/bg/2.jpg");
+//    QPixmap midImage = buttonImage;
+
+//    QPainter painter;
+//    painter.begin(&midImage);
+//    painter.setPen(Qt::NoPen);
+//    painter.fillRect(midImage.rect(), slightlyOpaqueBlack);
+//    painter.end();
+
+    palette = QPalette(brown);
+
+    palette.setBrush(QPalette::BrightText, Qt::white);
+    palette.setBrush(QPalette::Base, beige);
+    palette.setBrush(QPalette::Highlight, Qt::darkGreen);
+    //setTexture(palette, QPalette::Button, buttonImage);
+    //setTexture(palette, QPalette::Mid, midImage);
+    //setTexture(palette, QPalette::Window, backgroundImage);
+
+    QBrush brush = palette.background();
+    brush.setColor(brush.color().dark());
+
+    palette.setBrush(QPalette::Disabled, QPalette::WindowText, brush);
+    palette.setBrush(QPalette::Disabled, QPalette::Text, brush);
+    palette.setBrush(QPalette::Disabled, QPalette::ButtonText, brush);
+    palette.setBrush(QPalette::Disabled, QPalette::Base, brush);
+    palette.setBrush(QPalette::Disabled, QPalette::Button, brush);
+    palette.setBrush(QPalette::Disabled, QPalette::Mid, brush);
+
+//    return QProxyStyle::polish(palette);
 }
 
 void CLMapleLeafStyle::polish(QWidget* widget)
@@ -397,3 +432,12 @@ void CLMapleLeafStyle::drawPEArrowDownIndicator(const QStyleOption *option, QPai
 //    }
 //    painter->restore();
 //}
+
+void CLMapleLeafStyle::setTexture(QPalette &palette, QPalette::ColorRole role,
+                                    const QPixmap &pixmap)
+{
+    for (int i = 0; i < QPalette::NColorGroups; ++i) {
+        QColor color = palette.brush(QPalette::ColorGroup(i), role).color();
+        palette.setBrush(QPalette::ColorGroup(i), role, QBrush(color, pixmap));
+    }
+}

@@ -5,33 +5,43 @@
 #include <QColorDialog>
 #include <QFontDialog>
 #include <QCloseEvent>
+#include <QPainter>
 
 #include "LoginWidget.h"
 #include "SkinWidget.h"
 #include "User.h"
 #include "music/LMusicPlayer.h"
+#include "tts/windows/LWindowsTTSS.h"
 #include "AboutDialog.h"
 #include "DairyApp.h"
 #include "LEvent.h"
+#include "DairyAppStation.h"
 
 
 CDairyMainWindow::CDairyMainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::DairyMainWindow)
     , m_pSkinWidget(new CSkinWidget())
+        , m_pMusicPlayer(new CLMusicPlayer(this))
+    , m_pLoginWidget(NULL)
 {
     ui->setupUi(this);
     setWindowTitle("LxDairy - " + CUser::getInstance()->getUserName());
-
-    QPalette pal;
-    pal.setBrush(QPalette::Background, QBrush(QPixmap(":/img/bg/1.jpg").scaled(size())));
-    setPalette(pal);
-
+// 谨慎使用，20191201 会应用到子对象， 从而导致子对象每次show时都会使用，导致界面刷新卡顿
+//    QPalette pal;
+//    pal.setBrush(QPalette::Background, QBrush(QPixmap(":/img/bg/1.jpg").scaled(size())));
+//    setPalette(pal);
+    connect(CDairyAppStation::getInstance(), SIGNAL(bgPixmapChanged(QPixmap)), this, SLOT(onBgPixmapChanged(QPixmap)));
+m_pixBg = CSkinWidget::s_pixmap;
 
     // 音乐播放模块
-    statusBar()->addWidget((QWidget*)ui->tabDairy->musicPlayer()->getLrcWidget());
+    statusBar()->addWidget((QWidget*)m_pMusicPlayer);
     statusBar()->setStyleSheet(QString("QStatusBar::item{border: 0px}"));
+    //m_pMusicPlayer->onPlay();
 
+    // tts播放模块
+    m_pITTS = new CLWindowsTTSS(this);
+    m_pITTS->initSpeech();
 
 }
 
@@ -45,9 +55,10 @@ CDairyMainWindow::~CDairyMainWindow()
 
 void CDairyMainWindow::resizeEvent(QResizeEvent *event)
 {
-    QPalette pal;
-    pal.setBrush(QPalette::Background, QBrush(QPixmap(":/img/bg/1.jpg").scaled(size())));
-    setPalette(pal);
+    // 谨慎使用，20191201 会应用到子对象， 从而导致子对象每次show时都会使用，导致界面刷新卡顿
+//    QPalette pal;
+//    pal.setBrush(QPalette::Background, QBrush(QPixmap(":/img/bg/1.jpg").scaled(size())));
+//    setPalette(pal);
 }
 
 
@@ -57,17 +68,38 @@ void CDairyMainWindow::setLoginWidget(CLoginWidget *pLoginWidget)
     m_pLoginWidget = pLoginWidget;
 }
 
+void CDairyMainWindow::onBgPixmapChanged(const QPixmap &pixmap)
+{
+    m_pixBg = pixmap;
+    update();
+    if (m_pLoginWidget)
+    {
+
+    }
+}
+
+void CDairyMainWindow::paintEvent(QPaintEvent *event)
+{
+    QMainWindow::paintEvent(event);
+    if (m_pixBg.isNull())
+    {
+        return;
+    }
+    QPainter painter(this);
+    painter.drawPixmap(rect(), m_pixBg);
+}
+
 void CDairyMainWindow::closeEvent(QCloseEvent *event)
 {
     //CDairyApp::postEvent(ui->tabDairy, (QEvent *)event);
-    if(ui->tabDairy->closeAllSubWindows())
-    {
-        event->accept();//关闭
-    }
-    else
-    {
-        event->ignore();
-    }
+//    if(ui->tabDairy->closeAllSubWindows())
+//    {
+//        event->accept();//关闭
+//    }
+//    else
+//    {
+//        event->ignore();
+//    }
 }
 
 
@@ -176,15 +208,17 @@ void CDairyMainWindow::on_action_font_triggered()
 
 void CDairyMainWindow::on_action_save_all_triggered()
 {
-    ui->tabDairy->saveAllDairy();
+    //ui->tabDairy->saveAllDairy();
 }
 
 
 // music setting
 void CDairyMainWindow::on_action_music_triggered()
 {
-   ui->tabDairy->musicPlayer()->showSetting();
+    m_pMusicPlayer->showSetting();
 }
+
+
 
 
 

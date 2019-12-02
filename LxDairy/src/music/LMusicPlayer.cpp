@@ -3,29 +3,27 @@
 #include <QMediaService>
 #include <QFileDialog>
 #include <QMediaPlaylist>
+#include <QHBoxLayout>
 #include "LLrcWidget.h"
 #include "MusicSettingDialog.h"
 
-CLMusicPlayer::CLMusicPlayer(QObject *parent, QWidget *pWgtParent)
-    : QObject(parent)
+CLMusicPlayer::CLMusicPlayer(QWidget *parent)
+    : QWidget(parent)
     , m_llCurDuration(0)
     , m_pMediaPlaylist(new QMediaPlaylist(this))
     , m_pMediaPlayer(new QMediaPlayer(this))
     , m_pMusicSettingDialog(new CMusicSettingDialog())
+    , m_pLrcWidget (new CLLrcWidget(this))
 {
 
     m_pMediaPlayer->setPlaylist(m_pMediaPlaylist);
     //m_pMediaPlaylist->setCurrentIndex(index.row());
     //m_pMediaPlayer->play();
-
-    if (pWgtParent)
-    {
-        m_pLrcWidget = new CLLrcWidget(pWgtParent);
-    }
-    else
-    {
-        m_pLrcWidget = new CLLrcWidget();
-    }
+    QHBoxLayout *hLay = new QHBoxLayout();
+    hLay->addWidget(m_pLrcWidget);
+    hLay->setMargin(0);
+    setLayout(hLay);
+    //setFixedSize(m_pLrcWidget->size());
 
 //    connect(nextButton, SIGNAL(clicked()), m_pMediaPlaylist, SLOT(next()));
 //     connect(volumeSlider, SIGNAL(valueChanged(int)), m_pMediaPlayer, SLOT(setVolume(int)));
@@ -131,6 +129,11 @@ void CLMusicPlayer::onPlay()
 void CLMusicPlayer::onPlaybackMode(int nMode)
 {
     m_pMediaPlaylist->setPlaybackMode((QMediaPlaylist::PlaybackMode)nMode);
+}
+
+QSize CLMusicPlayer::sizeHint() const
+{
+    return m_pLrcWidget->sizeHint();
 }
 
 void CLMusicPlayer::onMediaStateChanged(QMediaPlayer::State)

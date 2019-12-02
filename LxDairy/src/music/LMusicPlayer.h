@@ -1,7 +1,7 @@
 #ifndef CLMUSICPLAYER_H
 #define CLMUSICPLAYER_H
 
-#include <QObject>
+#include <QWidget>
 #include <QMediaPlayer>
 
 class QMediaPlaylist;
@@ -11,11 +11,11 @@ class CMusicSettingDialog;
 //enum class QMediaPlayer::State :int;
 //enum class QMediaPlayer::State;
 
-class CLMusicPlayer : public QObject
+class CLMusicPlayer : public QWidget
 {
     Q_OBJECT
 public:
-    explicit CLMusicPlayer(QObject *parent = 0, QWidget* pWgtParent = false);
+    explicit CLMusicPlayer(QWidget *parent = 0);
     ~CLMusicPlayer();
 
     CLLrcWidget* getLrcWidget()
@@ -26,6 +26,7 @@ public:
     bool isPlaying();
     void stop();
     void showSetting();
+    virtual QSize sizeHint() const;
 
 signals:
 
@@ -34,6 +35,7 @@ public slots:
     void onPlayOtherListPath(QStringList strlstPath);
     void onPlay();
     void onPlaybackMode(int nMode);
+
 
 
 private slots:

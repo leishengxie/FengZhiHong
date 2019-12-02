@@ -62,6 +62,9 @@ private:
     void drawPERadioButtonIndicator(const QStyleOption *option, QPainter *painter) const;
     void drawPEArrowDownIndicator(const QStyleOption *option, QPainter *painter) const;
 
+private:
+    void setTexture(QPalette &palette, QPalette::ColorRole role, const QPixmap &pixmap);
+
 
 };
 

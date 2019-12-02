@@ -24,6 +24,8 @@ public:
 
     void clearCurLrc();
 
+    virtual QSize sizeHint() const;
+
 signals:
 
 public slots:
@@ -36,7 +38,7 @@ protected:
     void mouseMoveEvent(QMouseEvent *event);
     void contextMenuEvent(QContextMenuEvent *event);
 
-    virtual QSize sizeHint() const;
+
 
 private slots:
     // 开始显示本句歌词

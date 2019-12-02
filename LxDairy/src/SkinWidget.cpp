@@ -8,6 +8,7 @@
 #include "LQt.h"
 
 #include "LMapleLeafStyle.h"
+#include "DairyAppStation.h"
 
 static QString s_aSkin[] =
 {
@@ -17,11 +18,21 @@ static QString s_aSkin[] =
     ":/css/navy.css"
 };
 
-CSkinWidget::CSkinWidget(QWidget *parent)
+static const QString s_arrImgBg[] =
+{
+    ":/img/bg/bg_green_natural.jpg",
+    ":/img/bg/bg_quiet.jpg",
+    ":/img/bg/bg_scholar_spirit.jpg",
+    ":/img/bg/bg_maple_leaf.jpg"
+};
+
+QPixmap CSkinWidget::s_pixmap = QPixmap();
+
+CSkinWidget::CSkinWidget(QWidget* parent)
     : QWidget(parent)
-  , ui(new Ui::CSkinWidget)
-  , m_unIndexSave(0)
-  , m_unIndexCur(0)
+    , ui(new Ui::CSkinWidget)
+    , m_unIndexSave(0)
+    , m_unIndexCur(0)
 {
     ui->setupUi(this);
     setAttribute(Qt::WA_ShowModal, true); // 设置模态
@@ -30,6 +41,11 @@ CSkinWidget::CSkinWidget(QWidget *parent)
     connect(ui->btnOk, SIGNAL(clicked()), this, SLOT(slot_saveCurrentSet()));
     connect(ui->listWidget, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(slot_list_clicked(QListWidgetItem*)));
     CLQt::moveToDeskCenter(this);
+
+    //    QPalette pal;
+    //    pal.setBrush(QPalette::Background, QBrush(QPixmap(":/img/bg/1.jpg").scaled(size())));
+    //    setPalette(pal);
+
 }
 
 CSkinWidget::~CSkinWidget()
@@ -39,16 +55,15 @@ CSkinWidget::~CSkinWidget()
 
 void CSkinWidget::loadQssStyle()
 {
-//    QSettings conf("conf.ini", QSettings::IniFormat);
-//    conf.beginGroup("user");
-//    uint unIndex = conf.value("skin_index", 0).toUInt();
-//    setSkin(unIndex);
+    QSettings conf("conf.ini", QSettings::IniFormat);
+    conf.beginGroup("user");
+    uint unIndex = conf.value("skin_index", 0).toUInt();
+    if (unIndex > 3 && unIndex < 8)
+    {
+    s_pixmap.load(s_arrImgBg[unIndex - 4]);
+    }
+    setSkin(unIndex);
 
-    //QApplication::setStyle(new CCustomStyle());
-    //QApplication::setStyle(new CLMapleLeafStyle());
-   // QApplication::setStyle(new QProxyStyle());
-//    qApp->setStyleSheet("");
-//    qApp->setPalette(QPalette(QColor("#F0F0F0")));
 }
 
 void CSkinWidget::slot_cancelCurrentSet()
@@ -73,14 +88,25 @@ void CSkinWidget::slot_list_clicked(QListWidgetItem* pItem)
 
 void CSkinWidget::setSkin(uint nSkinIndex)
 {
+    if (nSkinIndex > 7)
+    {
+        return;
+    }
     if (nSkinIndex > 3)
     {
+
+        //QApplication::setStyle(new CCustomStyle());
+        qApp->setStyleSheet("");
+        QApplication::setStyle(new CLMapleLeafStyle());
+        // QApplication::setStyle(new QProxyStyle());
+        QPixmap pixmap(s_arrImgBg[nSkinIndex - 4]);
+        CDairyAppStation::getInstance()->bgPixmapChanged(pixmap);
         return;
     }
     setQssStyle(s_aSkin[nSkinIndex]);
 }
 
-void CSkinWidget::setQssStyle(const QString &stylefilePath)
+void CSkinWidget::setQssStyle(const QString & stylefilePath)
 {
     QFile file(stylefilePath);
     bool bOk = file.open(QFile::ReadOnly);
@@ -94,7 +120,7 @@ void CSkinWidget::setQssStyle(const QString &stylefilePath)
     file.close();
 }
 
-void CSkinWidget::closeEvent(QCloseEvent *event)
+void CSkinWidget::closeEvent(QCloseEvent* event)
 {
     slot_cancelCurrentSet();
     QWidget::closeEvent(event);

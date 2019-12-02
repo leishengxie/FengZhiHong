@@ -44,7 +44,6 @@ int main(int argc, char *argv[])
         return -1;
     }
     CSqlOperate::createTable();
-    qDebug() << a.style()->objectName();
     CSkinWidget::loadQssStyle();
 
 //    QApplication::setOrganizationName("Lx");

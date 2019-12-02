@@ -6,6 +6,8 @@
 #include <QMessageBox>
 #include <QSettings>
 #include <QResizeEvent>
+#include <QPainter>
+#include "SkinWidget.h"
 
 CLoginWidget::CLoginWidget(QWidget *parent) :
     QWidget(parent),
@@ -29,14 +31,22 @@ CLoginWidget::CLoginWidget(QWidget *parent) :
     QString strPasswd = conf.value("passwd", "").toString();
     ui->lePasswd->setText(strPasswd);
     }
-    QPalette pal;
-    pal.setBrush(QPalette::Background, QBrush(QPixmap(":/img/bg/1.jpg").scaled(size())));
-    setPalette(pal);
+
+    m_pixBg = CSkinWidget::s_pixmap;
+    // 谨慎使用，20191201 会应用到子对象， 从而导致子对象每次show时都会使用，导致界面刷新卡顿
+//    QPalette pal;
+//    pal.setBrush(QPalette::Background, QBrush(QPixmap(":/img/bg/1.jpg").scaled(size())));
+//    setPalette(pal);
 }
 
 CLoginWidget::~CLoginWidget()
 {
     delete ui;
+}
+
+void CLoginWidget::onBgPixmapChanged(const QPixmap &pixmap)
+{
+    m_pixBg = pixmap;
 }
 
 void CLoginWidget::on_btnRegister_clicked()
@@ -102,9 +112,21 @@ void CLoginWidget::on_ckboxRememberPasswd_clicked(bool checked)
     conf.setValue("remember_passwd", checked);
 }
 
+void CLoginWidget::paintEvent(QPaintEvent *event)
+{
+    QWidget::paintEvent(event);
+    if (m_pixBg.isNull())
+    {
+        return;
+    }
+    QPainter painter(this);
+    painter.drawPixmap(rect(), m_pixBg);
+}
+
 void CLoginWidget::resizeEvent(QResizeEvent *event)
 {
-    QPalette pal;
-    pal.setBrush(QPalette::Background, QBrush(QPixmap(":/img/bg/1.jpg").scaled(size())));
-    setPalette(pal);
+    // 谨慎使用，20191201 会应用到子对象， 从而导致子对象每次show时都会使用，导致界面刷新卡顿
+//    QPalette pal;
+//    pal.setBrush(QPalette::Background, QBrush(QPixmap(":/img/bg/1.jpg").scaled(size())));
+//    setPalette(pal);
 }

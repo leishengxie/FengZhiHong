@@ -92,15 +92,6 @@ INCLUDEPATH += \
 
 HEADERS += \
     src/core/LBaseWidget.h \
-    src/module_dairy/Dairy.h \
-    src/module_dairy/DairyEdit.h \
-    src/module_dairy/DairyEditWidget.h \
-    src/module_dairy/delegate/DairyDateDelegate.h \
-    src/module_dairy/delegate/DairyStatisticsDelegate.h \
-    src/module_dairy/delegate/DairyTagDelegate.h \
-    src/module_dairy/model/DairyDateTreeModel.h \
-    src/module_dairy/model/DairyStatisticsModel.h \
-    src/module_dairy/model/DairyTagListModel.h \
     src/module_tool/GeneralToolsWidget.h \
     src/module_tool/tool_accpasswd_book/AccPasswdWidget.h \
     src/module_tool/tool_accpasswd_book/APasswdTableModel.h \
@@ -121,7 +112,6 @@ HEADERS += \
     src/SqlOperate.h \
     src/TextVerifier.h \
     src/User.h \
-    src/module_dairy/DairyWidget.h \
     src/core/LEvent.h \
     src/DairyApp.h \
     src/module_tool/PrivateMenuModel.h \
@@ -130,19 +120,23 @@ HEADERS += \
     src/module_collection/collection_jokebook/JokebookWidget.h \
     src/module_collection/collection_jokebook/JokeModel.h \
     src/module_collection/collection_jokebook/JokeDelegate.h \
-    src/LMapleLeafStyle.h
+    src/LMapleLeafStyle.h \
+    src/module_dairy/Dairy.h \
+    src/module_dairy/DairyWidget.h \
+    src/module_dairy/dairy_date/DairyDateDelegate.h \
+    src/module_dairy/dairy_date/DairyDateTreeModel.h \
+    src/module_dairy/dairy_edit/DairyEdit.h \
+    src/module_dairy/dairy_edit/DairyEditWidget.h \
+    src/module_dairy/dairy_statistics/DairyStatisticsDelegate.h \
+    src/module_dairy/dairy_statistics/DairyStatisticsModel.h \
+    src/module_dairy/dairy_tag/DairyTagDelegate.h \
+    src/module_dairy/dairy_tag/DairyTagListModel.h \
+    src/module_dairy/dairy_statistics/DairyStatisticsWidget.h \
+    src/module_dairy/dairy_edit/DairyEditMainWidget.h \
+    src/DairyAppStation.h
 
 SOURCES += \
     src/core/LBaseWidget.cpp \
-    src/module_dairy/Dairy.cpp \
-    src/module_dairy/DairyEdit.cpp \
-    src/module_dairy/DairyEditWidget.cpp \
-    src/module_dairy/delegate/DairyDateDelegate.cpp \
-    src/module_dairy/delegate/DairyStatisticsDelegate.cpp \
-    src/module_dairy/delegate/DairyTagDelegate.cpp \
-    src/module_dairy/model/DairyDateTreeModel.cpp \
-    src/module_dairy/model/DairyStatisticsModel.cpp \
-    src/module_dairy/model/DairyTagListModel.cpp \
     src/module_tool/GeneralToolsWidget.cpp \
     src/module_tool/tool_accpasswd_book/AccPasswdWidget.cpp \
     src/module_tool/tool_accpasswd_book/APasswdTableModel.cpp \
@@ -164,7 +158,6 @@ SOURCES += \
     src/SqlOperate.cpp \
     src/TextVerifier.cpp \
     src/User.cpp \
-    src/module_dairy/DairyWidget.cpp \
     src/core/LEvent.cpp \
     src/DairyApp.cpp \
     src/module_tool/PrivateMenuModel.cpp \
@@ -173,10 +166,22 @@ SOURCES += \
     src/module_collection/collection_jokebook/JokebookWidget.cpp \
     src/module_collection/collection_jokebook/JokeModel.cpp \
     src/module_collection/collection_jokebook/JokeDelegate.cpp \
-    src/LMapleLeafStyle.cpp
+    src/LMapleLeafStyle.cpp \
+    src/module_dairy/Dairy.cpp \
+    src/module_dairy/DairyWidget.cpp \
+    src/module_dairy/dairy_date/DairyDateDelegate.cpp \
+    src/module_dairy/dairy_date/DairyDateTreeModel.cpp \
+    src/module_dairy/dairy_edit/DairyEdit.cpp \
+    src/module_dairy/dairy_edit/DairyEditWidget.cpp \
+    src/module_dairy/dairy_statistics/DairyStatisticsDelegate.cpp \
+    src/module_dairy/dairy_statistics/DairyStatisticsModel.cpp \
+    src/module_dairy/dairy_tag/DairyTagDelegate.cpp \
+    src/module_dairy/dairy_tag/DairyTagListModel.cpp \
+    src/module_dairy/dairy_statistics/DairyStatisticsWidget.cpp \
+    src/module_dairy/dairy_edit/DairyEditMainWidget.cpp \
+    src/DairyAppStation.cpp
 
 FORMS += \
-    src/module_dairy/DairyEditWidget.ui \
     src/module_tool/GeneralToolsWidget.ui \
     src/module_tool/tool_accpasswd_book/AccPasswdWidget.ui \
     src/module_tool/tool_rename/RenameWidget.ui \
@@ -188,7 +193,10 @@ FORMS += \
     src/SkinWidget.ui \
     src/module_dairy/DairyWidget.ui \
     src/module_collection/CollectionWidget.ui \
-    src/module_collection/collection_jokebook/JokebookWidget.ui
+    src/module_collection/collection_jokebook/JokebookWidget.ui \
+    src/module_dairy/dairy_edit/DairyEditWidget.ui \
+    src/module_dairy/dairy_statistics/DairyStatisticsWidget.ui \
+    src/module_dairy/dairy_edit/DairyEditMainWidget.ui
 
 
 

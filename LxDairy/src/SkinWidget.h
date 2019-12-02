@@ -22,6 +22,10 @@ public:
     static void loadQssStyle();
     static void setSkin(uint nSkinIndex);
     static void setQssStyle(const QString &stylefilePath);
+    static QPixmap s_pixmap;
+
+signals:
+
 
 protected:
     void closeEvent(QCloseEvent *event);

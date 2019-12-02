@@ -497,6 +497,10 @@ void CDairyDateTreeModel::loadDairy(const QList<CDairy> &lstDairy)
 
 void CDairyDateTreeModel::reloadDairyByTag(const QString &strTagName)
 {
+    if (m_pDairyDateItemRoot == NULL)
+    {
+        return;
+    }
     m_pDairyDateItemRoot->deleteChildren();
     if ( "全部日记" == strTagName)
     {

@@ -18,22 +18,42 @@
     <widget class="QListWidget" name="listWidget">
      <item>
       <property name="text">
-       <string>黑色</string>
+       <string>旧版-黑色</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>蓝色</string>
+       <string>旧版-蓝色</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>灰色</string>
+       <string>旧版-灰色</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>深蓝色</string>
+       <string>旧版-深蓝色</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>绿色自然</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>宁静致远</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>书生意气</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>乡之红叶</string>
       </property>
      </item>
     </widget>

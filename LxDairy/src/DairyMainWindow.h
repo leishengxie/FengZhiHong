@@ -8,6 +8,8 @@ class DairyMainWindow;
 
 class CSkinWidget;
 class CLoginWidget;
+class CLMusicPlayer;
+class ITTS;
 
 
 class CDairyMainWindow : public QMainWindow
@@ -21,8 +23,11 @@ public:
 public:
     void setLoginWidget(CLoginWidget* pLoginWidget);
 
+public slots:
+    void onBgPixmapChanged(const QPixmap & pixmap);
 
 protected:
+    void paintEvent(QPaintEvent *event);
     void closeEvent(QCloseEvent *event);
     void resizeEvent(QResizeEvent *event);
 
@@ -66,8 +71,22 @@ private slots:
 
 private:
     Ui::DairyMainWindow *ui;
+
+    /// 各控件指针 ////
+    // 皮肤控制控件
     CSkinWidget* m_pSkinWidget;
+
+    // 登录
     CLoginWidget* m_pLoginWidget;
+
+    // 音乐播放器
+    CLMusicPlayer* m_pMusicPlayer;
+
+    // tts播放
+    ITTS* m_pITTS;
+
+    // 背景图片
+    QPixmap m_pixBg;
 
 };
 

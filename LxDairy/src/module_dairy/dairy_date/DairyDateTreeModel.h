@@ -139,6 +139,7 @@ public:
 
     void dairyModify(const CDairy & dairyBefore, const CDairy & dairyAfter);
 
+public slots:
     void expandDairy(int did);
 
 public slots:

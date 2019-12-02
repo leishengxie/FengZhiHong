@@ -15,6 +15,11 @@ public:
     explicit CLoginWidget(QWidget *parent = 0);
     ~CLoginWidget();
 
+public slots:
+    void onBgPixmapChanged(const QPixmap & pixmap);
+
+
+
 private slots:
     void on_btnRegister_clicked();
 
@@ -25,10 +30,14 @@ private slots:
     void on_ckboxRememberPasswd_clicked(bool checked);
 
 protected:
+    void paintEvent(QPaintEvent *event);
     void resizeEvent(QResizeEvent *event);
 
 private:
     Ui::CLoginWidget *ui;
+
+    // 背景图片
+    QPixmap m_pixBg;
 };
 
 #endif // LOGINWIDGET_H
