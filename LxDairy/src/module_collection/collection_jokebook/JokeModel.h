@@ -9,7 +9,13 @@ struct T_Joke
     QString strTitle;
     QString strDate;
     QString strContent;
-    qreal dRating;  // 评分 0-5
+    QString strNickname; // 作者昵称
+
+    quint64 llRatingNumOfPeople; // 评价总人数
+    quint64 llRatingToatalScore ; // 评价总评分
+    qreal dRatingAverageScore;  // 评价平均评分 0-5
+
+
 
 };
 Q_DECLARE_METATYPE(T_Joke)
