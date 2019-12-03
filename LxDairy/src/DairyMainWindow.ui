@@ -42,11 +42,17 @@
        <number>0</number>
       </property>
       <widget class="CDairyWidget" name="tabDairy">
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;提供基本的日记功能&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
        <attribute name="title">
         <string>日记</string>
        </attribute>
       </widget>
       <widget class="CGeneralToolsWidget" name="tabTool">
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;一些通用工具，目前不集成专业工具，完善中……&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
        <attribute name="title">
         <string>实用工具</string>
        </attribute>
@@ -54,6 +60,11 @@
       <widget class="CCollectionWidget" name="tabCollection">
        <attribute name="title">
         <string>集</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="tabFriend">
+       <attribute name="title">
+        <string>笔友</string>
        </attribute>
       </widget>
      </widget>
@@ -66,7 +77,7 @@
      <x>0</x>
      <y>0</y>
      <width>1050</width>
-     <height>26</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_F">

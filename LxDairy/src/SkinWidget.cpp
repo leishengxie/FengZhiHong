@@ -26,7 +26,7 @@ static const QString s_arrImgBg[] =
     ":/img/bg/bg_maple_leaf.jpg"
 };
 
-QPixmap CSkinWidget::s_pixmap = QPixmap();
+
 
 CSkinWidget::CSkinWidget(QWidget* parent)
     : QWidget(parent)
@@ -53,38 +53,17 @@ CSkinWidget::~CSkinWidget()
     delete ui;
 }
 
+
+//////////static func ///////////
 void CSkinWidget::loadQssStyle()
 {
     QSettings conf("conf.ini", QSettings::IniFormat);
     conf.beginGroup("user");
     uint unIndex = conf.value("skin_index", 0).toUInt();
-    if (unIndex > 3 && unIndex < 8)
-    {
-    s_pixmap.load(s_arrImgBg[unIndex - 4]);
-    }
     setSkin(unIndex);
 
 }
 
-void CSkinWidget::slot_cancelCurrentSet()
-{
-    setSkin(m_unIndexSave);
-}
-
-void CSkinWidget::slot_saveCurrentSet()
-{
-    m_unIndexSave = m_unIndexCur;
-    QSettings conf("conf.ini", QSettings::IniFormat);
-    conf.beginGroup("user");
-    conf.setValue("skin_index", m_unIndexSave);
-    close();
-}
-
-void CSkinWidget::slot_list_clicked(QListWidgetItem* pItem)
-{
-    m_unIndexCur = ui->listWidget->currentRow();
-    setSkin(m_unIndexCur);
-}
 
 void CSkinWidget::setSkin(uint nSkinIndex)
 {
@@ -118,6 +97,38 @@ void CSkinWidget::setQssStyle(const QString & stylefilePath)
     qApp->setStyleSheet(qss);
     qApp->setPalette(QPalette(QColor("#F0F0F0")));
     file.close();
+}
+
+QPixmap CSkinWidget::currentBackgroundPixmap()
+{
+    if (unIndex > 3 && unIndex < 8)
+    {
+    s_pixmap.load(s_arrImgBg[unIndex - 4]);
+    }
+}
+
+
+////////////non - static /////////
+/// \brief CSkinWidget::slot_cancelCurrentSet
+///
+void CSkinWidget::slot_cancelCurrentSet()
+{
+    setSkin(m_unIndexSave);
+}
+
+void CSkinWidget::slot_saveCurrentSet()
+{
+    QSettings conf("conf.ini", QSettings::IniFormat);
+    conf.beginGroup("user");
+    conf.setValue("skin_index", m_unIndexCur);
+    m_unIndexSave = m_unIndexCur;
+    close();
+}
+
+void CSkinWidget::slot_list_clicked(QListWidgetItem* pItem)
+{
+    m_unIndexCur = ui->listWidget->currentRow();
+    setSkin(m_unIndexCur);
 }
 
 void CSkinWidget::closeEvent(QCloseEvent* event)

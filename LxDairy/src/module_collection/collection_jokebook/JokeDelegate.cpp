@@ -92,7 +92,7 @@ void CJokeDelegate::paint(QPainter* painter, const QStyleOptionViewItem & option
     else if (index.column() == 3)
     {
         //tJoke.dRating;
-        CStarEditor::drawFiveStarRating(painter, rect, option.palette, tJoke.dRating, true);
+        CStarEditor::drawFiveStarRating(painter, rect, option.palette, tJoke.dRatingAverageScore, true);
     }
 
     painter->save();

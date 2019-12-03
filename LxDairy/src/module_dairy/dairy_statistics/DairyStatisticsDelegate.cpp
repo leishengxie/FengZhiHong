@@ -1,7 +1,7 @@
 #include "DairyStatisticsDelegate.h"
 #include <QPainter>
 #include <QApplication>
-#include "model/DairyStatisticsModel.h"
+#include "DairyStatisticsModel.h"
 
 
 CDairyStatisticsDelegate::CDairyStatisticsDelegate(QObject* parent)

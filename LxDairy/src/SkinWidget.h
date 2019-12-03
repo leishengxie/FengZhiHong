@@ -22,7 +22,7 @@ public:
     static void loadQssStyle();
     static void setSkin(uint nSkinIndex);
     static void setQssStyle(const QString &stylefilePath);
-    static QPixmap s_pixmap;
+    static QPixmap currentBackgroundPixmap();
 
 signals:
 

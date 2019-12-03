@@ -29,7 +29,7 @@ CJokebookWidget::CJokebookWidget(QWidget* parent) :
     tJoke.strTitle = "hello";
     tJoke.strDate = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
     tJoke.strContent = "abcdefffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
-    tJoke.dRating = 3.9;
+    tJoke.dRatingAverageScore = 3.9;
     lstJoke.append(tJoke);
     pJokeModel->setListJoke(lstJoke);
 }

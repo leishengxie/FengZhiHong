@@ -23,7 +23,7 @@ const QString c_strMainAppName = "LxDairy.exe";
 // 2、法二:先删除主程序目录里所有需要更新的目录文件，然后直接下载需要更新的文件到主程序目录
 // 2、法三:下载过程中直接写入更新文件的内容到旧文件当中
 
-Widget::Widget(QWidget* parent) :
+CWidget::CWidget(QWidget* parent) :
     QWidget(parent),
     ui(new Ui::Widget)
 {
@@ -31,14 +31,14 @@ Widget::Widget(QWidget* parent) :
     init();
 }
 
-Widget::~Widget()
+CWidget::~CWidget()
 {
     delete m_httpDownload;
     delete ui;
 }
 
 
-void Widget::init()
+void CWidget::init()
 {
     //应用程序在屏幕中间
     QDesktopWidget* deskdop = QApplication::desktop();
@@ -85,7 +85,7 @@ void Widget::init()
 ///
 /// \brief Widget::downLoadVersionFile 下载version_msg.xml
 ///
-void Widget::downLoadVersionFile()
+void CWidget::downLoadVersionFile()
 {
     m_eStepUpd = ES_CheckXml;
     m_httpDownload->download(c_strUrlDownloadRoot + c_strUrlVersionFile
@@ -93,7 +93,7 @@ void Widget::downLoadVersionFile()
                              , QDir::currentPath() + "/" + c_strDownloadDirName);
 }
 
-void Widget::onDownloadCompleted(T_TaskDownloadInfo tTaskDownloadInfo)
+void CWidget::onDownloadCompleted(T_TaskDownloadInfo tTaskDownloadInfo)
 {
     // 如果不是version_msg.xml则返回
     if (tTaskDownloadInfo.rename != c_strUrlVersionFile)
@@ -127,7 +127,7 @@ void Widget::onDownloadCompleted(T_TaskDownloadInfo tTaskDownloadInfo)
 }
 
 
-void Widget::onFinishedAllTask()
+void CWidget::onFinishedAllTask()
 {
     if ( m_eStepUpd == ES_CheckXml)
     {
@@ -139,7 +139,7 @@ void Widget::onFinishedAllTask()
 
 
 // 根据更新列表下载
-void Widget::downLoadUpdateFiles()
+void CWidget::downLoadUpdateFiles()
 {
     m_eStepUpd = ES_CheckUpdFiles;
     ui->labelTitle->setText("正在下载更新文件……");
@@ -163,7 +163,7 @@ void Widget::downLoadUpdateFiles()
 
 
 
-void Widget::executeMainApp(QString strMain)
+void CWidget::executeMainApp(QString strMain)
 {
     if(strMain.isEmpty())
     {
@@ -179,7 +179,7 @@ void Widget::executeMainApp(QString strMain)
     close();
 }
 
-void Widget::onDownloadProgress(qint64 bytesReceived, qint64 bytesTotal)
+void CWidget::onDownloadProgress(qint64 bytesReceived, qint64 bytesTotal)
 {
     T_TaskDownloadInfo* pTaskDownloadInfo = m_httpDownload->getCurTask();
     QString strTip = QString("下载内容:%1 速度%2 (已下载%3/总大小%4)")
@@ -192,7 +192,7 @@ void Widget::onDownloadProgress(qint64 bytesReceived, qint64 bytesTotal)
 
 }
 
-void Widget::onDownloadProgressAll(qint64 bytesReceived, qint64 bytesTotal)
+void CWidget::onDownloadProgressAll(qint64 bytesReceived, qint64 bytesTotal)
 {
     ui->progressBarTotal->setValue(bytesReceived / (double)bytesTotal * 100);
 

@@ -1,5 +1,5 @@
 #include "DairyTagDelegate.h"
-#include "model/DairyTagListModel.h"
+#include "DairyTagListModel.h"
 #include <QPainter>
 #include <QApplication>
 

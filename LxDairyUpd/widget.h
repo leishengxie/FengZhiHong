@@ -11,13 +11,13 @@ class Widget;
 }
 
 
-class Widget : public QWidget
+class CWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit Widget(QWidget *parent = 0);
-    ~Widget();
+    explicit CWidget(QWidget *parent = 0);
+    ~CWidget();
 
     // 更新步骤
     enum E_StepUpd
