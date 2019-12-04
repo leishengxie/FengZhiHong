@@ -133,7 +133,9 @@ HEADERS += \
     src/module_dairy/dairy_tag/DairyTagListModel.h \
     src/module_dairy/dairy_statistics/DairyStatisticsWidget.h \
     src/module_dairy/dairy_edit/DairyEditMainWidget.h \
-    src/DairyAppStation.h
+    src/DairyAppStation.h \
+    src/module_collection/CollectionModel.h \
+    src/module_collection/CollectionDelegate.h
 
 SOURCES += \
     src/core/LBaseWidget.cpp \
@@ -179,7 +181,9 @@ SOURCES += \
     src/module_dairy/dairy_tag/DairyTagListModel.cpp \
     src/module_dairy/dairy_statistics/DairyStatisticsWidget.cpp \
     src/module_dairy/dairy_edit/DairyEditMainWidget.cpp \
-    src/DairyAppStation.cpp
+    src/DairyAppStation.cpp \
+    src/module_collection/CollectionModel.cpp \
+    src/module_collection/CollectionDelegate.cpp
 
 FORMS += \
     src/module_tool/GeneralToolsWidget.ui \

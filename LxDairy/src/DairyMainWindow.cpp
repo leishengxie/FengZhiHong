@@ -32,7 +32,7 @@ CDairyMainWindow::CDairyMainWindow(QWidget *parent)
 //    pal.setBrush(QPalette::Background, QBrush(QPixmap(":/img/bg/1.jpg").scaled(size())));
 //    setPalette(pal);
     connect(CDairyAppStation::getInstance(), SIGNAL(bgPixmapChanged(QPixmap)), this, SLOT(onBgPixmapChanged(QPixmap)));
-m_pixBg = CSkinWidget::s_pixmap;
+    m_pixBg = CSkinWidget::currentBackgroundPixmap();
 
     // 音乐播放模块
     statusBar()->addWidget((QWidget*)m_pMusicPlayer);
@@ -74,7 +74,7 @@ void CDairyMainWindow::onBgPixmapChanged(const QPixmap &pixmap)
     update();
     if (m_pLoginWidget)
     {
-
+        m_pLoginWidget->onBgPixmapChanged(pixmap);
     }
 }
 

@@ -38,7 +38,7 @@ private slots:
 
 private:
     Ui::CSkinWidget *ui;
-    uint m_unIndexSave;
+    static uint s_unIndexSave;
     uint m_unIndexCur;
 };
 

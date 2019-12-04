@@ -39,5 +39,7 @@
         <file>img/bg/bg_maple_leaf.jpg</file>
         <file>img/bg/bg_quiet.jpg</file>
         <file>img/bg/bg_scholar_spirit.jpg</file>
+        <file>img/css/checkbox_fix_checked.png</file>
+        <file>img/css/checkbox_fix_unchecked.png</file>
     </qresource>
 </RCC>

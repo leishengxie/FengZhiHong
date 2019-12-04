@@ -1,18 +1,18 @@
 #include "DairyTagListModel.h"
 #include "User.h"
 
-CDairyTagListModel::CDairyTagListModel(QObject *parent)
+CDairyTagListModel::CDairyTagListModel(QObject* parent)
     : QAbstractListModel(parent)
 {
     loadDairyTag();
 }
 
-int CDairyTagListModel::rowCount(const QModelIndex &parent) const
+int CDairyTagListModel::rowCount(const QModelIndex & parent) const
 {
     return m_lstDairyTag.count();
 }
 
-QVariant CDairyTagListModel::data(const QModelIndex &index, int role) const
+QVariant CDairyTagListModel::data(const QModelIndex & index, int role) const
 {
     if (!index.isValid())
     {
@@ -27,17 +27,17 @@ QVariant CDairyTagListModel::data(const QModelIndex &index, int role) const
     T_DairyTagItem tDairyTagItem = m_lstDairyTag.at(index.row());
     switch (role)
     {
-    case Qt::TextColorRole:
-        break;
-    case Qt::TextAlignmentRole:
-        return QVariant(Qt::AlignLeft | Qt::AlignVCenter);
-        break;
-    case Qt::DisplayRole:
-    {
-        QVariant variant;
-        variant.setValue(tDairyTagItem);
-        return variant;
-    }
+        case Qt::TextColorRole:
+            break;
+        case Qt::TextAlignmentRole:
+            return QVariant(Qt::AlignLeft | Qt::AlignVCenter);
+            break;
+        case Qt::DisplayRole:
+            {
+                QVariant variant;
+                variant.setValue(tDairyTagItem);
+                return variant;
+            }
     }
     //return QAbstractListModel::data(index, role);
 }

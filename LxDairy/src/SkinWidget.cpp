@@ -5,6 +5,7 @@
 #include <QListWidgetItem>
 #include <QFile>
 #include <QSettings>
+#include <QStyleFactory>
 #include "LQt.h"
 
 #include "LMapleLeafStyle.h"
@@ -26,12 +27,11 @@ static const QString s_arrImgBg[] =
     ":/img/bg/bg_maple_leaf.jpg"
 };
 
-
+uint CSkinWidget::s_unIndexSave = 0;
 
 CSkinWidget::CSkinWidget(QWidget* parent)
     : QWidget(parent)
     , ui(new Ui::CSkinWidget)
-    , m_unIndexSave(0)
     , m_unIndexCur(0)
 {
     ui->setupUi(this);
@@ -59,8 +59,8 @@ void CSkinWidget::loadQssStyle()
 {
     QSettings conf("conf.ini", QSettings::IniFormat);
     conf.beginGroup("user");
-    uint unIndex = conf.value("skin_index", 0).toUInt();
-    setSkin(unIndex);
+    s_unIndexSave = conf.value("skin_index", 0).toUInt();
+    setSkin(s_unIndexSave);
 
 }
 
@@ -71,18 +71,24 @@ void CSkinWidget::setSkin(uint nSkinIndex)
     {
         return;
     }
+
+    QPixmap pixmap;
     if (nSkinIndex > 3)
     {
-
         //QApplication::setStyle(new CCustomStyle());
         qApp->setStyleSheet("");
         QApplication::setStyle(new CLMapleLeafStyle());
         // QApplication::setStyle(new QProxyStyle());
-        QPixmap pixmap(s_arrImgBg[nSkinIndex - 4]);
+        pixmap.load(s_arrImgBg[nSkinIndex - 4]);
         CDairyAppStation::getInstance()->bgPixmapChanged(pixmap);
-        return;
     }
-    setQssStyle(s_aSkin[nSkinIndex]);
+    else
+    {
+
+        setQssStyle(s_aSkin[nSkinIndex]);
+        QApplication::setStyle(QStyleFactory::create("windowsvista"));
+        CDairyAppStation::getInstance()->bgPixmapChanged(pixmap);
+    }
 }
 
 void CSkinWidget::setQssStyle(const QString & stylefilePath)
@@ -101,10 +107,12 @@ void CSkinWidget::setQssStyle(const QString & stylefilePath)
 
 QPixmap CSkinWidget::currentBackgroundPixmap()
 {
-    if (unIndex > 3 && unIndex < 8)
+    QPixmap pixmap;
+    if (s_unIndexSave > 3 && s_unIndexSave < 8)
     {
-    s_pixmap.load(s_arrImgBg[unIndex - 4]);
+        pixmap.load(s_arrImgBg[s_unIndexSave - 4]);
     }
+    return pixmap;
 }
 
 
@@ -113,7 +121,14 @@ QPixmap CSkinWidget::currentBackgroundPixmap()
 ///
 void CSkinWidget::slot_cancelCurrentSet()
 {
-    setSkin(m_unIndexSave);
+    setSkin(s_unIndexSave);
+
+    QPixmap pixmap;
+    if (s_unIndexSave > 3 && s_unIndexSave < 8)
+    {
+        pixmap.load(s_arrImgBg[s_unIndexSave - 4]);
+    }
+    CDairyAppStation::getInstance()->bgPixmapChanged(pixmap);
 }
 
 void CSkinWidget::slot_saveCurrentSet()
@@ -121,7 +136,7 @@ void CSkinWidget::slot_saveCurrentSet()
     QSettings conf("conf.ini", QSettings::IniFormat);
     conf.beginGroup("user");
     conf.setValue("skin_index", m_unIndexCur);
-    m_unIndexSave = m_unIndexCur;
+    s_unIndexSave = m_unIndexCur;
     close();
 }
 

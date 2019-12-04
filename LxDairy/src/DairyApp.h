@@ -16,6 +16,12 @@ public:
 signals:
 
 public slots:
+
+private:
+    void init();
+
+private:
+
 };
 
 #endif // CDAIRYAPP_H
