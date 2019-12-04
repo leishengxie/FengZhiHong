@@ -132,6 +132,8 @@ bool CLWindowsTTSS::isSpeaking()
     return m_bReading;
 }
 
+
+
 //rate range : -10 - 10
 int CLWindowsTTSS::rate()
 {

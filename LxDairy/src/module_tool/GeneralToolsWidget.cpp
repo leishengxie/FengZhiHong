@@ -1,7 +1,7 @@
 #include "GeneralToolsWidget.h"
 #include "ui_GeneralToolsWidget.h"
-#include "tool_rename/RenameWidget.h"
-#include "tool_accpasswd_book/AccPasswdWidget.h"
+//#include "tool_rename/RenameWidget.h"
+//#include "tool_accpasswd_book/AccPasswdWidget.h"
 
 CGeneralToolsWidget::CGeneralToolsWidget(QWidget *parent) :
     QWidget(parent),
@@ -18,15 +18,15 @@ CGeneralToolsWidget::CGeneralToolsWidget(QWidget *parent) :
 //    ui->listViewPrivate->setViewMode(QListView::IconMode);
     // 此处用listWidget替代listView
 
-    CAccPasswdWidget* pAccPasswdWidget = new CAccPasswdWidget(ui->stackedWidgetTool);
-    ui->stackedWidgetTool->addWidget(pAccPasswdWidget);
-    //connect(ui->action_save, SIGNAL(toggled(bool))
+//    CAccPasswdWidget* pAccPasswdWidget = new CAccPasswdWidget(ui->stackedWidgetTool);
+//    ui->stackedWidgetTool->addWidget(pAccPasswdWidget);
+//    //connect(ui->action_save, SIGNAL(toggled(bool))
 
-    CRenameWidget* pRenameWidget = new CRenameWidget(ui->stackedWidgetTool);
-    ui->stackedWidgetTool->addWidget(pRenameWidget);
+//    CRenameWidget* pRenameWidget = new CRenameWidget(ui->stackedWidgetTool);
+//    ui->stackedWidgetTool->addWidget(pRenameWidget);
 
-    QWidget* pWidget = new QWidget(ui->stackedWidgetTool);
-    ui->stackedWidgetTool->addWidget(pWidget);
+//    QWidget* pWidget = new QWidget(ui->stackedWidgetTool);
+//    ui->stackedWidgetTool->addWidget(pWidget);
 }
 
 CGeneralToolsWidget::~CGeneralToolsWidget()

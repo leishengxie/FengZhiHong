@@ -27,6 +27,12 @@ public slots:
 
     void onRequireExpand(const QModelIndex & index);
 
+signals:
+    // 请求tts处理 -中转S1
+    void requireTTSspeakS1(const QString & txt);
+    // 请求播放音乐 -中转S1
+    void requirePlayMusicS1();
+
 protected:
     void closeEvent(QCloseEvent *event);
     void actSaveEvent();
@@ -35,7 +41,7 @@ protected:
 
 private slots:
 
-
+    void onSaveDairyfinished(const CDairy & dairySaveBefore, const CDairy & dairySaved);
 
     void on_treeDairy_clicked(const QModelIndex &index);
 

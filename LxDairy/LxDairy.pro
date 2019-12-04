@@ -114,7 +114,6 @@ HEADERS += \
     src/User.h \
     src/core/LEvent.h \
     src/DairyApp.h \
-    src/module_tool/PrivateMenuModel.h \
     src/module_collection/CollectionWidget.h \
     src/module_collection/collection_jokebook/StarEditor.h \
     src/module_collection/collection_jokebook/JokebookWidget.h \
@@ -135,7 +134,8 @@ HEADERS += \
     src/module_dairy/dairy_edit/DairyEditMainWidget.h \
     src/DairyAppStation.h \
     src/module_collection/CollectionModel.h \
-    src/module_collection/CollectionDelegate.h
+    src/module_collection/CollectionDelegate.h \
+    src/module_tool/GeneralToolsModel.h
 
 SOURCES += \
     src/core/LBaseWidget.cpp \
@@ -162,7 +162,6 @@ SOURCES += \
     src/User.cpp \
     src/core/LEvent.cpp \
     src/DairyApp.cpp \
-    src/module_tool/PrivateMenuModel.cpp \
     src/module_collection/CollectionWidget.cpp \
     src/module_collection/collection_jokebook/StarEditor.cpp \
     src/module_collection/collection_jokebook/JokebookWidget.cpp \
@@ -183,7 +182,8 @@ SOURCES += \
     src/module_dairy/dairy_edit/DairyEditMainWidget.cpp \
     src/DairyAppStation.cpp \
     src/module_collection/CollectionModel.cpp \
-    src/module_collection/CollectionDelegate.cpp
+    src/module_collection/CollectionDelegate.cpp \
+    src/module_tool/GeneralToolsModel.cpp
 
 FORMS += \
     src/module_tool/GeneralToolsWidget.ui \

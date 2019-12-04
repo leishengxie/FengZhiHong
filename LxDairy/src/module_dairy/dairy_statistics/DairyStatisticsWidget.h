@@ -21,6 +21,7 @@ public slots:
     void showStatisticsByDate(const QString & strYear, const QString & strMonth);
 
 signals:
+    // 打开id为did的日记
    void expandDairy(int did);
 
 private slots:

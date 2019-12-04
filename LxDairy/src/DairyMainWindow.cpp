@@ -31,8 +31,6 @@ CDairyMainWindow::CDairyMainWindow(QWidget *parent)
 //    QPalette pal;
 //    pal.setBrush(QPalette::Background, QBrush(QPixmap(":/img/bg/1.jpg").scaled(size())));
 //    setPalette(pal);
-    connect(CDairyAppStation::getInstance(), SIGNAL(bgPixmapChanged(QPixmap)), this, SLOT(onBgPixmapChanged(QPixmap)));
-    m_pixBg = CSkinWidget::currentBackgroundPixmap();
 
     // 音乐播放模块
     statusBar()->addWidget((QWidget*)m_pMusicPlayer);
@@ -42,6 +40,16 @@ CDairyMainWindow::CDairyMainWindow(QWidget *parent)
     // tts播放模块
     m_pITTS = new CLWindowsTTSS(this);
     m_pITTS->initSpeech();
+
+    //connect(CDairyAppStation::getInstance(), SIGNAL(ttsSpeak(QString)), m_pITTS, SLOT(ttsSpeak(QString)));
+    //connect(CDairyAppStation::getInstance(), SIGNAL(playMusic()), m_pMusicPlayer, SLOT(onPlay()));
+    connect(ui->tabDairy, SIGNAL(requireTTSspeakS1(QString)), m_pITTS, SLOT(ttsSpeak(QString)));
+    connect(ui->tabDairy, SIGNAL(requirePlayMusicS1()), m_pMusicPlayer, SLOT(onPlay()));
+
+    connect(CDairyAppStation::getInstance(), SIGNAL(bgPixmapChanged(QPixmap)), this, SLOT(onBgPixmapChanged(QPixmap)));
+    m_pixBg = CSkinWidget::currentBackgroundPixmap();
+
+
 
 }
 

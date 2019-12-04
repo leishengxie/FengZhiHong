@@ -8,13 +8,14 @@
 #include <QMdiSubWindow>
 #include <QtDebug>
 
-CDairyEditMainWidget::CDairyEditMainWidget(QWidget *parent) :
+CDairyEditMainWidget::CDairyEditMainWidget(QWidget* parent) :
     QWidget(parent),
     ui(new Ui::CDairyEditMainWidget)
 {
     ui->setupUi(this);
 
     connect(ui->mdiArea, SIGNAL(subWindowActivated(QMdiSubWindow*)), this, SLOT(slotUpdateMenu(QMdiSubWindow*)));
+
 }
 
 CDairyEditMainWidget::~CDairyEditMainWidget()
@@ -22,27 +23,6 @@ CDairyEditMainWidget::~CDairyEditMainWidget()
     delete ui;
 }
 
-
-//void CDairyWidget::on_btnTTSPlay_clicked()
-//{
-//    QMdiSubWindow* pMdiSubWindow = ui->mdiArea->activeSubWindow();
-//    if (pMdiSubWindow == NULL)
-//    {
-//        return;
-//    }
-//    // 停止音乐播放
-//    //m_pMusicPlayer->stop();
-
-//    CDairyEditWidget* pDairyEditWidget = qobject_cast<CDairyEditWidget*>(pMdiSubWindow->widget());
-//    QString strContent = pDairyEditWidget->dairyEdit()->toPlainText();
-//    //m_pITTS->speak(strContent);
-
-//}
-
-//void CDairyWidget::on_btnPlayMusic_clicked()
-//{
-//    //m_pMusicPlayer->onPlay();
-//}
 
 
 void CDairyEditMainWidget::saveDairy()
@@ -102,10 +82,7 @@ void CDairyEditMainWidget::slotUpdateMenu(QMdiSubWindow* pMdiSubWindow)
     */
 }
 
-void CDairyEditMainWidget::onSaveDairyfinished(const CDairy &dairySaveBefore, const CDairy &dairySaved)
-{
-    //((CDairyDateTreeModel*)ui->treeDairy->model())->dairyModify(dairySaveBefore, dairySaved);
-}
+
 
 void CDairyEditMainWidget::slot_displayDairy(const CDairy & dairy)
 {
@@ -144,7 +121,7 @@ void CDairyEditMainWidget::slot_displayDairy(const CDairy & dairy)
     {
         // 创建edit
         CDairyEditWidget* pDairyEditWidget = new CDairyEditWidget(m_dairyActive);
-        connect(pDairyEditWidget, SIGNAL(saveDairyfinished(CDairy, CDairy)), this, SLOT(onSaveDairyfinished(CDairy, CDairy)));
+        connect(pDairyEditWidget, SIGNAL(saveDairyfinished(CDairy, CDairy)), this, SIGNAL(saveDairyfinishedS1(CDairy,CDairy)));
         QMdiSubWindow* pSubWindow = ui->mdiArea->addSubWindow(pDairyEditWidget);
         pSubWindow->showMaximized();
     }
@@ -157,10 +134,19 @@ void CDairyEditMainWidget::slot_displayDairy(const CDairy & dairy)
 
 void CDairyEditMainWidget::on_btnTTSPlay_clicked()
 {
+    QMdiSubWindow* pMdiSubWindow = ui->mdiArea->activeSubWindow();
+    if (pMdiSubWindow == NULL)
+    {
+        return;
+    }
 
+
+    CDairyEditWidget* pDairyEditWidget = qobject_cast<CDairyEditWidget*>(pMdiSubWindow->widget());
+    QString strContent = pDairyEditWidget->dairyEdit()->toPlainText();
+    emit requireTTSspeak(strContent);
 }
 
 void CDairyEditMainWidget::on_btnPlayMusic_clicked()
 {
-
+    emit requirePlayMusic();
 }

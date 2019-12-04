@@ -27,6 +27,12 @@ public:
     virtual void setVolume(int value)  = 0;
     virtual bool isSpeaking() = 0;
 
+public slots:
+    void ttsSpeak(const QString &txt)
+    {
+        speak(txt);
+    }
+
 signals:
 
     void speakComplete();

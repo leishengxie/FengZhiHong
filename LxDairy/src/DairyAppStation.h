@@ -15,6 +15,8 @@ public:
 
 signals:
     void bgPixmapChanged(const QPixmap & pixmap);
+    void ttsSpeak(const QString &txt);
+    void playMusic();
 
 public slots:
 };

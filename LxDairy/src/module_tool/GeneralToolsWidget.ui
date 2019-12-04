@@ -85,10 +85,28 @@
     </widget>
    </item>
    <item>
-    <widget class="QStackedWidget" name="stackedWidgetTool"/>
+    <widget class="QStackedWidget" name="stackedWidgetTool">
+     <widget class="CAccPasswdWidget" name="accPasswdWidget"/>
+     <widget class="CRenameWidget" name="renameWidget"/>
+     <widget class="QWidget" name="page"/>
+    </widget>
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>CAccPasswdWidget</class>
+   <extends>QWidget</extends>
+   <header>module_tool/tool_accpasswd_book/AccPasswdWidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>CRenameWidget</class>
+   <extends>QWidget</extends>
+   <header>module_tool/tool_rename/RenameWidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../../res.qrc"/>
  </resources>

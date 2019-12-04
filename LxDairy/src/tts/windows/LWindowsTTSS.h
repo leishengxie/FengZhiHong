@@ -37,6 +37,7 @@ public:
     virtual int volume();
     virtual void setVolume(int value) ;
     virtual bool isSpeaking();
+
 private slots:
 
     void dealevent(QString name, int arc , void* argv);
