@@ -61,6 +61,49 @@ void CLMapleLeafStyle::polish(QPalette & palette)
 //    //设置禁用的样式
 //    palette.setBrush(QPalette::Disabled, QPalette::Highlight, Qt::darkGray);
 
+
+    /////////////////////////////////////////////////////////////////////////////////
+//    QColor brown(212, 140, 95);
+//    QColor beige(236, 182, 120);
+//    QColor slightlyOpaqueBlack(0, 0, 0, 63);
+
+////    QPixmap backgroundImage(":/img/style/woodbackground.png");
+////    QPixmap buttonImage(":/img/style/woodbutton.png");
+//    QPixmap backgroundImage(":/img/style/bg_quiet.png");
+//    QPixmap buttonImage(":/img/style/woodbutton.png");
+//    QPixmap midImage = buttonImage;
+
+//    QPainter painter;
+//    painter.begin(&midImage);
+//    painter.setPen(Qt::NoPen);
+//    painter.fillRect(midImage.rect(), slightlyOpaqueBlack);
+//    painter.end();
+
+//    palette = QPalette(brown);
+
+//    palette.setBrush(QPalette::BrightText, Qt::white);
+//    palette.setBrush(QPalette::Base, beige);
+//    palette.setBrush(QPalette::Highlight, Qt::darkGreen);
+//    setTexture(palette, QPalette::Button, buttonImage);
+//    setTexture(palette, QPalette::Mid, midImage);
+//    setTexture(palette, QPalette::Window, backgroundImage);
+
+//    QBrush brush = palette.background();
+//    brush.setColor(brush.color().dark());
+
+//    palette.setBrush(QPalette::Disabled, QPalette::WindowText, brush);
+//    palette.setBrush(QPalette::Disabled, QPalette::Text, brush);
+//    palette.setBrush(QPalette::Disabled, QPalette::ButtonText, brush);
+//    palette.setBrush(QPalette::Disabled, QPalette::Base, brush);
+//    palette.setBrush(QPalette::Disabled, QPalette::Button, brush);
+//    palette.setBrush(QPalette::Disabled, QPalette::Mid, brush);
+
+
+
+
+    ///////////////////////////////////////////////////////////////////////
+    /// \brief 绿色自然 Green natural
+    ///
     QColor brown(212, 140, 95);
     QColor beige(236, 182, 120);
     QColor slightlyOpaqueBlack(0, 0, 0, 63);
@@ -95,8 +138,6 @@ void CLMapleLeafStyle::polish(QPalette & palette)
     palette.setBrush(QPalette::Disabled, QPalette::Base, brush);
     palette.setBrush(QPalette::Disabled, QPalette::Button, brush);
     palette.setBrush(QPalette::Disabled, QPalette::Mid, brush);
-
-//    return QProxyStyle::polish(palette);
 }
 
 void CLMapleLeafStyle::polish(QWidget* widget)
