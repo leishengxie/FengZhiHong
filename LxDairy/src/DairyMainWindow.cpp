@@ -49,8 +49,10 @@ CDairyMainWindow::CDairyMainWindow(QWidget *parent)
     connect(CDairyAppStation::getInstance(), SIGNAL(bgPixmapChanged(QPixmap)), this, SLOT(onBgPixmapChanged(QPixmap)));
     m_pixBg = CSkinWidget::currentBackgroundPixmap();
 
-
-
+    ui->tabWidget->setTabToolTip(0, "系统提供的基本日记功能");
+    ui->tabWidget->setTabToolTip(1, "系统集成的一些通用工具，目前尚不包含专业工具，系统还在扩展中，如有需要做的工具，记得留言哦……");
+    ui->tabWidget->setTabToolTip(2, "系统提供基于网络的个人作品、知识、资料的分享，正在建设中……");
+    ui->tabWidget->setTabToolTip(3, "你可以添加世界里的人为笔友，此模块正在筹划。");
 }
 
 CDairyMainWindow::~CDairyMainWindow()

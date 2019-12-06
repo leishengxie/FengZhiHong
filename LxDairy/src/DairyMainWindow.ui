@@ -39,20 +39,14 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>3</number>
       </property>
       <widget class="CDairyWidget" name="tabDairy">
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;提供基本的日记功能&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
        <attribute name="title">
         <string>日记</string>
        </attribute>
       </widget>
       <widget class="CGeneralToolsWidget" name="tabTool">
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;一些通用工具，目前不集成专业工具，完善中……&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
        <attribute name="title">
         <string>实用工具</string>
        </attribute>
@@ -63,6 +57,9 @@
        </attribute>
       </widget>
       <widget class="QWidget" name="tabFriend">
+       <property name="autoFillBackground">
+        <bool>true</bool>
+       </property>
        <attribute name="title">
         <string>笔友</string>
        </attribute>

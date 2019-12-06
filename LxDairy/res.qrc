@@ -43,5 +43,9 @@
         <file>img/css/checkbox_fix_unchecked.png</file>
         <file>img/style/woodbackground.png</file>
         <file>img/style/woodbutton.png</file>
+        <file>img/style/bg_green_natural.png</file>
+        <file>img/style/bg_maple_leaf.png</file>
+        <file>img/style/bg_quiet.png</file>
+        <file>img/style/bg_scholar_spirit.png</file>
     </qresource>
 </RCC>

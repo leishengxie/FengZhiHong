@@ -4,7 +4,10 @@
 CCollectionModel::CCollectionModel(QObject *parent)
     : QAbstractListModel(parent)
 {
-    m_lstCollectionItem.append(T_CollectionItem("笑话集", ":/img/tool_img/maple_leaf_book.png", "这是一个笑话集"));
+    m_lstCollectionItem.append(T_CollectionItem("笑话集"
+                                                , ":/img/tool_img/maple_leaf_book.png"
+                                                , "你可以将自己自创或收集到的开心的事上传到系统，这样你的朋友或\"世界\"的人都能得到你分享的快乐。" \
+                                                "系统将对你上传的作品做查重，评分，排行等服务"));
 }
 
 int CCollectionModel::rowCount(const QModelIndex &parent) const

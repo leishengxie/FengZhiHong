@@ -65,7 +65,9 @@ void CLMapleLeafStyle::polish(QPalette & palette)
     QColor beige(236, 182, 120);
     QColor slightlyOpaqueBlack(0, 0, 0, 63);
 
-    QPixmap backgroundImage(":/img/style/woodbackground.png");
+//    QPixmap backgroundImage(":/img/style/woodbackground.png");
+//    QPixmap buttonImage(":/img/style/woodbutton.png");
+    QPixmap backgroundImage(":/img/style/bg_quiet.png");
     QPixmap buttonImage(":/img/style/woodbutton.png");
     QPixmap midImage = buttonImage;
 

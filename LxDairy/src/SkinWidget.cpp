@@ -108,10 +108,10 @@ void CSkinWidget::setQssStyle(const QString & stylefilePath)
 QPixmap CSkinWidget::currentBackgroundPixmap()
 {
     QPixmap pixmap;
-    if (s_unIndexSave > 3 && s_unIndexSave < 8)
-    {
-        pixmap.load(s_arrImgBg[s_unIndexSave - 4]);
-    }
+//    if (s_unIndexSave > 3 && s_unIndexSave < 8)
+//    {
+//        pixmap.load(s_arrImgBg[s_unIndexSave - 4]);
+//    }
     return pixmap;
 }
 
