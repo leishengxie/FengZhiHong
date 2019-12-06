@@ -61,9 +61,11 @@ private:
     void drawPECheckBoxIndicator(const QStyleOption *option, QPainter *painter) const;
     void drawPERadioButtonIndicator(const QStyleOption *option, QPainter *painter) const;
     void drawPEArrowDownIndicator(const QStyleOption *option, QPainter *painter) const;
+    void drawPEPanelButtonCommand(const QStyleOption *option, QPainter *painter) const;
 
 private:
-    void setTexture(QPalette &palette, QPalette::ColorRole role, const QPixmap &pixmap);
+    static void setTexture(QPalette &palette, QPalette::ColorRole role, const QPixmap &pixmap);
+    static QPainterPath roundRectPath(const QRect &rect);
 
 
 };

@@ -37,9 +37,9 @@ CDairyWidget::CDairyWidget(QWidget* parent)
     //connect(ui->treeDairy, SIGNAL(clicked(QModelIndex))
     connect(ui->page_dairy_statistics, SIGNAL(expandDairy(int)), pDairyDateTreeModel, SLOT(expandDairy(int)));
 
-    onnect(ui->page_dairy, SIGNAL(saveDairyfinishedS1(CDairy,CDairy)), this, SLOT(onSaveDairyfinished(CDairy,CDairy)));
-    onnect(ui->page_dairy, SIGNAL(requirePlayMusic()), this, SIGNAL(requirePlayMusicS1()));
-    onnect(ui->page_dairy, SIGNAL(requireTTSspeak(QString)), this, SIGNAL(requireTTSspeakS1(QString)));
+    connect(ui->page_dairy, SIGNAL(saveDairyfinishedS1(CDairy,CDairy)), this, SLOT(onSaveDairyfinished(CDairy,CDairy)));
+    connect(ui->page_dairy, SIGNAL(requirePlayMusic()), this, SIGNAL(requirePlayMusicS1()));
+    connect(ui->page_dairy, SIGNAL(requireTTSspeak(QString)), this, SIGNAL(requireTTSspeakS1(QString)));
 
     //ui->mdiArea->cascadeSubWindows(); //MDI区域内的所有子窗口重叠排列
     //ui->mdiArea->tileSubWindows(); //将所有子窗口在MDI区域内排列整齐

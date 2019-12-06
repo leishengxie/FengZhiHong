@@ -135,7 +135,8 @@ HEADERS += \
     src/DairyAppStation.h \
     src/module_collection/CollectionModel.h \
     src/module_collection/CollectionDelegate.h \
-    src/module_tool/GeneralToolsModel.h
+    src/module_tool/GeneralToolsModel.h \
+    src/LStyleBase.h
 
 SOURCES += \
     src/core/LBaseWidget.cpp \
@@ -183,7 +184,8 @@ SOURCES += \
     src/DairyAppStation.cpp \
     src/module_collection/CollectionModel.cpp \
     src/module_collection/CollectionDelegate.cpp \
-    src/module_tool/GeneralToolsModel.cpp
+    src/module_tool/GeneralToolsModel.cpp \
+    src/LStyleBase.cpp
 
 FORMS += \
     src/module_tool/GeneralToolsWidget.ui \
