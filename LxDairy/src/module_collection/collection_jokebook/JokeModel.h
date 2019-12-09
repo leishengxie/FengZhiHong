@@ -3,19 +3,32 @@
 #include <QAbstractTableModel>
 
 
+struct T_JokeRating
+{
+    int jId;        // 被评价的资源id 既是主键也是外键
+    int uId;        // 评价用户id 既是主键也是外键
+    qreal dRating;  // 评分
+
+};
+
 struct T_Joke
 {
     int jId;
     QString strTitle;
     QString strDate;
     QString strContent;
-    QString strNickname; // 作者昵称
+
+    bool bOriginal; // 是否原创
+
+    int upUid;        // 上传者用户id
+    QString strNickname; // 上传者昵称
+
 
     quint64 llRatingNumOfPeople; // 评价总人数
-    quint64 llRatingToatalScore ; // 评价总评分
+    qreal dRatingToatalScore ; // 评价总评分
     qreal dRatingAverageScore;  // 评价平均评分 0-5
 
-
+    //QVector<T_Rating> vecRating;    // 评价列表
 
 };
 Q_DECLARE_METATYPE(T_Joke)

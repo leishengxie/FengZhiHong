@@ -17,6 +17,7 @@ CStarEditor::CStarEditor(QWidget* parent)
 
     m_dRating = 0;
     m_nMaxStarCount = s_nMaxStarCount;
+    m_bReadOnly = false;
 
 }
 
@@ -110,7 +111,7 @@ QSize CStarEditor::sizeHint() const
 void CStarEditor::paintEvent(QPaintEvent*)
 {
     QPainter painter(this);
-    drawFiveStarRating(&painter, rect(), this->palette(), m_dRating);
+    drawFiveStarRating(&painter, rect(), this->palette(), m_dRating, m_bReadOnly);
 }
 
 void CStarEditor::mouseMoveEvent(QMouseEvent* event)

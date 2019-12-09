@@ -11,7 +11,7 @@
 class CStarEditor : public QWidget
 {
     Q_OBJECT
-
+    Q_PROPERTY(bool readOnly READ isChecked WRITE setReadOnly)
 public:
     CStarEditor(QWidget* parent = 0);
 
@@ -38,6 +38,16 @@ public:
     void setMaxStarCount(int maxStarCount)
     {
         m_nMaxStarCount = maxStarCount;
+    }
+
+    bool isReadOnly()
+    {
+        return m_bReadOnly;
+    }
+
+    void setReadOnly(bool bReadOnly)
+    {
+        m_bReadOnly = bReadOnly;
     }
 
 signals:
