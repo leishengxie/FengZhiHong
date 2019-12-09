@@ -136,7 +136,8 @@ HEADERS += \
     src/module_collection/CollectionModel.h \
     src/module_collection/CollectionDelegate.h \
     src/module_tool/GeneralToolsModel.h \
-    src/LStyleBase.h
+    src/LStyleBase.h \
+    src/module_collection/collection_jokebook/JokeEditor.h
 
 SOURCES += \
     src/core/LBaseWidget.cpp \
@@ -185,7 +186,8 @@ SOURCES += \
     src/module_collection/CollectionModel.cpp \
     src/module_collection/CollectionDelegate.cpp \
     src/module_tool/GeneralToolsModel.cpp \
-    src/LStyleBase.cpp
+    src/LStyleBase.cpp \
+    src/module_collection/collection_jokebook/JokeEditor.cpp
 
 FORMS += \
     src/module_tool/GeneralToolsWidget.ui \
@@ -202,7 +204,8 @@ FORMS += \
     src/module_collection/collection_jokebook/JokebookWidget.ui \
     src/module_dairy/dairy_edit/DairyEditWidget.ui \
     src/module_dairy/dairy_statistics/DairyStatisticsWidget.ui \
-    src/module_dairy/dairy_edit/DairyEditMainWidget.ui
+    src/module_dairy/dairy_edit/DairyEditMainWidget.ui \
+    src/module_collection/collection_jokebook/JokeEditor.ui
 
 
 
