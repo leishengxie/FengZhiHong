@@ -11,7 +11,7 @@
 class CStarEditor : public QWidget
 {
     Q_OBJECT
-    Q_PROPERTY(bool readOnly READ isChecked WRITE setReadOnly)
+    Q_PROPERTY(bool readOnly READ isReadOnly WRITE setReadOnly)
 public:
     CStarEditor(QWidget* parent = 0);
 

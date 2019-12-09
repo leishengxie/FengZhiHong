@@ -9,6 +9,9 @@
 #include "LQt.h"
 
 #include "LMapleLeafStyle.h"
+#include "LGreenNaturalStyle.h"
+#include "LQuietStyle.h"
+#include "LScholarSpiritStyle.h"
 #include "DairyAppStation.h"
 
 static QString s_aSkin[] =
@@ -77,7 +80,23 @@ void CSkinWidget::setSkin(uint nSkinIndex)
     {
         //QApplication::setStyle(new CCustomStyle());
         qApp->setStyleSheet("");
-        QApplication::setStyle(new CLMapleLeafStyle());
+        if (nSkinIndex == 4)
+        {
+            QApplication::setStyle(new CLGreenNaturalStyle());
+        }
+        else if (nSkinIndex == 5)
+        {
+            QApplication::setStyle(new CLQuietStyle());
+        }
+        else if (nSkinIndex == 6)
+        {
+            QApplication::setStyle(new CLScholarSpiritStyle());
+        }
+        else
+        {
+            QApplication::setStyle(new CLMapleLeafStyle());
+        }
+
         // QApplication::setStyle(new QProxyStyle());
         pixmap.load(s_arrImgBg[nSkinIndex - 4]);
         CDairyAppStation::getInstance()->bgPixmapChanged(pixmap);

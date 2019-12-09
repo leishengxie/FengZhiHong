@@ -88,7 +88,9 @@ INCLUDEPATH += \
     src/module_tool \
     src/module_collection \
     src/music \
+    src/style \
     src/tts
+
 
 HEADERS += \
     src/core/LBaseWidget.h \
@@ -119,7 +121,6 @@ HEADERS += \
     src/module_collection/collection_jokebook/JokebookWidget.h \
     src/module_collection/collection_jokebook/JokeModel.h \
     src/module_collection/collection_jokebook/JokeDelegate.h \
-    src/LMapleLeafStyle.h \
     src/module_dairy/Dairy.h \
     src/module_dairy/DairyWidget.h \
     src/module_dairy/dairy_date/DairyDateDelegate.h \
@@ -136,8 +137,12 @@ HEADERS += \
     src/module_collection/CollectionModel.h \
     src/module_collection/CollectionDelegate.h \
     src/module_tool/GeneralToolsModel.h \
-    src/LStyleBase.h \
-    src/module_collection/collection_jokebook/JokeEditor.h
+    src/module_collection/collection_jokebook/JokeEditor.h \
+    src/style/LMapleLeafStyle.h \
+    src/style/LStyleBase.h \
+    src/style/LGreenNaturalStyle.h \
+    src/style/LQuietStyle.h \
+    src/style/LScholarSpiritStyle.h
 
 SOURCES += \
     src/core/LBaseWidget.cpp \
@@ -169,7 +174,6 @@ SOURCES += \
     src/module_collection/collection_jokebook/JokebookWidget.cpp \
     src/module_collection/collection_jokebook/JokeModel.cpp \
     src/module_collection/collection_jokebook/JokeDelegate.cpp \
-    src/LMapleLeafStyle.cpp \
     src/module_dairy/Dairy.cpp \
     src/module_dairy/DairyWidget.cpp \
     src/module_dairy/dairy_date/DairyDateDelegate.cpp \
@@ -186,8 +190,12 @@ SOURCES += \
     src/module_collection/CollectionModel.cpp \
     src/module_collection/CollectionDelegate.cpp \
     src/module_tool/GeneralToolsModel.cpp \
-    src/LStyleBase.cpp \
-    src/module_collection/collection_jokebook/JokeEditor.cpp
+    src/module_collection/collection_jokebook/JokeEditor.cpp \
+    src/style/LMapleLeafStyle.cpp \
+    src/style/LStyleBase.cpp \
+    src/style/LGreenNaturalStyle.cpp \
+    src/style/LQuietStyle.cpp \
+    src/style/LScholarSpiritStyle.cpp
 
 FORMS += \
     src/module_tool/GeneralToolsWidget.ui \
