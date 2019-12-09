@@ -68,7 +68,7 @@
       </sizepolicy>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="CDairyEditMainWidget" name="page_dairy"/>
      <widget class="CDairyStatisticsWidget" name="page_dairy_statistics"/>
