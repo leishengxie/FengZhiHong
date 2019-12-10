@@ -56,6 +56,16 @@
        <string>乡之红叶</string>
       </property>
      </item>
+     <item>
+      <property name="text">
+       <string>挪威木纹</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>青铜器</string>
+      </property>
+     </item>
     </widget>
    </item>
    <item>

@@ -12,23 +12,42 @@
 #include "LGreenNaturalStyle.h"
 #include "LQuietStyle.h"
 #include "LScholarSpiritStyle.h"
+#include "LNorwegianWoodStyle.h"
+#include "LBronzeStyle.h"
+
+
 #include "DairyAppStation.h"
 
-static QString s_aSkin[] =
+// 皮肤对应的qss
+static const char* s_aStyleSheet[] =
 {
-    ":/css/black.css",
-    ":/css/blue.css",
-    ":/css/gray.css",
-    ":/css/navy.css"
+    ":/css/black.css",  // 0
+    ":/css/blue.css",   // 1
+    ":/css/gray.css",   // 2
+    ":/css/navy.css"    // 3
+    "",                 // 4
+    "",                 // 5
+    "",                 // 6
+    "",                 // 7
+    "",                 // 8
+    ""                  // 9
 };
 
-static const QString s_arrImgBg[] =
+// 皮肤对应的背景图
+static const char* s_arrImgBg[] =
 {
-    ":/img/bg/bg_green_natural.jpg",
-    ":/img/bg/bg_quiet.jpg",
-    ":/img/bg/bg_scholar_spirit.jpg",
-    ":/img/bg/bg_maple_leaf.jpg"
+    "",                                     // 0
+    "",                                     // 1
+    "",                                     // 2
+    "",                                     // 3
+    ":/img/bg/bg_green_natural.jpg",        // 4
+    ":/img/bg/bg_quiet.jpg",                // 5
+    ":/img/bg/bg_scholar_spirit.jpg",       // 6
+    ":/img/bg/bg_maple_leaf.jpg"            // 7
+    "",                                     // 8
+    ""                                      // 9
 };
+
 
 uint CSkinWidget::s_unIndexSave = 0;
 
@@ -70,48 +89,62 @@ void CSkinWidget::loadQssStyle()
 
 void CSkinWidget::setSkin(uint nSkinIndex)
 {
-    if (nSkinIndex > 7)
+    if (nSkinIndex > 9)
     {
         return;
     }
 
-    QPixmap pixmap;
-    if (nSkinIndex > 3)
+    // 设置style
+    if (nSkinIndex == 4)
     {
-        //QApplication::setStyle(new CCustomStyle());
-        qApp->setStyleSheet("");
-        if (nSkinIndex == 4)
-        {
-            QApplication::setStyle(new CLGreenNaturalStyle());
-        }
-        else if (nSkinIndex == 5)
-        {
-            QApplication::setStyle(new CLQuietStyle());
-        }
-        else if (nSkinIndex == 6)
-        {
-            QApplication::setStyle(new CLScholarSpiritStyle());
-        }
-        else
-        {
-            QApplication::setStyle(new CLMapleLeafStyle());
-        }
-
-        // QApplication::setStyle(new QProxyStyle());
-        pixmap.load(s_arrImgBg[nSkinIndex - 4]);
-        CDairyAppStation::getInstance()->bgPixmapChanged(pixmap);
+        QApplication::setStyle(new CLGreenNaturalStyle());
+    }
+    else if (nSkinIndex == 5)
+    {
+        QApplication::setStyle(new CLQuietStyle());
+    }
+    else if (nSkinIndex == 6)
+    {
+        QApplication::setStyle(new CLScholarSpiritStyle());
+    }
+    else if (nSkinIndex == 7)
+    {
+        QApplication::setStyle(new CLMapleLeafStyle());
+    }
+    else if (nSkinIndex == 8)
+    {
+        QApplication::setStyle(new CLNorwegianWoodStyle());
+    }
+    else if (nSkinIndex == 9)
+    {
+        QApplication::setStyle(new CLBronzeStyle());
     }
     else
     {
-
-        setQssStyle(s_aSkin[nSkinIndex]);
         QApplication::setStyle(QStyleFactory::create("windowsvista"));
-        CDairyAppStation::getInstance()->bgPixmapChanged(pixmap);
     }
+
+    // 设置qss
+    setQssStyle(s_aStyleSheet[nSkinIndex]);
+
+    // 设置背景图
+    QPixmap pixmap;
+    if (!QString(s_arrImgBg[nSkinIndex]).isEmpty())
+    {
+        pixmap.load(s_arrImgBg[nSkinIndex]);
+    }
+    CDairyAppStation::getInstance()->bgPixmapChanged(pixmap);
+
 }
 
 void CSkinWidget::setQssStyle(const QString & stylefilePath)
 {
+    if (stylefilePath.isEmpty())
+    {
+        qApp->setStyleSheet("");
+        return;
+    }
+
     QFile file(stylefilePath);
     bool bOk = file.open(QFile::ReadOnly);
     if (!bOk)
@@ -127,10 +160,10 @@ void CSkinWidget::setQssStyle(const QString & stylefilePath)
 QPixmap CSkinWidget::currentBackgroundPixmap()
 {
     QPixmap pixmap;
-//    if (s_unIndexSave > 3 && s_unIndexSave < 8)
-//    {
-//        pixmap.load(s_arrImgBg[s_unIndexSave - 4]);
-//    }
+    if (!QString(s_arrImgBg[s_unIndexSave]).isEmpty())
+    {
+        pixmap.load(s_arrImgBg[s_unIndexSave]);
+    }
     return pixmap;
 }
 
@@ -141,13 +174,6 @@ QPixmap CSkinWidget::currentBackgroundPixmap()
 void CSkinWidget::slot_cancelCurrentSet()
 {
     setSkin(s_unIndexSave);
-
-    QPixmap pixmap;
-    if (s_unIndexSave > 3 && s_unIndexSave < 8)
-    {
-        pixmap.load(s_arrImgBg[s_unIndexSave - 4]);
-    }
-    CDairyAppStation::getInstance()->bgPixmapChanged(pixmap);
 }
 
 void CSkinWidget::slot_saveCurrentSet()

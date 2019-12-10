@@ -88,7 +88,7 @@ INCLUDEPATH += \
     src/module_tool \
     src/module_collection \
     src/music \
-    src/style \
+    src/styles \
     src/tts
 
 
@@ -138,11 +138,16 @@ HEADERS += \
     src/module_collection/CollectionDelegate.h \
     src/module_tool/GeneralToolsModel.h \
     src/module_collection/collection_jokebook/JokeEditor.h \
-    src/style/LMapleLeafStyle.h \
-    src/style/LStyleBase.h \
-    src/style/LGreenNaturalStyle.h \
-    src/style/LQuietStyle.h \
-    src/style/LScholarSpiritStyle.h
+    src/styles/LBronzeStyle.h \
+    src/styles/LColorStyle.h \
+    src/styles/LGreenNaturalStyle.h \
+    src/styles/LIconStyle.h \
+    src/styles/LMapleLeafStyle.h \
+    src/styles/LQuietStyle.h \
+    src/styles/LScholarSpiritStyle.h \
+    src/styles/LStyleBase.h \
+    src/styles/LTabBarVStyle.h \
+    src/styles/LNorwegianWoodStyle.h
 
 SOURCES += \
     src/core/LBaseWidget.cpp \
@@ -191,11 +196,16 @@ SOURCES += \
     src/module_collection/CollectionDelegate.cpp \
     src/module_tool/GeneralToolsModel.cpp \
     src/module_collection/collection_jokebook/JokeEditor.cpp \
-    src/style/LMapleLeafStyle.cpp \
-    src/style/LStyleBase.cpp \
-    src/style/LGreenNaturalStyle.cpp \
-    src/style/LQuietStyle.cpp \
-    src/style/LScholarSpiritStyle.cpp
+    src/styles/LBronzeStyle.cpp \
+    src/styles/LColorStyle.cpp \
+    src/styles/LGreenNaturalStyle.cpp \
+    src/styles/LIconStyle.cpp \
+    src/styles/LMapleLeafStyle.cpp \
+    src/styles/LQuietStyle.cpp \
+    src/styles/LScholarSpiritStyle.cpp \
+    src/styles/LStyleBase.cpp \
+    src/styles/LTabBarVStyle.cpp \
+    src/styles/LNorwegianWoodStyle.cpp
 
 FORMS += \
     src/module_tool/GeneralToolsWidget.ui \

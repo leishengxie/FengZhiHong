@@ -47,5 +47,9 @@
         <file>img/style/bg_maple_leaf.png</file>
         <file>img/style/bg_quiet.png</file>
         <file>img/style/bg_scholar_spirit.png</file>
+        <file>img/style/bg_bronze.png</file>
+        <file>img/style/checkmark.png</file>
+        <file>img/style/checkmark-disabled.png</file>
+        <file>img/style/checkmark-partial.png</file>
     </qresource>
 </RCC>

@@ -1,16 +1,20 @@
-#ifndef CLMAPLELEAFSTYLE_H
-#define CLMAPLELEAFSTYLE_H
-
-
+#ifndef CLSTYLEBASE_H
+#define CLSTYLEBASE_H
 
 #include <QProxyStyle>
+/************************************************************
+ *
+ * 如果采用qss做皮肤，如红蓝白，需要准备qss文件3套，而且内容几乎一样，只是颜色变了，其中一种控件style变了，另外2套也得修改，
+ * 所以放弃qss做皮肤。
+ *
+ *
+ */
 
-
-class CLMapleLeafStyle : public QProxyStyle
+class CLStyleBase : public QProxyStyle
 {
     Q_OBJECT
 public:
-    explicit CLMapleLeafStyle(QStyle *style = Q_NULLPTR);
+    explicit CLStyleBase(QStyle *style = Q_NULLPTR);
 
     void polish(QPalette &palette);
     void polish(QWidget *widget);
@@ -70,4 +74,4 @@ private:
 
 };
 
-#endif // CLMAPLELEAFSTYLE_H
+#endif // CLSTYLEBASE_H

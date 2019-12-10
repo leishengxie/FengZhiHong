@@ -121,6 +121,14 @@ void CLoginWidget::paintEvent(QPaintEvent *event)
     }
     QPainter painter(this);
     painter.drawPixmap(rect(), m_pixBg);
+
+    //
+//        QPixmap *pm_back_buffer = new QPixmap("images/main.png");
+//        QBitmap *pm_mask = new QBitmap("images/main_mask.png");
+//        // 设置檬板图片；
+//        setMask(*pm_mask);
+
+
 }
 
 void CLoginWidget::resizeEvent(QResizeEvent *event)
