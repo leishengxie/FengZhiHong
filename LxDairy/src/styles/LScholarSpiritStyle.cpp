@@ -2,7 +2,7 @@
 #include <QStyleFactory>
 
 CLScholarSpiritStyle::CLScholarSpiritStyle(QStyle *style)
-    : QProxyStyle(QStyleFactory::create("windows")) // 默认windows风格
+    : QProxyStyle(QStyleFactory::create("Fusion"))
 {
 
 }

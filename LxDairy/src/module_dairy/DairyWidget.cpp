@@ -40,6 +40,7 @@ CDairyWidget::CDairyWidget(QWidget* parent)
     connect(ui->page_dairy, SIGNAL(saveDairyfinishedS1(CDairy,CDairy)), this, SLOT(onSaveDairyfinished(CDairy,CDairy)));
     connect(ui->page_dairy, SIGNAL(requirePlayMusic()), this, SIGNAL(requirePlayMusicS1()));
     connect(ui->page_dairy, SIGNAL(requireTTSspeak(QString)), this, SIGNAL(requireTTSspeakS1(QString)));
+    connect(this, SIGNAL(musicFinishedS1()), ui->page_dairy, SLOT(onMusicFinished()));
 
     //ui->mdiArea->cascadeSubWindows(); //MDI区域内的所有子窗口重叠排列
     //ui->mdiArea->tileSubWindows(); //将所有子窗口在MDI区域内排列整齐

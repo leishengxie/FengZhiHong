@@ -29,6 +29,7 @@ public:
     virtual QSize sizeHint() const;
 
 signals:
+    void finished();
 
 public slots:
     void onOpenFile();

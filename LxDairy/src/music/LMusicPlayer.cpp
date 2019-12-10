@@ -142,8 +142,11 @@ void CLMusicPlayer::onMediaStateChanged(QMediaPlayer::State)
     {
     case QMediaPlayer::PlayingState:
         break;
+    case QMediaPlayer::PausedState:
+        break;
     case QMediaPlayer::StoppedState:
         m_pLrcWidget->clearCurLrc();
+        emit finished();
         break;
     default:
         break;

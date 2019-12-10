@@ -27,6 +27,7 @@ public:
 
 public slots:
     void slot_displayDairy(const CDairy & dairy);
+    void onMusicFinished();
 
 signals:
     // 中转信号S1

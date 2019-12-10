@@ -3,7 +3,7 @@
 
 
 CLGreenNaturalStyle::CLGreenNaturalStyle(QStyle *style)
-    : QProxyStyle(QStyleFactory::create("windows")) // 默认windows风格
+    : QProxyStyle(QStyleFactory::create("Windows"))
 {
 
 }

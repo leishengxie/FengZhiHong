@@ -38,22 +38,22 @@
      </item>
      <item>
       <property name="text">
-       <string>绿色自然</string>
+       <string>绿色自然 - Windows风格</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>宁静致远</string>
+       <string>宁静致远 - WindowsXP风格</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>书生意气</string>
+       <string>书生意气 - Fusion风格</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>乡之红叶</string>
+       <string>乡之红叶 - WindowsVista风格</string>
       </property>
      </item>
      <item>
@@ -64,6 +64,11 @@
      <item>
       <property name="text">
        <string>青铜器</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>黑色开发者</string>
       </property>
      </item>
     </widget>

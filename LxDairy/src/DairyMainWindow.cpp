@@ -35,6 +35,8 @@ CDairyMainWindow::CDairyMainWindow(QWidget *parent)
     // 音乐播放模块
     statusBar()->addWidget((QWidget*)m_pMusicPlayer);
     statusBar()->setStyleSheet(QString("QStatusBar::item{border: 0px}"));
+    connect(ui->tabDairy, SIGNAL(requirePlayMusicS1()), m_pMusicPlayer, SLOT(onPlay()));
+    connect(m_pMusicPlayer, SIGNAL(finished()), ui->tabDairy, SIGNAL(musicFinishedS1()));
     //m_pMusicPlayer->onPlay();
 
     // tts播放模块
@@ -44,7 +46,7 @@ CDairyMainWindow::CDairyMainWindow(QWidget *parent)
     //connect(CDairyAppStation::getInstance(), SIGNAL(ttsSpeak(QString)), m_pITTS, SLOT(ttsSpeak(QString)));
     //connect(CDairyAppStation::getInstance(), SIGNAL(playMusic()), m_pMusicPlayer, SLOT(onPlay()));
     connect(ui->tabDairy, SIGNAL(requireTTSspeakS1(QString)), m_pITTS, SLOT(ttsSpeak(QString)));
-    connect(ui->tabDairy, SIGNAL(requirePlayMusicS1()), m_pMusicPlayer, SLOT(onPlay()));
+
 
     connect(CDairyAppStation::getInstance(), SIGNAL(bgPixmapChanged(QPixmap)), this, SLOT(onBgPixmapChanged(QPixmap)));
     m_pixBg = CSkinWidget::currentBackgroundPixmap();

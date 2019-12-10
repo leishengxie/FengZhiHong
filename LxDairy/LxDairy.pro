@@ -147,7 +147,8 @@ HEADERS += \
     src/styles/LScholarSpiritStyle.h \
     src/styles/LStyleBase.h \
     src/styles/LTabBarVStyle.h \
-    src/styles/LNorwegianWoodStyle.h
+    src/styles/LNorwegianWoodStyle.h \
+    src/styles/LDarkDevelopStyle.h
 
 SOURCES += \
     src/core/LBaseWidget.cpp \
@@ -205,7 +206,8 @@ SOURCES += \
     src/styles/LScholarSpiritStyle.cpp \
     src/styles/LStyleBase.cpp \
     src/styles/LTabBarVStyle.cpp \
-    src/styles/LNorwegianWoodStyle.cpp
+    src/styles/LNorwegianWoodStyle.cpp \
+    src/styles/LDarkDevelopStyle.cpp
 
 FORMS += \
     src/module_tool/GeneralToolsWidget.ui \

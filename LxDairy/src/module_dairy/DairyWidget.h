@@ -32,6 +32,7 @@ signals:
     void requireTTSspeakS1(const QString & txt);
     // 请求播放音乐 -中转S1
     void requirePlayMusicS1();
+    void musicFinishedS1();
 
 protected:
     void closeEvent(QCloseEvent *event);

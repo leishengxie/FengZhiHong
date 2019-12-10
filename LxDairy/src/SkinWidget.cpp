@@ -6,6 +6,7 @@
 #include <QFile>
 #include <QSettings>
 #include <QStyleFactory>
+#include <QtDebug>
 #include "LQt.h"
 
 #include "LMapleLeafStyle.h"
@@ -14,6 +15,7 @@
 #include "LScholarSpiritStyle.h"
 #include "LNorwegianWoodStyle.h"
 #include "LBronzeStyle.h"
+#include "LDarkDevelopStyle.h"
 
 
 #include "DairyAppStation.h"
@@ -30,7 +32,8 @@ static const char* s_aStyleSheet[] =
     "",                 // 6
     "",                 // 7
     "",                 // 8
-    ""                  // 9
+        "",                 // 9
+    ""                  // 10
 };
 
 // 皮肤对应的背景图
@@ -45,7 +48,8 @@ static const char* s_arrImgBg[] =
     ":/img/bg/bg_scholar_spirit.jpg",       // 6
     ":/img/bg/bg_maple_leaf.jpg"            // 7
     "",                                     // 8
-    ""                                      // 9
+        "",                                     // 9
+    ""                                      // 10
 };
 
 
@@ -79,6 +83,7 @@ CSkinWidget::~CSkinWidget()
 //////////static func ///////////
 void CSkinWidget::loadQssStyle()
 {
+    qDebug() << QStyleFactory::keys();
     QSettings conf("conf.ini", QSettings::IniFormat);
     conf.beginGroup("user");
     s_unIndexSave = conf.value("skin_index", 0).toUInt();
@@ -89,7 +94,7 @@ void CSkinWidget::loadQssStyle()
 
 void CSkinWidget::setSkin(uint nSkinIndex)
 {
-    if (nSkinIndex > 9)
+    if (nSkinIndex > 10)
     {
         return;
     }
@@ -118,6 +123,10 @@ void CSkinWidget::setSkin(uint nSkinIndex)
     else if (nSkinIndex == 9)
     {
         QApplication::setStyle(new CLBronzeStyle());
+    }
+    else if (nSkinIndex == 10)
+    {
+        QApplication::setStyle(new CLDarkDevelopStyle());
     }
     else
     {

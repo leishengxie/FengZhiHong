@@ -132,6 +132,11 @@ void CDairyEditMainWidget::slot_displayDairy(const CDairy & dairy)
 
 }
 
+void CDairyEditMainWidget::onMusicFinished()
+{
+    ui->btnPlayMusic->setChecked(false);
+}
+
 void CDairyEditMainWidget::on_btnTTSPlay_clicked()
 {
     QMdiSubWindow* pMdiSubWindow = ui->mdiArea->activeSubWindow();
