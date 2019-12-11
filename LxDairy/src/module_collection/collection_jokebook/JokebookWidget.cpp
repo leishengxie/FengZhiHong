@@ -2,7 +2,10 @@
 #include "ui_JokebookWidget.h"
 #include "JokeModel.h"
 #include "JokeDelegate.h"
+#include "JokeEditor.h"
 #include <QDateTime>
+
+#include "LHttpClient.h"
 
 CJokebookWidget::CJokebookWidget(QWidget* parent) :
     QWidget(parent),
@@ -32,6 +35,8 @@ CJokebookWidget::CJokebookWidget(QWidget* parent) :
     tJoke.dRatingAverageScore = 3.9;
     lstJoke.append(tJoke);
     m_pJokeModel->setListJoke(lstJoke);
+
+    m_pJokeEditor = new CJokeEditor();
 }
 
 CJokebookWidget::~CJokebookWidget()
@@ -61,12 +66,13 @@ void CJokebookWidget::on_comboBox_currentIndexChanged(int index)
 
 void CJokebookWidget::on_btnUpload_clicked()
 {
-
+    T_Joke tJoke = qvariant_cast<T_Joke>(index.data());
+    uploadJoke(tJoke);
 }
 
 void CJokebookWidget::on_btnAdd_clicked()
 {
-
+    m_pJokeEditor->show();
 }
 
 void CJokebookWidget::on_tableView_clicked(const QModelIndex & index)

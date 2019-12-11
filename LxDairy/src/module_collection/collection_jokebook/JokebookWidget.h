@@ -8,6 +8,8 @@ namespace Ui {
 class CJokebookWidget;
 }
 
+class CJokeEditor;
+
 class CJokebookWidget : public QWidget
 {
     Q_OBJECT
@@ -35,6 +37,7 @@ private:
     Ui::CJokebookWidget *ui;
 
     CJokeModel* m_pJokeModel;
+    CJokeEditor* m_pJokeEditor;
 };
 
 #endif // JOKEBOOKWIDGET_H
