@@ -91,7 +91,7 @@ int CLBronzeStyle::styleHint(StyleHint which, const QStyleOption *option,
     case SH_UnderlineShortcut:
         return int(false);
     default:
-        return QCommonStyle::styleHint(which, option, widget,
+        return QProxyStyle::styleHint(which, option, widget,
                                        returnData);
     }
 }
@@ -125,7 +125,7 @@ int CLBronzeStyle::pixelMetric(PixelMetric which,
         return 2;
         // 对于其他的PM_xxx值,从基类中继承像素规格的值
     default:
-        return QCommonStyle::pixelMetric(which, option, widget);
+        return QProxyStyle::pixelMetric(which, option, widget);
     }
 }
 
@@ -158,8 +158,13 @@ void CLBronzeStyle::drawPrimitive(PrimitiveElement which,
     case PE_FrameDefaultButton:
         break;
     default:
-        QCommonStyle::drawPrimitive(which, option, painter, widget);
+        QProxyStyle::drawPrimitive(which, option, painter, widget);
     }
+}
+
+void CLBronzeStyle::drawControl(QStyle::ControlElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
+{
+    return QProxyStyle::drawControl(element, option, painter, widget);
 }
 
 
@@ -189,7 +194,7 @@ void CLBronzeStyle::drawComplexControl(ComplexControl which,
     }
     else
     {
-        return QCommonStyle::drawComplexControl(which, option, painter, widget);
+        return QProxyStyle::drawComplexControl(which, option, painter, widget);
     }
 }
 
@@ -235,7 +240,7 @@ QRect CLBronzeStyle::subControlRect(ComplexControl whichControl,
     }
     else
     {
-        return QCommonStyle::subControlRect(whichControl, option,
+        return QProxyStyle::subControlRect(whichControl, option,
                                             whichSubControl, widget);
     }
 }
@@ -251,7 +256,7 @@ QIcon CLBronzeStyle::standardIconImplementation(StandardPixmap which, const QSty
                                                 , const QWidget *widget) const
 {
     //调用基类的standardPixmap()获取图标,并绘制浅蓝色
-    QImage image = QCommonStyle::standardPixmap(which, option, widget).toImage();
+    QImage image = QProxyStyle::standardPixmap(which, option, widget).toImage();
     if (image.isNull())
     {
         return QIcon();

@@ -55,6 +55,7 @@ signals:
 
 protected:
     void paintEvent(QPaintEvent* event) Q_DECL_OVERRIDE;
+    void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
     void mouseReleaseEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
 
@@ -69,6 +70,9 @@ private:
     int m_nMaxStarCount;
 
     bool m_bReadOnly;
+
+    bool bLeftMousePress;
+    bool bDelegateEedit;    // 区分是qt 处于itemDelegate（需要鼠标点击进入编辑）还是单独的编辑控件
 
 };
 

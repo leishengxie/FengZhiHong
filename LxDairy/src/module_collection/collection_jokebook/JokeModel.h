@@ -13,6 +13,17 @@ struct T_JokeRating
 
 struct T_Joke
 {
+    T_Joke()
+        : jId(-1)
+        , bOriginal(false)
+        , upUid(-1)
+        , llRatingNumOfPeople(0)
+        , dRatingToatalScore(0)
+        , dRatingAverageScore(0)
+    {
+
+    }
+
     int jId;
     QString strTitle;
     QString strDate;

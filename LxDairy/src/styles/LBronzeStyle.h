@@ -32,10 +32,10 @@ public:
 
     // 画控件(窗口部件)
     // drawControl()函数被各种 QStyle 的子类重新实现，用于绘制 QPushButiön 和其他的一些简单的 窗口部件
-//    void drawControl(ControlElement element, // 要绘制的窗口部件的类型
-//                     const QStyleOption *option,
-//                     QPainter *painter,
-//                     const QWidget *widget) const;
+    void drawControl(ControlElement element, // 要绘制的窗口部件的类型
+                     const QStyleOption *option,
+                     QPainter *painter,
+                     const QWidget *widget) const;
 
 
     void drawComplexControl(ComplexControl which,

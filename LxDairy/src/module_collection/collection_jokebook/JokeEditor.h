@@ -15,6 +15,13 @@ public:
     explicit CJokeEditor(QWidget *parent = 0);
     ~CJokeEditor();
 
+private slots:
+    void on_btnSave_clicked();
+
+    void on_btnUpload_clicked();
+
+    void on_btnCancel_clicked();
+
 private:
     Ui::CJokeEditor *ui;
 };

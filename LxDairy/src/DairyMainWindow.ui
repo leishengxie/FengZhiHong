@@ -39,7 +39,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>2</number>
       </property>
       <widget class="CDairyWidget" name="tabDairy">
        <attribute name="title">
@@ -63,49 +63,6 @@
        <attribute name="title">
         <string>笔友</string>
        </attribute>
-       <widget class="QComboBox" name="comboBox">
-        <property name="geometry">
-         <rect>
-          <x>90</x>
-          <y>140</y>
-          <width>69</width>
-          <height>22</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QSpinBox" name="spinBox">
-        <property name="geometry">
-         <rect>
-          <x>90</x>
-          <y>190</y>
-          <width>42</width>
-          <height>22</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QTimeEdit" name="timeEdit">
-        <property name="geometry">
-         <rect>
-          <x>90</x>
-          <y>250</y>
-          <width>118</width>
-          <height>22</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="checkBox">
-        <property name="geometry">
-         <rect>
-          <x>90</x>
-          <y>310</y>
-          <width>71</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>CheckBox</string>
-        </property>
-       </widget>
       </widget>
      </widget>
     </item>

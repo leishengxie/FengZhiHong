@@ -18,6 +18,8 @@ CStarEditor::CStarEditor(QWidget* parent)
     m_dRating = 0;
     m_nMaxStarCount = s_nMaxStarCount;
     m_bReadOnly = false;
+    bLeftMousePress = false;
+    bDelegateEedit = false;
 
 }
 
@@ -104,7 +106,8 @@ void CStarEditor::drawFiveStarRating(QPainter *painter, const QRect &rect, const
 
 QSize CStarEditor::sizeHint() const
 {
-    return s_nPaintingScaleFactor * QSize(m_nMaxStarCount, 1);
+    // s_nPaintingScaleFactor右边距
+    return s_nPaintingScaleFactor * QSize(m_nMaxStarCount, 1) + QSize(s_nPaintingScaleFactor,0);
 }
 
 
@@ -114,22 +117,51 @@ void CStarEditor::paintEvent(QPaintEvent*)
     drawFiveStarRating(&painter, rect(), this->palette(), m_dRating, m_bReadOnly);
 }
 
+void CStarEditor::mousePressEvent(QMouseEvent *event)
+{
+    bLeftMousePress = true;
+}
+
 void CStarEditor::mouseMoveEvent(QMouseEvent* event)
 {
-    qreal dRating = event->x() / s_nPaintingScaleFactor;
-
-    if (dRating <= 0 || dRating > m_nMaxStarCount)
+    if (bDelegateEedit)
     {
-        return;
-    }
+        qreal dRating = event->x() / s_nPaintingScaleFactor;
 
-    m_dRating = dRating;
-    update();
+        if (dRating < 0)
+        {
+            dRating = 0;
+        }
+        if ( dRating > m_nMaxStarCount)
+        {
+            dRating = m_nMaxStarCount;
+        }
+
+        m_dRating = dRating;
+        update();
+    }
 
 }
 
-void CStarEditor::mouseReleaseEvent(QMouseEvent* /* event */)
+void CStarEditor::mouseReleaseEvent(QMouseEvent* event)
 {
+    bLeftMousePress = false;
+    if (!bDelegateEedit)
+    {
+        qreal dRating = event->x() / s_nPaintingScaleFactor;
+
+        if (dRating < 0)
+        {
+            dRating = 0;
+        }
+        if ( dRating > m_nMaxStarCount)
+        {
+            dRating = m_nMaxStarCount;
+        }
+
+        m_dRating = dRating;
+        update();
+    }
     emit editingFinished();
 }
 
