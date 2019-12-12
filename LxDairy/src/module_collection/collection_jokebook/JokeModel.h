@@ -1,7 +1,7 @@
 #ifndef CJOKEMODEL_H
 #define CJOKEMODEL_H
 #include <QAbstractTableModel>
-
+#include <QDataStream> // 日你妈报错能不明显点吗
 
 struct T_JokeRating
 {
@@ -11,19 +11,10 @@ struct T_JokeRating
 
 };
 
+
+
 struct T_Joke
 {
-    T_Joke()
-        : jId(-1)
-        , bOriginal(false)
-        , upUid(-1)
-        , llRatingNumOfPeople(0)
-        , dRatingToatalScore(0)
-        , dRatingAverageScore(0)
-    {
-
-    }
-
     int jId;
     QString strTitle;
     QString strDate;
@@ -41,8 +32,25 @@ struct T_Joke
 
     //QVector<T_Rating> vecRating;    // 评价列表
 
+    T_Joke()
+        : jId(-1)
+        , bOriginal(false)
+        , upUid(-1)
+        , llRatingNumOfPeople(0)
+        , dRatingToatalScore(0)
+        , dRatingAverageScore(0)
+    {
+
+    }
+
+#ifndef QT_NO_DATASTREAM
+    friend QDataStream & operator>>(QDataStream & in, T_Joke & data);
+    friend QDataStream & operator<<(QDataStream & out, const T_Joke & data);
+#endif
+
 };
 Q_DECLARE_METATYPE(T_Joke)
+
 
 
 
@@ -50,13 +58,13 @@ class CJokeModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    explicit CJokeModel(QObject *parent = 0);
+    explicit CJokeModel(QObject* parent = 0);
 
-    int rowCount(const QModelIndex& parent = QModelIndex()) const;
-    int columnCount(const QModelIndex &parent = QModelIndex()) const;
-    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
+    int rowCount(const QModelIndex & parent = QModelIndex()) const;
+    int columnCount(const QModelIndex & parent = QModelIndex()) const;
+    QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
-    Qt::ItemFlags flags(const QModelIndex &index) const;
+    Qt::ItemFlags flags(const QModelIndex & index) const;
 
     QList<T_Joke> listJoke()
     {

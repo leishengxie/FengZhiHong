@@ -3,7 +3,7 @@
 
 /////////////////////// 网络通信约定 //////////////////
 
-//extern const char g_szserver_url[] = "";
+extern const char g_szserver_url[];
 
 class CNetAppointments
 {

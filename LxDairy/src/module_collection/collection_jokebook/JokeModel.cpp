@@ -1,5 +1,23 @@
 #include "JokeModel.h"
 
+#ifndef QT_NO_DATASTREAM
+QDataStream & operator>>(QDataStream & in, T_Joke & data)
+{
+//    in >> data.jId >> data.strTitle >> data.strDate >> data.strContent >> data.bOriginal >> data.upUid \
+//       >> data.strNickname >> data.llRatingNumOfPeople >> data.dRatingToatalScore >> data.dRatingAverageScore;
+    in >> data.strTitle;
+    return in;
+}
+
+QDataStream & operator<<(QDataStream & out, const T_Joke & data)
+{
+//    out << data.jId << data.strTitle << data.strDate << data.strContent << data.bOriginal << data.upUid \
+//        << data.strNickname << data.llRatingNumOfPeople << data.dRatingToatalScore << data.dRatingAverageScore;
+    out << (quint32)data.jId;
+    out << data.strTitle;
+    return out;
+}
+#endif
 
 CJokeModel::CJokeModel(QObject* parent)
     : QAbstractTableModel(parent)
@@ -62,10 +80,12 @@ QVariant CJokeModel::headerData(int section, Qt::Orientation orientation, int ro
     return QVariant();
 }
 
-Qt::ItemFlags CJokeModel::flags(const QModelIndex &index) const
+Qt::ItemFlags CJokeModel::flags(const QModelIndex & index) const
 {
     if (!index.isValid())
+    {
         return Qt::NoItemFlags;
+    }
 
     if (index.column() == 3)
     {
@@ -77,7 +97,7 @@ Qt::ItemFlags CJokeModel::flags(const QModelIndex &index) const
     return  flag;
 }
 
-void CJokeModel::setListJoke(const QList<T_Joke> &lstJoke)
+void CJokeModel::setListJoke(const QList<T_Joke> & lstJoke)
 {
     beginResetModel();
     m_lstJoke = lstJoke;

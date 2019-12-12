@@ -21,6 +21,8 @@ struct T_CollectionItem
     {
 
     }
+
+
 };
 Q_DECLARE_METATYPE(T_CollectionItem)
 

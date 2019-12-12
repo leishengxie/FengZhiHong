@@ -6,6 +6,8 @@
 #include <QDateTime>
 
 #include "LHttpClient.h"
+#include "NetAppointments.h"
+
 
 CJokebookWidget::CJokebookWidget(QWidget* parent) :
     QWidget(parent),
@@ -54,7 +56,12 @@ void CJokebookWidget::saveJoke(const T_Joke & tJoke)
 
 void CJokebookWidget::uploadJoke(const T_Joke & tJoke)
 {
-    //pLHttpClient->post();
+
+    QByteArray byteArray;
+    QDataStream out(&byteArray, QIODevice::WriteOnly);
+    out.setVersion(QDataStream::Qt_5_6);
+    out << tJoke;
+    pLHttpClient->post(QString(g_szserver_url), byteArray.data(), byteArray.length());
 }
 
 void CJokebookWidget::on_comboBox_activated(int index)
@@ -69,7 +76,7 @@ void CJokebookWidget::on_comboBox_currentIndexChanged(int index)
 
 void CJokebookWidget::on_btnUpload_clicked()
 {
-    T_Joke tJoke = qvariant_cast<T_Joke>(index.data());
+    T_Joke tJoke = qvariant_cast<T_Joke>(ui->tableView->currentIndex().data());
     uploadJoke(tJoke);
 }
 
