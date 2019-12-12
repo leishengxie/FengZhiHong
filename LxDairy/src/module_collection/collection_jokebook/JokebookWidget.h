@@ -9,6 +9,7 @@ class CJokebookWidget;
 }
 
 class CJokeEditor;
+class LHttpClient;
 
 class CJokebookWidget : public QWidget
 {
@@ -20,6 +21,7 @@ public:
 public:
     void saveJoke(const T_Joke & tJoke);
     void uploadJoke(const T_Joke & tJoke);
+
 
 private slots:
     void on_comboBox_activated(int index);
@@ -33,11 +35,16 @@ private slots:
 
     void on_tableView_clicked(const QModelIndex &index);
 
+private slots:
+    void onHttpRequestFinished(const QByteArray& data);
+
 private:
     Ui::CJokebookWidget *ui;
 
     CJokeModel* m_pJokeModel;
     CJokeEditor* m_pJokeEditor;
+
+    LHttpClient* pLHttpClient;
 };
 
 #endif // JOKEBOOKWIDGET_H

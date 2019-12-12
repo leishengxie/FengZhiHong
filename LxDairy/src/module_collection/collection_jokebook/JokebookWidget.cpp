@@ -37,6 +37,9 @@ CJokebookWidget::CJokebookWidget(QWidget* parent) :
     m_pJokeModel->setListJoke(lstJoke);
 
     m_pJokeEditor = new CJokeEditor();
+
+    pLHttpClient = new LHttpClient(this);
+    connect(pLHttpClient, SIGNAL(finished(QByteArray)), this, SLOT(onHttpRequestFinished(QByteArray)));
 }
 
 CJokebookWidget::~CJokebookWidget()
@@ -51,7 +54,7 @@ void CJokebookWidget::saveJoke(const T_Joke & tJoke)
 
 void CJokebookWidget::uploadJoke(const T_Joke & tJoke)
 {
-
+    //pLHttpClient->post();
 }
 
 void CJokebookWidget::on_comboBox_activated(int index)
@@ -89,4 +92,9 @@ void CJokebookWidget::on_tableView_clicked(const QModelIndex & index)
     ui->textBrowser->append(QString("评价平均评分: %1\n").arg(tJoke.dRatingAverageScore));
     ui->textBrowser->append("***************************************");
     ui->textBrowser->append("   " + tJoke.strContent);
+}
+
+void CJokebookWidget::onHttpRequestFinished(const QByteArray &data)
+{
+
 }

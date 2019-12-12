@@ -27,7 +27,7 @@ CDairyMainWindow::CDairyMainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     setWindowTitle("LxDairy - " + CUser::getInstance()->getUserName());
-// 谨慎使用，20191201 会应用到子对象， 从而导致子对象每次show时都会使用，导致界面刷新卡顿
+// 谨慎使用，20191201 会应用到子对象， 从而导致子对象每次show时都会使用，如果是大图片会导致界面刷新卡顿
 //    QPalette pal;
 //    pal.setBrush(QPalette::Background, QBrush(QPixmap(":/img/bg/1.jpg").scaled(size())));
 //    setPalette(pal);
@@ -37,14 +37,11 @@ CDairyMainWindow::CDairyMainWindow(QWidget *parent)
     statusBar()->setStyleSheet(QString("QStatusBar::item{border: 0px}"));
     connect(ui->tabDairy, SIGNAL(requirePlayMusicS1()), m_pMusicPlayer, SLOT(onPlay()));
     connect(m_pMusicPlayer, SIGNAL(finished()), ui->tabDairy, SIGNAL(musicFinishedS1()));
-    //m_pMusicPlayer->onPlay();
+
 
     // tts播放模块
     m_pITTS = new CLWindowsTTSS(this);
     m_pITTS->initSpeech();
-
-    //connect(CDairyAppStation::getInstance(), SIGNAL(ttsSpeak(QString)), m_pITTS, SLOT(ttsSpeak(QString)));
-    //connect(CDairyAppStation::getInstance(), SIGNAL(playMusic()), m_pMusicPlayer, SLOT(onPlay()));
     connect(ui->tabDairy, SIGNAL(requireTTSspeakS1(QString)), m_pITTS, SLOT(ttsSpeak(QString)));
 
 
