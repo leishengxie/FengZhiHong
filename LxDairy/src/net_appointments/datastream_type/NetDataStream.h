@@ -1,76 +1,66 @@
 #ifndef NET_DATASTREAM_H
 #define NET_DATASTREAM_H
+#include <QDataStream> // 一定要包含此文件
 
 /////////////////////// QDateStrem //////////////////
 
-class NetDataStream
+class CNetDataStream
 {
 
 };
 
-//struct T_Student
-//{
-//    QString strName;
-//    int nAge;
-
-//    T_Student()
-//    {
-
-//    }
-
-//    T_Student(QString strName, int nAge)
-//        : strName(strName)
-//        , nAge(nAge)
-//    {
-
-//    }
+////////////////////// 数据实体定义   //////////////////
 
 
-//#ifndef QT_NO_DATASTREAM
-//    friend QDataStream & operator>>(QDataStream & in, T_Student & data);
-//    friend QDataStream & operator<<(QDataStream & out, const T_Student & data);
-//#endif
+struct T_JokeRating
+{
+    int jId;        // 被评价的资源id 既是主键也是外键
+    int uId;        // 评价用户id 既是主键也是外键
+    qreal dRating;  // 评分
 
-//};
-
-
-//#ifndef QT_NO_DATASTREAM
-//QDataStream & operator>>(QDataStream & in, T_Student & data)
-//{
-//    in >> data.strName >> data.nAge;
-//    return in;
-//}
-
-//QDataStream & operator<<(QDataStream & out, const T_Student & data)
-//{
-//    out << data.strName << data.nAge;
-//    return out;
-//}
-//#endif
+};
 
 
-//// --test ok
-////Serializable
-//T_Student tStudent("LiLei", 13);
-//qDebug() << tStudent.strName << tStudent.nAge;
+struct T_Joke
+{
+    int jId;
+    QString strTitle;
+    QString strDate;
+    QString strContent;
 
-//QByteArray tmp_array;
-//QDataStream out(&tmp_array, QIODevice::WriteOnly);
-//out.setVersion(QDataStream::Qt_5_6);
-////序列化对象信息
-//out << tStudent;
-//qDebug() << tmp_array;
+    bool bOriginal; // 是否原创
 
-//// DeSerializable
-////读取文件流信息
-//QByteArray tmp_array_de = tmp_array;
-//QDataStream in(&tmp_array_de, QIODevice::ReadOnly);
-//in.setVersion(QDataStream::Qt_5_6);
-////反序列化，获取对象信息
-//T_Student student_de;
-//in >> student_de;
+    int upUid;        // 上传者用户id
+    QString strNickname; // 上传者昵称
 
-//qDebug() << student_de.strName << student_de.nAge;
-// qDebug()<<__FILE__<<__FUNCTION__<<__LINE__<<endl;
+
+    quint64 llRatingNumOfPeople; // 评价总人数
+    qreal dRatingToatalScore ; // 评价总评分
+    qreal dRatingAverageScore;  // 评价平均评分 0-5
+
+    //QVector<T_Rating> vecRating;    // 评价列表
+
+    T_Joke()
+        : jId(-1)
+        , bOriginal(false)
+        , upUid(-1)
+        , llRatingNumOfPeople(0)
+        , dRatingToatalScore(0)
+        , dRatingAverageScore(0)
+    {
+
+    }
+
+#ifndef QT_NO_DATASTREAM
+    friend QDataStream & operator>>(QDataStream & in, T_Joke & data);
+    friend QDataStream & operator<<(QDataStream & out, const T_Joke & data);
+#endif
+
+};
+Q_DECLARE_METATYPE(T_Joke)
+
+
+
+
 
 #endif // NET_DATASTREAM_H

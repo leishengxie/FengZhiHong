@@ -9,7 +9,7 @@
 #include <QPainter>
 #include "SkinWidget.h"
 
-CLoginWidget::CLoginWidget(QWidget *parent) :
+CLoginWidget::CLoginWidget(QWidget* parent) :
     QWidget(parent),
     ui(new Ui::CLoginWidget)
 {
@@ -23,13 +23,13 @@ CLoginWidget::CLoginWidget(QWidget *parent) :
     ui->ckboxRememberPasswd->setChecked(bRememberPasswd);
     if (ui->ckboxRememberUserName->isChecked())
     {
-    QString strUserName = conf.value("user_name", "").toString();
-    ui->leUserName->setText(strUserName);
+        QString strUserName = conf.value("user_name", "").toString();
+        ui->leUserName->setText(strUserName);
     }
     if (ui->ckboxRememberPasswd->isChecked())
     {
-    QString strPasswd = conf.value("passwd", "").toString();
-    ui->lePasswd->setText(strPasswd);
+        QString strPasswd = conf.value("passwd", "").toString();
+        ui->lePasswd->setText(strPasswd);
     }
 
     m_pixBg = CSkinWidget::currentBackgroundPixmap();
@@ -44,15 +44,15 @@ CLoginWidget::~CLoginWidget()
     delete ui;
 }
 
-void CLoginWidget::onBgPixmapChanged(const QPixmap &pixmap)
+void CLoginWidget::onBgPixmapChanged(const QPixmap & pixmap)
 {
     m_pixBg = pixmap;
 }
 
 void CLoginWidget::on_btnRegister_clicked()
 {
-  //CRegisterDialog* pRegisterDialog = new CRegisterDialog();
-  //pRegisterDialog->exec();
+    //CRegisterDialog* pRegisterDialog = new CRegisterDialog();
+    //pRegisterDialog->exec();
     CRegisterDialog registerDialog;
     if (registerDialog.exec() == QDialog::Accepted)
     {
@@ -66,12 +66,12 @@ void CLoginWidget::on_btnLogin_clicked()
     QString strPasswd = ui->lePasswd->text();
     if (strUserName.isEmpty())
     {
-        QMessageBox::information(this, "提示" ,"请输入用户名！");
+        QMessageBox::information(this, "提示", "请输入用户名！");
         return;
     }
     if (strPasswd.isEmpty())
     {
-        QMessageBox::information(this, "提示" ,"请输入密码！");
+        QMessageBox::information(this, "提示", "请输入密码！");
         return;
     }
     if(CSqlOperate::login(strUserName, strPasswd))
@@ -86,15 +86,15 @@ void CLoginWidget::on_btnLogin_clicked()
         {
             conf.setValue("passwd", strPasswd);
         }
-       CDairyMainWindow *pDairyMainWindow = new CDairyMainWindow;
-       pDairyMainWindow->setLoginWidget(this);
-       //pDairyMainWindow->SetZhanghao(ui->lineEditzanghao->currentText());
-       pDairyMainWindow->show();
-       close();
+        CDairyMainWindow* pDairyMainWindow = new CDairyMainWindow;
+        pDairyMainWindow->setLoginWidget(this);
+        //pDairyMainWindow->SetZhanghao(ui->lineEditzanghao->currentText());
+        pDairyMainWindow->show();
+        close();
     }
     else
     {
-        QMessageBox::information(this, "ERROR" ,"账号或密码不正确！！");
+        QMessageBox::information(this, "ERROR", "账号或密码不正确！！");
     }
 }
 
@@ -112,7 +112,7 @@ void CLoginWidget::on_ckboxRememberPasswd_clicked(bool checked)
     conf.setValue("remember_passwd", checked);
 }
 
-void CLoginWidget::paintEvent(QPaintEvent *event)
+void CLoginWidget::paintEvent(QPaintEvent* event)
 {
     QWidget::paintEvent(event);
     if (m_pixBg.isNull())
@@ -131,7 +131,7 @@ void CLoginWidget::paintEvent(QPaintEvent *event)
 
 }
 
-void CLoginWidget::resizeEvent(QResizeEvent *event)
+void CLoginWidget::resizeEvent(QResizeEvent* event)
 {
     // 谨慎使用，20191201 会应用到子对象， 从而导致子对象每次show时都会使用，导致界面刷新卡顿
 //    QPalette pal;

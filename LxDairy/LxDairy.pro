@@ -148,7 +148,9 @@ HEADERS += \
     src/styles/LStyleBase.h \
     src/styles/LTabBarVStyle.h \
     src/styles/LNorwegianWoodStyle.h \
-    src/styles/LDarkDevelopStyle.h
+    src/styles/LDarkDevelopStyle.h \
+    src/DairyHttpClient.h
+
 
 SOURCES += \
     src/core/LBaseWidget.cpp \
@@ -207,7 +209,9 @@ SOURCES += \
     src/styles/LStyleBase.cpp \
     src/styles/LTabBarVStyle.cpp \
     src/styles/LNorwegianWoodStyle.cpp \
-    src/styles/LDarkDevelopStyle.cpp
+    src/styles/LDarkDevelopStyle.cpp \
+    src/DairyHttpClient.cpp
+
 
 FORMS += \
     src/module_tool/GeneralToolsWidget.ui \
@@ -228,5 +232,5 @@ FORMS += \
     src/module_collection/collection_jokebook/JokeEditor.ui
 
 
-
+include($$PWD/src/net_appointments/net_appointments.pri)
 

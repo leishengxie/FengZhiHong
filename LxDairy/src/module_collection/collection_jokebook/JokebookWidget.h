@@ -21,7 +21,8 @@ public:
 public:
     void saveJoke(const T_Joke & tJoke);
     void uploadJoke(const T_Joke & tJoke);
-
+public slots:
+    void onRespUploadJoke(const QByteArray& data);
 
 private slots:
     void on_comboBox_activated(int index);
