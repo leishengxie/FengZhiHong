@@ -89,6 +89,7 @@ INCLUDEPATH += \
     src/module_collection \
     src/music \
     src/styles \
+    src/net_appointments \
     src/tts
 
 
@@ -148,7 +149,11 @@ HEADERS += \
     src/styles/LStyleBase.h \
     src/styles/LTabBarVStyle.h \
     src/styles/LNorwegianWoodStyle.h \
-    src/styles/LDarkDevelopStyle.h
+    src/styles/LDarkDevelopStyle.h \
+    src/net_appointments/NetAppointments.h \
+    src/net_appointments/datastream_type/NetDataStream.h \
+    src/net_appointments/json_type/NetJson.h \
+    src/net_appointments/protobuff_type/NetProtobuff.h
 
 SOURCES += \
     src/core/LBaseWidget.cpp \
@@ -207,7 +212,8 @@ SOURCES += \
     src/styles/LStyleBase.cpp \
     src/styles/LTabBarVStyle.cpp \
     src/styles/LNorwegianWoodStyle.cpp \
-    src/styles/LDarkDevelopStyle.cpp
+    src/styles/LDarkDevelopStyle.cpp \
+    src/net_appointments/NetAppointments.cpp
 
 FORMS += \
     src/module_tool/GeneralToolsWidget.ui \
