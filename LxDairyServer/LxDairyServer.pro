@@ -45,7 +45,8 @@ HEADERS += \
     src/network/http/LResponderFactory.h \
     src/network/http/IResponderCreator.h \
     src/LDiaryResponderCreator.h \
-    src/LDairyService.h
+    src/LDairyService.h \
+    src/diary_responder/LJokeResponder.h
 
 SOURCES += \
     src/main.cpp \
@@ -67,8 +68,10 @@ SOURCES += \
     src/network/http/LResponderFactory.cpp \
     src/network/http/IResponderCreator.cpp \
     src/LDiaryResponderCreator.cpp \
-    src/LDairyService.cpp
+    src/LDairyService.cpp \
+    src/diary_responder/LJokeResponder.cpp
 
 
 include(qtservice/qtservice.pri)
 include(logging/logging.pri)
+include($$PWD/../LxDairy/src/net_appointments/net_appointments.pri)
