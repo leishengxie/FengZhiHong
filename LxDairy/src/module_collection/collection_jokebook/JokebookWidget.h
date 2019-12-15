@@ -2,6 +2,7 @@
 #define JOKEBOOKWIDGET_H
 
 #include <QWidget>
+#include <QNetworkAccessManager>
 #include "JokeModel.h"
 
 namespace Ui {
@@ -9,7 +10,6 @@ class CJokebookWidget;
 }
 
 class CJokeEditor;
-class LHttpClient;
 
 class CJokebookWidget : public QWidget
 {
@@ -23,6 +23,7 @@ public:
     void uploadJoke(const T_Joke & tJoke);
 public slots:
     void onRespUploadJoke(const QByteArray& data);
+    void onRespUploadJokeFinished();
 
 private slots:
     void on_comboBox_activated(int index);
@@ -45,7 +46,7 @@ private:
     CJokeModel* m_pJokeModel;
     CJokeEditor* m_pJokeEditor;
 
-    LHttpClient* pLHttpClient;
+    QNetworkAccessManager m_networkAccessManager;
 };
 
 #endif // JOKEBOOKWIDGET_H

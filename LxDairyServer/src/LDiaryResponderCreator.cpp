@@ -7,6 +7,8 @@
 #include "LHttpServer.h"
 #include "responder/LDumpResponder.h"
 #include "responder/LDefaultResponder.h"
+#include "diary_responder/LJokeResponder.h"
+#include
 #include <QTime>
 #include "utils/LAsyncLogger.h"
 
@@ -24,6 +26,11 @@ IResponder* CLDiaryResponderCreator::service(CLHttpRequest *request, CLHttpRespo
     if (path.startsWith("/dump"))
     {
         pResponder = new CLDumpResponder(request, resp);
+
+    }
+    if (path.startsWith("/joke"))
+    {
+        pResponder = new CLJokeResponder(request, resp);
 
     }
 //    else if (path.startsWith("/template"))

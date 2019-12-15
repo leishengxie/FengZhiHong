@@ -17,22 +17,17 @@
 
 extern const char g_szServerUrl[];
 
-class QWidget;
-class LHttpClient;
 
-class CNetAppointments
+struct T_NetAppointment
 {
-public:
-    CNetAppointments();
+    enum E_RequsetType
+    {
+        ER_Get,
+        ER_Post
+    };
 
+    T_NetAppointment();
 
-public:
-    /////// 通讯接口函数 //////
-    // shang chuan
-    static void post_uploadJoke(QWidget* widget, const LHttpClient* pHttpClient, const T_Joke & tJoke);
-
-
-public:
     ///// url 组成 /////
     // 协议 --http: or https: 分隔号//
     QString strProtocol;
@@ -50,10 +45,36 @@ public:
     QString strName;
 
     // 参数部分 --可选, 从“？”开始到“#”为止之间的部分为参数部分，又称搜索部分、查询部分。参数与参数之间用“&”作为分隔符
-    QString strPram;
+    QStringList strlstPrams;
 
     // 锚部分 --可选, 从最后一个“#”开始到最后，都是锚部分
     QString strAnchor;
+
+    QString url();
+
+
+    /////// 通讯接口函数 //////
+    E_RequsetType eRequsetType;
+
+    QByteArray byteBody;
+};
+
+class CNetAppointments
+{
+public:
+    CNetAppointments();
+
+    static QString urlUploadJoke();
+
+
+public:
+
+    // shang chuan
+
+
+
+public:
+
 
 
 

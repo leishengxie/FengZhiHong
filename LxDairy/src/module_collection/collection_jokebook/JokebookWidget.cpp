@@ -3,9 +3,11 @@
 #include "JokeModel.h"
 #include "JokeDelegate.h"
 #include "JokeEditor.h"
-#include <QDateTime>
 
-#include "LHttpClient.h"
+#include <QDateTime>
+#include <QNetworkReply>
+
+//#include "LHttpClient.h"
 //#include "NetAppointments.h"
 
 
@@ -40,8 +42,7 @@ CJokebookWidget::CJokebookWidget(QWidget* parent) :
 
     m_pJokeEditor = new CJokeEditor();
 
-    pLHttpClient = new LHttpClient(this);
-    connect(pLHttpClient, SIGNAL(finished(QByteArray)), this, SLOT(onHttpRequestFinished(QByteArray)));
+
 }
 
 CJokebookWidget::~CJokebookWidget()
@@ -57,16 +58,25 @@ void CJokebookWidget::saveJoke(const T_Joke & tJoke)
 void CJokebookWidget::uploadJoke(const T_Joke & tJoke)
 {
 
+    QNetworkRequest request(QString(g_szServerUrl));
+
     QByteArray byteArray;
     QDataStream out(&byteArray, QIODevice::WriteOnly);
     out.setVersion(QDataStream::Qt_5_6);
     out << tJoke;
-    pLHttpClient->post(QString(g_szServerUrl), byteArray.data(), byteArray.length());
+    QNetworkReply* pNetworkReply = m_networkAccessManager.post(request, byteArray);
+    connect(pNetworkReply, SIGNAL(finished()), this, SLOT(onRespUploadJokeFinished()));
 }
 
 void CJokebookWidget::onRespUploadJoke(const QByteArray &data)
 {
 
+}
+
+void CJokebookWidget::onRespUploadJokeFinished()
+{
+    QNetworkReply* pNetworkReply = qobject_cast<QNetworkReply*>(sender());
+    QByteArray data = pNetworkReply->readAll();
 }
 
 void CJokebookWidget::on_comboBox_activated(int index)
