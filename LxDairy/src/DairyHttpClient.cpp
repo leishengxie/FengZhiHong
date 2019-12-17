@@ -1,7 +1,7 @@
 #include "DairyHttpClient.h"
 
 CDairyHttpClient::CDairyHttpClient(QObject* parent, bool bAutoReleaseOnFinished)
-    : QObject(parent)
+    : LHttpClient(parent)
     , m_bAutoReleaseOnFinished(bAutoReleaseOnFinished)
 {
 
@@ -86,7 +86,7 @@ void CDairyHttpClient::syncPost(const QUrl & urlRequest, int nTag, const void* p
     tTaskInfo.nTag = nTag;
     tTaskInfo.urlRequest = urlRequest;
     tTaskInfo.eRequsetType = ER_Post;
-    tTaskInfo.byteArray.append(pData, nDataLen);
+    tTaskInfo.byteArray.append(QByteArray((const char*)pData, nDataLen));
 
 //    if (m_lstTaskTag.contains(tTaskInfo))
 //    {
@@ -123,7 +123,8 @@ void CDairyHttpClient::onFinishedAsync()
 {
     QNetworkReply* pNetworkReply = qobject_cast<QNetworkReply*>(sender());
     T_DairyUserData* pUserData = (T_DairyUserData*)(pNetworkReply->userData(Qt::UserRole + 1));
-    emit finished(pUserData->nTag, m_mapDataBuffer.value(pUserData->nTag));
+    LHttpDataBuffer httpDataBuffer = m_mapDataBuffer.value(pUserData->nTag);
+    emit finished(pUserData->nTag, httpDataBuffer.readAll());
     m_mapDataBuffer.remove(pUserData->nTag);
     pNetworkReply->deleteLater();
     pNetworkReply = NULL;
@@ -144,7 +145,7 @@ void CDairyHttpClient::onFinishedAsyn()
 {
 
     T_DairyUserData* pUserData = (T_DairyUserData*)(m_netReply->userData(Qt::UserRole + 1));
-    emit finished(pUserData->nTag, m_httpDataBuffer);
+    emit finished(pUserData->nTag, m_httpDataBuffer.readAll());
 
     m_httpDataBuffer.clear();   // 注意清除
     m_netReply->deleteLater();

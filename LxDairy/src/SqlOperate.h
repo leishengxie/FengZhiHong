@@ -5,6 +5,9 @@
 #include <QSqlDatabase>
 #include "Dairy.h"
 
+///
+/// \brief The CSqlOperate class 本地sqlite数据库操作
+///
 class CSqlOperate : public QObject
 {
     Q_OBJECT

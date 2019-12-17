@@ -8,6 +8,13 @@ struct T_DairyUserData : QObjectUserData
     int nTag;   // 唯一标示
    bool bAsync; // 是否异步
 
+   T_DairyUserData()
+       : nTag(-1)
+       , bAsync(false)
+   {
+
+   }
+
    T_DairyUserData(int nTag, bool bAsync = false)
        : nTag(nTag)
        , bAsync(bAsync)

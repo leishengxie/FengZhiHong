@@ -16,6 +16,14 @@ class CJokebookWidget : public QWidget
     Q_OBJECT
 
 public:
+    enum E_SelectType
+    {
+        ES_World,
+        ES_Penfriend,
+        ES_MyUpload,
+        ES_MyLocal
+    };
+
     explicit CJokebookWidget(QWidget *parent = 0);
     ~CJokebookWidget();
 public:

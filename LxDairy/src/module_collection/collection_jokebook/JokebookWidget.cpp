@@ -8,7 +8,7 @@
 #include <QNetworkReply>
 
 //#include "LHttpClient.h"
-//#include "NetAppointments.h"
+#include "NetAppointments.h"
 
 
 CJokebookWidget::CJokebookWidget(QWidget* parent) :
@@ -58,17 +58,13 @@ void CJokebookWidget::saveJoke(const T_Joke & tJoke)
 void CJokebookWidget::uploadJoke(const T_Joke & tJoke)
 {
 
-    QNetworkRequest request(QString(g_szServerUrl));
+    QNetworkRequest request(CNetAppointments::urlUploadJoke());
 
-    QByteArray byteArray;
-    QDataStream out(&byteArray, QIODevice::WriteOnly);
-    out.setVersion(QDataStream::Qt_5_6);
-    out << tJoke;
-    QNetworkReply* pNetworkReply = m_networkAccessManager.post(request, byteArray);
+    QNetworkReply* pNetworkReply = m_networkAccessManager.post(request, CNetAppointments::serializa(tJoke));
     connect(pNetworkReply, SIGNAL(finished()), this, SLOT(onRespUploadJokeFinished()));
 }
 
-void CJokebookWidget::onRespUploadJoke(const QByteArray &data)
+void CJokebookWidget::onRespUploadJoke(const QByteArray & data)
 {
 
 }
@@ -86,7 +82,20 @@ void CJokebookWidget::on_comboBox_activated(int index)
 
 void CJokebookWidget::on_comboBox_currentIndexChanged(int index)
 {
-
+    E_SelectType eSelectType = E_SelectType(index);
+    switch (eSelectType)
+    {
+        case ES_World:
+    case ES_Penfriend:
+    case ES_MyUpload:
+        // get_list
+        // select_list_by_listUserId
+    case ES_MyLocal:
+        // get_local_list
+            break;
+        default:
+            break;
+    }
 }
 
 void CJokebookWidget::on_btnUpload_clicked()
@@ -116,7 +125,7 @@ void CJokebookWidget::on_tableView_clicked(const QModelIndex & index)
     ui->textBrowser->append("   " + tJoke.strContent);
 }
 
-void CJokebookWidget::onHttpRequestFinished(const QByteArray &data)
+void CJokebookWidget::onHttpRequestFinished(const QByteArray & data)
 {
 
 }

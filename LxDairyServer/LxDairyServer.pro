@@ -1,6 +1,6 @@
 
 
-QT += core gui network
+QT += core gui network sql
 
 TEMPLATE = app
 CONFIG += console
@@ -46,7 +46,8 @@ HEADERS += \
     src/network/http/IResponderCreator.h \
     src/LDiaryResponderCreator.h \
     src/LDairyService.h \
-    src/diary_responder/LJokeResponder.h
+    src/diary_responder/LJokeResponder.h \
+    src/SqlOperate.h
 
 SOURCES += \
     src/main.cpp \
@@ -69,7 +70,8 @@ SOURCES += \
     src/network/http/IResponderCreator.cpp \
     src/LDiaryResponderCreator.cpp \
     src/LDairyService.cpp \
-    src/diary_responder/LJokeResponder.cpp
+    src/diary_responder/LJokeResponder.cpp \
+    src/SqlOperate.cpp
 
 
 include(qtservice/qtservice.pri)

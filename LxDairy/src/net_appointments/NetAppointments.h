@@ -15,7 +15,6 @@
 
 /////////////////////// 网络通信约定 //////////////////
 
-extern const char g_szServerUrl[];
 
 
 struct T_NetAppointment
@@ -59,6 +58,8 @@ struct T_NetAppointment
     QByteArray byteBody;
 };
 
+
+
 class CNetAppointments
 {
 public:
@@ -66,14 +67,33 @@ public:
 
     static QString urlUploadJoke();
 
+    template<typename T>
+    static QByteArray serializa(const T & t)
+    {
+        QByteArray byteArray;
+        QDataStream out(&byteArray, QIODevice::WriteOnly);
+        out.setVersion(QDataStream::Qt_5_6);
+        out << t;
+        return byteArray;
+    }
+
+    template<typename T>
+    static T deserialization(const QByteArray & byteArray)
+    {
+        T t;
+        QDataStream in(&byteArray, QIODevice::ReadOnly);
+        in.setVersion(QDataStream::Qt_5_6);
+        in >> t;
+        return t;
+    }
+
+    static void loadSetting();
+
+
+
 
 public:
-
-    // shang chuan
-
-
-
-public:
+    static T_NetAppointment s_tNetAppointment;
 
 
 

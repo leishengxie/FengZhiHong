@@ -20,7 +20,7 @@ const char * const VIRTUAL_DIR_PATH_JOKE = "/joke";
 
 
 
-const char g_szServerUrlLocal = "http://127.0.0.1:8080/";
+
 const char g_szServerUrl[] = "http://47.104.141.61:8080/";
 //const char* const g_szserver_url="http://47.104.141.61:8080/LxDiaryUpdateDir/"; //ok
 //const char* g_szserver_url="http://47.104.141.61:8080/LxDiaryUpdateDir/"; //非常量
@@ -35,9 +35,20 @@ T_NetAppointment::T_NetAppointment()
 
 }
 
+
+////////////////////////////////////////////////////////////////
+
+
+T_NetAppointment CNetAppointments::s_tNetAppointment;
+CNetAppointments::CNetAppointments()
+{
+
+}
+
+
 QString T_NetAppointment::url()
 {
-    QString.strUrl = QString(URL_FORMAT_MUST).arg(strProtocol).arg(strDomainName).arg(nPort);
+    QString strUrl = QString(URL_FORMAT_MUST).arg(strProtocol).arg(strDomainName).arg(nPort);
 
     strUrl +=strVirtualDirectory;
     strUrl +=strName;
@@ -51,14 +62,18 @@ QString T_NetAppointment::url()
     }
     if (!strPrams.isEmpty())
     {
-        strPrams.chop();
+        strPrams.chop(1);
         strUrl += "?";
         strUrl += strPrams;
         strUrl += "#";
     }
 
     // 锚部分 --可选, 从最后一个“#”开始到最后，都是锚部分
-    //strUrl +=strAnchor;
+    if (!strAnchor.isEmpty())
+    {
+        strUrl += "#";
+        strUrl +=strAnchor;
+    }
     return strUrl;
 }
 
@@ -71,5 +86,12 @@ QString CNetAppointments::urlUploadJoke()
 
     return tNetAppointment.url();
 }
+
+void CNetAppointments::loadSetting()
+{
+
+}
+
+
 
 
