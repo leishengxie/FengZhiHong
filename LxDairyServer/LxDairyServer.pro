@@ -9,9 +9,13 @@ TARGET = LxDairyServer
 
 DESTDIR = $$PWD/bin
 
+win32:CONFIG(release, debug|release): {
 QMAKE_LFLAGS += /MANIFESTUAC:\"level=\'requireAdministrator\' uiAccess=\'false\'\" #以管理员运行
 QMAKE_LFLAGS += /SUBSYSTEM:WINDOWS,\"5.01\" #VS2013 在XP运行
+}
+else:win32:CONFIG(debug, debug|release): {
 
+}
 #import path to system
 SRC = ./src
 INCLUDEPATH += \
@@ -47,7 +51,8 @@ HEADERS += \
     src/LDiaryResponderCreator.h \
     src/LDairyService.h \
     src/diary_responder/LJokeResponder.h \
-    src/SqlOperate.h
+    src/SqlOperate.h \
+    src/LDairyApp.h
 
 SOURCES += \
     src/main.cpp \
@@ -71,7 +76,8 @@ SOURCES += \
     src/LDiaryResponderCreator.cpp \
     src/LDairyService.cpp \
     src/diary_responder/LJokeResponder.cpp \
-    src/SqlOperate.cpp
+    src/SqlOperate.cpp \
+    src/LDairyApp.cpp
 
 
 include(qtservice/qtservice.pri)

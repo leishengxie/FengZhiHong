@@ -8,7 +8,7 @@
 #include "responder/LDumpResponder.h"
 #include "responder/LDefaultResponder.h"
 #include "diary_responder/LJokeResponder.h"
-#include
+
 #include <QTime>
 #include "utils/LAsyncLogger.h"
 

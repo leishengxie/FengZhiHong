@@ -73,6 +73,7 @@ void CJokebookWidget::onRespUploadJokeFinished()
 {
     QNetworkReply* pNetworkReply = qobject_cast<QNetworkReply*>(sender());
     QByteArray data = pNetworkReply->readAll();
+    qDebug() << "onRespUploadJokeFinished:" << data;
 }
 
 void CJokebookWidget::on_comboBox_activated(int index)

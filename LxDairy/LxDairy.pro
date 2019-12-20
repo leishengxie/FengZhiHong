@@ -15,6 +15,8 @@ TEMPLATE = app
 DESTDIR = $$PWD/bin
 message("hello LxDairy!")
 
+DEFINES += LX_DAIRY_APP
+
 RESOURCES += \
     res.qrc
 
@@ -149,7 +151,8 @@ HEADERS += \
     src/styles/LTabBarVStyle.h \
     src/styles/LNorwegianWoodStyle.h \
     src/styles/LDarkDevelopStyle.h \
-    src/DairyHttpClient.h
+    src/DairyHttpClient.h \
+    src/module_collection/collection_jokebook/Joke.h
 
 
 SOURCES += \
@@ -210,7 +213,8 @@ SOURCES += \
     src/styles/LTabBarVStyle.cpp \
     src/styles/LNorwegianWoodStyle.cpp \
     src/styles/LDarkDevelopStyle.cpp \
-    src/DairyHttpClient.cpp
+    src/DairyHttpClient.cpp \
+    src/module_collection/collection_jokebook/Joke.cpp
 
 
 FORMS += \

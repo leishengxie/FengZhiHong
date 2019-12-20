@@ -1,7 +1,7 @@
 #include "NetAppointments.h"
 
 #include <QString>
-#define URL_FORMAT_MUST    "%1://%2:%3/"
+#define URL_FORMAT_MUST    "%1://%2:%3"
 
 static const char* const HTTP_PROTOCOL_HTTP = "http";
 static const char* const HTTP_PPROTOCOL_HTTPS = "https";
@@ -12,7 +12,8 @@ static const char* const SERVER_RELEASE_DOMAIN = "47.104.141.61";
 static const int PORT = 8080;
 
 
-const char * const VIRTUAL_DIR_PATH_JOKE = "/joke";
+const char * const VIRTUAL_DIR_PATH_JOKE_ROOT = "/joke";
+const char * const VIRTUAL_DIR_PATH_JOKE_UPLOAD = "/joke/upload";
 
 #ifdef LOCAL_TEST
 
@@ -82,7 +83,7 @@ QString CNetAppointments::urlUploadJoke()
 {
     T_NetAppointment tNetAppointment;
     tNetAppointment.eRequsetType = T_NetAppointment::ER_Post;
-    tNetAppointment.strVirtualDirectory = VIRTUAL_DIR_PATH_JOKE;
+    tNetAppointment.strVirtualDirectory = VIRTUAL_DIR_PATH_JOKE_UPLOAD;
 
     return tNetAppointment.url();
 }

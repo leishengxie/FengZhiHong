@@ -12,8 +12,6 @@ class CNetDataStream
 ////////////////////// server - client 共用的数据实体定义   //////////////////
 
 
-#include "../../module_collection/collection_jokebook/JokeModel.h"
-
 
 
 

@@ -16,18 +16,25 @@ CLJokeResponder::CLJokeResponder(CLHttpRequest *req, CLHttpResponse *resp)
 int CLJokeResponder::handle()
 {
     QByteArray path = m_req->getPath();
-    qDebug("RequestMapper: path=%s", path.data());
-    if (path.startsWith("/joke/upload"))
+    qDebug("handle: path=%s", path.data());
+    if (path.startsWith(VIRTUAL_DIR_PATH_JOKE_UPLOAD))
     {
-        T_Joke tJoke = CNetAppointments::deserialization(m_req->getBody());
+        T_Joke tJoke = CNetAppointments::deserialization<T_Joke>(m_req->getBody());
 
+        m_resp->write("<html><body>");
+        m_resp->write("  diaryDate: <input type=\"text\" name=\"");
+        m_resp->write(tJoke.strDate.toUtf8());
+        m_resp->write("\"><br>");
+        m_resp->write("  dairyTitle: <input type=\"text\" name=\"");
+        m_resp->write(tJoke.strTitle.toUtf8());
+        m_resp->write("\"><br>");
+        m_resp->write("</body></html>",true);
+
+//        QByteArray resp_body;
+//        m_resp->write(resp_body, true);
     }
 
-    m_resp->setHeader("Content-Type", "text/html; charset=ISO-8859-1");
-    m_resp->setCookie(HttpCookie("firstCookie", "hello", 600, QByteArray(), QByteArray(), QByteArray(), false, true));
-    m_resp->setCookie(HttpCookie("secondCookie", "world", 600));
-    QByteArray resp_body();
-    m_resp->write(resp_body, true);
+
 
     return 1;
 }

@@ -14,8 +14,10 @@
 #endif
 
 /////////////////////// 网络通信约定 //////////////////
+#include <QDataStream>
+#include <QByteArray>
 
-
+extern const char * const VIRTUAL_DIR_PATH_JOKE_UPLOAD;
 
 struct T_NetAppointment
 {
@@ -77,11 +79,14 @@ public:
         return byteArray;
     }
 
+    /// 当函数模板的返回值是模板类型参数时
+    /// ，编译器无法通过函数调用来推断返回值的具体类型。此时，在调用函数时必须提供一个显式模板实参
     template<typename T>
     static T deserialization(const QByteArray & byteArray)
     {
         T t;
-        QDataStream in(&byteArray, QIODevice::ReadOnly);
+        QByteArray byteArrayTemp = byteArray;
+        QDataStream in(&byteArrayTemp, QIODevice::ReadOnly);
         in.setVersion(QDataStream::Qt_5_6);
         in >> t;
         return t;

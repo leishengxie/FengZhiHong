@@ -57,7 +57,7 @@ QString searchConfigFile()
         qWarning("%s/%s not found",qPrintable(dir),qPrintable(fileName));
     }
     qFatal("Cannot find config file %s",qPrintable(fileName));
-    return 0;
+    return "";
 }
 
 void CLDairyService::start()

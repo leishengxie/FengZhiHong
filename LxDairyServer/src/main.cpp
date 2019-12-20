@@ -1,5 +1,14 @@
-﻿#include "LDairyService.h"
+﻿
 #include <signal.h>
+#include <QSettings>
+
+#ifdef QT_NO_DEBUG
+#include "LDairyService.h"
+#include <QDir>
+#else
+#include "LDairyApp.h"
+#endif
+
 
 ///
 /// \brief 信号处理函数
@@ -78,7 +87,25 @@ int main(int argc, char *argv[])
     // 注册信号处理函数
     //register_signal();
 
+#ifdef QT_NO_DEBUG
+
+#if !defined(Q_WS_WIN)
+    // QtService stores service settings in SystemScope, which normally require root privileges.
+    // To allow testing this example as non-root, we change the directory of the SystemScope settings file.
+    QSettings::setPath(QSettings::NativeFormat, QSettings::SystemScope, QDir::tempPath());
+    qWarning("(Example uses dummy settings file: %s/QtSoftware.conf)", QDir::tempPath().toLatin1().constData());
+#endif // Q_WS_WIN
 
     CLDairyService service(argc, argv);
     return service.exec();
+
+#else
+
+    CLDairyApp a(argc, argv);
+    return a.exec();
+
+#endif //QT_NO_DEBUG
+
+
+
 }
