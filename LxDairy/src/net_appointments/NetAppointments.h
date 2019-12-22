@@ -1,8 +1,14 @@
 #ifndef NET_APPOINTMENTS_H
 #define NET_APPOINTMENTS_H
 
+//#define APPOINTMENT_DATASTREAM
+//#define APPOINTMENT_JSON
+//#define APPOINTMENT_PROTOBUFF
+
 #ifdef APPOINTMENT_DATASTREAM
-#include "NetDataStream.h"
+#include "datastream_type/NetDataStream.h"
+
+#include "collection_jokebook/Joke.h"
 #endif
 
 #ifdef APPOINTMENT_JSON

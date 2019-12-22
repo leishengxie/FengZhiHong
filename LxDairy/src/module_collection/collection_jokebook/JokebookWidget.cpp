@@ -58,8 +58,9 @@ void CJokebookWidget::saveJoke(const T_Joke & tJoke)
 void CJokebookWidget::uploadJoke(const T_Joke & tJoke)
 {
 
+    qDebug() << "uploadJoke:" << tJoke.strDate << tJoke.strTitle;
     QNetworkRequest request(CNetAppointments::urlUploadJoke());
-
+request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     QNetworkReply* pNetworkReply = m_networkAccessManager.post(request, CNetAppointments::serializa(tJoke));
     connect(pNetworkReply, SIGNAL(finished()), this, SLOT(onRespUploadJokeFinished()));
 }

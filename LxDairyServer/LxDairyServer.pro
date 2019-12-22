@@ -16,6 +16,19 @@ QMAKE_LFLAGS += /SUBSYSTEM:WINDOWS,\"5.01\" #VS2013 在XP运行
 else:win32:CONFIG(debug, debug|release): {
 
 }
+
+
+#依赖头文#
+INCLUDEPATH += $$PWD/../../LxTool/LQtTool/include
+DEPENDPATH += $$PWD/../../LxTool/LQtTool/include
+
+
+#链接#
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../LxTool/LQtTool/bin/ -lLQtTool
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../LxTool/LQtTool/bin/ -lLQtToold
+else:unix: LIBS += -L$$PWD/../../LxTool/LQtTool/bin/ -lLQtTool
+
+
 #import path to system
 SRC = ./src
 INCLUDEPATH += \
@@ -82,4 +95,4 @@ SOURCES += \
 
 include(qtservice/qtservice.pri)
 include(logging/logging.pri)
-include($$PWD/../LxDairy/src/net_appointments/net_appointments.pri)
+include($$PWD/../LxDairy/src/src_net_appointments.pri)

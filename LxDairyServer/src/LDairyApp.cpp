@@ -4,6 +4,7 @@
 #include "LHttpDef.h"
 #include "LDiaryResponderCreator.h"
 #include "LResponderFactory.h"
+#include "SqlOperate.h"
 
 //using namespace stefanfrings;
 
@@ -15,6 +16,10 @@ CLDairyApp::CLDairyApp(int &argc, char **argv)
 //    logSettings->beginGroup("logging");
 //    logger=new FileLogger(logSettings,10000,app);
 //    logger->installMsgHandler();
+
+    // 连接数据库
+    CSqlOperate::connectMySqDdatabase("localhost", "lxdairy", "root", "0406", 3306);
+
 
     // 加载全局配置文件, 加载失败需要退出程序
     CLHttpServerConfig & config = CLHttpServerConfig::instance();

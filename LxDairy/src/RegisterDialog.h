@@ -19,6 +19,8 @@ private slots:
     void on_btnOK_clicked();
 
 
+    void on_btnRegister_clicked();
+
 private:
     Ui::CRegisterDialog *ui;
 };

@@ -4,6 +4,8 @@
 #include "LHttpCookie.h"
 
 #include "NetAppointments.h"
+#include "SqlOperate.h"
+#include <QtDebug>
 
 
 CLJokeResponder::CLJokeResponder(CLHttpRequest *req, CLHttpResponse *resp)
@@ -15,11 +17,16 @@ CLJokeResponder::CLJokeResponder(CLHttpRequest *req, CLHttpResponse *resp)
 // http://127.0.0.1:8080/joke
 int CLJokeResponder::handle()
 {
+
     QByteArray path = m_req->getPath();
     qDebug("handle: path=%s", path.data());
     if (path.startsWith(VIRTUAL_DIR_PATH_JOKE_UPLOAD))
     {
         T_Joke tJoke = CNetAppointments::deserialization<T_Joke>(m_req->getBody());
+        CSqlOperate::getInstance()->saveUserUploadJoke(tJoke);
+
+        qDebug() << "strDate=" << tJoke.strDate;
+        qDebug() << "strTitle=" << tJoke.strTitle;
 
         m_resp->write("<html><body>");
         m_resp->write("  diaryDate: <input type=\"text\" name=\"");
