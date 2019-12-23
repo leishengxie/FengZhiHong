@@ -1,4 +1,8 @@
 #include "DairyHttpClient.h"
+#include "widgets/LLoopLoading.h"
+#include "widgets/LOperateTip.h"
+
+CLLoopLoading* CDairyHttpClient::s_pLoopLoading = new CLLoopLoading();
 
 CDairyHttpClient::CDairyHttpClient(QObject* parent, bool bAutoReleaseOnFinished)
     : LHttpClient(parent)
@@ -52,6 +56,17 @@ void CDairyHttpClient::syncGet(const QUrl & urlRequest, int nTag, int nTimeout)
 
     startSyncRequest();
 
+}
+
+void CDairyHttpClient::post(const QUrl &urlRequest, const QByteArray &data, int nTimeout)
+{
+
+}
+
+void CDairyHttpClient::post(const QUrl &urlRequest, const void *pData, int nDataLen, int nTimeout)
+{
+    LHttpClient::post(urlRequest, pData, nDataLen, nTimeout);
+    s_pLoopLoading->start("正在加载中!");
 }
 
 void CDairyHttpClient::asyncPost(const QUrl & urlRequest, int nTag, const void* pData, int nDataLen, int nTimeout)
@@ -112,7 +127,32 @@ void CDairyHttpClient::onReadyReadAsyn()
 
 void CDairyHttpClient::onFinished()
 {
-    LHttpClient::onFinished();
+    qDebug() << "parent LHttpDownload";
+    int status_code = m_netReply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    QString status_text = m_netReply->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString();
+
+    QNetworkReply::NetworkError eNetworkError = m_netReply->error();
+    m_netReply->deleteLater();
+    m_netReply = NULL;
+
+    s_pLoopLoading->stop();
+
+    if(eNetworkError == QNetworkReply::NoError)
+    {
+        emit finished(m_httpDataBuffer.readAll());
+        m_httpDataBuffer.clear();
+        if (status_code != 200)
+        {
+            CLOperateTip::waring(NULL, status_text);
+        }
+    }
+    else
+    {
+        qDebug() << "failed" << status_code;
+        CLOperateTip::waring(NULL, status_text);
+    }
+
+
     if (m_bAutoReleaseOnFinished)
     {
         deleteLater();

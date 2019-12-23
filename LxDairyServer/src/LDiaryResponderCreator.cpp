@@ -8,9 +8,11 @@
 #include "responder/LDumpResponder.h"
 #include "responder/LDefaultResponder.h"
 #include "diary_responder/LJokeResponder.h"
+#include "diary_responder/LLoginRigsterResponder.h"
 
 #include <QTime>
 #include "utils/LAsyncLogger.h"
+#include "NetAppointments.h"
 
 CLDiaryResponderCreator::CLDiaryResponderCreator()
 {
@@ -28,9 +30,14 @@ IResponder* CLDiaryResponderCreator::service(CLHttpRequest *request, CLHttpRespo
         pResponder = new CLDumpResponder(request, resp);
 
     }
-    if (path.startsWith("/joke"))
+    if (path.startsWith(VIRTUAL_DIR_PATH_JOKE_ROOT))
     {
         pResponder = new CLJokeResponder(request, resp);
+
+    }
+    if (path.startsWith(VIRTUAL_DIR_PATH_REGISTER) || path.startsWith(VIRTUAL_DIR_PATH_LOGIN))
+    {
+        pResponder = new CLLoginRigsterResponder(request, resp);
 
     }
 //    else if (path.startsWith("/template"))

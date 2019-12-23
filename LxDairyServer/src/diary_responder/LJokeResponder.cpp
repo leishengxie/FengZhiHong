@@ -4,7 +4,7 @@
 #include "LHttpCookie.h"
 
 #include "NetAppointments.h"
-#include "SqlOperate.h"
+#include "LSqlOperate.h"
 #include <QtDebug>
 
 
@@ -23,7 +23,10 @@ int CLJokeResponder::handle()
     if (path.startsWith(VIRTUAL_DIR_PATH_JOKE_UPLOAD))
     {
         T_Joke tJoke = CNetAppointments::deserialization<T_Joke>(m_req->getBody());
-        CSqlOperate::getInstance()->saveUserUploadJoke(tJoke);
+        T_HttpStatusMsg tHttpStatusMsg;
+        CLSqlOperate::getInstance()->saveUserUploadJoke(tJoke, tHttpStatusMsg);
+
+        m_resp->setStatus(tHttpStatusMsg.nStatusCode, tHttpStatusMsg.strMsg.toUtf8());
 
         qDebug() << "strDate=" << tJoke.strDate;
         qDebug() << "strTitle=" << tJoke.strTitle;

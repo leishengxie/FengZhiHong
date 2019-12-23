@@ -29,6 +29,8 @@ private slots:
 
     void on_ckboxRememberPasswd_clicked(bool checked);
 
+    void on_btnLoginServer_clicked();
+
 protected:
     void paintEvent(QPaintEvent *event);
     void resizeEvent(QResizeEvent *event);

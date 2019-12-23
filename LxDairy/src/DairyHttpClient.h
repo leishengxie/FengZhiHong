@@ -40,6 +40,8 @@ struct T_TaskInfo
     QByteArray byteArray;
 };
 
+class CLLoopLoading;
+
 ///
 /// \brief The CDairyHttpClient class   不知道原来的get请求会不会把前一次get的请求终止掉。所以新加了几个自定义的请求方式
 /// asyncGet 添加对多个http请求的处理，禁止继承, 提供同步和异步请求
@@ -65,6 +67,10 @@ public:
 
 
     /// post
+    void post(const QUrl &urlRequest, const QByteArray &data, int nTimeout = 6000);
+    void post(const QUrl& urlRequest, const void* pData, int nDataLen, int nTimeout = 6000);
+    //void blockPost(const QUrl& urlRequest, const void* pData, int nDataLen, int nTimeout = 6000);
+
     void asyncPost(const QUrl& urlRequest, int nTag, const void* pData, int nDataLen, int nTimeout = 6000);
 
     void syncPost(const QUrl& urlRequest, int nTag, const void* pData, int nDataLen, int nTimeout = 6000);
@@ -93,6 +99,8 @@ private:
 
     //
     bool m_bAutoReleaseOnFinished;
+
+    static CLLoopLoading* s_pLoopLoading;
 };
 
 #endif // CDAIRYHTTPCLIENT_H

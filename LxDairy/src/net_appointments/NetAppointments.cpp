@@ -14,10 +14,14 @@ static const int PORT = 8080;
 
 const char * const VIRTUAL_DIR_PATH_JOKE_ROOT = "/joke";
 const char * const VIRTUAL_DIR_PATH_JOKE_UPLOAD = "/joke/upload";
+const char * const VIRTUAL_DIR_PATH_REGISTER = "/register";
+const char * const VIRTUAL_DIR_PATH_LOGIN = "/login";
 
 #ifdef LOCAL_TEST
 
 #endif
+
+
 
 
 
@@ -35,17 +39,6 @@ T_NetAppointment::T_NetAppointment()
 {
 
 }
-
-
-////////////////////////////////////////////////////////////////
-
-
-T_NetAppointment CNetAppointments::s_tNetAppointment;
-CNetAppointments::CNetAppointments()
-{
-
-}
-
 
 QString T_NetAppointment::url()
 {
@@ -77,6 +70,26 @@ QString T_NetAppointment::url()
     }
     return strUrl;
 }
+
+
+////////////////////////////////////////////////////////////////
+
+
+T_NetAppointment CNetAppointments::s_tNetAppointment;
+CNetAppointments::CNetAppointments()
+{
+
+}
+
+QString CNetAppointments::urlRegister()
+{
+    T_NetAppointment tNetAppointment;
+    tNetAppointment.eRequsetType = T_NetAppointment::ER_Post;
+    tNetAppointment.strVirtualDirectory = VIRTUAL_DIR_PATH_REGISTER;
+
+    return tNetAppointment.url();
+}
+
 
 
 QString CNetAppointments::urlUploadJoke()

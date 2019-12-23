@@ -6,24 +6,30 @@
 //#define APPOINTMENT_PROTOBUFF
 
 #ifdef APPOINTMENT_DATASTREAM
-#include "datastream_type/NetDataStream.h"
+    #include "datastream_type/NetDataStream.h"
 
-#include "collection_jokebook/Joke.h"
+    #include "collection_jokebook/Joke.h"
 #endif
 
 #ifdef APPOINTMENT_JSON
-#include "NetJson.h"
+    #include "NetJson.h"
 #endif
 
 #ifdef APPOINTMENT_PROTOBUFF
-#include "NetProtobuff.h"
+    #include "NetProtobuff.h"
 #endif
 
 /////////////////////// 网络通信约定 //////////////////
 #include <QDataStream>
 #include <QByteArray>
 
-extern const char * const VIRTUAL_DIR_PATH_JOKE_UPLOAD;
+
+extern const char * const VIRTUAL_DIR_PATH_REGISTER;
+extern const char * const VIRTUAL_DIR_PATH_LOGIN;
+
+extern const char * const VIRTUAL_DIR_PATH_JOKE_ROOT;
+extern const char* const VIRTUAL_DIR_PATH_JOKE_UPLOAD;
+
 
 struct T_NetAppointment
 {
@@ -73,6 +79,7 @@ class CNetAppointments
 public:
     CNetAppointments();
 
+    static QString urlRegister();
     static QString urlUploadJoke();
 
     template<typename T>
@@ -109,6 +116,35 @@ public:
 
 
 
+};
+
+
+/////////// 定义返回码-扩展 ///////////////////////
+enum E_HttpStatusCode
+{
+    EH_Ok = 200,
+
+
+    // 扩展
+    EH_Ex_SystemError = 601,
+    EH_Ex_AccountAlreadyExists,    // The account already exists
+    EH_Ex_SqlError, // 数据库操作异常
+
+    EH_Ex_AccountNotExists,
+    EH_Ex_PasswdError
+};
+
+struct T_HttpStatusMsg
+{
+    T_HttpStatusMsg()
+        : nStatusCode(EH_Ok)
+        , strMsg("ok")
+    {
+
+    }
+
+    int nStatusCode;
+    QString strMsg;
 };
 
 

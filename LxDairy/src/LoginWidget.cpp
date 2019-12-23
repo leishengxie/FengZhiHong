@@ -8,6 +8,8 @@
 #include <QResizeEvent>
 #include <QPainter>
 #include "SkinWidget.h"
+#include "DairyHttpClient.h"
+#include "NetAppointments.h"
 
 CLoginWidget::CLoginWidget(QWidget* parent) :
     QWidget(parent),
@@ -137,4 +139,48 @@ void CLoginWidget::resizeEvent(QResizeEvent* event)
 //    QPalette pal;
 //    pal.setBrush(QPalette::Background, QBrush(QPixmap(":/img/bg/1.jpg").scaled(size())));
 //    setPalette(pal);
+}
+
+void CLoginWidget::on_btnLoginServer_clicked()
+{
+    QString strUserName = ui->leUserName->text();
+    QString strPasswd = ui->lePasswd->text();
+    if (strUserName.isEmpty())
+    {
+        QMessageBox::information(this, "提示", "请输入用户名！");
+        return;
+    }
+    if (strPasswd.isEmpty())
+    {
+        QMessageBox::information(this, "提示", "请输入密码！");
+        return;
+    }
+
+    CDairyHttpClient* pDairyHttpClient = new CDairyHttpClient(this, true);
+    connect(pDairyHttpClient, SIGNAL(finished(QByteArray)), this, [=]()
+    {
+        QSettings conf("conf.ini", QSettings::IniFormat);
+        conf.beginGroup("user");
+        if (ui->ckboxRememberUserName->isChecked())
+        {
+            conf.setValue("user_name", strUserName);
+        }
+        if (ui->ckboxRememberPasswd->isChecked())
+        {
+            conf.setValue("passwd", strPasswd);
+        }
+        CDairyMainWindow* pDairyMainWindow = new CDairyMainWindow;
+        pDairyMainWindow->setLoginWidget(this);
+        pDairyMainWindow->show();
+        close();
+    });
+    QByteArray byteArray;
+    QDataStream out(&byteArray, QIODevice::WriteOnly);
+    out.setVersion(QDataStream::Qt_5_6);
+    out << strUserName << strPasswd;
+    pDairyHttpClient->post(CNetAppointments::urlRegister(), byteArray.data(), byteArray.length());
+
+
+
+
 }

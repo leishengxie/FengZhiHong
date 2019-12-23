@@ -1,4 +1,4 @@
-#include "SqlOperate.h"
+#include "LSqlOperate.h"
 #include<QVariant>
 #include<QCoreApplication>
 #include<QDir>
@@ -11,13 +11,14 @@
 
 
 
-CSqlOperate::CSqlOperate(QObject* parent) : QObject(parent)
+
+CLSqlOperate::CLSqlOperate(QObject* parent) : QObject(parent)
 {
     createTable();
 
 }
 
-bool CSqlOperate::connectSqlite(QString strDbName)
+bool CLSqlOperate::connectSqlite(QString strDbName)
 {
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName(strDbName);
@@ -33,7 +34,7 @@ bool CSqlOperate::connectSqlite(QString strDbName)
     return true;
 }
 
-bool CSqlOperate::connectMySqDdatabase(QString strHostName, QString strDbName, QString strUserName, QString strPasswd, int port)
+bool CLSqlOperate::connectMySqDdatabase(QString strHostName, QString strDbName, QString strUserName, QString strPasswd, int port)
 {
     QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
     //mysql -u root -p0406 -h 39.106.17.62
@@ -56,7 +57,7 @@ bool CSqlOperate::connectMySqDdatabase(QString strHostName, QString strDbName, Q
     }
 }
 
-void CSqlOperate::createTable()
+void CLSqlOperate::createTable()
 {
 
 /// tUser 主要mysql的主键没有默认值
@@ -133,7 +134,58 @@ void CSqlOperate::createTable()
 
 }
 
-bool CSqlOperate::saveUserUploadJoke(const T_Joke &tJoke)
+
+void CLSqlOperate::registerAccount(QString strUserName, QString strPasswd, T_HttpStatusMsg & tHttpStatusMsg)
+{
+    QSqlQuery query;
+
+    // 检查账号是否已经存在
+    query.exec("select * from tUser where user_name = '" + strUserName + "'");
+    if (query.next())
+    {
+        tHttpStatusMsg.nStatusCode = EH_Ex_AccountAlreadyExists;  // user name already existes
+        tHttpStatusMsg.strMsg = "账号已经存在";
+        return;
+    }
+
+    // test2
+    query.prepare("INSERT INTO tUser(user_name, passwd) VALUES(?, ?)");
+    query.bindValue(0, strUserName);
+    query.bindValue(1, strPasswd);
+
+    if (!query.exec())
+    {
+        qDebug() << query.lastError();
+        tHttpStatusMsg.nStatusCode = EH_Ex_SqlError;
+        tHttpStatusMsg.strMsg = query.lastError().text();
+        return;
+    }
+
+}
+
+void CLSqlOperate::login(QString strUserName, QString strPasswd, T_HttpStatusMsg & tHttpStatusMsg)
+{
+    QSqlQuery query;
+    query.exec("select * from tUser where user_name = '" + strUserName + "'");
+    if (!query.next())
+    {
+        tHttpStatusMsg.nStatusCode = EH_Ex_AccountNotExists;
+        tHttpStatusMsg.strMsg = "账号不存在，请注册账号";
+        return;
+
+    }
+
+    query.exec("select * from tUser where user_name = '" + strUserName + "' and passwd = '" + strPasswd + "'");
+    if (!query.next())
+    {
+        tHttpStatusMsg.nStatusCode = EH_Ex_PasswdError;
+        tHttpStatusMsg.strMsg = "密码错误";
+        return;
+    }
+
+}
+
+void CLSqlOperate::saveUserUploadJoke(const T_Joke &tJoke, T_HttpStatusMsg & tHttpStatusMsg)
 {
     // 有外键约束会检测uid在tuser的存在
     query.prepare("INSERT INTO tJoke(title, create_datetime, content, original, up_uid, nickname) VALUES(?, ?, ?, ?, ?, ?)");
@@ -147,9 +199,11 @@ bool CSqlOperate::saveUserUploadJoke(const T_Joke &tJoke)
     if (!query.exec())
     {
         qDebug() << query.lastError();
-        return false;
+        tHttpStatusMsg.nStatusCode = EH_Ex_SqlError;
+        tHttpStatusMsg.strMsg = query.lastError().text();
+        return;
     }
-    return true;
+
 }
 
 

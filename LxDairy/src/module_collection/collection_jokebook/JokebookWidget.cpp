@@ -60,7 +60,7 @@ void CJokebookWidget::uploadJoke(const T_Joke & tJoke)
 
     qDebug() << "uploadJoke:" << tJoke.strDate << tJoke.strTitle;
     QNetworkRequest request(CNetAppointments::urlUploadJoke());
-request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     QNetworkReply* pNetworkReply = m_networkAccessManager.post(request, CNetAppointments::serializa(tJoke));
     connect(pNetworkReply, SIGNAL(finished()), this, SLOT(onRespUploadJokeFinished()));
 }
@@ -88,12 +88,12 @@ void CJokebookWidget::on_comboBox_currentIndexChanged(int index)
     switch (eSelectType)
     {
         case ES_World:
-    case ES_Penfriend:
-    case ES_MyUpload:
+        case ES_Penfriend:
+        case ES_MyUpload:
         // get_list
         // select_list_by_listUserId
-    case ES_MyLocal:
-        // get_local_list
+        case ES_MyLocal:
+            // get_local_list
             break;
         default:
             break;
