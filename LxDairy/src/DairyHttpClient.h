@@ -76,8 +76,9 @@ public:
     void syncPost(const QUrl& urlRequest, int nTag, const void* pData, int nDataLen, int nTimeout = 6000);
 
 signals:
-    void finished(int nTag, const QByteArray& data);
+    void finishedWithTag(int nTag, const QByteArray& data);
     void finishedAll();
+    void finished_1(const QByteArray& data);
 
 public slots:
     void onReadyReadAsync();
@@ -101,6 +102,8 @@ private:
     bool m_bAutoReleaseOnFinished;
 
     static CLLoopLoading* s_pLoopLoading;
+
+
 };
 
 #endif // CDAIRYHTTPCLIENT_H

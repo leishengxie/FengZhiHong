@@ -13,9 +13,9 @@ CRegisterDialog::CRegisterDialog(QWidget *parent) :
     ui->setupUi(this);
     setWindowTitle("注册");
     //setAttribute(Qt::WA_DeleteOnClose);
-    QPalette pal;
-    pal.setBrush(QPalette::Background, QBrush(QPixmap(":/img/bg/1.jpg").scaled(size())));
-    setPalette(pal);
+//    QPalette pal;
+//    pal.setBrush(QPalette::Background, QBrush(QPixmap(":/img/bg/1.jpg").scaled(size())));
+//    setPalette(pal);
 }
 
 CRegisterDialog::~CRegisterDialog()
@@ -79,7 +79,7 @@ void CRegisterDialog::on_btnRegister_clicked()
     }
 
     CDairyHttpClient* pDairyHttpClient = new CDairyHttpClient(this, true);
-    connect(pDairyHttpClient, SIGNAL(finished(QByteArray)), this, [=]()
+    connect(pDairyHttpClient, &CDairyHttpClient::finished_1, [=]()
     {
         QMessageBox::information(this, "OK", QString("账号为：%1\n密码：%2\n请记住你的账号和密码！\n").arg(strUserName).arg(strPasswd));
         accept();

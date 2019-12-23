@@ -157,7 +157,8 @@ void CLoginWidget::on_btnLoginServer_clicked()
     }
 
     CDairyHttpClient* pDairyHttpClient = new CDairyHttpClient(this, true);
-    connect(pDairyHttpClient, SIGNAL(finished(QByteArray)), this, [=]()
+    // 此处为什么不能识别父类的finished???
+    connect(pDairyHttpClient, &CDairyHttpClient::finished_1, [=](QByteArray byteArray)
     {
         QSettings conf("conf.ini", QSettings::IniFormat);
         conf.beginGroup("user");
@@ -178,7 +179,7 @@ void CLoginWidget::on_btnLoginServer_clicked()
     QDataStream out(&byteArray, QIODevice::WriteOnly);
     out.setVersion(QDataStream::Qt_5_6);
     out << strUserName << strPasswd;
-    pDairyHttpClient->post(CNetAppointments::urlRegister(), byteArray.data(), byteArray.length());
+    pDairyHttpClient->post(CNetAppointments::urlLogin(), byteArray.data(), byteArray.length());
 
 
 

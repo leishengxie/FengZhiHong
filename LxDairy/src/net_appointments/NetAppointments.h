@@ -80,6 +80,7 @@ public:
     CNetAppointments();
 
     static QString urlRegister();
+    static QString urlLogin();
     static QString urlUploadJoke();
 
     template<typename T>
@@ -138,7 +139,7 @@ struct T_HttpStatusMsg
 {
     T_HttpStatusMsg()
         : nStatusCode(EH_Ok)
-        , strMsg("ok")
+        , strMsg("很好")
     {
 
     }

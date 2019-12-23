@@ -1,14 +1,22 @@
 #include "DairyHttpClient.h"
 #include "widgets/LLoopLoading.h"
-#include "widgets/LOperateTip.h"
+#include <QMessageBox>
 
-CLLoopLoading* CDairyHttpClient::s_pLoopLoading = new CLLoopLoading();
+CLLoopLoading* CDairyHttpClient::s_pLoopLoading = NULL;
 
 CDairyHttpClient::CDairyHttpClient(QObject* parent, bool bAutoReleaseOnFinished)
     : LHttpClient(parent)
     , m_bAutoReleaseOnFinished(bAutoReleaseOnFinished)
 {
-
+    if (s_pLoopLoading == NULL)
+    {
+        s_pLoopLoading = new CLLoopLoading();
+    }
+    QWidget* pWidget = qobject_cast<QWidget*>(parent);
+    if (pWidget)
+    {
+        s_pLoopLoading->setParent(pWidget);
+    }
 }
 
 
@@ -60,13 +68,26 @@ void CDairyHttpClient::syncGet(const QUrl & urlRequest, int nTag, int nTimeout)
 
 void CDairyHttpClient::post(const QUrl &urlRequest, const QByteArray &data, int nTimeout)
 {
+    if (urlRequest.isEmpty())
+    {
+        return;
+    }
 
+    QNetworkRequest request(urlRequest);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    m_netReply = m_netAccessManager->post(request, data);
+    connect(m_netReply, SIGNAL(readyRead()), this, SLOT(onReadyRead()));
+    connect(m_netReply, SIGNAL(finished()), this, SLOT(onFinished()));
+    connect(m_netReply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(onError(QNetworkReply::NetworkError)));
+    connect(m_netReply, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(onDownloadProgress(qint64, qint64)));
+
+    s_pLoopLoading->start("正在加载中!");
 }
 
 void CDairyHttpClient::post(const QUrl &urlRequest, const void *pData, int nDataLen, int nTimeout)
 {
-    LHttpClient::post(urlRequest, pData, nDataLen, nTimeout);
-    s_pLoopLoading->start("正在加载中!");
+    post(urlRequest, QByteArray((const char*)pData, nDataLen), nTimeout);
+
 }
 
 void CDairyHttpClient::asyncPost(const QUrl & urlRequest, int nTag, const void* pData, int nDataLen, int nTimeout)
@@ -127,9 +148,10 @@ void CDairyHttpClient::onReadyReadAsyn()
 
 void CDairyHttpClient::onFinished()
 {
-    qDebug() << "parent LHttpDownload";
     int status_code = m_netReply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    QString status_text = m_netReply->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString();
+    QString status_text_1 = m_netReply->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString();
+    QString status_text = QString::fromUtf8(m_netReply->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toByteArray());
+    //å¾\210å¥½
 
     QNetworkReply::NetworkError eNetworkError = m_netReply->error();
     m_netReply->deleteLater();
@@ -139,17 +161,17 @@ void CDairyHttpClient::onFinished()
 
     if(eNetworkError == QNetworkReply::NoError)
     {
-        emit finished(m_httpDataBuffer.readAll());
+        emit finished_1(m_httpDataBuffer.readAll());
         m_httpDataBuffer.clear();
         if (status_code != 200)
         {
-            CLOperateTip::waring(NULL, status_text);
+            QMessageBox::information(NULL, QString::number(status_code), status_text);
         }
     }
     else
     {
         qDebug() << "failed" << status_code;
-        CLOperateTip::waring(NULL, status_text);
+        QMessageBox::information(NULL, QString::number(status_code), status_text);
     }
 
 
@@ -164,7 +186,7 @@ void CDairyHttpClient::onFinishedAsync()
     QNetworkReply* pNetworkReply = qobject_cast<QNetworkReply*>(sender());
     T_DairyUserData* pUserData = (T_DairyUserData*)(pNetworkReply->userData(Qt::UserRole + 1));
     LHttpDataBuffer httpDataBuffer = m_mapDataBuffer.value(pUserData->nTag);
-    emit finished(pUserData->nTag, httpDataBuffer.readAll());
+    emit finishedWithTag(pUserData->nTag, httpDataBuffer.readAll());
     m_mapDataBuffer.remove(pUserData->nTag);
     pNetworkReply->deleteLater();
     pNetworkReply = NULL;
@@ -185,7 +207,7 @@ void CDairyHttpClient::onFinishedAsyn()
 {
 
     T_DairyUserData* pUserData = (T_DairyUserData*)(m_netReply->userData(Qt::UserRole + 1));
-    emit finished(pUserData->nTag, m_httpDataBuffer.readAll());
+    emit finishedWithTag(pUserData->nTag, m_httpDataBuffer.readAll());
 
     m_httpDataBuffer.clear();   // 注意清除
     m_netReply->deleteLater();

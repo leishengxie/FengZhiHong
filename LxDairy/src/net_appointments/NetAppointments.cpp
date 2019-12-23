@@ -90,6 +90,15 @@ QString CNetAppointments::urlRegister()
     return tNetAppointment.url();
 }
 
+QString CNetAppointments::urlLogin()
+{
+    T_NetAppointment tNetAppointment;
+    tNetAppointment.eRequsetType = T_NetAppointment::ER_Post;
+    tNetAppointment.strVirtualDirectory = VIRTUAL_DIR_PATH_LOGIN;
+
+    return tNetAppointment.url();
+}
+
 
 
 QString CNetAppointments::urlUploadJoke()

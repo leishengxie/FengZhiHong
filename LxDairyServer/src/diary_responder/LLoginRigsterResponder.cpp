@@ -34,8 +34,7 @@ int CLLoginRigsterResponder::handle()
 
         m_resp->setStatus(tHttpStatusMsg.nStatusCode, tHttpStatusMsg.strMsg.toUtf8());
 
-        QByteArray resp_body;
-        m_resp->write(resp_body, true);
+        m_resp->write("hello", true);
     }
     else if(path.startsWith(VIRTUAL_DIR_PATH_LOGIN))
     {
@@ -51,8 +50,8 @@ int CLLoginRigsterResponder::handle()
         m_resp->setStatus(tHttpStatusMsg.nStatusCode, tHttpStatusMsg.strMsg.toUtf8());
 
         // 返回用户信息
-        QByteArray resp_body;
-        m_resp->write(resp_body, true);
+        m_resp->write("hello", true);
+        //能用QString就尽量不要用QByteArray
     }
 
 
