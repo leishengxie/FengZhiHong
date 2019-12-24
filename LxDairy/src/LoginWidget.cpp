@@ -10,6 +10,7 @@
 #include "SkinWidget.h"
 #include "DairyHttpClient.h"
 #include "NetAppointments.h"
+#include "User.h"
 
 CLoginWidget::CLoginWidget(QWidget* parent) :
     QWidget(parent),
@@ -55,7 +56,13 @@ void CLoginWidget::on_btnRegister_clicked()
 {
     //CRegisterDialog* pRegisterDialog = new CRegisterDialog();
     //pRegisterDialog->exec();
-    CRegisterDialog registerDialog;
+    CRegisterDialog registerDialog(this);
+    if (!m_pixBg.isNull())
+    {
+        QPalette pal;
+        pal.setBrush(QPalette::Background, QBrush(m_pixBg.scaled(registerDialog.size())));
+        registerDialog.setPalette(pal);
+    }
     if (registerDialog.exec() == QDialog::Accepted)
     {
 
@@ -170,6 +177,9 @@ void CLoginWidget::on_btnLoginServer_clicked()
         {
             conf.setValue("passwd", strPasswd);
         }
+        T_UserInfo tUserInfo = CNetAppointments::deserialization<T_UserInfo>(byteArray);
+        CUser::getInstance()->setUserInfo(tUserInfo);
+
         CDairyMainWindow* pDairyMainWindow = new CDairyMainWindow;
         pDairyMainWindow->setLoginWidget(this);
         pDairyMainWindow->show();

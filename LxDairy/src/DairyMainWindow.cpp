@@ -18,11 +18,11 @@
 #include "DairyAppStation.h"
 
 
-CDairyMainWindow::CDairyMainWindow(QWidget *parent)
+CDairyMainWindow::CDairyMainWindow(QWidget* parent)
     : QMainWindow(parent)
     , ui(new Ui::DairyMainWindow)
     , m_pSkinWidget(new CSkinWidget())
-        , m_pMusicPlayer(new CLMusicPlayer(this))
+    , m_pMusicPlayer(new CLMusicPlayer(this))
     , m_pLoginWidget(NULL)
 {
     ui->setupUi(this);
@@ -62,7 +62,7 @@ CDairyMainWindow::~CDairyMainWindow()
 
 
 
-void CDairyMainWindow::resizeEvent(QResizeEvent *event)
+void CDairyMainWindow::resizeEvent(QResizeEvent* event)
 {
     // 谨慎使用，20191201 会应用到子对象， 从而导致子对象每次show时都会使用，导致界面刷新卡顿
 //    QPalette pal;
@@ -72,12 +72,12 @@ void CDairyMainWindow::resizeEvent(QResizeEvent *event)
 
 
 
-void CDairyMainWindow::setLoginWidget(CLoginWidget *pLoginWidget)
+void CDairyMainWindow::setLoginWidget(CLoginWidget* pLoginWidget)
 {
     m_pLoginWidget = pLoginWidget;
 }
 
-void CDairyMainWindow::onBgPixmapChanged(const QPixmap &pixmap)
+void CDairyMainWindow::onBgPixmapChanged(const QPixmap & pixmap)
 {
     m_pixBg = pixmap;
     update();
@@ -87,7 +87,7 @@ void CDairyMainWindow::onBgPixmapChanged(const QPixmap &pixmap)
     }
 }
 
-void CDairyMainWindow::paintEvent(QPaintEvent *event)
+void CDairyMainWindow::paintEvent(QPaintEvent* event)
 {
     QMainWindow::paintEvent(event);
     if (m_pixBg.isNull())
@@ -98,7 +98,7 @@ void CDairyMainWindow::paintEvent(QPaintEvent *event)
     painter.drawPixmap(rect(), m_pixBg);
 }
 
-void CDairyMainWindow::closeEvent(QCloseEvent *event)
+void CDairyMainWindow::closeEvent(QCloseEvent* event)
 {
     //CDairyApp::postEvent(ui->tabDairy, (QEvent *)event);
 //    if(ui->tabDairy->closeAllSubWindows())
@@ -155,15 +155,15 @@ void CDairyMainWindow::on_action_color_triggered()
 {
     //    const QColorDialog::ColorDialogOptions options = QFlag(colorDialogOptionsWidget->value());
     //        const QColor color = QColorDialog::getColor(Qt::green, this, "Select Color", options);
-        QColor color = QColorDialog::getColor(Qt::green,this);
-        if(color.isValid())
-        {
-            //ui->textEdit->setTextColor(color);
-        }
-        else
-        {
-            QMessageBox::information(this,"Error Message","set color fail");
-        }
+    QColor color = QColorDialog::getColor(Qt::green, this);
+    if(color.isValid())
+    {
+        //ui->textEdit->setTextColor(color);
+    }
+    else
+    {
+        QMessageBox::information(this, "Error Message", "set color fail");
+    }
 }
 
 void CDairyMainWindow::on_action_redo_triggered()
@@ -203,14 +203,14 @@ void CDairyMainWindow::on_action_exit_triggered()
 void CDairyMainWindow::on_action_font_triggered()
 {
     bool ok;
-    QFont font = QFontDialog::getFont(&ok,QFont("Helvetica [Cronyx]", 10),this);
+    QFont font = QFontDialog::getFont(&ok, QFont("Helvetica [Cronyx]", 10), this);
     if(ok)
     {
         //ui->textEdit->setFont(font);
     }
     else
     {
-        QMessageBox::information(this,"Error Message","set font fail");
+        QMessageBox::information(this, "Error Message", "set font fail");
     }
 }
 

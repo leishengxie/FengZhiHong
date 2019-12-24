@@ -85,6 +85,7 @@ public slots:
     void onReadyReadAsyn();
 
     virtual void onFinished();
+    void onError(QNetworkReply::NetworkError errorCode);
     void onFinishedAsync();
     void onFinishedAsyn();
 

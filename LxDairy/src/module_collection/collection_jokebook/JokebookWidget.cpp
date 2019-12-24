@@ -6,9 +6,11 @@
 
 #include <QDateTime>
 #include <QNetworkReply>
+#include <QMessageBox>
 
 //#include "LHttpClient.h"
 #include "NetAppointments.h"
+#include "User.h"
 
 
 CJokebookWidget::CJokebookWidget(QWidget* parent) :
@@ -36,6 +38,7 @@ CJokebookWidget::CJokebookWidget(QWidget* parent) :
     tJoke.strTitle = "hello";
     tJoke.strDate = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
     tJoke.strContent = "abcdefffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
+    tJoke.upUid = CUser::getInstance()->getUserInfo().uid;
     tJoke.dRatingAverageScore = 3.9;
     lstJoke.append(tJoke);
     m_pJokeModel->setListJoke(lstJoke);
@@ -74,7 +77,25 @@ void CJokebookWidget::onRespUploadJokeFinished()
 {
     QNetworkReply* pNetworkReply = qobject_cast<QNetworkReply*>(sender());
     QByteArray data = pNetworkReply->readAll();
-    qDebug() << "onRespUploadJokeFinished:" << data;
+
+    int status_code = pNetworkReply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    QVariant variant = pNetworkReply->attribute(QNetworkRequest::HttpReasonPhraseAttribute);
+    QByteArray byteArray = variant.toString().toLatin1();
+    QString status_text = QString::fromUtf8(byteArray);
+
+
+    if (status_code == 200)
+    {
+       qDebug() << "onRespUploadJokeFinished:" << data;
+    }
+    else
+    {
+        QMessageBox::information(this, QString::number(status_code), status_text);
+    }
+
+    pNetworkReply->deleteLater();
+    pNetworkReply = NULL;
+
 }
 
 void CJokebookWidget::on_comboBox_activated(int index)

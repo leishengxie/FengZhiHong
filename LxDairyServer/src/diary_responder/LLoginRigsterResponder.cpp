@@ -45,12 +45,14 @@ int CLLoginRigsterResponder::handle()
         in.setVersion(QDataStream::Qt_5_6);
         in >> strUserName >> strPasswd;
         T_HttpStatusMsg tHttpStatusMsg;
-        CLSqlOperate::getInstance()->login(strUserName, strPasswd, tHttpStatusMsg);
+        T_UserInfo tUserInfo;
+        CLSqlOperate::getInstance()->login(strUserName, strPasswd, tUserInfo, tHttpStatusMsg);
 
         m_resp->setStatus(tHttpStatusMsg.nStatusCode, tHttpStatusMsg.strMsg.toUtf8());
 
         // 返回用户信息
-        m_resp->write("hello", true);
+        m_resp->write(CNetAppointments::serializa(tUserInfo), true);
+
         //能用QString就尽量不要用QByteArray
     }
 

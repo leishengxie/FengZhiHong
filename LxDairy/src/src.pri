@@ -74,7 +74,8 @@ HEADERS += \
     $$PWD/DairyHttpClient.h \
     $$PWD/module_collection/collection_jokebook/Joke.h \
     $$PWD/net_appointments/NetAppointments.h \
-    $$PWD/net_appointments/datastream_type/NetDataStream.h
+    $$PWD/net_appointments/datastream_type/NetDataStream.h \
+    $$PWD/UserInfo.h
 
 
 SOURCES += \
@@ -138,7 +139,8 @@ SOURCES += \
     $$PWD/DairyHttpClient.cpp \
     $$PWD/module_collection/collection_jokebook/Joke.cpp \
     $$PWD/net_appointments/NetAppointments.cpp \
-    $$PWD/net_appointments/datastream_type/NetDataStream.cpp
+    $$PWD/net_appointments/datastream_type/NetDataStream.cpp \
+    $$PWD/UserInfo.cpp
 
 
 FORMS += \

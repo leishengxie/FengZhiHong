@@ -7,6 +7,7 @@
 #include "Singleton.h"
 #include "func.h"
 #include "Dairy.h"
+#include "UserInfo.h"
 
 ///
 /// \brief The CUser class 用户数据,用于把数据库的数据加载到内存，方便管理
@@ -31,6 +32,8 @@ public:
     SETGET(QStringList, m_lstDairyTag, LstDairyTag)
 
 
+    // 用户登录返回的用户信息
+    SETGET(T_UserInfo, m_tUserInfo, UserInfo)
 
     void appendDairy(CDairy dairy);
 

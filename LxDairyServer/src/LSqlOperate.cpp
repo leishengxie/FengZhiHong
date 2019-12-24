@@ -70,6 +70,18 @@ void CLSqlOperate::createTable()
         qDebug() << query.lastError();
     }
 
+    // 用户授权信息表 - 暂时不使用第三方登录
+//    QString strSql = "create table if not exists tUserAuths(" \
+//                     "id int not null primary key auto_increment, " \
+//                     "uid int not null, " \
+//                     "identity_type varchar(32) not null, " \
+//                     "identifier varchar(32) not null, " \
+//                     "credential varchar(128) not null)";
+//    if (!query.exec(strSql))
+//    {
+//        qDebug() << query.lastError();
+//    }
+
     /// tDairy
     strSql = "create table if not exists tDairy(" \
              "did int not null primary key auto_increment, " \
@@ -163,7 +175,7 @@ void CLSqlOperate::registerAccount(QString strUserName, QString strPasswd, T_Htt
 
 }
 
-void CLSqlOperate::login(QString strUserName, QString strPasswd, T_HttpStatusMsg & tHttpStatusMsg)
+void CLSqlOperate::login(QString strUserName, QString strPasswd, T_UserInfo &tUserInfo, T_HttpStatusMsg & tHttpStatusMsg)
 {
     QSqlQuery query;
     query.exec("select * from tUser where user_name = '" + strUserName + "'");
@@ -176,7 +188,12 @@ void CLSqlOperate::login(QString strUserName, QString strPasswd, T_HttpStatusMsg
     }
 
     query.exec("select * from tUser where user_name = '" + strUserName + "' and passwd = '" + strPasswd + "'");
-    if (!query.next())
+    if (query.next())
+    {
+        //QSqlRecord rec = q.record();
+        tUserInfo.uid = query.value("uid").toInt();
+    }
+    else
     {
         tHttpStatusMsg.nStatusCode = EH_Ex_PasswdError;
         tHttpStatusMsg.strMsg = "密码错误";

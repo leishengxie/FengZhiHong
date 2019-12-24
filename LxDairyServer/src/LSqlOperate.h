@@ -7,6 +7,7 @@
 #include "Singleton.h"
 
 #include "collection_jokebook/Joke.h"
+#include "UserInfo.h"
 #include "NetAppointments.h"
 
 ///
@@ -27,7 +28,7 @@ public:
 
      //
      void registerAccount(QString strUserName, QString strPasswd, T_HttpStatusMsg &tHttpStatusMsg);
-     void login(QString strUserName, QString strPasswd, T_HttpStatusMsg &tHttpStatusMsg);
+     void login(QString strUserName, QString strPasswd, T_UserInfo &tUserInfo, T_HttpStatusMsg &tHttpStatusMsg);
 
 
 //     QList<CDairy> getDairyList(int uid);

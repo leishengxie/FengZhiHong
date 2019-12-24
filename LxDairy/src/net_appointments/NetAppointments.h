@@ -9,6 +9,7 @@
     #include "datastream_type/NetDataStream.h"
 
     #include "collection_jokebook/Joke.h"
+    #include "UserInfo.h"
 #endif
 
 #ifdef APPOINTMENT_JSON
@@ -139,7 +140,7 @@ struct T_HttpStatusMsg
 {
     T_HttpStatusMsg()
         : nStatusCode(EH_Ok)
-        , strMsg("很好")
+        , strMsg("sucess")
     {
 
     }

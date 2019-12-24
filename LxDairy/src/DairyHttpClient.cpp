@@ -12,11 +12,11 @@ CDairyHttpClient::CDairyHttpClient(QObject* parent, bool bAutoReleaseOnFinished)
     {
         s_pLoopLoading = new CLLoopLoading();
     }
-    QWidget* pWidget = qobject_cast<QWidget*>(parent);
-    if (pWidget)
-    {
-        s_pLoopLoading->setParent(pWidget);
-    }
+//    QWidget* pWidget = qobject_cast<QWidget*>(parent);
+//    if (pWidget)
+//    {
+//        s_pLoopLoading->setParent(pWidget);
+//    }
 }
 
 
@@ -66,7 +66,7 @@ void CDairyHttpClient::syncGet(const QUrl & urlRequest, int nTag, int nTimeout)
 
 }
 
-void CDairyHttpClient::post(const QUrl &urlRequest, const QByteArray &data, int nTimeout)
+void CDairyHttpClient::post(const QUrl & urlRequest, const QByteArray & data, int nTimeout)
 {
     if (urlRequest.isEmpty())
     {
@@ -84,7 +84,7 @@ void CDairyHttpClient::post(const QUrl &urlRequest, const QByteArray &data, int 
     s_pLoopLoading->start("正在加载中!");
 }
 
-void CDairyHttpClient::post(const QUrl &urlRequest, const void *pData, int nDataLen, int nTimeout)
+void CDairyHttpClient::post(const QUrl & urlRequest, const void* pData, int nDataLen, int nTimeout)
 {
     post(urlRequest, QByteArray((const char*)pData, nDataLen), nTimeout);
 
@@ -149,36 +149,41 @@ void CDairyHttpClient::onReadyReadAsyn()
 void CDairyHttpClient::onFinished()
 {
     int status_code = m_netReply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    QString status_text_1 = m_netReply->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString();
-    QString status_text = QString::fromUtf8(m_netReply->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toByteArray());
-    //å¾\210å¥½
+    QVariant variant = m_netReply->attribute(QNetworkRequest::HttpReasonPhraseAttribute);
+    // toUtf82次?, 因为传输过来的已经是utf8字节数组，toByteArray()默认又转为utf8一次。
+    //QByteArray byteArray =  variant.toByteArray();
+    //QString status_text = QString::fromUtf8(byteArray);
 
-    QNetworkReply::NetworkError eNetworkError = m_netReply->error();
+    QByteArray byteArray = variant.toString().toLatin1();
+    QString status_text = QString::fromUtf8(byteArray);
+
+
+    //QNetworkReply::NetworkError eNetworkError = m_netReply->error();
     m_netReply->deleteLater();
     m_netReply = NULL;
 
     s_pLoopLoading->stop();
 
-    if(eNetworkError == QNetworkReply::NoError)
+    if (status_code == 200)
     {
         emit finished_1(m_httpDataBuffer.readAll());
-        m_httpDataBuffer.clear();
-        if (status_code != 200)
-        {
-            QMessageBox::information(NULL, QString::number(status_code), status_text);
-        }
     }
     else
     {
-        qDebug() << "failed" << status_code;
         QMessageBox::information(NULL, QString::number(status_code), status_text);
     }
 
-
+    m_httpDataBuffer.clear();
     if (m_bAutoReleaseOnFinished)
     {
         deleteLater();
     }
+}
+
+void CDairyHttpClient::onError(QNetworkReply::NetworkError errorCode)
+{
+    //qDebug() << "failed" << status_code;
+    //QMessageBox::information(NULL, QString::number(status_code), status_text);
 }
 
 void CDairyHttpClient::onFinishedAsync()
