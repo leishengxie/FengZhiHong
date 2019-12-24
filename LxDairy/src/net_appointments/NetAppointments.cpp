@@ -13,7 +13,9 @@ static const int PORT = 8080;
 
 
 const char * const VIRTUAL_DIR_PATH_JOKE_ROOT = "/joke";
+const char * const VIRTUAL_DIR_PATH_JOKE_LIST = "/joke/list";
 const char * const VIRTUAL_DIR_PATH_JOKE_UPLOAD = "/joke/upload";
+
 const char * const VIRTUAL_DIR_PATH_REGISTER = "/register";
 const char * const VIRTUAL_DIR_PATH_LOGIN = "/login";
 

@@ -16,13 +16,7 @@ class CJokebookWidget : public QWidget
     Q_OBJECT
 
 public:
-    enum E_SelectType
-    {
-        ES_World,
-        ES_Penfriend,
-        ES_MyUpload,
-        ES_MyLocal
-    };
+
 
     explicit CJokebookWidget(QWidget *parent = 0);
     ~CJokebookWidget();
@@ -32,6 +26,9 @@ public:
 public slots:
     void onRespUploadJoke(const QByteArray& data);
     void onRespUploadJokeFinished();
+
+protected:
+    void showEvent(QShowEvent *event);
 
 private slots:
     void on_comboBox_activated(int index);

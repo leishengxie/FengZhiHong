@@ -98,6 +98,11 @@ void CJokebookWidget::onRespUploadJokeFinished()
 
 }
 
+void CJokebookWidget::showEvent(QShowEvent *event)
+{
+
+}
+
 void CJokebookWidget::on_comboBox_activated(int index)
 {
 
@@ -108,12 +113,12 @@ void CJokebookWidget::on_comboBox_currentIndexChanged(int index)
     E_SelectType eSelectType = E_SelectType(index);
     switch (eSelectType)
     {
-        case ES_World:
-        case ES_Penfriend:
-        case ES_MyUpload:
+        case ES_SelectByWorld:
+        case ES_SelectByPenfriend:
+        case ES_SelectByMyUpload:
         // get_list
         // select_list_by_listUserId
-        case ES_MyLocal:
+        case ES_SelectByMyLocal:
             // get_local_list
             break;
         default:

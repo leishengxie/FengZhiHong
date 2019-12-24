@@ -51,4 +51,44 @@ struct T_Joke
 Q_DECLARE_METATYPE(T_Joke)
 
 
+// filter
+enum E_SelectType
+{
+    ES_SelectByWorld,
+    ES_SelectByPenfriend,
+    ES_SelectByMyUpload,
+    ES_SelectByMyLocal
+};
+
+enum E_SortFiled
+{
+    ES_ByTime,
+    ES_BySize,
+    ES_ByName,
+};
+
+enum E_OrderType
+{
+    EO_ASC,
+    EO_DESC,
+};
+
+struct T_JokeListRequest
+{
+    int nPageIndex; // 页码
+    int nPageItems; // 当前页最大条目数
+    int nSelectType;
+    int nSortFiled;
+    int nOrderType;
+
+};
+
+struct T_JokeListResp
+{
+\
+    int nTotalItems;
+    QList<T_Joke> listJoke;
+
+};
+
 #endif // __JOKE_H

@@ -29,6 +29,7 @@ extern const char * const VIRTUAL_DIR_PATH_REGISTER;
 extern const char * const VIRTUAL_DIR_PATH_LOGIN;
 
 extern const char * const VIRTUAL_DIR_PATH_JOKE_ROOT;
+extern const char * const VIRTUAL_DIR_PATH_JOKE_LIST;
 extern const char* const VIRTUAL_DIR_PATH_JOKE_UPLOAD;
 
 
