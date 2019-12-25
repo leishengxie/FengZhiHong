@@ -1,12 +1,13 @@
 ﻿
 #include <signal.h>
 #include <QSettings>
+#include "LSqlConnectionPool.h"
 
 #ifdef QT_NO_DEBUG
-#include "LDairyService.h"
-#include <QDir>
+    #include "LDairyService.h"
+    #include <QDir>
 #else
-#include "LDairyApp.h"
+    #include "LDairyApp.h"
 #endif
 
 
@@ -19,23 +20,23 @@ static void signal_handler(int sig_num)
     switch(sig_num)
     {
 #ifndef WIN32
-    case SIGQUIT:
-    case SIGSTOP:
-    case SIGHUP:
+        case SIGQUIT:
+        case SIGSTOP:
+        case SIGHUP:
 #endif
-    case SIGTERM:
-    case SIGABRT:
-        fprintf(stdout, "exit by signal %d\n", sig_num);
-        fflush(stdout);
-        exit(2);
-        break;
-    case SIGFPE:
-    case SIGSEGV:
-    case SIGILL:
-        fprintf(stdout, "exit by error %d\n", sig_num);
-        fflush(stdout);
-        exit(1);
-        break;
+        case SIGTERM:
+        case SIGABRT:
+            fprintf(stdout, "exit by signal %d\n", sig_num);
+            fflush(stdout);
+            exit(2);
+            break;
+        case SIGFPE:
+        case SIGSEGV:
+        case SIGILL:
+            fprintf(stdout, "exit by error %d\n", sig_num);
+            fflush(stdout);
+            exit(1);
+            break;
     }
 }
 
@@ -82,7 +83,7 @@ static void register_signal()
 //-c cmd --command cmd 将用户定义的命令代码cmd发送到服务应用程序。
 //-v -version 显示版本和状态信息。
 // 具体看代码
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     // 注册信号处理函数
     //register_signal();
@@ -97,12 +98,16 @@ int main(int argc, char *argv[])
 #endif // Q_WS_WIN
 
     CLDairyService service(argc, argv);
-    return service.exec();
+    int ret = service.exec();
+    CSqlConnectionPool::getInstance()->release();
+    return ret;
 
 #else
 
     CLDairyApp a(argc, argv);
-    return a.exec();
+    int ret = a.exec();
+    CSqlConnectionPool::getInstance()->release();
+    return ret;
 
 #endif //QT_NO_DEBUG
 

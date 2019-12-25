@@ -45,8 +45,7 @@ public:
 
 public slots:
 
-private:
-    QSqlQuery query;
+
 };
 
 #endif // __L_SQL_OPERATE_H

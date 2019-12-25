@@ -81,13 +81,6 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="btnSave">
-       <property name="text">
-        <string>保存</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QPushButton" name="btnUpload">
        <property name="text">
         <string>上传</string>

@@ -22,6 +22,7 @@ void CJokeEditor::on_btnUpload_clicked()
     T_Joke tJoke;
     tJoke.strTitle = ui->leTitle->text();
     tJoke.strDate = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+    int index = ui->combSource->currentIndex();
     tJoke.bOriginal = (ui->combSource->currentIndex() == 1 ? true : false);
     tJoke.strContent = ui->plainTextEdit->document()->toPlainText();
     tJoke.upUid = CUser::getInstance()->getUserInfo().uid;

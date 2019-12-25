@@ -8,7 +8,7 @@
 #include <QSqlError>
 
 #include <time.h>
-
+#include "LSqlConnectionPool.h"
 
 
 
@@ -59,6 +59,9 @@ bool CLSqlOperate::connectMySqDdatabase(QString strHostName, QString strDbName, 
 
 void CLSqlOperate::createTable()
 {
+
+    QSqlDatabase db = CSqlConnectionPool::getInstance()->getOpenConnection();
+    QSqlQuery query(db);
 
 /// tUser 主要mysql的主键没有默认值
     QString strSql = "create table if not exists tUser(" \
@@ -146,12 +149,15 @@ void CLSqlOperate::createTable()
         qDebug() << query.lastError();
     }
 
+    CSqlConnectionPool::getInstance()->closeConnection(db);
+
 }
 
 
 void CLSqlOperate::registerAccount(QString strUserName, QString strPasswd, T_HttpStatusMsg & tHttpStatusMsg)
 {
-    QSqlQuery query;
+    QSqlDatabase db = CSqlConnectionPool::getInstance()->getOpenConnection();
+    QSqlQuery query(db);
 
     // 检查账号是否已经存在
     query.exec("select * from tUser where user_name = '" + strUserName + "'");
@@ -159,6 +165,7 @@ void CLSqlOperate::registerAccount(QString strUserName, QString strPasswd, T_Htt
     {
         tHttpStatusMsg.nStatusCode = EH_Ex_AccountAlreadyExists;  // user name already existes
         tHttpStatusMsg.strMsg = "账号已经存在";
+        CSqlConnectionPool::getInstance()->closeConnection(db);
         return;
     }
 
@@ -173,19 +180,24 @@ void CLSqlOperate::registerAccount(QString strUserName, QString strPasswd, T_Htt
         qDebug() << query.lastError();
         tHttpStatusMsg.nStatusCode = EH_Ex_SqlError;
         tHttpStatusMsg.strMsg = query.lastError().text();
+        CSqlConnectionPool::getInstance()->closeConnection(db);
         return;
     }
+
+    CSqlConnectionPool::getInstance()->closeConnection(db);
 
 }
 
 void CLSqlOperate::login(QString strUserName, QString strPasswd, T_UserInfo &tUserInfo, T_HttpStatusMsg & tHttpStatusMsg)
 {
-    QSqlQuery query;
+    QSqlDatabase db = CSqlConnectionPool::getInstance()->getOpenConnection();
+    QSqlQuery query(db);
     query.exec("select * from tUser where user_name = '" + strUserName + "'");
     if (!query.next())
     {
         tHttpStatusMsg.nStatusCode = EH_Ex_AccountNotExists;
         tHttpStatusMsg.strMsg = "账号不存在，请注册账号";
+        CSqlConnectionPool::getInstance()->closeConnection(db);
         return;
 
     }
@@ -201,13 +213,17 @@ void CLSqlOperate::login(QString strUserName, QString strPasswd, T_UserInfo &tUs
     {
         tHttpStatusMsg.nStatusCode = EH_Ex_PasswdError;
         tHttpStatusMsg.strMsg = "密码错误";
+        CSqlConnectionPool::getInstance()->closeConnection(db);
         return;
     }
 
+    CSqlConnectionPool::getInstance()->closeConnection(db);
 }
 
 void CLSqlOperate::saveUserUploadJoke(const T_Joke &tJoke, T_HttpStatusMsg & tHttpStatusMsg)
 {
+    QSqlDatabase db = CSqlConnectionPool::getInstance()->getOpenConnection();
+    QSqlQuery query(db);
     // 有外键约束会检测uid在tuser的存在
     query.prepare("INSERT INTO tJoke(title, create_datetime, content, original, up_uid, nickname) VALUES(?, ?, ?, ?, ?, ?)");
     query.bindValue(0, tJoke.strTitle);
@@ -222,15 +238,19 @@ void CLSqlOperate::saveUserUploadJoke(const T_Joke &tJoke, T_HttpStatusMsg & tHt
         qDebug() << query.lastError();
         tHttpStatusMsg.nStatusCode = EH_Ex_SqlError;
         tHttpStatusMsg.strMsg = query.lastError().text();
+        CSqlConnectionPool::getInstance()->closeConnection(db);
         return;
     }
 
+    CSqlConnectionPool::getInstance()->closeConnection(db);
 }
 
 void CLSqlOperate::getJokeList(const T_JokeListRequest &tJokeListRequest
                                , T_JokeListResp &tJokeListResp
                                , T_HttpStatusMsg &tHttpStatusMsg)
 {
+    QSqlDatabase db = CSqlConnectionPool::getInstance()->getOpenConnection();
+    QSqlQuery query(db);
 //    int nPageIndex; // 页码
 //    int nPageItems; // 当前页最大条目数
 //    int nSelectType;
@@ -252,6 +272,7 @@ void CLSqlOperate::getJokeList(const T_JokeListRequest &tJokeListRequest
         qDebug() << query.lastError();
         tHttpStatusMsg.nStatusCode = EH_Ex_SqlError;
         tHttpStatusMsg.strMsg = query.lastError().text();
+        CSqlConnectionPool::getInstance()->closeConnection(db);
         return;
     }
     while (query.next())
@@ -260,7 +281,7 @@ void CLSqlOperate::getJokeList(const T_JokeListRequest &tJokeListRequest
         tJoke.strTitle = query.value("title").toString();
         tJoke.strDate = query.value("create_datetime").toString();
         tJoke.strContent = query.value("content").toString();
-        tJoke.bOriginal = query.value("title").toBool();
+        tJoke.bOriginal = query.value("original").toBool();
         tJoke.upUid = query.value("up_uid").toInt();
         tJoke.strNickname = query.value("nickname").toString();
         tJoke.llRatingNumOfPeople = query.value("total_rating_people").toInt();
@@ -268,6 +289,7 @@ void CLSqlOperate::getJokeList(const T_JokeListRequest &tJokeListRequest
         tJoke.dRatingAverageScore = query.value("average_rating_score").toDouble();
         tJokeListResp.listJoke.append(tJoke);
     }
+    CSqlConnectionPool::getInstance()->closeConnection(db);
 }
 
 

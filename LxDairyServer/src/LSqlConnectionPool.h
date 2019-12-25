@@ -6,46 +6,52 @@
 #include <QMutex>
 #include <QMutexLocker>
 #include<QDebug>
-#include<QSettings>//配置文件
 
 
+///
+/// \brief The CSqlConnectionPool class 单例-懒汉式 加入了线程安全
+///
 class CSqlConnectionPool
 {
 public:
-    static void release(); // 关闭所有的数据库连接
-    static QSqlDatabase openConnection();                 // 获取数据库连接
-    static void closeConnection(QSqlDatabase connection); // 释放数据库连接回连接池
+    static CSqlConnectionPool* getInstance();
 
+public:
+    void release();                                  // 关闭所有的数据库连接
+    QSqlDatabase getOpenConnection();                   // 获取数据库连接
+    void closeConnection(QSqlDatabase connection);   // 释放数据库连接回连接池
     ~CSqlConnectionPool();
 
 private:
-    static CSqlConnectionPool & getInstance();
-
     CSqlConnectionPool();
-    CSqlConnectionPool(const CSqlConnectionPool & other);
-    CSqlConnectionPool & operator=(const CSqlConnectionPool & other);
+    void loadSetting();
+//    CSqlConnectionPool(const CSqlConnectionPool & other);
+//    CSqlConnectionPool & operator=(const CSqlConnectionPool & other);
     QSqlDatabase createConnection(const QString & connectionName); // 创建数据库连接
 
-    QQueue<QString> usedConnectionNames;   // 已使用的数据库连接名
-    QQueue<QString> unusedConnectionNames; // 未使用的数据库连接名
+    QQueue<QString> m_queueUsedConnectionNames;   // 已使用的数据库连接名
+    QQueue<QString> m_queueUnusedConnectionNames; // 未使用的数据库连接名
 
-    // 数据库信息
-    QString hostName;
-    QString databaseName;
-    QString username;
-    QString password;
-    QString databaseType;
 
-    bool    testOnBorrow;    // 取得连接的时候验证连接是否有效
+
+    bool testOnBorrow;    // 取得连接的时候验证连接是否有效
     QString testOnBorrowSql; // 测试访问数据库的 SQL
 
-    int maxWaitTime;  // 获取连接最大等待时间
-    int waitInterval; // 尝试获取连接时等待间隔时间
-    int maxConnectionCount; // 最大连接数
+    int m_nMaxWaitTime;  // 获取连接最大等待时间
+    int m_nWaitInterval; // 尝试获取连接时等待间隔时间
+    int m_nMaxConnectionCount; // 最大连接数
 
-    static QMutex mutex;
-    static QWaitCondition waitConnection;
-    static CSqlConnectionPool* instance;
+    static QMutex s_mutex;
+    static QWaitCondition s_waitConnection;
+    static CSqlConnectionPool* s_sqlConnectionPool;
+
+private:
+    // 数据库信息
+    QString strHostName;
+    QString strDbName;
+    QString strUserName;
+    QString strPasswd;
+    QString strDatabaseType;
 };
 
 
