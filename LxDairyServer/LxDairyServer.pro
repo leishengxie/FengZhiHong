@@ -66,7 +66,8 @@ HEADERS += \
     src/diary_responder/LJokeResponder.h \
     src/LDairyApp.h \
     src/LSqlOperate.h \
-    src/diary_responder/LLoginRigsterResponder.h
+    src/diary_responder/LLoginRigsterResponder.h \
+    src/LSqlConnectionPool.h
 
 SOURCES += \
     src/main.cpp \
@@ -92,7 +93,8 @@ SOURCES += \
     src/diary_responder/LJokeResponder.cpp \
     src/LDairyApp.cpp \
     src/LSqlOperate.cpp \
-    src/diary_responder/LLoginRigsterResponder.cpp
+    src/diary_responder/LLoginRigsterResponder.cpp \
+    src/LSqlConnectionPool.cpp
 
 
 include(qtservice/qtservice.pri)

@@ -22,7 +22,7 @@ public:
 
     // 用户id
     SETGET(int, nUid, Uid)
-    // 用户昵称
+    // 用户名
     SETGET(QString, strUserName, UserName)
     // 用户日记数据
     SETGET(QList<CDairy>, m_lstDairy, LstDairy)

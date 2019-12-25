@@ -28,7 +28,7 @@
     </spacer>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,2,1">
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
@@ -55,6 +55,9 @@
         <widget class="QLineEdit" name="leUserName">
          <property name="maxLength">
           <number>32</number>
+         </property>
+         <property name="placeholderText">
+          <string>推荐使用英文姓名(或缩写)</string>
          </property>
         </widget>
        </item>

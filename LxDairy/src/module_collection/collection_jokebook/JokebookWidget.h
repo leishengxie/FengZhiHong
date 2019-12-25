@@ -2,7 +2,7 @@
 #define JOKEBOOKWIDGET_H
 
 #include <QWidget>
-#include <QNetworkAccessManager>
+//#include <QNetworkAccessManager>
 #include "JokeModel.h"
 
 namespace Ui {
@@ -20,27 +20,31 @@ public:
 
     explicit CJokebookWidget(QWidget *parent = 0);
     ~CJokebookWidget();
-public:
-    void saveJoke(const T_Joke & tJoke);
-    void uploadJoke(const T_Joke & tJoke);
+
+
 public slots:
+    void saveJoke(const T_Joke & tJoke);
+    void requestUploadJoke(const T_Joke & tJoke);
+    void requestJokeList(const T_JokeListRequest &tJokeListRequest, bool bAppend = false);
+
     void onRespUploadJoke(const QByteArray& data);
-    void onRespUploadJokeFinished();
+    //void onRespUploadJokeFinished();
 
 protected:
     void showEvent(QShowEvent *event);
+    void hideEvent(QHideEvent *event);
 
 private slots:
-    void on_comboBox_activated(int index);
 
     void on_comboBox_currentIndexChanged(int index);
-
-    void on_btnUpload_clicked();
 
     void on_btnAdd_clicked();
 
 
     void on_tableView_clicked(const QModelIndex &index);
+
+    // 滚动条事件
+    void onScrollBarValueChanged(int nValue);
 
 private slots:
     void onHttpRequestFinished(const QByteArray& data);
@@ -51,7 +55,10 @@ private:
     CJokeModel* m_pJokeModel;
     CJokeEditor* m_pJokeEditor;
 
-    QNetworkAccessManager m_networkAccessManager;
+    //QNetworkAccessManager m_networkAccessManager;
+
+    T_JokeListRequest m_tJokeListRequest;
+    T_JokeListResp m_tJokeListResp;
 };
 
 #endif // JOKEBOOKWIDGET_H

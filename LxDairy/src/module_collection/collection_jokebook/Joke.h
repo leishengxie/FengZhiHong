@@ -22,7 +22,7 @@ struct T_Joke
     bool bOriginal; // 是否原创
 
     int upUid;        // 上传者用户id
-    QString strNickname; // 上传者昵称
+    QString strNickname; // 上传者昵称, 目前没有使用第三方登录， 先用用户名顶替
 
 
     quint64 llRatingNumOfPeople; // 评价总人数
@@ -56,8 +56,7 @@ enum E_SelectType
 {
     ES_SelectByWorld,
     ES_SelectByPenfriend,
-    ES_SelectByMyUpload,
-    ES_SelectByMyLocal
+    ES_SelectByMyUpload
 };
 
 enum E_SortFiled
@@ -81,6 +80,33 @@ struct T_JokeListRequest
     int nSortFiled;
     int nOrderType;
 
+    T_JokeListRequest()
+        : nPageIndex(1)
+        , nPageItems(30)
+        , nSelectType(ES_SelectByWorld)
+        , nSortFiled(ES_ByTime)
+        , nOrderType(EO_ASC)
+    {
+
+    }
+
+    void init()
+    {
+        nPageIndex = 1;
+        nPageItems = 30;
+        nSelectType = ES_SelectByWorld;
+        nSortFiled = ES_ByTime;
+        nOrderType = EO_ASC;
+    }
+
+    void reset()
+    {
+        init();
+    }
+
+    friend QDataStream & operator>>(QDataStream & in, T_JokeListRequest & data);
+    friend QDataStream & operator<<(QDataStream & out, const T_JokeListRequest & data);
+
 };
 
 struct T_JokeListResp
@@ -88,7 +114,14 @@ struct T_JokeListResp
 \
     int nTotalItems;
     QList<T_Joke> listJoke;
+    T_JokeListResp()
+        : nTotalItems(0)
+    {
 
+    }
+
+    friend QDataStream & operator>>(QDataStream & in, T_JokeListResp & data);
+    friend QDataStream & operator<<(QDataStream & out, const T_JokeListResp & data);
 };
 
 #endif // __JOKE_H

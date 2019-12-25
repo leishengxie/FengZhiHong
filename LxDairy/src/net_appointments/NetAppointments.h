@@ -83,6 +83,8 @@ public:
 
     static QString urlRegister();
     static QString urlLogin();
+
+    static QString urlJokeList();
     static QString urlUploadJoke();
 
     template<typename T>

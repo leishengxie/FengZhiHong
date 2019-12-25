@@ -38,6 +38,9 @@ public:
 //     static bool saveDairy(const CDairy & dairyModify, CDairy & dairySaved);
 
      void saveUserUploadJoke(const T_Joke & tJoke, T_HttpStatusMsg &tHttpStatusMsg);
+     void getJokeList(const T_JokeListRequest & tJokeListRequest
+                      , T_JokeListResp & tJokeListResp
+                      , T_HttpStatusMsg &tHttpStatusMsg);
 
 
 public slots:

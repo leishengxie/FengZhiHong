@@ -64,7 +64,9 @@ void CLSqlOperate::createTable()
     QString strSql = "create table if not exists tUser(" \
                      "uid int not null primary key auto_increment, " \
                      "user_name varchar(32) not null, " \
-                     "passwd varchar(16) not null)";
+                     "passwd varchar(16) not null, " \
+                     "nick_name varchar(32), " \
+                     "phone_no varchar(16))";
     if (!query.exec(strSql))
     {
         qDebug() << query.lastError();
@@ -161,9 +163,10 @@ void CLSqlOperate::registerAccount(QString strUserName, QString strPasswd, T_Htt
     }
 
     // test2
-    query.prepare("INSERT INTO tUser(user_name, passwd) VALUES(?, ?)");
+    query.prepare("INSERT INTO tUser(user_name, passwd, nick_name) VALUES(?, ?, ?)");
     query.bindValue(0, strUserName);
     query.bindValue(1, strPasswd);
+    query.bindValue(2, strUserName);
 
     if (!query.exec())
     {
@@ -192,6 +195,7 @@ void CLSqlOperate::login(QString strUserName, QString strPasswd, T_UserInfo &tUs
     {
         //QSqlRecord rec = q.record();
         tUserInfo.uid = query.value("uid").toInt();
+        tUserInfo.strNickName = query.value("nick_name").toString();
     }
     else
     {
@@ -221,6 +225,49 @@ void CLSqlOperate::saveUserUploadJoke(const T_Joke &tJoke, T_HttpStatusMsg & tHt
         return;
     }
 
+}
+
+void CLSqlOperate::getJokeList(const T_JokeListRequest &tJokeListRequest
+                               , T_JokeListResp &tJokeListResp
+                               , T_HttpStatusMsg &tHttpStatusMsg)
+{
+//    int nPageIndex; // 页码
+//    int nPageItems; // 当前页最大条目数
+//    int nSelectType;
+//    int nSortFiled;
+//    int nOrderType;
+
+    QString strQuery = "select count(1) from tJoke";
+    query.exec(strQuery);
+    if(query.next())
+    {
+        tJokeListResp.nTotalItems = query.value(0).toInt();
+    }
+
+    //select * from table_name limit 0,10
+    int nPos = (tJokeListRequest.nPageIndex - 1) * tJokeListRequest.nPageItems;
+    strQuery = QString("select * from tJoke limit %1, %2").arg(nPos).arg(tJokeListRequest.nPageItems);
+    if (!query.exec(strQuery))
+    {
+        qDebug() << query.lastError();
+        tHttpStatusMsg.nStatusCode = EH_Ex_SqlError;
+        tHttpStatusMsg.strMsg = query.lastError().text();
+        return;
+    }
+    while (query.next())
+    {
+        T_Joke tJoke;
+        tJoke.strTitle = query.value("title").toString();
+        tJoke.strDate = query.value("create_datetime").toString();
+        tJoke.strContent = query.value("content").toString();
+        tJoke.bOriginal = query.value("title").toBool();
+        tJoke.upUid = query.value("up_uid").toInt();
+        tJoke.strNickname = query.value("nickname").toString();
+        tJoke.llRatingNumOfPeople = query.value("total_rating_people").toInt();
+        tJoke.dRatingToatalScore = query.value("total_rating_score").toDouble();
+        tJoke.dRatingAverageScore = query.value("average_rating_score").toDouble();
+        tJokeListResp.listJoke.append(tJoke);
+    }
 }
 
 

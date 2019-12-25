@@ -21,7 +21,8 @@ public:
     }
 
     void setListJoke(const QList<T_Joke> & lstJoke);
-
+    void appendListJoke(const QList<T_Joke> & lstJoke);
+    void clear();
 
 private:
 

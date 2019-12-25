@@ -15,3 +15,31 @@ QDataStream & operator<<(QDataStream & out, const T_Joke & data)
     return out;
 }
 #endif
+
+
+
+QDataStream & operator>>(QDataStream &in, T_JokeListRequest &data)
+{
+    in >> data.nPageIndex >> data.nPageItems >> data.nSelectType >> data.nSortFiled >> data.nOrderType;
+    return in;
+}
+
+QDataStream & operator<<(QDataStream &out, const T_JokeListRequest &data)
+{
+    out << data.nPageIndex << data.nPageItems << data.nSelectType << data.nSortFiled << data.nOrderType;
+    return out;
+}
+
+
+
+QDataStream & operator>>(QDataStream &in, T_JokeListResp &data)
+{
+    in >> data.nTotalItems >> data.listJoke;
+    return in;
+}
+
+QDataStream & operator<<(QDataStream &out, const T_JokeListResp &data)
+{
+    out << data.nTotalItems << data.listJoke;
+    return out;
+}

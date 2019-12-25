@@ -101,6 +101,15 @@ QString CNetAppointments::urlLogin()
     return tNetAppointment.url();
 }
 
+QString CNetAppointments::urlJokeList()
+{
+    T_NetAppointment tNetAppointment;
+    tNetAppointment.eRequsetType = T_NetAppointment::ER_Post;
+    tNetAppointment.strVirtualDirectory = VIRTUAL_DIR_PATH_JOKE_LIST;
+
+    return tNetAppointment.url();
+}
+
 
 
 QString CNetAppointments::urlUploadJoke()

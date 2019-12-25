@@ -53,11 +53,6 @@
          <string>我上传的</string>
         </property>
        </item>
-       <item>
-        <property name="text">
-         <string>我本地的</string>
-        </property>
-       </item>
       </widget>
      </item>
      <item>
@@ -107,22 +102,12 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="btnUpload">
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;上传自己本地写的笑话到&amp;quot;世界&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>上传</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QPushButton" name="btnAdd">
        <property name="toolTip">
         <string>添加自己的笑话</string>
        </property>
        <property name="text">
-        <string>手写</string>
+        <string>写笑话</string>
        </property>
       </widget>
      </item>

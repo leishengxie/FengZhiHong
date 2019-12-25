@@ -6,7 +6,7 @@ CJokeModel::CJokeModel(QObject* parent)
     : QAbstractTableModel(parent)
 {
     m_strlstHeader.clear();
-    m_strlstHeader << "标题" << "创建日期" << "内容" << "平均分";
+    m_strlstHeader << "标题" << "上传者" << "上传日期" << "内容" << "平均分";
 }
 
 int CJokeModel::rowCount(const QModelIndex & parent) const
@@ -60,7 +60,12 @@ QVariant CJokeModel::headerData(int section, Qt::Orientation orientation, int ro
         return m_strlstHeader.at(section);
     }
 
-    return QVariant();
+    return QAbstractTableModel::headerData(section,orientation,role);
+
+//    if(role==Qt::DisplayRole&&orientation==Qt::Horizontal)
+//            return m_header[section];
+//        return QAbstractTableModel::headerData(section,orientation,role);
+
 }
 
 Qt::ItemFlags CJokeModel::flags(const QModelIndex & index) const
@@ -84,5 +89,19 @@ void CJokeModel::setListJoke(const QList<T_Joke> & lstJoke)
 {
     beginResetModel();
     m_lstJoke = lstJoke;
+    endResetModel();
+}
+
+void CJokeModel::appendListJoke(const QList<T_Joke> &lstJoke)
+{
+    beginInsertRows(QModelIndex(), rowCount(), rowCount() + lstJoke.count());
+    m_lstJoke.append(lstJoke);
+    endInsertRows();
+}
+
+void CJokeModel::clear()
+{
+    beginResetModel();
+    m_lstJoke.clear();
     endResetModel();
 }

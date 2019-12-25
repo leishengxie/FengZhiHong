@@ -2,6 +2,7 @@
 #define JOKEEDITOR_H
 
 #include <QWidget>
+#include "Joke.h"
 
 namespace Ui {
 class CJokeEditor;
@@ -15,8 +16,10 @@ public:
     explicit CJokeEditor(QWidget *parent = 0);
     ~CJokeEditor();
 
+signals:
+    void requreUploadJoke(const T_Joke & tJoke);
+
 private slots:
-    void on_btnSave_clicked();
 
     void on_btnUpload_clicked();
 

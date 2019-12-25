@@ -20,7 +20,16 @@ int CLJokeResponder::handle()
 
     QByteArray path = m_req->getPath();
     qDebug("handle: path=%s", path.data());
-    if (path.startsWith(VIRTUAL_DIR_PATH_JOKE_UPLOAD))
+    if (path.startsWith(VIRTUAL_DIR_PATH_JOKE_LIST))
+    {
+        T_JokeListRequest tJokeListRequest = CNetAppointments::deserialization<T_JokeListRequest>(m_req->getBody());
+        T_JokeListResp tJokeListResp;
+        T_HttpStatusMsg tHttpStatusMsg;
+        CLSqlOperate::getInstance()->getJokeList(tJokeListRequest, tJokeListResp, tHttpStatusMsg);
+        m_resp->setStatus(tHttpStatusMsg.nStatusCode, tHttpStatusMsg.strMsg.toUtf8());
+        m_resp->write(CNetAppointments::serializa(tJokeListResp), true);
+    }
+    else if (path.startsWith(VIRTUAL_DIR_PATH_JOKE_UPLOAD))
     {
         T_Joke tJoke = CNetAppointments::deserialization<T_Joke>(m_req->getBody());
         T_HttpStatusMsg tHttpStatusMsg;

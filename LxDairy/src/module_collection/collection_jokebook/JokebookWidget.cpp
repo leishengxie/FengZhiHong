@@ -7,8 +7,9 @@
 #include <QDateTime>
 #include <QNetworkReply>
 #include <QMessageBox>
+#include <QScrollBar>
 
-//#include "LHttpClient.h"
+#include "DairyHttpClient.h"
 #include "NetAppointments.h"
 #include "User.h"
 
@@ -28,23 +29,15 @@ CJokebookWidget::CJokebookWidget(QWidget* parent) :
     ui->tableView->setEditTriggers(QAbstractItemView::SelectedClicked);
     //ui->tableView->resizeColumnsToContents();
     ui->tableView->resizeRowsToContents();
-    ui->tableView->verticalHeader()->hide();
+    //ui->tableView->verticalHeader()->hide();
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
     //ui->tableView->verticalHeader()->setDefaultSectionSize(ITEM_HEIGHT_LIST);
     ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    connect(ui->tableView->verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(onScrollBarValueChanged(int)));
 
-    QList<T_Joke> lstJoke;
-    T_Joke tJoke;
-    tJoke.strTitle = "hello";
-    tJoke.strDate = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
-    tJoke.strContent = "abcdefffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
-    tJoke.upUid = CUser::getInstance()->getUserInfo().uid;
-    tJoke.dRatingAverageScore = 3.9;
-    lstJoke.append(tJoke);
-    m_pJokeModel->setListJoke(lstJoke);
 
     m_pJokeEditor = new CJokeEditor();
-
+    connect(m_pJokeEditor, SIGNAL(requreUploadJoke(T_Joke)), this, SLOT(requestUploadJoke(T_Joke)));
 
 }
 
@@ -58,14 +51,46 @@ void CJokebookWidget::saveJoke(const T_Joke & tJoke)
 
 }
 
-void CJokebookWidget::uploadJoke(const T_Joke & tJoke)
+void CJokebookWidget::requestUploadJoke(const T_Joke & tJoke)
 {
 
-    qDebug() << "uploadJoke:" << tJoke.strDate << tJoke.strTitle;
-    QNetworkRequest request(CNetAppointments::urlUploadJoke());
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    QNetworkReply* pNetworkReply = m_networkAccessManager.post(request, CNetAppointments::serializa(tJoke));
-    connect(pNetworkReply, SIGNAL(finished()), this, SLOT(onRespUploadJokeFinished()));
+//    qDebug() << "uploadJoke:" << tJoke.strDate << tJoke.strTitle;
+//    QNetworkRequest request(CNetAppointments::urlUploadJoke());
+//    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+//    QNetworkReply* pNetworkReply = m_networkAccessManager.post(request, CNetAppointments::serializa(tJoke));
+//    connect(pNetworkReply, SIGNAL(finished()), this, SLOT(onRespUploadJokeFinished()));
+    // 20191225 使用自己封装的http
+    CDairyHttpClient* pDairyHttpClient = new CDairyHttpClient(this, true);
+    connect(pDairyHttpClient, &CDairyHttpClient::finished_1, [=](QByteArray byteArray)
+    {
+        qDebug() << "onRespUploadJokeFinished:" << byteArray;
+        requestJokeList(m_tJokeListRequest);
+    });
+    pDairyHttpClient->post(CNetAppointments::urlUploadJoke(), CNetAppointments::serializa(tJoke));
+
+}
+
+///
+/// \brief CJokebookWidget::requestJokeList
+/// \param tJokeListRequest
+/// \param bAppend  是否追加到现有列表，否则清除现有列表
+///
+void CJokebookWidget::requestJokeList(const T_JokeListRequest & tJokeListRequest, bool bAppend)
+{
+    CDairyHttpClient* pDairyHttpClient = new CDairyHttpClient(this, true);
+    connect(pDairyHttpClient, &CDairyHttpClient::finished_1, [=](QByteArray byteArray)
+    {
+        m_tJokeListResp = CNetAppointments::deserialization<T_JokeListResp>(byteArray);
+        if (bAppend)
+        {
+            m_pJokeModel->appendListJoke(m_tJokeListResp.listJoke);
+        }
+        else
+        {
+            m_pJokeModel->setListJoke(m_tJokeListResp.listJoke);
+        }
+    });
+    pDairyHttpClient->post(CNetAppointments::urlJokeList(), CNetAppointments::serializa(tJokeListRequest));
 }
 
 void CJokebookWidget::onRespUploadJoke(const QByteArray & data)
@@ -73,64 +98,53 @@ void CJokebookWidget::onRespUploadJoke(const QByteArray & data)
 
 }
 
-void CJokebookWidget::onRespUploadJokeFinished()
-{
-    QNetworkReply* pNetworkReply = qobject_cast<QNetworkReply*>(sender());
-    QByteArray data = pNetworkReply->readAll();
+//void CJokebookWidget::onRespUploadJokeFinished()
+//{
+//    QNetworkReply* pNetworkReply = qobject_cast<QNetworkReply*>(sender());
+//    QByteArray data = pNetworkReply->readAll();
 
-    int status_code = pNetworkReply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    QVariant variant = pNetworkReply->attribute(QNetworkRequest::HttpReasonPhraseAttribute);
-    QByteArray byteArray = variant.toString().toLatin1();
-    QString status_text = QString::fromUtf8(byteArray);
+//    int status_code = pNetworkReply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+//    QVariant variant = pNetworkReply->attribute(QNetworkRequest::HttpReasonPhraseAttribute);
+//    QByteArray byteArray = variant.toString().toLatin1();
+//    QString status_text = QString::fromUtf8(byteArray);
 
 
-    if (status_code == 200)
-    {
-       qDebug() << "onRespUploadJokeFinished:" << data;
-    }
-    else
-    {
-        QMessageBox::information(this, QString::number(status_code), status_text);
-    }
+//    if (status_code == 200)
+//    {
+//       qDebug() << "onRespUploadJokeFinished:" << data;
+//    }
+//    else
+//    {
+//        QMessageBox::information(this, QString::number(status_code), status_text);
+//    }
 
-    pNetworkReply->deleteLater();
-    pNetworkReply = NULL;
+//    pNetworkReply->deleteLater();
+//    pNetworkReply = NULL;
 
-}
+//}
 
 void CJokebookWidget::showEvent(QShowEvent *event)
 {
-
+    Q_UNUSED(event)
+    m_tJokeListRequest.reset();
+    requestJokeList(m_tJokeListRequest);
 }
 
-void CJokebookWidget::on_comboBox_activated(int index)
+void CJokebookWidget::hideEvent(QHideEvent *event)
 {
-
+    Q_UNUSED(event)
+    //ui->tableView->model()->cl
+    m_pJokeModel->clear();
 }
+
 
 void CJokebookWidget::on_comboBox_currentIndexChanged(int index)
 {
-    E_SelectType eSelectType = E_SelectType(index);
-    switch (eSelectType)
-    {
-        case ES_SelectByWorld:
-        case ES_SelectByPenfriend:
-        case ES_SelectByMyUpload:
-        // get_list
-        // select_list_by_listUserId
-        case ES_SelectByMyLocal:
-            // get_local_list
-            break;
-        default:
-            break;
-    }
+    Q_ASSERT(index < 3);
+    m_tJokeListRequest.nSelectType = index;
+    requestJokeList(m_tJokeListRequest);
 }
 
-void CJokebookWidget::on_btnUpload_clicked()
-{
-    T_Joke tJoke = qvariant_cast<T_Joke>(ui->tableView->currentIndex().data());
-    uploadJoke(tJoke);
-}
 
 void CJokebookWidget::on_btnAdd_clicked()
 {
@@ -151,6 +165,21 @@ void CJokebookWidget::on_tableView_clicked(const QModelIndex & index)
     ui->textBrowser->append(QString("评价平均评分: %1\n").arg(tJoke.dRatingAverageScore));
     ui->textBrowser->append("***************************************");
     ui->textBrowser->append("   " + tJoke.strContent);
+}
+
+void CJokebookWidget::onScrollBarValueChanged(int nValue)
+{
+    if (nValue == ui->tableView->verticalScrollBar()->maximum())
+    {
+        int nListCount = ui->tableView->model()->rowCount();
+
+        if (nListCount >= m_tJokeListResp.nTotalItems)
+        {
+            return;
+        }
+        ++m_tJokeListRequest.nPageIndex;
+        requestJokeList(m_tJokeListRequest, true);
+    }
 }
 
 void CJokebookWidget::onHttpRequestFinished(const QByteArray & data)

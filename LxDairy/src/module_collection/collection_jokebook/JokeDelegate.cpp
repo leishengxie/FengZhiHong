@@ -4,11 +4,7 @@
 #include "JokeModel.h"
 #include "StarEditor.h"
 
-#define FONT_Microsoft_YaHei    "Microsoft YaHei UI"
-#define SELECTED_COLOR  QColor(251,251,251)
 #define LINE_COLOR      QColor(233,237,243)
-#define TEXT_COLOR      QColor(102,114,137)
-#define NAME_COLOR      QColor(51,51,51)
 
 CJokeDelegate::CJokeDelegate(QObject* parent)
     : QStyledItemDelegate(parent)
@@ -26,38 +22,21 @@ void CJokeDelegate::paint(QPainter* painter, const QStyleOptionViewItem & option
 
     QStyleOptionViewItem  view_option(option);
     QRect rect = view_option.rect;
-    //    if (view_option.state & QStyle::State_HasFocus)
-    //    {
-    //        view_option.state = view_option.state ^ QStyle::State_HasFocus;
-    //    }
 
-    //    if (view_option.state & QStyle::State_Selected)
-    //    {
-    //        painter->save();
-    //        painter->fillRect(rect, QColor(248,250,254));
-    //        //painter->setBrush(QColor(220,231,254));
-    //        painter->setPen(QColor(220,231,254));
-    //        painter->drawRect(rect);
-    //        painter->restore();
-    //    }
-    //    else
-    //    {
+    auto role = QPalette::Text;
     if (view_option.state & QStyle::State_Selected)
     {
-        painter->fillRect(view_option.rect, SELECTED_COLOR);
+        role = QPalette::HighlightedText;
+        painter->fillRect( view_option.rect, view_option.palette.highlight() );
+
+    }
+    else if (view_option.state & QStyle::State_MouseOver)
+    {
+        painter->fillRect(view_option.rect, view_option.palette.light());
     }
     else
     {
         painter->fillRect(view_option.rect, qvariant_cast<QBrush>(index.data(Qt::BackgroundRole)));
-    }
-    //    }
-
-    if (option.state & QStyle::State_MouseOver)
-    {
-        //painter->fillRect(view_option.rect, QColor( 247,252,255));
-        //painter->fillRect(view_option.rect, qvariant_cast<QBrush>(index.data(Qt::BackgroundRole)));
-        //view_option.backgroundBrush = qvariant_cast<QBrush>(index.data(Qt::BackgroundRole));
-        //CLItemDelegateListBase::paint(painter, view_option, index);
     }
 
 
@@ -68,7 +47,8 @@ void CJokeDelegate::paint(QPainter* painter, const QStyleOptionViewItem & option
                                               , Qt::AlignLeft | Qt::AlignVCenter
                                               , QApplication::palette()
                                               , true
-                                              , tJoke.strTitle);
+                                              , tJoke.strTitle
+                                              , role);
     }
 
     if (index.column() == 1)
@@ -78,18 +58,30 @@ void CJokeDelegate::paint(QPainter* painter, const QStyleOptionViewItem & option
                                               , Qt::AlignLeft | Qt::AlignVCenter
                                               , QApplication::palette()
                                               , true
-                                              , tJoke.strDate);
+                                              , tJoke.strNickname
+                                              , role);
     }
-    else if (index.column() == 2)
+    if (index.column() == 2)
     {
         QApplication::style()->drawItemText ( painter
                                               , rect
                                               , Qt::AlignLeft | Qt::AlignVCenter
                                               , QApplication::palette()
                                               , true
-                                              , tJoke.strContent);
+                                              , tJoke.strDate
+                                              , role);
     }
     else if (index.column() == 3)
+    {
+        QApplication::style()->drawItemText ( painter
+                                              , rect
+                                              , Qt::AlignLeft | Qt::AlignVCenter
+                                              , QApplication::palette()
+                                              , true
+                                              , tJoke.strContent
+                                              , role);
+    }
+    else if (index.column() == 4)
     {
         //tJoke.dRating;
         CStarEditor::drawFiveStarRating(painter, rect, option.palette, tJoke.dRatingAverageScore, true);
