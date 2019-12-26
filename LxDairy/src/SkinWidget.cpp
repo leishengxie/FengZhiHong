@@ -115,6 +115,8 @@ void CSkinWidget::setSkin(uint nSkinIndex)
     else if (nSkinIndex == 7)
     {
         QApplication::setStyle(new CLMapleLeafStyle());
+        //QCursor cursor(QPixmap(":/img/cursor.png"));
+        //setCursor(cursor);
     }
     else if (nSkinIndex == 8)
     {
