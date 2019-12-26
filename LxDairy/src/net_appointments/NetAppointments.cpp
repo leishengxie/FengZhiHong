@@ -14,6 +14,7 @@ static const int PORT = 8080;
 
 const char * const VIRTUAL_DIR_PATH_JOKE_ROOT = "/joke";
 const char * const VIRTUAL_DIR_PATH_JOKE_LIST = "/joke/list";
+const char * const VIRTUAL_DIR_PATH_JOKE_RATING = "/joke/rating";
 const char * const VIRTUAL_DIR_PATH_JOKE_UPLOAD = "/joke/upload";
 
 const char * const VIRTUAL_DIR_PATH_REGISTER = "/register";
@@ -117,6 +118,15 @@ QString CNetAppointments::urlUploadJoke()
     T_NetAppointment tNetAppointment;
     tNetAppointment.eRequsetType = T_NetAppointment::ER_Post;
     tNetAppointment.strVirtualDirectory = VIRTUAL_DIR_PATH_JOKE_UPLOAD;
+
+    return tNetAppointment.url();
+}
+
+QString CNetAppointments::urlJokeRating()
+{
+    T_NetAppointment tNetAppointment;
+    tNetAppointment.eRequsetType = T_NetAppointment::ER_Post;
+    tNetAppointment.strVirtualDirectory = VIRTUAL_DIR_PATH_JOKE_RATING;
 
     return tNetAppointment.url();
 }

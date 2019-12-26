@@ -292,4 +292,30 @@ void CLSqlOperate::getJokeList(const T_JokeListRequest &tJokeListRequest
     CSqlConnectionPool::getInstance()->closeConnection(db);
 }
 
+void CLSqlOperate::jokeRating(const T_JokeRating &tJokeRating, T_HttpStatusMsg &tHttpStatusMsg)
+{
+
+    // 查询是否已经有评价
+    QSqlDatabase db = CSqlConnectionPool::getInstance()->getOpenConnection();
+    QSqlQuery query(db);
+    QString strQuery = QString("select count(1) from tJoke where jid=%1 and uid=%2").arg(tJokeRating.jId).arg(tJokeRating.uId);
+    query.exec(strQuery);
+    if(query.next())
+    {
+        strQuery = QString("update tJokeRating set rating=%1 where jid=%2 and uid=%3")
+                .arg(tJokeRating.dRating)
+                .arg(tJokeRating.jId)
+                .arg(tJokeRating.uId);
+    }
+    else
+    {
+        strQuery = QString("INSERT INTO tJokeRating(jid, uid, rating) VALUES(%1, %2, %3)")
+                .arg(tJokeRating.jId)
+                .arg(tJokeRating.uId)
+                .arg(tJokeRating.dRating);
+    }
+    query.exec(strQuery);
+    //strQuery = "update tJoke set total_rating_people= total_rating_score= average_rating_score=";
+}
+
 

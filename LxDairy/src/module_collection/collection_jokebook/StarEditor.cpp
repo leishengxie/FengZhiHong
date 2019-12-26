@@ -163,6 +163,7 @@ void CStarEditor::mouseReleaseEvent(QMouseEvent* event)
         update();
     }
     emit editingFinished();
+    emit editingFinished(m_dRating);
 }
 
 

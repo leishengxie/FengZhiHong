@@ -43,6 +43,8 @@ private slots:
 
     void on_tableView_clicked(const QModelIndex &index);
 
+    void onStarEidtFinished(qreal dRating);
+
     // 滚动条事件
     void onScrollBarValueChanged(int nValue);
 

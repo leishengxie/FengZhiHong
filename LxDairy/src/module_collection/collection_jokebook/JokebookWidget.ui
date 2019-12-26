@@ -146,6 +146,7 @@
    <class>CLSearchEdit</class>
    <extends>QLineEdit</extends>
    <header>LSearchEdit.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

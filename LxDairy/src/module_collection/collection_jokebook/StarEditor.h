@@ -52,6 +52,7 @@ public:
 
 signals:
     void editingFinished();
+    void editingFinished(qreal dRating);
 
 protected:
     void paintEvent(QPaintEvent* event) Q_DECL_OVERRIDE;

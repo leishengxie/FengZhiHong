@@ -52,7 +52,16 @@ int CLJokeResponder::handle()
 //        QByteArray resp_body;
 //        m_resp->write(resp_body, true);
     }
+    else if (path.startsWith(VIRTUAL_DIR_PATH_JOKE_RATING))
+    {
+        T_JokeRating tJokeRating = CNetAppointments::deserialization<T_JokeRating>(m_req->getBody());
+        T_HttpStatusMsg tHttpStatusMsg;
+        CLSqlOperate::getInstance()->jokeRating(tJokeRating, tHttpStatusMsg);
 
+        m_resp->setStatus(tHttpStatusMsg.nStatusCode, tHttpStatusMsg.strMsg.toUtf8());
+
+        m_resp->write("ok", true);
+    }
 
 
     return 1;

@@ -3,14 +3,6 @@
 #include <QObject>
 #include <QDataStream>
 
-struct T_JokeRating
-{
-    int jId;        // 被评价的资源id 既是主键也是外键
-    int uId;        // 评价用户id 既是主键也是外键
-    qreal dRating;  // 评分
-
-};
-
 
 struct T_Joke
 {
@@ -122,6 +114,17 @@ struct T_JokeListResp
 
     friend QDataStream & operator>>(QDataStream & in, T_JokeListResp & data);
     friend QDataStream & operator<<(QDataStream & out, const T_JokeListResp & data);
+};
+
+
+struct T_JokeRating
+{
+    int jId;        // 被评价的资源id 既是主键也是外键
+    int uId;        // 评价用户id 既是主键也是外键
+    qreal dRating;  // 评分
+
+    friend QDataStream & operator>>(QDataStream & in, T_JokeRating & data);
+    friend QDataStream & operator<<(QDataStream & out, const T_JokeRating & data);
 };
 
 #endif // __JOKE_H

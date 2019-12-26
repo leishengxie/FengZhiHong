@@ -38,6 +38,7 @@ CJokebookWidget::CJokebookWidget(QWidget* parent) :
 
     m_pJokeEditor = new CJokeEditor();
     connect(m_pJokeEditor, SIGNAL(requreUploadJoke(T_Joke)), this, SLOT(requestUploadJoke(T_Joke)));
+    connect(ui->starEditor, SIGNAL(editingFinished(qreal)), this, SLOT(onStarEidtFinished(qreal)));
 
 }
 
@@ -135,6 +136,7 @@ void CJokebookWidget::hideEvent(QHideEvent *event)
     Q_UNUSED(event)
     //ui->tableView->model()->cl
     m_pJokeModel->clear();
+    ui->textBrowser->clear();
 }
 
 
@@ -165,6 +167,22 @@ void CJokebookWidget::on_tableView_clicked(const QModelIndex & index)
     ui->textBrowser->append(QString("评价平均评分: %1\n").arg(tJoke.dRatingAverageScore));
     ui->textBrowser->append("***************************************");
     ui->textBrowser->append("   " + tJoke.strContent);
+}
+
+void CJokebookWidget::onStarEidtFinished(qreal dRating)
+{
+    QModelIndex index = ui->tableView->currentIndex();
+    T_Joke tJoke = qvariant_cast<T_Joke>(index.data());
+    T_JokeRating tJokeRating;
+    tJokeRating.jId = tJoke.jId;
+    tJokeRating.uId = CUser::getInstance()->getUserInfo().uid;
+    tJokeRating.dRating = dRating;
+    CDairyHttpClient* pDairyHttpClient = new CDairyHttpClient(this, true);
+    connect(pDairyHttpClient, &CDairyHttpClient::finished_1, [=](QByteArray byteArray)
+    {
+
+    });
+    pDairyHttpClient->post(CNetAppointments::urlJokeRating(), CNetAppointments::serializa(tJokeRating));
 }
 
 void CJokebookWidget::onScrollBarValueChanged(int nValue)

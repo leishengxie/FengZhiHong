@@ -43,3 +43,17 @@ QDataStream & operator<<(QDataStream &out, const T_JokeListResp &data)
     out << data.nTotalItems << data.listJoke;
     return out;
 }
+
+
+
+QDataStream & operator>>(QDataStream &in, T_JokeRating &data)
+{
+    in >> data.jId >> data.uId >> data.dRating;
+    return in;
+}
+
+QDataStream & operator<<(QDataStream &out, const T_JokeRating &data)
+{
+    out << data.jId << data.uId << data.dRating;
+    return out;
+}

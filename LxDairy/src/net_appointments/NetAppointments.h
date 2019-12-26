@@ -30,6 +30,7 @@ extern const char * const VIRTUAL_DIR_PATH_LOGIN;
 
 extern const char * const VIRTUAL_DIR_PATH_JOKE_ROOT;
 extern const char * const VIRTUAL_DIR_PATH_JOKE_LIST;
+extern const char * const VIRTUAL_DIR_PATH_JOKE_RATING;
 extern const char* const VIRTUAL_DIR_PATH_JOKE_UPLOAD;
 
 
@@ -86,6 +87,7 @@ public:
 
     static QString urlJokeList();
     static QString urlUploadJoke();
+    static QString urlJokeRating();
 
     template<typename T>
     static QByteArray serializa(const T & t)

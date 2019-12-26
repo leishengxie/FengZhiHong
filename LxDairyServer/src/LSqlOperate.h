@@ -41,6 +41,7 @@ public:
      void getJokeList(const T_JokeListRequest & tJokeListRequest
                       , T_JokeListResp & tJokeListResp
                       , T_HttpStatusMsg &tHttpStatusMsg);
+     void jokeRating(const T_JokeRating & tJokeRating, T_HttpStatusMsg &tHttpStatusMsg);
 
 
 public slots:
