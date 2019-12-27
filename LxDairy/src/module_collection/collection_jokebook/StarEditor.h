@@ -28,6 +28,7 @@ public:
     void setRating(qreal dRating)
     {
         m_dRating = dRating;
+        update();
     }
 
     int maxStarCount() const

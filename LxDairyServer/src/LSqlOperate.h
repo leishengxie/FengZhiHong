@@ -25,6 +25,10 @@ public:
 
     // 创建表
      void createTable();
+     // 创建存储过程
+     void createProc();
+     // 创建函数
+     void createFunc();
 
      //
      void registerAccount(QString strUserName, QString strPasswd, T_HttpStatusMsg &tHttpStatusMsg);

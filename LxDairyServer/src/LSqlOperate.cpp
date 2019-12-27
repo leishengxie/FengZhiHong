@@ -139,7 +139,7 @@ void CLSqlOperate::createTable()
     strSql = "create table if not exists tJokeRating(" \
              "jid int not null, " \
              "uid int not null, " \
-             "rating int NOT NULL, " \
+             "rating double NOT NULL, " \
              "PRIMARY KEY (jid, uid), " \
              "CONSTRAINT fk_tJokeRating_jid FOREIGN KEY (jid) REFERENCES tJoke(jid) ON DELETE CASCADE ON UPDATE CASCADE," \
              "CONSTRAINT fk_tJokeRating_uid FOREIGN KEY (uid) REFERENCES tUser(uid) ON DELETE CASCADE ON UPDATE CASCADE" \
@@ -150,6 +150,16 @@ void CLSqlOperate::createTable()
     }
 
     CSqlConnectionPool::getInstance()->closeConnection(db);
+
+}
+
+void CLSqlOperate::createProc()
+{
+
+}
+
+void CLSqlOperate::createFunc()
+{
 
 }
 
@@ -188,7 +198,7 @@ void CLSqlOperate::registerAccount(QString strUserName, QString strPasswd, T_Htt
 
 }
 
-void CLSqlOperate::login(QString strUserName, QString strPasswd, T_UserInfo &tUserInfo, T_HttpStatusMsg & tHttpStatusMsg)
+void CLSqlOperate::login(QString strUserName, QString strPasswd, T_UserInfo & tUserInfo, T_HttpStatusMsg & tHttpStatusMsg)
 {
     QSqlDatabase db = CSqlConnectionPool::getInstance()->getOpenConnection();
     QSqlQuery query(db);
@@ -220,7 +230,7 @@ void CLSqlOperate::login(QString strUserName, QString strPasswd, T_UserInfo &tUs
     CSqlConnectionPool::getInstance()->closeConnection(db);
 }
 
-void CLSqlOperate::saveUserUploadJoke(const T_Joke &tJoke, T_HttpStatusMsg & tHttpStatusMsg)
+void CLSqlOperate::saveUserUploadJoke(const T_Joke & tJoke, T_HttpStatusMsg & tHttpStatusMsg)
 {
     QSqlDatabase db = CSqlConnectionPool::getInstance()->getOpenConnection();
     QSqlQuery query(db);
@@ -245,9 +255,9 @@ void CLSqlOperate::saveUserUploadJoke(const T_Joke &tJoke, T_HttpStatusMsg & tHt
     CSqlConnectionPool::getInstance()->closeConnection(db);
 }
 
-void CLSqlOperate::getJokeList(const T_JokeListRequest &tJokeListRequest
-                               , T_JokeListResp &tJokeListResp
-                               , T_HttpStatusMsg &tHttpStatusMsg)
+void CLSqlOperate::getJokeList(const T_JokeListRequest & tJokeListRequest
+                               , T_JokeListResp & tJokeListResp
+                               , T_HttpStatusMsg & tHttpStatusMsg)
 {
     QSqlDatabase db = CSqlConnectionPool::getInstance()->getOpenConnection();
     QSqlQuery query(db);
@@ -278,6 +288,7 @@ void CLSqlOperate::getJokeList(const T_JokeListRequest &tJokeListRequest
     while (query.next())
     {
         T_Joke tJoke;
+        tJoke.jId = query.value("jid").toInt();
         tJoke.strTitle = query.value("title").toString();
         tJoke.strDate = query.value("create_datetime").toString();
         tJoke.strContent = query.value("content").toString();
@@ -292,30 +303,73 @@ void CLSqlOperate::getJokeList(const T_JokeListRequest &tJokeListRequest
     CSqlConnectionPool::getInstance()->closeConnection(db);
 }
 
-void CLSqlOperate::jokeRating(const T_JokeRating &tJokeRating, T_HttpStatusMsg &tHttpStatusMsg)
+void CLSqlOperate::jokeRating(const T_JokeRating & tJokeRating, T_HttpStatusMsg & tHttpStatusMsg)
 {
-
-    // 查询是否已经有评价
     QSqlDatabase db = CSqlConnectionPool::getInstance()->getOpenConnection();
     QSqlQuery query(db);
-    QString strQuery = QString("select count(1) from tJoke where jid=%1 and uid=%2").arg(tJokeRating.jId).arg(tJokeRating.uId);
-    query.exec(strQuery);
-    if(query.next())
+    /**
+        // 查询是否已经有评价
+
+        QString strQuery = QString("select count(1) from tJoke where jid=%1 and uid=%2").arg(tJokeRating.jId).arg(tJokeRating.uId);
+        query.exec(strQuery);
+        if(query.next())
+        {
+            strQuery = QString("update tJokeRating set rating=%1 where jid=%2 and uid=%3")
+                    .arg(tJokeRating.dRating)
+                    .arg(tJokeRating.jId)
+                    .arg(tJokeRating.uId);
+        }
+        else
+        {
+            strQuery = QString("INSERT INTO tJokeRating(jid, uid, rating) VALUES(%1, %2, %3)")
+                    .arg(tJokeRating.jId)
+                    .arg(tJokeRating.uId)
+                    .arg(tJokeRating.dRating);
+        }
+        query.exec(strQuery);
+        //strQuery = "update tJoke set total_rating_people= total_rating_score= average_rating_score=";
+        */
+
+//    以下是访问oracle存储过程的示例，多个输入、输出都可以。
+//    QSqlQuery query(db);
+//    if (!query.prepare("call test_out2(:p1,:p2,:out1,:out2)"))
+//    {
+//    return false;
+//    }
+//    query.bindValue(":p1", "abcd", QSql::In);
+//    query.bindValue(":p2", "edfg", QSql::In);
+//    QString t1(128,'\0'),t2(128,'\0');
+//    query.bindValue(":out1", t1, QSql::Out);
+//    query.bindValue(":out2", t2, QSql::Out);
+//    if (!query.exec())
+//    {
+//    return false;
+//    }
+//    QString str1 = query.boundValue(":out1").toInt();
+//    QString str2 = query.boundValue(":out2").toInt();
+
+    // 使用存储过程
+    qDebug() << "使用存储过程" << tJokeRating.jId << tJokeRating.uId << tJokeRating.dRating;
+    if (!query.prepare("call proc_joke_rating(:p1,:p2,:p3)"))
     {
-        strQuery = QString("update tJokeRating set rating=%1 where jid=%2 and uid=%3")
-                .arg(tJokeRating.dRating)
-                .arg(tJokeRating.jId)
-                .arg(tJokeRating.uId);
+        qDebug() << query.lastError();
+        tHttpStatusMsg.nStatusCode = EH_Ex_SqlError;
+        tHttpStatusMsg.strMsg = query.lastError().text();
+        CSqlConnectionPool::getInstance()->closeConnection(db);
+        return;
     }
-    else
+    query.bindValue(":p1", tJokeRating.jId, QSql::In);
+    query.bindValue(":p2", tJokeRating.uId, QSql::In);
+    query.bindValue(":p3", tJokeRating.dRating, QSql::In);
+    if (!query.exec())
     {
-        strQuery = QString("INSERT INTO tJokeRating(jid, uid, rating) VALUES(%1, %2, %3)")
-                .arg(tJokeRating.jId)
-                .arg(tJokeRating.uId)
-                .arg(tJokeRating.dRating);
+        qDebug() << query.lastError();
+        tHttpStatusMsg.nStatusCode = EH_Ex_SqlError;
+        tHttpStatusMsg.strMsg = query.lastError().text();
+        CSqlConnectionPool::getInstance()->closeConnection(db);
+        return;
     }
-    query.exec(strQuery);
-    //strQuery = "update tJoke set total_rating_people= total_rating_score= average_rating_score=";
+    CSqlConnectionPool::getInstance()->closeConnection(db);
 }
 
 

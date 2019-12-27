@@ -4,6 +4,7 @@
 #include <QWidget>
 //#include <QNetworkAccessManager>
 #include "JokeModel.h"
+#include <QItemSelectionModel>
 
 namespace Ui {
 class CJokebookWidget;
@@ -44,6 +45,8 @@ private slots:
     void on_tableView_clicked(const QModelIndex &index);
 
     void onStarEidtFinished(qreal dRating);
+
+    void onSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 
     // 滚动条事件
     void onScrollBarValueChanged(int nValue);

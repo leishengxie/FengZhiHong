@@ -94,7 +94,11 @@ void CJokeModel::setListJoke(const QList<T_Joke> & lstJoke)
 
 void CJokeModel::appendListJoke(const QList<T_Joke> &lstJoke)
 {
-    beginInsertRows(QModelIndex(), rowCount(), rowCount() + lstJoke.count());
+    if (lstJoke.isEmpty())
+    {
+        return;
+    }
+    beginInsertRows(QModelIndex(), rowCount(), rowCount() + lstJoke.count() - 1);
     m_lstJoke.append(lstJoke);
     endInsertRows();
 }

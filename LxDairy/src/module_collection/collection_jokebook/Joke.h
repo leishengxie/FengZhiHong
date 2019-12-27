@@ -74,7 +74,7 @@ struct T_JokeListRequest
 
     T_JokeListRequest()
         : nPageIndex(1)
-        , nPageItems(30)
+        , nPageItems(10)
         , nSelectType(ES_SelectByWorld)
         , nSortFiled(ES_ByTime)
         , nOrderType(EO_ASC)
@@ -85,7 +85,7 @@ struct T_JokeListRequest
     void init()
     {
         nPageIndex = 1;
-        nPageItems = 30;
+        nPageItems = 10;
         nSelectType = ES_SelectByWorld;
         nSortFiled = ES_ByTime;
         nOrderType = EO_ASC;
