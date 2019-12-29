@@ -1,12 +1,23 @@
 #include "LBaseWidget.h"
 #include "LEvent.h"
 
-CLBaseWidget::CLBaseWidget(QWidget *parent) : QWidget(parent)
+CLBaseWidget::CLBaseWidget(QWidget* parent) : QWidget(parent)
 {
 
 }
 
-bool CLBaseWidget::event(QEvent *event)
+bool CLBaseWidget::actSave()
+{
+//    CSaveEvent e;
+//    QApplication::sendEvent(this, &e);
+//    if (!e.isAccepted())
+//    {
+//        return false;
+//    }
+//    return true;
+}
+
+bool CLBaseWidget::event(QEvent* event)
 {
     QEvent::Type eType = event->type();
     if(eType == CSaveEvent::eventType())

@@ -23,8 +23,6 @@ public:
     void saveDairy();
     void saveAllDairy();
 
-    bool closeAllSubWindows();
-
 public slots:
     void slot_displayDairy(const CDairy & dairy);
     void onMusicFinished();
@@ -36,6 +34,9 @@ signals:
     void requireTTSspeak(const QString & txt);
     // 请求播放音乐
     void requirePlayMusic();
+
+protected:
+    void closeEvent(QCloseEvent *event);
 
 private slots:
     void slotUpdateMenu(QMdiSubWindow* pMdiSubWindow);

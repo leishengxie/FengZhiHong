@@ -11,7 +11,7 @@
 
 #include "DairyHttpClient.h"
 #include "NetAppointments.h"
-#include "User.h"
+#include "DairyApp.h"
 #include "LToast.h"
 
 
@@ -191,7 +191,7 @@ void CJokebookWidget::onStarEidtFinished(qreal dRating)
     T_Joke tJoke = qvariant_cast<T_Joke>(IndexList.at(0).data());
     T_JokeRating tJokeRating;
     tJokeRating.jId = tJoke.jId;
-    tJokeRating.uId = CUser::getInstance()->getUserInfo().uid;
+    tJokeRating.uId = CDairyApp::userInfoNet().uid;
     tJokeRating.dRating = dRating;
     CDairyHttpClient* pDairyHttpClient = new CDairyHttpClient(this, true);
     connect(pDairyHttpClient, &CDairyHttpClient::finished_1, [ = ](QByteArray byteArray)

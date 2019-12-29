@@ -16,7 +16,24 @@ CDairyHttpClient::CDairyHttpClient(QObject* parent, bool bAutoReleaseOnFinished)
 //    if (pWidget)
 //    {
 //        s_pLoopLoading->setParent(pWidget);
-//    }
+    //    }
+}
+
+void CDairyHttpClient::get(const QUrl &urlRequest, int nTimeout)
+{
+    if (urlRequest.isEmpty())
+    {
+        return;
+    }
+    QNetworkRequest request(urlRequest);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    m_netReply = m_netAccessManager->get(request);
+    connect(m_netReply, SIGNAL(readyRead()), this, SLOT(onReadyRead()));
+    connect(m_netReply, SIGNAL(finished()), this, SLOT(onFinished()));
+    connect(m_netReply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(onError(QNetworkReply::NetworkError)));
+    connect(m_netReply, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(onDownloadProgress(qint64, qint64)));
+
+    s_pLoopLoading->start("正在加载中!");
 }
 
 
@@ -150,6 +167,7 @@ void CDairyHttpClient::onFinished()
 {
     int status_code = m_netReply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     QVariant variant = m_netReply->attribute(QNetworkRequest::HttpReasonPhraseAttribute);
+    QNetworkReply::NetworkError errorCode = m_netReply->error();
     // toUtf82次?, 因为传输过来的已经是utf8字节数组，toByteArray()默认又转为utf8一次。
     //QByteArray byteArray =  variant.toByteArray();
     //QString status_text = QString::fromUtf8(byteArray);
@@ -164,13 +182,17 @@ void CDairyHttpClient::onFinished()
 
     s_pLoopLoading->stop();
 
+
     if (status_code == 200)
     {
         emit finished_1(m_httpDataBuffer.readAll());
     }
     else
     {
-        QMessageBox::information(NULL, QString::number(status_code), status_text);
+        if (errorCode == QNetworkReply::UnknownServerError)
+        {
+            QMessageBox::information(NULL, QString::number(status_code), status_text);
+        }
     }
 
     m_httpDataBuffer.clear();
@@ -182,8 +204,12 @@ void CDairyHttpClient::onFinished()
 
 void CDairyHttpClient::onError(QNetworkReply::NetworkError errorCode)
 {
-    //qDebug() << "failed" << status_code;
-    //QMessageBox::information(NULL, QString::number(status_code), status_text);
+    if (errorCode == QNetworkReply::UnknownServerError)
+    {
+        return;
+    }
+    QNetworkReply* pNetworkReply = qobject_cast<QNetworkReply*>(sender());
+    QMessageBox::information(NULL, "NetworkError:" + QString::number(errorCode) , pNetworkReply->errorString());
 }
 
 void CDairyHttpClient::onFinishedAsync()

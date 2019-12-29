@@ -10,7 +10,8 @@
 #include "SkinWidget.h"
 #include "DairyHttpClient.h"
 #include "NetAppointments.h"
-#include "User.h"
+
+#include "DairyApp.h"
 
 CLoginWidget::CLoginWidget(QWidget* parent) :
     QWidget(parent),
@@ -83,7 +84,10 @@ void CLoginWidget::on_btnLogin_clicked()
         QMessageBox::information(this, "提示", "请输入密码！");
         return;
     }
-    if(CSqlOperate::login(strUserName, strPasswd))
+
+    T_UserInfo tUserInfo;
+    QString strErr;
+    if(CSqlOperate::login(strUserName, strPasswd, tUserInfo, strErr))
     {
         QSettings conf("conf.ini", QSettings::IniFormat);
         conf.beginGroup("user");
@@ -95,6 +99,8 @@ void CLoginWidget::on_btnLogin_clicked()
         {
             conf.setValue("passwd", strPasswd);
         }
+
+        CDairyApp::setUserInfoLocal(tUserInfo);
         CDairyMainWindow* pDairyMainWindow = new CDairyMainWindow;
         pDairyMainWindow->setLoginWidget(this);
         //pDairyMainWindow->SetZhanghao(ui->lineEditzanghao->currentText());
@@ -103,7 +109,7 @@ void CLoginWidget::on_btnLogin_clicked()
     }
     else
     {
-        QMessageBox::information(this, "ERROR", "账号或密码不正确！！");
+        QMessageBox::information(this, "ERROR", strErr);
     }
 }
 
@@ -145,11 +151,29 @@ void CLoginWidget::resizeEvent(QResizeEvent* event)
     // 谨慎使用，20191201 会应用到子对象， 从而导致子对象每次show时都会使用，导致界面刷新卡顿
 //    QPalette pal;
 //    pal.setBrush(QPalette::Background, QBrush(QPixmap(":/img/bg/1.jpg").scaled(size())));
-//    setPalette(pal);
+    //    setPalette(pal);
+}
+
+void CLoginWidget::testUrlDump()
+{
+    CDairyHttpClient* pDairyHttpClient = new CDairyHttpClient(this, true);
+    // 此处为什么不能识别父类的finished???
+    connect(pDairyHttpClient, &CDairyHttpClient::finished_1, [=](QByteArray byteArray)
+    {
+        qDebug() << byteArray;
+    });
+
+    qDebug() <<CNetAppointments::urlTest();
+    pDairyHttpClient->get(CNetAppointments::urlTest());
 }
 
 void CLoginWidget::on_btnLoginServer_clicked()
 {
+    // test
+//    testUrlDump();
+//    return;
+
+    //
     QString strUserName = ui->leUserName->text();
     QString strPasswd = ui->lePasswd->text();
     if (strUserName.isEmpty())
@@ -178,7 +202,7 @@ void CLoginWidget::on_btnLoginServer_clicked()
             conf.setValue("passwd", strPasswd);
         }
         T_UserInfo tUserInfo = CNetAppointments::deserialization<T_UserInfo>(byteArray);
-        CUser::getInstance()->setUserInfo(tUserInfo);
+        CDairyApp::setUserInfoNet(tUserInfo);
 
         CDairyMainWindow* pDairyMainWindow = new CDairyMainWindow;
         pDairyMainWindow->setLoginWidget(this);

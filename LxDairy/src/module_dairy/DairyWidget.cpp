@@ -6,6 +6,8 @@
 
 #include "dairy_tag/DairyTagListModel.h"
 #include "dairy_tag/DairyTagDelegate.h"
+#include "SqlOperate.h"
+#include "DairyApp.h"
 
 #include <QIcon>
 #include <QtDebug>
@@ -34,7 +36,7 @@ CDairyWidget::CDairyWidget(QWidget* parent)
     connect(pDairyDateTreeModel, SIGNAL(loadTodayDairyFinished(CDairy)), ui->page_dairy, SLOT(slot_displayDairy(CDairy)));
     connect(pDairyDateTreeModel, SIGNAL(requireExpand(QModelIndex)), this, SLOT(onRequireExpand(QModelIndex)));
 
-    //connect(ui->treeDairy, SIGNAL(clicked(QModelIndex))
+
     connect(ui->page_dairy_statistics, SIGNAL(expandDairy(int)), pDairyDateTreeModel, SLOT(expandDairy(int)));
 
     connect(ui->page_dairy, SIGNAL(saveDairyfinishedS1(CDairy,CDairy)), this, SLOT(onSaveDairyfinished(CDairy,CDairy)));
@@ -47,9 +49,12 @@ CDairyWidget::CDairyWidget(QWidget* parent)
     //QMdiArea::AreaOption option;
     //ui->mdiArea->setOption(option, true);
     //connect(ui->mdiArea, SIGNAL(customContextMenuRequested(QPoint))
-    QTimer::singleShot(100, [ = ]()
+    QTimer::singleShot(500, [ = ]()
     {
-        pDairyDateTreeModel->loadAllDairy();
+        QList<CDairy> lstDairy = CSqlOperate::getDairyList(CDairyApp::userInfoLocal().uid);
+        pDairyTagListModel->loadDiaryList(lstDairy);
+        pDairyDateTreeModel->loadDairyList(lstDairy);
+        //ui->page_dairy_statistics->showStatisticsByTag("全部日记");
     });
 
 
@@ -60,21 +65,21 @@ CDairyWidget::~CDairyWidget()
     delete ui;
 }
 
+void CDairyWidget::saveAllDairy()
+{
+    ui->page_dairy->saveAllDairy();
+}
 
 
 
-
-// 当前控件作为顶层窗口时用，不是顶层窗口无意义
 // 父类 与 父对象
+///
+/// \brief CDairyWidget::closeEvent 重写并检测子类的关闭情况
+/// \param event
+///
 void CDairyWidget::closeEvent(QCloseEvent* event)
 {
-    if (!isWindow())
-    {
-        event->accept();//关闭
-        return;
-    }
-
-    if(ui->page_dairy->closeAllSubWindows())
+    if(ui->page_dairy->close())
     {
         event->accept();//关闭
     }
@@ -87,7 +92,7 @@ void CDairyWidget::closeEvent(QCloseEvent* event)
 void CDairyWidget::actSaveEvent()
 {
     qDebug() << "-----actSaveEvent()";
-    //saveDairy();
+    ui->page_dairy->saveDairy();
 }
 
 //怎么让窗口show的时候里面的组件也逐个show
@@ -104,13 +109,13 @@ void CDairyWidget::actSaveEvent()
 void CDairyWidget::showEvent(QShowEvent* event)
 {
     qDebug() << "-----showEvent()";
-
+    CLBaseWidget::showEvent(event);
 }
 
 void CDairyWidget::hideEvent(QHideEvent* event)
 {
     qDebug() << "-----hideEvent()";
-
+    CLBaseWidget::hideEvent(event);
 }
 
 
@@ -132,11 +137,6 @@ void CDairyWidget::onRequireExpand(const QModelIndex & index)
     on_treeDairy_clicked(index);
 
 }
-
-
-
-
-
 
 
 

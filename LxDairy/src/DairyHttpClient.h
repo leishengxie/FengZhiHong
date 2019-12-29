@@ -56,6 +56,7 @@ public:
 
 
     /// get
+    void get(const QUrl& urlRequest, int nTimeout = 6000);
     // 阻塞主线程， 直到当前请求完成
     //void blockGet(const QUrl& urlRequest, int nTimeout = 6000);
 

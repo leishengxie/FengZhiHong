@@ -9,8 +9,10 @@ static const char* const HTTP_PPROTOCOL_HTTPS = "https";
 static const char* const SERVER_LOCAL_DOMAIN = "127.0.0.1";
 static const char* const SERVER_RELEASE_DOMAIN = "47.104.141.61";
 
-static const int PORT = 8080;
 
+static const int HTTP_SERVER_PORT = 8181;
+
+const char * const VIRTUAL_DIR_PATH_JOKE_TEST_DUMP = "/dump";
 
 const char * const VIRTUAL_DIR_PATH_JOKE_ROOT = "/joke";
 const char * const VIRTUAL_DIR_PATH_JOKE_LIST = "/joke/list";
@@ -27,20 +29,16 @@ const char * const VIRTUAL_DIR_PATH_LOGIN = "/login";
 
 
 
-
-
-const char g_szServerUrl[] = "http://47.104.141.61:8080/";
-//const char* const g_szserver_url="http://47.104.141.61:8080/LxDiaryUpdateDir/"; //ok
-//const char* g_szserver_url="http://47.104.141.61:8080/LxDiaryUpdateDir/"; //非常量
-
-const char g_szServerJokeUrl[] = "http://47.104.141.61:8080/joke";
-
 T_NetAppointment::T_NetAppointment()
     : strProtocol(HTTP_PROTOCOL_HTTP)
-    , strDomainName(SERVER_LOCAL_DOMAIN)
-    , nPort(PORT)
+    , nPort(HTTP_SERVER_PORT)
 {
-
+    // #ifndef ---> ifdef
+#ifdef QT_NO_DEBUG
+    strDomainName = SERVER_RELEASE_DOMAIN;
+#else
+    strDomainName = SERVER_LOCAL_DOMAIN;
+#endif
 }
 
 QString T_NetAppointment::url()
@@ -82,6 +80,15 @@ T_NetAppointment CNetAppointments::s_tNetAppointment;
 CNetAppointments::CNetAppointments()
 {
 
+}
+
+QString CNetAppointments::urlTest()
+{
+    T_NetAppointment tNetAppointment;
+    tNetAppointment.eRequsetType = T_NetAppointment::ER_Get;
+    tNetAppointment.strVirtualDirectory = VIRTUAL_DIR_PATH_JOKE_TEST_DUMP;
+
+    return tNetAppointment.url();
 }
 
 QString CNetAppointments::urlRegister()

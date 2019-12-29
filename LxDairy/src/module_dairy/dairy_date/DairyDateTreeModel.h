@@ -128,12 +128,11 @@ public:
     bool hasChildren(const QModelIndex &parent) const;
 
     // 加载所有日记
-    void loadAllDairy();
-    void loadDairy(const QList<CDairy> &lstDairy);
+    void loadDairyList(const QList<CDairy> &lstDairy);
+
     void reloadDairyByTag(const QString & strTagName);
 
-    // 根据日志列表整理成树
-    void createDateTree(const QList<CDairy> &lstDairy);
+
 
     void insetDairy(CDairy dairy);
 
@@ -150,7 +149,13 @@ signals:
     void requireExpand(const QModelIndex & index);
 
 private:
-    T_DairyDateItem* m_pDairyDateItemRoot;
+    // 根据日志列表完成树数据类型的转换
+    void convertDiaryListToTree(const QList<CDairy> &lstDairy);
+
+private:
+    QList<CDairy> m_lstDairy;   // 原始结构
+
+    T_DairyDateItem* m_pDairyDateItemRoot;  // 树结构
 };
 
 #endif // CDAIRYDATETREEMODEL_H

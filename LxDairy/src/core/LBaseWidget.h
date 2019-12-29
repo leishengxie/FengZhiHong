@@ -5,12 +5,16 @@
 
 class CSaveEvent;
 
+///
+/// \brief The CLBaseWidget class   想写一个类似close-closeEvent的事件
+///
 class CLBaseWidget : public QWidget
 {
     Q_OBJECT
 public:
     explicit CLBaseWidget(QWidget *parent = 0);
 
+    bool actSave();
 
 signals:
 

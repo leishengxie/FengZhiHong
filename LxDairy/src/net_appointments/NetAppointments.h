@@ -82,6 +82,8 @@ class CNetAppointments
 public:
     CNetAppointments();
 
+    static QString urlTest();
+
     static QString urlRegister();
     static QString urlLogin();
 

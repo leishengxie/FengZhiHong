@@ -1,6 +1,5 @@
 #include "DairyDateTreeModel.h"
 #include <QDateTime>
-#include "User.h"
 
 T_DairyDateItem::T_DairyDateItem()
 {
@@ -53,7 +52,7 @@ void T_DairyDateItem::release()
     delete this;
 }
 
-bool T_DairyDateItem::operator ==(const T_DairyDateItem &right) const
+bool T_DairyDateItem::operator ==(const T_DairyDateItem & right) const
 {
     // 必须同一类型才具可比性，否则不让插入
     if (eDairyDateNodeType != right.eDairyDateNodeType)
@@ -62,15 +61,15 @@ bool T_DairyDateItem::operator ==(const T_DairyDateItem &right) const
     }
     switch (eDairyDateNodeType)
     {
-    case ED_Year:
-        return strYear.toInt() == right.strYear.toInt();
-    case ED_Month:
-        return strMonth.toInt() == right.strMonth.toInt();
-    case ED_Day:
-        return strDay.toInt() == right.strDay.toInt();
-        break;
-    default:
-        break;
+        case ED_Year:
+            return strYear.toInt() == right.strYear.toInt();
+        case ED_Month:
+            return strMonth.toInt() == right.strMonth.toInt();
+        case ED_Day:
+            return strDay.toInt() == right.strDay.toInt();
+            break;
+        default:
+            break;
     }
     return true;
 }
@@ -86,22 +85,22 @@ uint T_DairyDateItem::value() const
     uint nValue = 0;
     switch (eDairyDateNodeType)
     {
-    case ED_Year:
-        nValue = strYear.toUInt() * 366;
-        break;
-    case ED_Month:
-        nValue = strMonth.toUInt() * 31;
-        break;
-    case ED_Day:
-        nValue = strDay.toUInt();
-        break;
-    default:
-        break;
+        case ED_Year:
+            nValue = strYear.toUInt() * 366;
+            break;
+        case ED_Month:
+            nValue = strMonth.toUInt() * 31;
+            break;
+        case ED_Day:
+            nValue = strDay.toUInt();
+            break;
+        default:
+            break;
     }
     return nValue;
 }
 
-void T_DairyDateItem::deleteChild(T_DairyDateItem *child)
+void T_DairyDateItem::deleteChild(T_DairyDateItem* child)
 {
 //    set<T_DairyDateItem*, T_DairyDateComparator>::iterator iter = m_setChildItems.begin();
 //    for (;iter != m_setChildItems.end(); ++iter)
@@ -130,7 +129,7 @@ void T_DairyDateItem::deleteChildren()
     m_setChildItems.clear(); // 移除容器所有项
 }
 
-T_DairyDateItem* T_DairyDateItem::find(T_DairyDateItem *tDairyDateItem)
+T_DairyDateItem* T_DairyDateItem::find(T_DairyDateItem* tDairyDateItem)
 {
 
     set<T_DairyDateItem*, T_DairyDateComparator>::iterator iter = m_setChildItems.find(tDairyDateItem);
@@ -172,7 +171,7 @@ void T_DairyDateItem::insert(T_DairyDateItem* tDairyDateItem)
 QList<T_DairyDateItem*> T_DairyDateItem::values()
 {
     QList<T_DairyDateItem*> lstDairyDateItem;
-    for (auto pItem: m_setChildItems)
+    for (auto pItem : m_setChildItems)
     {
         lstDairyDateItem.append(pItem);
     }
@@ -181,7 +180,7 @@ QList<T_DairyDateItem*> T_DairyDateItem::values()
     return lstDairyDateItem;
 }
 
-T_DairyDateItem *T_DairyDateItem::parentItem()
+T_DairyDateItem* T_DairyDateItem::parentItem()
 {
     return m_pParentItem;
 }
@@ -231,24 +230,24 @@ QString T_DairyDateItem::text()
     QString strText;
     switch (eDairyDateNodeType)
     {
-    case ED_Year:
-        strText = strYear + "年";
-        break;
-    case ED_Month:
-        strText = strMonth + "月";
-        break;
-    case ED_Day:
-        if (strTitle.isEmpty())
-        {
-            strText = strDay + "日";
-        }
-        else
-        {
-            strText = strDay + "日 - " + strTitle;
-        }
-        break;
-    default:
-        break;
+        case ED_Year:
+            strText = strYear + "年";
+            break;
+        case ED_Month:
+            strText = strMonth + "月";
+            break;
+        case ED_Day:
+            if (strTitle.isEmpty())
+            {
+                strText = strDay + "日";
+            }
+            else
+            {
+                strText = strDay + "日 - " + strTitle;
+            }
+            break;
+        default:
+            break;
     }
     return strText;
 }
@@ -258,7 +257,7 @@ QString T_DairyDateItem::text()
 /// \param dairyBefore
 /// \param dairyAfter
 ///
-void T_DairyDateItem::dairyModify(const CDairy &dairyBefore, const CDairy &dairyAfter
+void T_DairyDateItem::dairyModify(const CDairy & dairyBefore, const CDairy & dairyAfter
                                   , T_DairyDateItem* & pDairyDateItem)
 {
     if (did == dairyBefore.getDid() && eDairyDateNodeType == ED_Day)
@@ -271,13 +270,13 @@ void T_DairyDateItem::dairyModify(const CDairy &dairyBefore, const CDairy &dairy
     {
         return;
     }
-    for (T_DairyDateItem* pItem: m_setChildItems)
+    for (T_DairyDateItem* pItem : m_setChildItems)
     {
         pItem->dairyModify(dairyBefore, dairyAfter, pDairyDateItem);
     }
 }
 
-void T_DairyDateItem::findItemById(int did, T_DairyDateItem *&pDairyDateItem)
+void T_DairyDateItem::findItemById(int did, T_DairyDateItem* & pDairyDateItem)
 {
     if (this->did == did && eDairyDateNodeType == ED_Day)
     {
@@ -287,7 +286,7 @@ void T_DairyDateItem::findItemById(int did, T_DairyDateItem *&pDairyDateItem)
     {
         return;
     }
-    for (T_DairyDateItem* pItem: m_setChildItems)
+    for (T_DairyDateItem* pItem : m_setChildItems)
     {
         pItem->findItemById(did, pDairyDateItem);
     }
@@ -307,21 +306,21 @@ void T_DairyDateItem::findItemById(int did, T_DairyDateItem *&pDairyDateItem)
 ///
 /// \brief CDairyDateTreeModel::CDairyDateTreeModel
 ///
-CDairyDateTreeModel::CDairyDateTreeModel(QObject *parent = 0)
+CDairyDateTreeModel::CDairyDateTreeModel(QObject* parent = 0)
     : QAbstractItemModel(parent)
     , m_pDairyDateItemRoot(NULL)
 {
 
 }
 
-int CDairyDateTreeModel::rowCount(const QModelIndex &parent) const
+int CDairyDateTreeModel::rowCount(const QModelIndex & parent) const
 {
     if (m_pDairyDateItemRoot == NULL)
     {
         return 0;
     }
 
-    T_DairyDateItem *pParentItem;
+    T_DairyDateItem* pParentItem;
     if (!parent.isValid())
     {
         pParentItem = m_pDairyDateItemRoot;
@@ -334,14 +333,14 @@ int CDairyDateTreeModel::rowCount(const QModelIndex &parent) const
     return pParentItem->values().size();
 }
 
-int CDairyDateTreeModel::columnCount(const QModelIndex &parent) const
+int CDairyDateTreeModel::columnCount(const QModelIndex & parent) const
 {
     Q_UNUSED(parent);
     // 此处不是3,因为指定了父节点
     return 1;
 }
 
-QVariant CDairyDateTreeModel::data(const QModelIndex &index, int role) const
+QVariant CDairyDateTreeModel::data(const QModelIndex & index, int role) const
 {
     if (m_pDairyDateItemRoot == NULL)
     {
@@ -353,8 +352,8 @@ QVariant CDairyDateTreeModel::data(const QModelIndex &index, int role) const
         return QVariant();
     }
 
-    T_DairyDateItem *pItem = static_cast<T_DairyDateItem*>(index.internalPointer());
-    if(role == Qt::DecorationRole && index.column()==0)
+    T_DairyDateItem* pItem = static_cast<T_DairyDateItem*>(index.internalPointer());
+    if(role == Qt::DecorationRole && index.column() == 0)
     {
 //        if (pItem->isFixedItem())
 //        {
@@ -367,7 +366,9 @@ QVariant CDairyDateTreeModel::data(const QModelIndex &index, int role) const
     }
 
     if (role != Qt::DisplayRole)
+    {
         return QVariant();
+    }
 
     QVariant variant;
     variant.setValue(pItem);
@@ -376,10 +377,12 @@ QVariant CDairyDateTreeModel::data(const QModelIndex &index, int role) const
     //return pItem->data(index.column());
 }
 
-Qt::ItemFlags CDairyDateTreeModel::flags(const QModelIndex &index) const
+Qt::ItemFlags CDairyDateTreeModel::flags(const QModelIndex & index) const
 {
     if (!index.isValid())
+    {
         return Qt::NoItemFlags;
+    }
 
     Qt::ItemFlags flag = QAbstractItemModel::flags(index);
 
@@ -395,7 +398,7 @@ QVariant CDairyDateTreeModel::headerData(int section, Qt::Orientation orientatio
     return QVariant();
 }
 
-QModelIndex CDairyDateTreeModel::index(int row, int column, const QModelIndex &parent) const
+QModelIndex CDairyDateTreeModel::index(int row, int column, const QModelIndex & parent) const
 {
     if (m_pDairyDateItemRoot == NULL)
     {
@@ -403,27 +406,33 @@ QModelIndex CDairyDateTreeModel::index(int row, int column, const QModelIndex &p
     }
 
     if (!hasIndex(row, column, parent))
+    {
         return QModelIndex();
+    }
 
-    T_DairyDateItem *parentItem;
+    T_DairyDateItem* parentItem;
     if (!parent.isValid())
+    {
         parentItem = m_pDairyDateItemRoot;
+    }
     else
+    {
         parentItem = static_cast<T_DairyDateItem*>(parent.internalPointer());
+    }
 
-    T_DairyDateItem *childItem =  parentItem->values().at(row);
+    T_DairyDateItem* childItem =  parentItem->values().at(row);
     if (childItem)
     {
 //        int nAbleColumn = childItem->column();
 //        if (nAbleColumn == column)
 //        {
-            return createIndex(row, column, childItem);
+        return createIndex(row, column, childItem);
 //        }
     }
     return QModelIndex();
 }
 
-QModelIndex CDairyDateTreeModel::parent(const QModelIndex &index) const
+QModelIndex CDairyDateTreeModel::parent(const QModelIndex & index) const
 {
     if (m_pDairyDateItemRoot == NULL)
     {
@@ -431,10 +440,12 @@ QModelIndex CDairyDateTreeModel::parent(const QModelIndex &index) const
     }
 
     if (!index.isValid())
+    {
         return QModelIndex();
+    }
 
-    T_DairyDateItem *childItem = static_cast<T_DairyDateItem*>(index.internalPointer());
-    T_DairyDateItem *parentItem = childItem->parentItem();
+    T_DairyDateItem* childItem = static_cast<T_DairyDateItem*>(index.internalPointer());
+    T_DairyDateItem* parentItem = childItem->parentItem();
 
     if (parentItem == m_pDairyDateItemRoot)
     {
@@ -445,38 +456,40 @@ QModelIndex CDairyDateTreeModel::parent(const QModelIndex &index) const
     return createIndex(parentItem->row(), parentItem->column(), parentItem);
 }
 
-bool CDairyDateTreeModel::hasChildren(const QModelIndex &parent) const
+bool CDairyDateTreeModel::hasChildren(const QModelIndex & parent) const
 {
     if (m_pDairyDateItemRoot == NULL)
     {
         return false;
     }
 
-    T_DairyDateItem *parentItem;
+    T_DairyDateItem* parentItem;
 
     if (!parent.isValid())
+    {
         parentItem = m_pDairyDateItemRoot;
+    }
     else
+    {
         parentItem = static_cast<T_DairyDateItem*>(parent.internalPointer());
+    }
 
     int nCount = parentItem->values().size();
     return nCount > 0;
 }
 
-void CDairyDateTreeModel::loadAllDairy()
-{
-    QList<CDairy> lstDairy = CUser::getInstance()->getLstDairy();
-    loadDairy(lstDairy);
-}
 
-void CDairyDateTreeModel::loadDairy(const QList<CDairy> &lstDairy)
+
+void CDairyDateTreeModel::loadDairyList(const QList<CDairy> & lstDairy)
 {
     // 如果列表中没有今天的日记则添加今天的空日记
+    m_lstDairy = lstDairy;
+    QList<CDairy> lstDairyAddToday = lstDairy;
     bool bHaveTodayDairy = false;
     QString strDateTime = QDateTime::currentDateTime().toString(FORMAT_DATETIME);
-    QList<CDairy> lstDairyAddToday = lstDairy;
+
     CDairy dairyToday;
-    foreach (CDairy dairy, lstDairyAddToday)
+    foreach (CDairy dairy, m_lstDairy)
     {
         if (dairy.getDateTime().mid(0, 10) == strDateTime.mid(0, 10))
         {
@@ -487,40 +500,38 @@ void CDairyDateTreeModel::loadDairy(const QList<CDairy> &lstDairy)
     }
     if (!bHaveTodayDairy)
     {
-        CDairy dairyEmpty;
-        dairyToday = dairyEmpty;
-        lstDairyAddToday.append(dairyEmpty);
+        lstDairyAddToday.append(dairyToday);
     }
     emit loadTodayDairyFinished(dairyToday);
-    createDateTree(lstDairyAddToday);
+    convertDiaryListToTree(lstDairyAddToday);
 }
 
-void CDairyDateTreeModel::reloadDairyByTag(const QString &strTagName)
+void CDairyDateTreeModel::reloadDairyByTag(const QString & strTagName)
 {
     if (m_pDairyDateItemRoot == NULL)
     {
         return;
     }
     m_pDairyDateItemRoot->deleteChildren();
+    QList<CDairy> lstDairyLoad;
     if ( "全部日记" == strTagName)
     {
-        loadAllDairy();
-        return;
+        lstDairyLoad = m_lstDairy;
     }
-
-    QList<CDairy> lstDairy = CUser::getInstance()->getLstDairy();
-    QList<CDairy> lstDairyLoad;
-    for (CDairy dairy : lstDairy)
+    else
     {
-        if (strTagName == dairy.getTag())
+        for (CDairy dairy : m_lstDairy)
         {
-            lstDairyLoad.append(dairy);
+            if (strTagName == dairy.getTag())
+            {
+                lstDairyLoad.append(dairy);
+            }
         }
     }
-    loadDairy(lstDairyLoad);
+    loadDairyList(lstDairyLoad);
 }
 
-void CDairyDateTreeModel::createDateTree(const QList<CDairy> & lstDairy)
+void CDairyDateTreeModel::convertDiaryListToTree(const QList<CDairy> & lstDairy)
 {
     beginResetModel();
     m_pDairyDateItemRoot = new T_DairyDateItem(ED_Root);
@@ -580,7 +591,7 @@ void CDairyDateTreeModel::insetDairy(CDairy dairy)
 
 }
 
-void CDairyDateTreeModel::dairyModify(const CDairy &dairyBefore, const CDairy &dairyAfter)
+void CDairyDateTreeModel::dairyModify(const CDairy & dairyBefore, const CDairy & dairyAfter)
 {
     if (m_pDairyDateItemRoot == NULL)
     {

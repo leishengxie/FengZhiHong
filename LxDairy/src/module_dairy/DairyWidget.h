@@ -21,7 +21,7 @@ public:
     explicit CDairyWidget(QWidget *parent = 0);
     ~CDairyWidget();
 
-
+    void saveAllDairy();
 
 public slots:
 
@@ -45,8 +45,6 @@ private slots:
     void onSaveDairyfinished(const CDairy & dairySaveBefore, const CDairy & dairySaved);
 
     void on_treeDairy_clicked(const QModelIndex &index);
-
-
 
     void on_listViewTag_clicked(const QModelIndex &index);
 

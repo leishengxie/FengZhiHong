@@ -8,7 +8,6 @@
 #include <QSqlError>
 
 #include <time.h>
-#include "User.h"
 
 
 CSqlOperate::CSqlOperate(QObject *parent) : QObject(parent)
@@ -103,7 +102,7 @@ void CSqlOperate::createTable()
 
 
 
-int CSqlOperate::registerAccount(QString strUserName, QString strPasswd)
+bool CSqlOperate::registerAccount(QString strUserName, QString strPasswd, QString & strErr)
 {
     QSqlQuery query;
 
@@ -113,7 +112,8 @@ int CSqlOperate::registerAccount(QString strUserName, QString strPasswd)
     {
         if(query.value("user_name").toString() == strUserName)
         {
-            return 1; // user name already existes
+            strErr = "该用户名已经被注册！！";
+            return false;
         }
     }
     //INSERT INTO tUser(user_name, passwd) VALUES('leisx', '0406aaaaa');
@@ -128,36 +128,47 @@ int CSqlOperate::registerAccount(QString strUserName, QString strPasswd)
     query.bindValue(0, strUserName);
     query.bindValue(1, strPasswd);
 
+//    query.prepare("INSERT INTO tUser(user_name, passwd, nick_name) VALUES(?, ?, ?)");
+//    query.bindValue(0, strUserName);
+//    query.bindValue(1, strPasswd);
+//    query.bindValue(2, strUserName);
+
     //    QString strSql = "INSERT INTO tUser(user_name, passwd) VALUES('" +
     //            strUserName + "', '" +
     //            strPasswd + "')";
     if (!query.exec())
     {
-        qDebug() << query.lastError();
-        return 2;
+        strErr =  query.lastError().text();
+        return false;
     }
-    return 0;
+    return true;
 }
 
 
-bool CSqlOperate::login(QString strUserName, QString strPasswd)
+bool CSqlOperate::login(QString strUserName, QString strPasswd, T_UserInfo & tUserInfo, QString & strErr)
 {
     QSqlQuery query;
-    query.exec("select * from tUser");
-    while (query.next())
+    query.exec("select * from tUser where user_name = '" + strUserName + "'");
+    if (!query.next())
     {
-        if(query.value("user_name").toString() == strUserName
-                && query.value("passwd").toString() == strPasswd)
-        {
-            int uid = query.value("uid").toInt();
-            CUser::getInstance()->setUid(uid);
-            CUser::getInstance()->setUserName(strUserName);
-            CUser::getInstance()->setLstDairy(getDairyList(uid));
-            return true;
-        }
+        strErr = "账号不存在，请注册账号";
+        return false;
     }
-    return false;
+
+    query.exec("select * from tUser where user_name = '" + strUserName + "' and passwd = '" + strPasswd + "'");
+    if (!query.next())
+    {
+        strErr = "密码错误";
+        return false;
+    }
+
+    //QSqlRecord rec = q.record();
+    tUserInfo.uid = query.value("uid").toInt();
+    //tUserInfo.strNickName = query.value("nick_name").toString();
+    tUserInfo.strNickName = query.value("user_name").toString();
+    return true;
 }
+
 
     // 读取日记
 QList<CDairy> CSqlOperate::getDairyList(int uid)
@@ -180,12 +191,12 @@ QList<CDairy> CSqlOperate::getDairyList(int uid)
     return lstDairy;
 }
 
-CDairy CSqlOperate::getDairy(int did, bool &bOk)
+CDairy CSqlOperate::getDairy(int did, int uid, bool &bOk)
 {
     CDairy dairy;
     QSqlQuery query;
     query.exec("select * from tDairy where uid = '"
-               + QString::number(CUser::getInstance()->getUid())
+               + QString::number(uid)
                + "' and did = '" + QString::number(did) + "'");
     if (query.next())
     {
@@ -261,7 +272,7 @@ bool CSqlOperate::saveDairy(const CDairy & dairyModify, CDairy & dairySaved)
     {
         bool ok = query.prepare("INSERT INTO tDairy(uid, title,datetime,tag,weather,content) "
                                 "VALUES (?, ?, ?, ?, ?, ?)");
-        query.bindValue(0, CUser::getInstance()->getUid());
+        query.bindValue(0, dairyModify.getUid());
         query.bindValue(1, dairyModify.getTitle());
         query.bindValue(2, dairyModify.getDateTime());
         query.bindValue(3, dairyModify.getTag());

@@ -9,14 +9,31 @@ TARGET = LxDairyServer
 
 DESTDIR = $$PWD/bin
 
+# if not exist exe, 先注释，生成exe再开放
 win32:CONFIG(release, debug|release): {
-QMAKE_LFLAGS += /MANIFESTUAC:\"level=\'requireAdministrator\' uiAccess=\'false\'\" #以管理员运行
-QMAKE_LFLAGS += /SUBSYSTEM:WINDOWS,\"5.01\" #VS2013 在XP运行
+#QMAKE_LFLAGS += /MANIFESTUAC:\"level=\'requireAdministrator\' uiAccess=\'false\'\" #以管理员运行
+#QMAKE_LFLAGS += /SUBSYSTEM:WINDOWS,\"5.01\" #VS2013 在XP运行
 }
 else:win32:CONFIG(debug, debug|release): {
 
 }
 
+#copy dll
+win32:CONFIG(release, debug|release): {
+# PRE_TARGETDEPS:The target will run before build
+# PRE_TARGETDEPS
+copy_deps.target=copy_lqttool
+copy_deps.depends=FORCE
+copy_deps.commands = copy $$PWD/../../LxTool/LQtTool/bin/LQtTool.dll $$PWD/bin
+# POST_TARGETDEPS:The target will run after build finished
+POST_TARGETDEPS += copy_lqttool
+QMAKE_EXTRA_TARGETS += copy_deps
+}
+
+#replace/ to \
+win32 {
+    copy_deps.commands ~= s,/,\\\\,g
+}
 
 #依赖头文#
 INCLUDEPATH += $$PWD/../../LxTool/LQtTool/include

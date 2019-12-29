@@ -1,10 +1,10 @@
 #include "DairyTagListModel.h"
-#include "User.h"
+
 
 CDairyTagListModel::CDairyTagListModel(QObject* parent)
     : QAbstractListModel(parent)
 {
-    loadDairyTag();
+    loadSysDefaultTag();
 }
 
 int CDairyTagListModel::rowCount(const QModelIndex & parent) const
@@ -42,17 +42,47 @@ QVariant CDairyTagListModel::data(const QModelIndex & index, int role) const
     //return QAbstractListModel::data(index, role);
 }
 
-void CDairyTagListModel::loadDairyTag()
+QStringList CDairyTagListModel::listDairyTagNames() const
 {
-    QStringList strlstDairyTag = CUser::getInstance()->getLstDairyTag();
-    QList<CDairy> lstDairy = CUser::getInstance()->getLstDairy();
-
-    m_lstDairyTag.append(T_DairyTagItem("全部日记", lstDairy.size()));
-
-    foreach (QString dairyTag, strlstDairyTag)
+    QStringList strlistDairyTagNames;
+    foreach (T_DairyTagItem dairyTag, m_lstDairyTag)
     {
-        m_lstDairyTag.append(T_DairyTagItem(dairyTag, 0));
+        strlistDairyTagNames.append(dairyTag.strTagName);
     }
+}
+
+QStringList CDairyTagListModel::listSysDefaultDairyTagNames()
+{
+    return {"普通日记", "心得体会", "摘抄", "工作笔记"};
+}
+
+void CDairyTagListModel::loadSysDefaultTag()
+{
+    m_lstDairyTag.append(T_DairyTagItem("全部日记"));
+    QStringList strlstSysDairyTagNames = listSysDefaultDairyTagNames();
+    foreach (QString dairyTagName, strlstSysDairyTagNames)
+    {
+        m_lstDairyTag.append(T_DairyTagItem(dairyTagName));
+    }
+}
+
+void CDairyTagListModel::loadCustomDairyTag(const QStringList & strlstTagName)
+{
+    foreach (QString dairyTag, strlstTagName)
+    {
+        m_lstDairyTag.append(T_DairyTagItem(dairyTag));
+    }
+
+}
+
+void CDairyTagListModel::loadDiaryList(const QList<CDairy> & lstDairy)
+{
+    if (m_lstDairyTag.isEmpty())
+    {
+        return;
+    }
+
+    m_lstDairyTag[0].nNum = lstDairy.size();
     foreach (CDairy dairy, lstDairy)
     {
         for (int i = 0; i < m_lstDairyTag.size(); ++i)
@@ -63,4 +93,5 @@ void CDairyTagListModel::loadDairyTag()
             }
         }
     }
+    emit dataChanged(index(0), index(m_lstDairyTag.size()));
 }

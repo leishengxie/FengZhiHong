@@ -4,9 +4,11 @@
 #include "DairyEdit.h"
 #include "DairyEditWidget.h"
 #include "SqlOperate.h"
+#include "DairyApp.h"
 
 #include <QMdiSubWindow>
 #include <QtDebug>
+#include <QCloseEvent>
 
 CDairyEditMainWidget::CDairyEditMainWidget(QWidget* parent) :
     QWidget(parent),
@@ -46,16 +48,7 @@ void CDairyEditMainWidget::saveAllDairy()
     }
 }
 
-bool CDairyEditMainWidget::closeAllSubWindows()
-{
-    // 作为顶层窗口时用，不是顶层窗口无意义
-    ui->mdiArea->closeAllSubWindows();
-    if(ui->mdiArea->currentSubWindow())
-    {
-        return false;
-    }
-    return true;
-}
+
 
 
 void CDairyEditMainWidget::slotUpdateMenu(QMdiSubWindow* pMdiSubWindow)
@@ -94,7 +87,7 @@ void CDairyEditMainWidget::slot_displayDairy(const CDairy & dairy)
     else
     {
         bool bOk = false;
-        m_dairyActive = CSqlOperate::getDairy(dairy.getDid(), bOk);
+        m_dairyActive = CSqlOperate::getDairy(dairy.getDid(), CDairyApp::userInfo().uid, bOk);
         if (!bOk)
         {
             // print error
@@ -135,6 +128,21 @@ void CDairyEditMainWidget::slot_displayDairy(const CDairy & dairy)
 void CDairyEditMainWidget::onMusicFinished()
 {
     ui->btnPlayMusic->setChecked(false);
+}
+
+///
+/// \brief CDairyEditMainWidget::closeEvent 需要重载关闭情况来检测关闭时需要保存的文档
+/// \param event
+///
+void CDairyEditMainWidget::closeEvent(QCloseEvent *event)
+{
+    ui->mdiArea->closeAllSubWindows();
+    if(ui->mdiArea->currentSubWindow())
+    {
+        event->accept();
+        return;
+    }
+    event->accept();
 }
 
 void CDairyEditMainWidget::on_btnTTSPlay_clicked()

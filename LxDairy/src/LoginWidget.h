@@ -31,9 +31,14 @@ private slots:
 
     void on_btnLoginServer_clicked();
 
+
+
 protected:
     void paintEvent(QPaintEvent *event);
     void resizeEvent(QResizeEvent *event);
+
+private:
+    void testUrlDump();
 
 private:
     Ui::CLoginWidget *ui;

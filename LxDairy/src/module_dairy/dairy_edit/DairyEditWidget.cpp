@@ -5,7 +5,8 @@
 #include <QMessageBox>
 #include <QCloseEvent>
 #include "SqlOperate.h"
-#include "User.h"
+
+#include "dairy_tag/DairyTagListModel.h"
 
 
 
@@ -50,7 +51,7 @@ void CDairyEditWidget::init()
 
     // 获取并显示标签
     ui->comboBoxTag->clear();
-    ui->comboBoxTag->addItems(CUser::getInstance()->getLstDairyTag());
+    ui->comboBoxTag->addItems(CDairyTagListModel::listSysDefaultDairyTagNames());
 
 }
 

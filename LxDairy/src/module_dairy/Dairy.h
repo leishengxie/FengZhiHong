@@ -17,6 +17,7 @@ public:
 
     CDairy();
     SETGETCONST(int, did, Did)
+    SETGETCONST(int, uid, Uid)
     SETGETCONST(QString, strTitle, Title)
     SETGETCONST(QString, strDateTime, DateTime)
     SETGETCONST(QString, strWeather, Weather)

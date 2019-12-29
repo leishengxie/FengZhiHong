@@ -2,8 +2,9 @@
 #define CDAIRYTAGLISTMODEL_H
 
 #include <QAbstractListModel>
+#include "Dairy.h"
 
-
+// 标签节点
 struct T_DairyTagItem
 {
     QString strTagName;
@@ -11,6 +12,13 @@ struct T_DairyTagItem
 
     T_DairyTagItem()
         : nNum(0)
+    {
+
+    }
+
+    T_DairyTagItem(QString strTagName)
+        : strTagName(strTagName)
+        , nNum(0)
     {
 
     }
@@ -51,10 +59,24 @@ public:
         return m_lstDairyTag;
     }
 
-private:
-    void loadDairyTag();
+    QStringList listDairyTagNames() const;
+    static QStringList listSysDefaultDairyTagNames();
+
+
+    // 从数据库中加载用户自定义标签
+    void loadCustomDairyTag(const QStringList &strlstTagName);
+
+    // 加载日记刷新标签
+    void loadDiaryList(const QList<CDairy> &lstDairy);
+
+
 
 private:
+    // 加载系统默认标签
+    void loadSysDefaultTag();
+
+private:
+
     // 标签数据
     QList<T_DairyTagItem> m_lstDairyTag;
 };

@@ -35,7 +35,6 @@ HEADERS += \
     $$PWD/SkinWidget.h \
     $$PWD/SqlOperate.h \
     $$PWD/TextVerifier.h \
-    $$PWD/User.h \
     $$PWD/core/LEvent.h \
     $$PWD/DairyApp.h \
     $$PWD/module_collection/CollectionWidget.h \
@@ -100,7 +99,6 @@ SOURCES += \
     $$PWD/SkinWidget.cpp \
     $$PWD/SqlOperate.cpp \
     $$PWD/TextVerifier.cpp \
-    $$PWD/User.cpp \
     $$PWD/core/LEvent.cpp \
     $$PWD/DairyApp.cpp \
     $$PWD/module_collection/CollectionWidget.cpp \

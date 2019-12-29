@@ -9,7 +9,7 @@
 
 #include "LoginWidget.h"
 #include "SkinWidget.h"
-#include "User.h"
+
 #include "music/LMusicPlayer.h"
 #include "tts/windows/LWindowsTTSS.h"
 #include "AboutDialog.h"
@@ -26,7 +26,7 @@ CDairyMainWindow::CDairyMainWindow(QWidget* parent)
     , m_pLoginWidget(NULL)
 {
     ui->setupUi(this);
-    setWindowTitle("LxDairy - " + CUser::getInstance()->getUserName());
+    setWindowTitle("LxDairy - " + CDairyApp::userInfo().strNickName);
 // 谨慎使用，20191201 会应用到子对象， 从而导致子对象每次show时都会使用，如果是大图片会导致界面刷新卡顿
 //    QPalette pal;
 //    pal.setBrush(QPalette::Background, QBrush(QPixmap(":/img/bg/1.jpg").scaled(size())));
@@ -100,15 +100,18 @@ void CDairyMainWindow::paintEvent(QPaintEvent* event)
 
 void CDairyMainWindow::closeEvent(QCloseEvent* event)
 {
-    //CDairyApp::postEvent(ui->tabDairy, (QEvent *)event);
-//    if(ui->tabDairy->closeAllSubWindows())
-//    {
-//        event->accept();//关闭
-//    }
-//    else
-//    {
-//        event->ignore();
-//    }
+    // 检测所有应该关闭时提示保存的子类
+    bool bCloseDairy = ui->tabDairy->close();
+    bool bCloseTool = ui->tabTool->close();
+    bool bCloseCollect = ui->tabCollection->close();
+
+    if(bCloseDairy && bCloseTool && bCloseCollect)
+    {
+        event->accept();
+        return;
+    }
+    event->ignore();
+
 }
 
 
@@ -217,7 +220,7 @@ void CDairyMainWindow::on_action_font_triggered()
 
 void CDairyMainWindow::on_action_save_all_triggered()
 {
-    //ui->tabDairy->saveAllDairy();
+    ui->tabDairy->saveAllDairy();
 }
 
 

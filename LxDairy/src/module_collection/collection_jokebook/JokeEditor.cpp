@@ -2,7 +2,7 @@
 #include "ui_JokeEditor.h"
 
 #include <QDateTime>
-#include "User.h"
+#include "DairyApp.h"
 
 CJokeEditor::CJokeEditor(QWidget *parent) :
     QWidget(parent),
@@ -22,11 +22,10 @@ void CJokeEditor::on_btnUpload_clicked()
     T_Joke tJoke;
     tJoke.strTitle = ui->leTitle->text();
     tJoke.strDate = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
-    int index = ui->combSource->currentIndex();
     tJoke.bOriginal = (ui->combSource->currentIndex() == 1 ? true : false);
     tJoke.strContent = ui->plainTextEdit->document()->toPlainText();
-    tJoke.upUid = CUser::getInstance()->getUserInfo().uid;
-    tJoke.strNickname = CUser::getInstance()->getUserInfo().strNickName;
+    tJoke.upUid = CDairyApp::userInfoNet().uid;
+    tJoke.strNickname = CDairyApp::userInfoNet().strNickName;
     emit requreUploadJoke(tJoke);
     close();
 }

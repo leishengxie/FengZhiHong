@@ -67,6 +67,7 @@ void CLDairyService::start()
     app->setApplicationName(APPNAME);
     app->setOrganizationName(ORGANISATION);
 
+
     // Find the configuration file
     QString configFileName=searchConfigFile();
 
