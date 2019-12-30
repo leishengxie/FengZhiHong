@@ -482,9 +482,9 @@ bool CDairyDateTreeModel::hasChildren(const QModelIndex & parent) const
 
 void CDairyDateTreeModel::loadDairyList(const QList<CDairy> & lstDairy)
 {
-    // 如果列表中没有今天的日记则添加今天的空日记
     m_lstDairy = lstDairy;
-    QList<CDairy> lstDairyAddToday = lstDairy;
+
+    // 如果列表中没有今天的日记则添加今天的空日记
     bool bHaveTodayDairy = false;
     QString strDateTime = QDateTime::currentDateTime().toString(FORMAT_DATETIME);
 
@@ -500,23 +500,18 @@ void CDairyDateTreeModel::loadDairyList(const QList<CDairy> & lstDairy)
     }
     if (!bHaveTodayDairy)
     {
-        lstDairyAddToday.append(dairyToday);
+        m_lstDairy.append(dairyToday);
     }
     emit loadTodayDairyFinished(dairyToday);
-    convertDiaryListToTree(lstDairyAddToday);
+    convertDiaryListToTree(m_lstDairy);
 }
 
-void CDairyDateTreeModel::reloadDairyByTag(const QString & strTagName)
+void CDairyDateTreeModel::sortDairyByTag(const QString & strTagName)
 {
-    if (m_pDairyDateItemRoot == NULL)
-    {
-        return;
-    }
-    m_pDairyDateItemRoot->deleteChildren();
-    QList<CDairy> lstDairyLoad;
+    QList<CDairy> lstDairySort;
     if ( "全部日记" == strTagName)
     {
-        lstDairyLoad = m_lstDairy;
+        lstDairySort = m_lstDairy;
     }
     else
     {
@@ -524,25 +519,30 @@ void CDairyDateTreeModel::reloadDairyByTag(const QString & strTagName)
         {
             if (strTagName == dairy.getTag())
             {
-                lstDairyLoad.append(dairy);
+                lstDairySort.append(dairy);
             }
         }
     }
-    loadDairyList(lstDairyLoad);
+    emit sortDairyByTagFinished(strTagName, lstDairySort);
+    convertDiaryListToTree(lstDairySort);
 }
 
 void CDairyDateTreeModel::convertDiaryListToTree(const QList<CDairy> & lstDairy)
 {
+    if (NULL == m_pDairyDateItemRoot)
+    {
+        m_pDairyDateItemRoot = new T_DairyDateItem(ED_Root);
+    }
+    m_pDairyDateItemRoot->deleteChildren();
     beginResetModel();
-    m_pDairyDateItemRoot = new T_DairyDateItem(ED_Root);
     foreach (CDairy dairy, lstDairy)
     {
-        insetDairy(dairy);
+        addDairyToTree(dairy);
     }
     endResetModel();
 }
 
-void CDairyDateTreeModel::insetDairy(CDairy dairy)
+void CDairyDateTreeModel::addDairyToTree(CDairy dairy)
 {
     T_DairyDateItem* pItemYear = new T_DairyDateItem(ED_Year, dairy);
     T_DairyDateItem* pItemMonth = new T_DairyDateItem(ED_Month, dairy);

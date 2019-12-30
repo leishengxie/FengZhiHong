@@ -10,22 +10,24 @@ class CDairyWidget;
 
 
 class QCloseEvent;
-class CDairyTagListModel;
-class CDairyDateTreeModel;
+
 
 class CDairyWidget : public CLBaseWidget
 {
     Q_OBJECT
 
 public:
+    enum E_PageIndex
+    {
+        EP_Dairy,
+        EP_Statistics
+    };
+
     explicit CDairyWidget(QWidget *parent = 0);
     ~CDairyWidget();
 
     void saveAllDairy();
 
-public slots:
-
-    void onRequireExpand(const QModelIndex & index);
 
 signals:
     // 请求tts处理 -中转S1
@@ -42,21 +44,17 @@ protected:
 
 private slots:
 
-    void onSaveDairyfinished(const CDairy & dairySaveBefore, const CDairy & dairySaved);
-
-    void on_treeDairy_clicked(const QModelIndex &index);
-
-    void on_listViewTag_clicked(const QModelIndex &index);
-
     void on_calendarWidget_clicked(const QDate &date);
+
+private:
+    void init();
 
 
 private:
     Ui::CDairyWidget *ui;
 
-    // model管理
-    CDairyTagListModel* pDairyTagListModel;
-    CDairyDateTreeModel* pDairyDateTreeModel;
+
+
 
 };
 

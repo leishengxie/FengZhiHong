@@ -11,7 +11,7 @@ CDairyStatisticsModel::CDairyStatisticsModel(QObject *parent)
 int CDairyStatisticsModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
-    return m_lstDairyStatistics.count();
+    return m_lstDairy.count();
 }
 
 QVariant CDairyStatisticsModel::data(const QModelIndex &index, int role) const
@@ -21,7 +21,7 @@ QVariant CDairyStatisticsModel::data(const QModelIndex &index, int role) const
         return QVariant();
     }
 
-    if (index.row() < 0 || index.row() >= m_lstDairyStatistics.count())
+    if (index.row() < 0 || index.row() >= m_lstDairy.count())
     {
         return QVariant();
     }
@@ -30,9 +30,9 @@ QVariant CDairyStatisticsModel::data(const QModelIndex &index, int role) const
     {
         return QVariant();
     }
-    T_DairyStatisticsItem tDairyStatisticsItem = m_lstDairyStatistics.at(index.row());
+    CDairy dairy = m_lstDairy.at(index.row());
     QVariant variant;
-    variant.setValue(tDairyStatisticsItem);
+    variant.setValue(dairy);
     return variant;
 
 }
@@ -40,13 +40,8 @@ QVariant CDairyStatisticsModel::data(const QModelIndex &index, int role) const
 void CDairyStatisticsModel::showDairyStatistics(const QList<CDairy> & lstDairy)
 {
     beginResetModel();
-    m_lstDairyStatistics.clear();
-    foreach (CDairy dairy, lstDairy)
-    {
-        m_lstDairyStatistics.append(T_DairyStatisticsItem(dairy.getDid()
-                                                          , dairy.getDateTime().left(10)
-                                                          , dairy.getTitle() + " - " + dairy.getContent()));
-    }
+    m_lstDairy = lstDairy;
+
     endResetModel();
 }
 

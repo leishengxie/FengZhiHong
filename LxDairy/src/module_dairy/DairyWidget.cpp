@@ -1,11 +1,9 @@
 #include "DairyWidget.h"
 #include "ui_DairyWidget.h"
 
-#include "dairy_date/DairyDateTreeModel.h"
-#include "dairy_date/DairyDateDelegate.h"
 
-#include "dairy_tag/DairyTagListModel.h"
-#include "dairy_tag/DairyTagDelegate.h"
+
+
 #include "SqlOperate.h"
 #include "DairyApp.h"
 
@@ -20,29 +18,46 @@ CDairyWidget::CDairyWidget(QWidget* parent)
     , ui(new Ui::CDairyWidget)
 {
     ui->setupUi(this);
+    init();
 
-    // 初始化listViewTag
-    pDairyTagListModel = new CDairyTagListModel(this);
-    CDairyTagDelegate* pDairyTagDelegate = new CDairyTagDelegate;
-    ui->listViewTag->setModel(pDairyTagListModel);
-    ui->listViewTag->setItemDelegate(pDairyTagDelegate);
+}
 
-    // 初始化pDairyDateTreeModel
-    pDairyDateTreeModel = new CDairyDateTreeModel(this);
-    CDairyDateDelegate* pDairyDateDelegate = new CDairyDateDelegate;
-    ui->treeDairy->setModel(pDairyDateTreeModel);
-    ui->treeDairy->setItemDelegate(pDairyDateDelegate);
-
-    connect(pDairyDateTreeModel, SIGNAL(loadTodayDairyFinished(CDairy)), ui->page_dairy, SLOT(slot_displayDairy(CDairy)));
-    connect(pDairyDateTreeModel, SIGNAL(requireExpand(QModelIndex)), this, SLOT(onRequireExpand(QModelIndex)));
-
-
-    connect(ui->page_dairy_statistics, SIGNAL(expandDairy(int)), pDairyDateTreeModel, SLOT(expandDairy(int)));
-
-    connect(ui->page_dairy, SIGNAL(saveDairyfinishedS1(CDairy,CDairy)), this, SLOT(onSaveDairyfinished(CDairy,CDairy)));
+void CDairyWidget::init()
+{
+    // dairy_edit
+    connect(ui->page_dairy, SIGNAL(saveDairyfinishedS1(CDairy, CDairy)), ui->treeDairy, SLOT(onSaveDairyfinished(CDairy, CDairy)));
     connect(ui->page_dairy, SIGNAL(requirePlayMusic()), this, SIGNAL(requirePlayMusicS1()));
     connect(ui->page_dairy, SIGNAL(requireTTSspeak(QString)), this, SIGNAL(requireTTSspeakS1(QString)));
     connect(this, SIGNAL(musicFinishedS1()), ui->page_dairy, SLOT(onMusicFinished()));
+
+    // dairy_tag
+    connect(ui->listViewTag, SIGNAL(dairyTagListClicked(QString)), ui->treeDairy, SLOT(sortDairyByTag(QString)));
+
+    // dairy_date
+    connect(ui->treeDairy, SIGNAL(sortDairyByTagFinished(QString, QList<CDairy>))
+            , ui->page_dairy_statistics, SLOT(showStatisticsByTag(QString, QList<CDairy>)));
+    connect(ui->treeDairy, SIGNAL(sortDairyByDateFinished(QString, QString, QList<CDairy>))
+            , ui->page_dairy_statistics, SLOT(showStatisticsByDate(QString, QString, QList<CDairy>)));
+    connect(ui->treeDairy, SIGNAL(requreOpenDairy(CDairy)), ui->page_dairy, SLOT(onOpenDairy(CDairy)));
+    connect(ui->treeDairy, &CDairyDateTreeView::sortDairyByTagFinished, [ = ]()
+    {
+        ui->stackedWidget->setCurrentIndex(EP_Statistics);
+    });
+    connect(ui->treeDairy, &CDairyDateTreeView::sortDairyByDateFinished, [ = ]()
+    {
+        ui->stackedWidget->setCurrentIndex(EP_Statistics);
+    });
+    connect(ui->treeDairy, &CDairyDateTreeView::requreOpenDairy, [ = ]()
+    {
+        ui->stackedWidget->setCurrentIndex(EP_Dairy);
+    });
+
+    // dairy_statistics
+    connect(ui->page_dairy_statistics, SIGNAL(openDairyClicked(CDairy)), ui->treeDairy, SLOT(onOpenDairyClicked(CDairy)));
+    connect(ui->page_dairy_statistics, &CDairyStatisticsWidget::openDairyClicked, [ = ]()
+    {
+        ui->stackedWidget->setCurrentIndex(EP_Dairy);
+    });
 
     //ui->mdiArea->cascadeSubWindows(); //MDI区域内的所有子窗口重叠排列
     //ui->mdiArea->tileSubWindows(); //将所有子窗口在MDI区域内排列整齐
@@ -52,12 +67,10 @@ CDairyWidget::CDairyWidget(QWidget* parent)
     QTimer::singleShot(500, [ = ]()
     {
         QList<CDairy> lstDairy = CSqlOperate::getDairyList(CDairyApp::userInfoLocal().uid);
-        pDairyTagListModel->loadDiaryList(lstDairy);
-        pDairyDateTreeModel->loadDairyList(lstDairy);
-        //ui->page_dairy_statistics->showStatisticsByTag("全部日记");
+        ui->listViewTag->loadDiaryList(lstDairy);
+        ui->treeDairy->loadDairyList(lstDairy);
+        ui->page_dairy_statistics->showStatisticsByTag("全部日记", lstDairy);
     });
-
-
 }
 
 CDairyWidget::~CDairyWidget()
@@ -120,82 +133,10 @@ void CDairyWidget::hideEvent(QHideEvent* event)
 
 
 
-void CDairyWidget::onRequireExpand(const QModelIndex & index)
-{
-    ui->treeDairy->expand(index);
-    QList<QModelIndex> lstIndex;
-    QModelIndex indexParent = index.parent();
-    while (indexParent.isValid())
-    {
-        lstIndex.push_front(indexParent);
-        indexParent = indexParent.parent();
-    }
-    for(QModelIndex index : lstIndex)
-    {
-        ui->treeDairy->expand(index);
-    }
-    on_treeDairy_clicked(index);
-
-}
-
-
-
-
-void CDairyWidget::on_treeDairy_clicked(const QModelIndex & index)
-{
-    qDebug() << "tree click " << "row=" << index.row() << " column=" << index.column();
-    T_DairyDateItem* tDairyTagItem = qvariant_cast<T_DairyDateItem*>(index.data());
-    switch (tDairyTagItem->eDairyDateNodeType)
-    {
-        case ED_Year:
-            {
-                ui->stackedWidget->setCurrentIndex(1);
-                ui->page_dairy_statistics->showStatisticsByDate(tDairyTagItem->strYear, "");
-                break;
-            }
-        case ED_Month:
-            {
-
-                ui->stackedWidget->setCurrentIndex(1);
-                ui->page_dairy_statistics->showStatisticsByDate(tDairyTagItem->strYear, tDairyTagItem->strMonth);
-                break;
-
-            }
-        case ED_Day:
-            {
-                ui->stackedWidget->setCurrentIndex(0);
-                CDairy dairy;
-                dairy.setDid(tDairyTagItem->did);
-                ui->page_dairy->slot_displayDairy(dairy);
-
-                break;
-            }
-        default:
-            break;
-    }
-
-
-}
-
-void CDairyWidget::onSaveDairyfinished(const CDairy & dairySaveBefore, const CDairy & dairySaved)
-{
-    ((CDairyDateTreeModel*)ui->treeDairy->model())->dairyModify(dairySaveBefore, dairySaved);
-}
-
-
-void CDairyWidget::on_listViewTag_clicked(const QModelIndex & index)
-{
-    T_DairyTagItem tDairyTagItem = qvariant_cast<T_DairyTagItem>(index.data());
-
-    pDairyDateTreeModel->reloadDairyByTag(tDairyTagItem.strTagName);
-
-    ui->stackedWidget->setCurrentIndex(1);
-    ui->page_dairy_statistics->showStatisticsByTag(tDairyTagItem.strTagName);
-
-}
-
 void CDairyWidget::on_calendarWidget_clicked(const QDate & date)
 {
 
 }
+
+
 

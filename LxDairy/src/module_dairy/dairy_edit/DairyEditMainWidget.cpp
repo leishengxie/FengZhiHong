@@ -77,7 +77,7 @@ void CDairyEditMainWidget::slotUpdateMenu(QMdiSubWindow* pMdiSubWindow)
 
 
 
-void CDairyEditMainWidget::slot_displayDairy(const CDairy & dairy)
+void CDairyEditMainWidget::onOpenDairy(const CDairy & dairy)
 {
     // 确定日记
     if (dairy.isNewDairy())

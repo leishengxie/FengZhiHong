@@ -38,7 +38,7 @@
       <widget class="QCalendarWidget" name="calendarWidget"/>
      </item>
      <item>
-      <widget class="QListView" name="listViewTag">
+      <widget class="CDairyTagListView" name="listViewTag">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>0</horstretch>
@@ -48,7 +48,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QTreeView" name="treeDairy">
+      <widget class="CDairyDateTreeView" name="treeDairy">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>0</horstretch>
@@ -88,6 +88,16 @@
    <extends>QWidget</extends>
    <header>module_dairy/dairy_edit/DairyEditMainWidget.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>CDairyTagListView</class>
+   <extends>QListView</extends>
+   <header>module_dairy/dairy_tag/DairyTagListView.h</header>
+  </customwidget>
+  <customwidget>
+   <class>CDairyDateTreeView</class>
+   <extends>QTreeView</extends>
+   <header>module_dairy/dairy_date/DairyDateTreeView.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

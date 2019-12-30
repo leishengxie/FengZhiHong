@@ -24,7 +24,7 @@ public:
     void saveAllDairy();
 
 public slots:
-    void slot_displayDairy(const CDairy & dairy);
+    void onOpenDairy(const CDairy & dairy);
     void onMusicFinished();
 
 signals:

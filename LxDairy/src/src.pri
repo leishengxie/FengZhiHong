@@ -74,7 +74,9 @@ HEADERS += \
     $$PWD/module_collection/collection_jokebook/Joke.h \
     $$PWD/net_appointments/NetAppointments.h \
     $$PWD/net_appointments/datastream_type/NetDataStream.h \
-    $$PWD/UserInfo.h
+    $$PWD/UserInfo.h \
+    $$PWD/module_dairy/dairy_date/DairyDateTreeView.h \
+    $$PWD/module_dairy/dairy_tag/DairyTagListView.h
 
 
 SOURCES += \
@@ -138,7 +140,9 @@ SOURCES += \
     $$PWD/module_collection/collection_jokebook/Joke.cpp \
     $$PWD/net_appointments/NetAppointments.cpp \
     $$PWD/net_appointments/datastream_type/NetDataStream.cpp \
-    $$PWD/UserInfo.cpp
+    $$PWD/UserInfo.cpp \
+    $$PWD/module_dairy/dairy_date/DairyDateTreeView.cpp \
+    $$PWD/module_dairy/dairy_tag/DairyTagListView.cpp
 
 
 FORMS += \

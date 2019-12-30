@@ -1,7 +1,8 @@
 #ifndef CDAIRY_H
 #define CDAIRY_H
 
-#include <QString>
+
+#include <QObject>
 #include "func.h"
 
 #define FORMAT_DATETIME                 "yyyy-MM-dd hh:mm:ss"
@@ -37,5 +38,5 @@ public:
 private:
 
 };
-
+Q_DECLARE_METATYPE(CDairy)
 #endif // CDAIRY_H

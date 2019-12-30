@@ -129,28 +129,29 @@ public:
 
     // 加载所有日记
     void loadDairyList(const QList<CDairy> &lstDairy);
+    QList<CDairy> dairyList() const
+    {
+        return m_lstDairy;
+    }
 
-    void reloadDairyByTag(const QString & strTagName);
+    void sortDairyByTag(const QString & strTagName);
 
-
-
-    void insetDairy(CDairy dairy);
-
+    // 日记内容改变
     void dairyModify(const CDairy & dairyBefore, const CDairy & dairyAfter);
 
 public slots:
     void expandDairy(int did);
 
-public slots:
-
 
 signals:
     void loadTodayDairyFinished(const CDairy &dairy);
     void requireExpand(const QModelIndex & index);
+    void sortDairyByTagFinished(const QString & strTagName, const QList<CDairy> &lstDairy);
 
 private:
     // 根据日志列表完成树数据类型的转换
     void convertDiaryListToTree(const QList<CDairy> &lstDairy);
+    void addDairyToTree(CDairy dairy);
 
 private:
     QList<CDairy> m_lstDairy;   // 原始结构

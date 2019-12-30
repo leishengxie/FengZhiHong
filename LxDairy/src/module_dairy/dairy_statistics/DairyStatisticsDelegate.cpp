@@ -25,10 +25,12 @@ void CDairyStatisticsDelegate::paint(QPainter* painter, const QStyleOptionViewIt
     }
     painter->save();
     QVariant var = index.data(Qt::DisplayRole);
-    T_DairyStatisticsItem tDairyStatisticsItem = var.value<T_DairyStatisticsItem>();
+    CDairy dairy = var.value<CDairy>();
+    QString strDate = dairy.getDateTime().left(10);
+    QString strContent = dairy.getTitle() + " - " + dairy.getContent();
     // item 矩形区域
         QFontMetrics fontMetrics(painter->font());
-        int nWidth = fontMetrics.width(tDairyStatisticsItem.strDate);
+        int nWidth = fontMetrics.width(strDate);
 
     QRectF rect;
     rect.setX(option.rect.x());
@@ -43,13 +45,13 @@ void CDairyStatisticsDelegate::paint(QPainter* painter, const QStyleOptionViewIt
                                           , Qt::AlignLeft | Qt::AlignVCenter
                                           , QApplication::palette()
                                           , true
-                                          , tDairyStatisticsItem.strDate);
+                                          , strDate);
     QApplication::style()->drawItemText ( painter
                                           , rectContent
                                           , Qt::AlignLeft | Qt::AlignVCenter
                                           , QApplication::palette()
                                           , true
-                                          , tDairyStatisticsItem.strContent);
+                                          , strContent);
     painter->restore();
 }
 

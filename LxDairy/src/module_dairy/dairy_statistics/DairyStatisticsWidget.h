@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QItemSelection>
+#include "Dairy.h"
 
 namespace Ui {
 class CDairyStatisticsWidget;
@@ -17,12 +18,12 @@ public:
     ~CDairyStatisticsWidget();
 
 public slots:
-    void showStatisticsByTag(const QString & strTag);
-    void showStatisticsByDate(const QString & strYear, const QString & strMonth);
+    void showStatisticsByTag(const QString & strTag, const QList<CDairy> &lstDairy);
+    void showStatisticsByDate(const QString & strYear, const QString & strMonth, const QList<CDairy> &lstDairy);
+
 
 signals:
-    // 打开id为did的日记
-   void expandDairy(int did);
+   void openDairyClicked(const CDairy & dairy);
 
 private slots:
     void slotSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);

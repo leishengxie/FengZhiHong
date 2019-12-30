@@ -27,36 +27,37 @@ CDairyStatisticsWidget::~CDairyStatisticsWidget()
     delete ui;
 }
 
-void CDairyStatisticsWidget::showStatisticsByTag(const QString & strTag)
+void CDairyStatisticsWidget::showStatisticsByTag(const QString & strTag, const QList<CDairy> & lstDairy)
 {
-    QString strQueryTag = ("全部日记" == strTag) ? "" : strTag;
-    QList<CDairy> lstDairy = CSqlOperate::getListDairyByLimit("", strQueryTag);
+//    QString strQueryTag = ("全部日记" == strTag) ? "" : strTag;
+//    QList<CDairy> lstDairy = CSqlOperate::getListDairyByLimit("", strQueryTag);
     ((CDairyStatisticsModel*)ui->listViewStatistics->model())->showDairyStatistics(lstDairy);
 
-    ui->btnOpenDairy->hide();
     ui->labelDairyTotal->setText(QString("(共%1项)").arg(lstDairy.size()));
     ui->labelTitle->setText(strTag);
 }
 
-void CDairyStatisticsWidget::showStatisticsByDate(const QString & strYear, const QString & strMonth)
+void CDairyStatisticsWidget::showStatisticsByDate(const QString & strYear, const QString & strMonth, const QList<CDairy> & lstDairy)
 {
     if (strMonth.isEmpty())
     {
-        QList<CDairy> lstDairy = CSqlOperate::getListDairyByLimit(strYear);
+        //QList<CDairy> lstDairy = CSqlOperate::getListDairyByLimit(strYear);
         ((CDairyStatisticsModel*)ui->listViewStatistics->model())->showDairyStatistics(lstDairy);
         ui->labelDairyTotal->setText(QString("(共%1项)").arg(lstDairy.size()));
         ui->labelTitle->setText(QString("%1年的日记").arg(strYear));
     }
     else
     {
-        QString strDate = QString("%1-%2").arg(strYear).arg(strMonth);
-        QList<CDairy> lstDairy = CSqlOperate::getListDairyByLimit(strDate);
+        //QString strDate = QString("%1-%2").arg(strYear).arg(strMonth);
+        //QList<CDairy> lstDairy = CSqlOperate::getListDairyByLimit(strDate);
         ((CDairyStatisticsModel*)ui->listViewStatistics->model())->showDairyStatistics(lstDairy);
         ui->labelDairyTotal->setText(QString("(共%1项)").arg(lstDairy.size()));
         ui->labelTitle->setText(QString("%1年%2月的日记").arg(strYear).arg(strMonth));
     }
 
 }
+
+
 
 ///
 /// \brief CDairyMainWindow::slotSelectionChanged
@@ -86,6 +87,6 @@ void CDairyStatisticsWidget::slotSelectionChanged(const QItemSelection & selecte
 void CDairyStatisticsWidget::on_btnOpenDairy_clicked()
 {
     QModelIndex indexCur = ui->listViewStatistics->currentIndex();
-    T_DairyStatisticsItem tDairyStatisticsItem = qvariant_cast<T_DairyStatisticsItem>(indexCur.data());
-    emit expandDairy(tDairyStatisticsItem.did);
+    CDairy dairy = qvariant_cast<CDairy>(indexCur.data());
+    emit openDairyClicked(dairy);
 }
