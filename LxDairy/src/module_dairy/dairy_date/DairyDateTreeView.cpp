@@ -59,7 +59,7 @@ void CDairyDateTreeView::on_treeDairy_clicked(const QModelIndex & index)
                         lstDairySortByDate.append(dairy);
                     }
                 }
-                emit sortDairyByDateFinished(tDairyTagItem->strYear, "", lstDairy);
+                emit sortDairyByDateFinished(tDairyTagItem->strYear, "", lstDairySortByDate);
                 break;
             }
         case ED_Month:
@@ -74,7 +74,7 @@ void CDairyDateTreeView::on_treeDairy_clicked(const QModelIndex & index)
                         lstDairySortByDate.append(dairy);
                     }
                 }
-                emit sortDairyByDateFinished(tDairyTagItem->strYear, tDairyTagItem->strMonth, lstDairy);
+                emit sortDairyByDateFinished(tDairyTagItem->strYear, tDairyTagItem->strMonth, lstDairySortByDate);
                 break;
 
             }

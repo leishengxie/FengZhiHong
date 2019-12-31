@@ -523,8 +523,17 @@ void CDairyDateTreeModel::sortDairyByTag(const QString & strTagName)
             }
         }
     }
-    emit sortDairyByTagFinished(strTagName, lstDairySort);
     convertDiaryListToTree(lstDairySort);
+
+    for (int i = 0; i < lstDairySort.size(); ++i)
+    {
+        if (lstDairySort.at(i).isNewDairy())
+        {
+            lstDairySort.removeAt(i);
+            break;
+        }
+    }
+    emit sortDairyByTagFinished(strTagName, lstDairySort);
 }
 
 void CDairyDateTreeModel::convertDiaryListToTree(const QList<CDairy> & lstDairy)

@@ -7,6 +7,7 @@
 #include "SqlOperate.h"
 
 #include "dairy_tag/DairyTagListModel.h"
+#include "DairyApp.h"
 
 
 
@@ -64,19 +65,28 @@ void CDairyEditWidget::onSave()
     CDairy dairy;
     CDairy dairySaved;
     dairy.setDid(did);
+    dairy.setUid(CDairyApp::userInfo().uid);
     dairy.setTitle(ui->leTitle->text());
     dairy.setDateTime(strDateTime);
     dairy.setTag(ui->comboBoxTag->currentText());
     dairy.setWeather(ui->comboBoxWeather->currentText());
     dairy.setContent(ui->dairyEdit->toPlainText()); //toPlainText 去除textEdit当中的纯文本
     QApplication::setOverrideCursor(Qt::WaitCursor);//设置整个应用程序的光标形状为等待形状，因为如果文件的内容非常多时可以提醒用户
-    CSqlOperate::saveDairy(dairy, dairySaved);
+    QString strError;
+    if (!CSqlOperate::saveDairy(dairy, dairySaved, strError))
+    {
+        QMessageBox::warning(this, "save error", strError);
+    }
+    else
+    {
+        emit saveDairyfinished(dairy, dairySaved);
+        did = dairySaved.getDid();
+        setWindowTitle(dairySaved.getTitle());
+        ui->dairyEdit->document()->setModified(false);
+    }
     QApplication::restoreOverrideCursor();//恢复开始时的光标状态
 
-    emit saveDairyfinished(dairy, dairySaved);
-    did = dairySaved.getDid();
-    setWindowTitle(dairySaved.getTitle());
-    ui->dairyEdit->document()->setModified(false);
+
 }
 
 CDairyEdit *CDairyEditWidget::dairyEdit()

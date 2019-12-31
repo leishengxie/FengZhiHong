@@ -183,9 +183,9 @@ QList<CDairy> CSqlOperate::getDairyList(int uid)
         dairy.setDid(query.value("did").toInt());
         dairy.setTitle(query.value("title").toString());
         dairy.setDateTime(query.value("datetime").toString());
-//                dairy.setTag(query.value("tag").toString());
-//                dairy.setWeather(query.value("weather").toString());
-//                dairy.setContent(query.value("content").toString());
+                dairy.setTag(query.value("tag").toString());
+                dairy.setWeather(query.value("weather").toString());
+                dairy.setContent(query.value("content").toString());
         lstDairy.append(dairy);
     }
     return lstDairy;
@@ -264,7 +264,7 @@ QList<CDairy> CSqlOperate::getListDairyByLimit(QString strFormatDate, QString st
     return lstDairy;
 }
 
-bool CSqlOperate::saveDairy(const CDairy & dairyModify, CDairy & dairySaved)
+bool CSqlOperate::saveDairy(const CDairy & dairyModify, CDairy & dairySaved, QString & strError)
 {
     QSqlQuery query;
     dairySaved = dairyModify;
@@ -281,7 +281,7 @@ bool CSqlOperate::saveDairy(const CDairy & dairyModify, CDairy & dairySaved)
         ok = query.exec();
         if (!ok)
         {
-            qDebug() << query.lastError();
+            strError = query.lastError().text();
             return false;
         }
 
@@ -293,7 +293,7 @@ bool CSqlOperate::saveDairy(const CDairy & dairyModify, CDairy & dairySaved)
         ok = query.exec("select max(did) from tDairy");
         if (!ok)
         {
-            qDebug() << query.lastError();
+            strError = query.lastError().text();
             return false;
         }
         if (query.next())
@@ -313,7 +313,7 @@ bool CSqlOperate::saveDairy(const CDairy & dairyModify, CDairy & dairySaved)
 
         if (!ok)
         {
-            qDebug() << query.lastError();
+            strError = query.lastError().text();
             return false;
         }
     }
