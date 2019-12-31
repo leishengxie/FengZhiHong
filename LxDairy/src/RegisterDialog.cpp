@@ -5,6 +5,7 @@
 #include "NetAppointments.h"
 
 #include <QMessageBox>
+#include "LMd5.h"
 
 CRegisterDialog::CRegisterDialog(QWidget *parent) :
     QDialog(parent),
@@ -40,7 +41,17 @@ void CRegisterDialog::on_btnOK_clicked()
         else
         {
             QString strErr;
-          bool bResult = CSqlOperate::registerAccount(strUserName, strPasswd, strErr);
+
+            // 使用qt自带 ok
+            QByteArray byteArrayMd5 = QCryptographicHash::hash(strPasswd.toLatin1(), QCryptographicHash::Md5);
+            QString strPasswdMd5 = byteArrayMd5.toHex().mid(8, 16);	//md5:mid(8, 16) 32位转16位,字符截断, 一般规定取9-25
+            qDebug() << strPasswdMd5;
+
+            // 使用std_tool ok
+//            strPasswdMd5 = QString(CLMd5(strPasswd.toStdString()).toString().substr(8, 16).c_str());
+//            qDebug() << strPasswdMd5;
+
+          bool bResult = CSqlOperate::registerAccount(strUserName, strPasswdMd5, strErr);
           if (!bResult)
           {
               QMessageBox::information(this, "ERROR", strErr);
@@ -77,10 +88,16 @@ void CRegisterDialog::on_btnRegister_clicked()
         QMessageBox::information(this, "OK", QString("账号为：%1\n密码：%2\n请记住你的账号和密码！\n").arg(strUserName).arg(strPasswd));
         accept();
     });
+
+    // md5
+    QByteArray byteArrayMd5 = QCryptographicHash::hash(strPasswd.toLatin1(), QCryptographicHash::Md5);
+    QString strPasswdMd5 = byteArrayMd5.toHex().mid(8, 16);	//md5:mid(8, 16) 32位转16位,字符截断, 一般规定取9-25
+    qDebug() << strPasswdMd5;
+
     QByteArray byteArray;
     QDataStream out(&byteArray, QIODevice::WriteOnly);
     out.setVersion(QDataStream::Qt_5_6);
-    out << strUserName << strPasswd;
+    out << strUserName << strPasswdMd5;
     pDairyHttpClient->post(CNetAppointments::urlRegister(), byteArray.data(), byteArray.length());
 
 

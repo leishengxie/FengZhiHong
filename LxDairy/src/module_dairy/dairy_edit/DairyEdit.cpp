@@ -13,13 +13,13 @@
 CDairyEdit::CDairyEdit(QWidget *parent)
     : QTextEdit(parent)
 {
-
+    init();
 }
 
 CDairyEdit::CDairyEdit(const QString &text, QWidget *parent)
     : QTextEdit(text, parent)
 {
-
+    init();
 }
 
 
@@ -65,5 +65,10 @@ void CDairyEdit::closeEvent(QCloseEvent *event)
 {
     qDebug() << this->parent();
     event->accept();
+}
+
+void CDairyEdit::init()
+{
+    setAcceptDrops(false);
 }
 

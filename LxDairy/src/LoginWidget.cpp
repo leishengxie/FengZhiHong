@@ -87,7 +87,9 @@ void CLoginWidget::on_btnLogin_clicked()
 
     T_UserInfo tUserInfo;
     QString strErr;
-    if(CSqlOperate::login(strUserName, strPasswd, tUserInfo, strErr))
+    QByteArray byteArrayMd5 = QCryptographicHash::hash(strPasswd.toLatin1(), QCryptographicHash::Md5);
+    QString strPasswdMd5 = byteArrayMd5.toHex().mid(8, 16);	//md5:mid(8, 16) 32位转16位,字符截断, 一般规定取9-25
+    if(CSqlOperate::login(strUserName, strPasswdMd5, tUserInfo, strErr))
     {
         QSettings conf("conf.ini", QSettings::IniFormat);
         conf.beginGroup("user");
@@ -209,10 +211,14 @@ void CLoginWidget::on_btnLoginServer_clicked()
         pDairyMainWindow->show();
         close();
     });
+
+    QByteArray byteArrayMd5 = QCryptographicHash::hash(strPasswd.toLatin1(), QCryptographicHash::Md5);
+    QString strPasswdMd5 = byteArrayMd5.toHex().mid(8, 16);	//md5:mid(8, 16) 32位转16位,字符截断, 一般规定取9-25
+
     QByteArray byteArray;
     QDataStream out(&byteArray, QIODevice::WriteOnly);
     out.setVersion(QDataStream::Qt_5_6);
-    out << strUserName << strPasswd;
+    out << strUserName << strPasswdMd5;
     pDairyHttpClient->post(CNetAppointments::urlLogin(), byteArray.data(), byteArray.length());
 
 
