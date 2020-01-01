@@ -1,4 +1,4 @@
-#include "widget.h"
+﻿#include "widget.h"
 #include "ui_widget.h"
 #include <QtDebug>
 #include <QDesktopWidget>
@@ -11,11 +11,11 @@
 
 
 //const QString c_strUrlDownloadRoot = "http://47.104.141.61:8080/LxDiaryUpdateDir/"; 自己的web服务端口
-const QString c_strUrlDownloadRoot = "http://47.104.141.61/LxDiaryUpdateDir/";  //apache
-const QString c_strLocalVersionFile = "version_msg.xml";
-const QString c_strUrlVersionFile = "version_msg.xml";
-const QString c_strDownloadDirName = "tempDir";
-const QString c_strMainAppName = "LxDairy.exe";
+static const QString c_strUrlDownloadRoot = "http://47.104.141.61/LxDiaryUpdateDir/";  //apache
+static const QString c_strLocalVersionFile = "version_msg.xml";
+static const QString c_strUrlVersionFile = "version_msg.xml";
+static const QString c_strDownloadDirName = "tempDir";
+static const QString c_strMainAppName = "LxDairy.exe";
 
 // 思路
 // 1、下载版本文件，并对比新老版本，得到需要更新的文件列表

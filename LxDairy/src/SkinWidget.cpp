@@ -26,13 +26,13 @@ static const char* s_aStyleSheet[] =
     ":/css/black.css",  // 0
     ":/css/blue.css",   // 1
     ":/css/gray.css",   // 2
-    ":/css/navy.css"    // 3
+    ":/css/navy.css",    // 3
     "",                 // 4
     "",                 // 5
     "",                 // 6
     "",                 // 7
     "",                 // 8
-        "",                 // 9
+    "",                 // 9
     ""                  // 10
 };
 
@@ -46,9 +46,9 @@ static const char* s_arrImgBg[] =
     ":/img/bg/bg_green_natural.jpg",        // 4
     ":/img/bg/bg_quiet.jpg",                // 5
     ":/img/bg/bg_scholar_spirit.jpg",       // 6
-    ":/img/bg/bg_maple_leaf.jpg"            // 7
+    ":/img/bg/bg_maple_leaf.jpg",           // 7
     "",                                     // 8
-        "",                                     // 9
+    "",                                     // 9
     ""                                      // 10
 };
 
@@ -86,7 +86,7 @@ void CSkinWidget::loadQssStyle()
     qDebug() << QStyleFactory::keys();
     QSettings conf("conf.ini", QSettings::IniFormat);
     conf.beginGroup("user");
-    s_unIndexSave = conf.value("skin_index", 0).toUInt();
+    s_unIndexSave = conf.value("skin_index", 4).toUInt();
     setSkin(s_unIndexSave);
 
 }

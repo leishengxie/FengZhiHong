@@ -73,12 +73,14 @@ void CJokeDelegate::paint(QPainter* painter, const QStyleOptionViewItem & option
     }
     else if (index.column() == 3)
     {
+        QFontMetrics fontMetrics(painter->font());
+        QString strContent = fontMetrics.elidedText(tJoke.strContent, Qt::ElideRight, rect.width() - 10);
         QApplication::style()->drawItemText ( painter
                                               , rect
                                               , Qt::AlignLeft | Qt::AlignVCenter
                                               , QApplication::palette()
                                               , true
-                                              , tJoke.strContent
+                                              , strContent
                                               , role);
     }
     else if (index.column() == 4)
