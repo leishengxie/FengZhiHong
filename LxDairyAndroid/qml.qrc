@@ -2,5 +2,9 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>MainForm.ui.qml</file>
+        <file>RedButton.qml</file>
+        <file>img/ok.png</file>
+        <file>DairyEdit.qml</file>
+        <file>DairyEditForm.ui.qml</file>
     </qresource>
 </RCC>
