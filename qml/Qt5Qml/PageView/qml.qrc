@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>ListViewIndicator.qml</file>
+        <file>PageView.qml</file>
+        <file>TestPageView.qml</file>
+        <file>TestPageView_Raw.qml</file>
+    </qresource>
+</RCC>

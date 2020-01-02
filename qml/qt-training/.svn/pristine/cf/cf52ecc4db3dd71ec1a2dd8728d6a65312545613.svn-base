@@ -1,0 +1,19 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>MainForm.qml</file>
+        <file>images/x.png</file>
+        <file>images/g.png</file>
+        <file>images/d.png</file>
+        <file>images/d1.png</file>
+        <file>images/f.png</file>
+        <file>images/s.png</file>
+        <file>images/f1.png</file>
+        <file>images/s1.png</file>
+        <file>images/p.png</file>
+        <file>images/p1.png</file>
+        <file>images/w.png</file>
+        <file>images/w1.png</file>
+        <file>images/l.png</file>
+    </qresource>
+</RCC>

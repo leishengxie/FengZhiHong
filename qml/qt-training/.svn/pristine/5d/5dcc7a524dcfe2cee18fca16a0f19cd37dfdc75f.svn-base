@@ -1,0 +1,41 @@
+<RCC>
+    <qresource prefix="/">
+        <file>BottomLineText.qml</file>
+        <file>line.png</file>
+        <file>CustomTab.qml</file>
+        <file>BottomLine2Text.qml</file>
+        <file>LabelBtn.qml</file>
+        <file>images/cashier/consumption_detail.png</file>
+        <file>images/cashier/consumption_detail_font.png</file>
+        <file>images/cashier/consumption_status.png</file>
+        <file>images/cashier/consumption_status_font.png</file>
+        <file>images/cashier/delete.png</file>
+        <file>images/cashier/drinks_class.png</file>
+        <file>images/cashier/drinks_class_font.png</file>
+        <file>images/cashier/effect1.png</file>
+        <file>images/cashier/effect2.png</file>
+        <file>images/cashier/line.png</file>
+        <file>images/cashier/meal.png</file>
+        <file>images/cashier/num.png</file>
+        <file>images/cashier/order_complete.png</file>
+        <file>images/cashier/order_detail.png</file>
+        <file>images/cashier/order_detail_font.png</file>
+        <file>images/cashier/pick_drinks.png</file>
+        <file>images/cashier/pick_drinks_font.png</file>
+        <file>images/cashier/present.png</file>
+        <file>images/cashier/specia_lrequire.png</file>
+        <file>images/cashier/wine_card_order.png</file>
+        <file>images/cashier/next.png</file>
+        <file>images/cashier/prev.png</file>
+        <file>images/cashier/next2.png</file>
+        <file>images/cashier/prev2.png</file>
+        <file>RadisButton.qml</file>
+        <file>RadioBtnGroup.qml</file>
+        <file>VLine.qml</file>
+        <file>HLine.qml</file>
+        <file>HeaderButton.qml</file>
+        <file>main.qml</file>
+        <file>BorderButton.qml</file>
+        <file>HalfRadisButton.qml</file>
+    </qresource>
+</RCC>

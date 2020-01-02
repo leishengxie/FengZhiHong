@@ -4,6 +4,7 @@ import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
 import FileDialog 1.0
 
+
 ApplicationWindow {
     title: qsTr("MyNotepad")
     width: 960

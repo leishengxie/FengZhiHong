@@ -1,0 +1,22 @@
+#ifndef CLABEL_H
+#define CLABEL_H
+#include <QLabel>
+
+class CLabel:public QLabel
+{
+public:
+    CLabel();
+    
+    Q_OBJECT
+public:
+    explicit myLabel(QWidget *parent=0);
+    //explicit myLabel(QWidget *parent=0, Qt::WindowFlags f=0);
+    //explicit myLabel(const QString &text, QWidget *parent=0, Qt::WindowFlags f=0);
+private:
+protected:
+    virtual void mouseReleaseEvent(QMouseEvent *ev);
+signals:
+    void clicked(void);
+};
+
+#endif // CLABEL_H

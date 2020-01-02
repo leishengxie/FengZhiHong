@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>MainForm.qml</file>
+        <file>Login.qml</file>
+        <file>MainPage.qml</file>
+        <file>earth.qml</file>
+    </qresource>
+</RCC>

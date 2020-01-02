@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>ChartBar.qml</file>
+        <file>ChartTitleBar.qml</file>
+    </qresource>
+</RCC>

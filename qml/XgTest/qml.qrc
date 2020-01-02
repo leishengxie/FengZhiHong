@@ -1,0 +1,30 @@
+<RCC>
+    <qresource prefix="/">
+        <file>resource/main.qml</file>
+        <file>resource/MainForm.qml</file>
+        <file>resource/MainPage.qml</file>
+        <file>resource/STBPage.qml</file>
+        <file>resource/images/ControllerIcon.png</file>
+        <file>resource/images/EffecterIcon.png</file>
+        <file>resource/images/lightIcon.png</file>
+        <file>resource/images/StbIcon.png</file>
+        <file>resource/images/TouchIcon.png</file>
+        <file>resource/images/back.png</file>
+        <file>resource/BottomLineSelectText.qml</file>
+        <file>resource/ComboBoxStyle.qml</file>
+        <file>resource/LCheckBox.qml</file>
+        <file>resource/TextButton.qml</file>
+        <file>resource/images/drop.png</file>
+        <file>resource/images/seach.png</file>
+        <file>resource/images/SerialIcon.png</file>
+        <file>resource/LamplightPage.qml</file>
+        <file>resource/LamplightSet.qml</file>
+        <file>resource/images/checkIcon.png</file>
+        <file>resource/LamplightGeneral.qml</file>
+        <file>resource/StbPage.qml</file>
+        <file>resource/DlgAdd.qml</file>
+        <file>resource/GeneralButton.qml</file>
+        <file>resource/ImgButton.qml</file>
+        <file>resource/images/close.png</file>
+    </qresource>
+</RCC>

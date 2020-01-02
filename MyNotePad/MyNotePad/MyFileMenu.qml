@@ -40,6 +40,7 @@
 
 import QtQuick 2.0
 import FileDialog 1.0
+import QtQuick.Dialogs 1.2
 
 Rectangle {
     id: fileMenu

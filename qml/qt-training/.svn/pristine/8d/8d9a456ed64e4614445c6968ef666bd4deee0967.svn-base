@@ -1,0 +1,20 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>MainForm.qml</file>
+        <file>3.jpg</file>
+        <file>fenge.png</file>
+        <file>next.png</file>
+        <file>prev.png</file>
+        <file>x.png</file>
+        <file>dui.png</file>
+        <file>return.png</file>
+        <file>select.png</file>
+        <file>delete.png</file>
+        <file>delete1.png</file>
+        <file>search.png</file>
+        <file>btnReturn.png</file>
+        <file>btn.png</file>
+        <file>background.png</file>
+    </qresource>
+</RCC>

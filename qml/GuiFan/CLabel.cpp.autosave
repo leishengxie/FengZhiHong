@@ -1,0 +1,23 @@
+#include "QMyLabel.h"
+
+
+QMyLabel::QMyLabel(QWidget *parent):QLabel(parent)
+{
+
+}
+
+QMyLabel::QMyLabel(QWidget *parent, Qt::WindowFlags f):QLabel(parent,f)
+  {
+
+}
+
+QMyLabel::QMyLabel(const QString &text, QWidget *parent,Qt::WindowFlags f):QLabel(&text,parent,f)
+{
+
+}
+
+void myLabel::mouseReleaseEvent(QMouseEvent *ev)
+{
+    Q_UNUSED(ev)
+    emit clicked();
+}

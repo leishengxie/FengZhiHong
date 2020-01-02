@@ -1,0 +1,26 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>FlickableScrollBar.qml</file>
+        <file>ListViewEx.qml</file>
+        <file>ScrollBar.qml</file>
+        <file>TestFlickableScrollBar.qml</file>
+        <file>TestListViewEx_News.qml</file>
+        <file>TestListViewEx_Toolbar.qml</file>
+        <file>images/apple.gif</file>
+        <file>images/apple2.gif</file>
+        <file>images/arrow-down-16.png</file>
+        <file>images/arrow-down-24.png</file>
+        <file>images/arrow-down-32.png</file>
+        <file>images/arrow-up-16.png</file>
+        <file>images/arrow-up-24.png</file>
+        <file>images/arrow-up-32.png</file>
+        <file>images/bigimg.jpg</file>
+        <file>images/dot.gif</file>
+        <file>images/loading-16.gif</file>
+        <file>images/loading-32.gif</file>
+        <file>images/ok-16.png</file>
+        <file>images/ok-24.png</file>
+        <file>images/ok-32.png</file>
+    </qresource>
+</RCC>
