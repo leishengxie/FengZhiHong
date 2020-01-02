@@ -70,50 +70,7 @@ void CLoginWidget::on_btnRegister_clicked()
     }
 }
 
-void CLoginWidget::on_btnLogin_clicked()
-{
-    QString strUserName = ui->leUserName->text();
-    QString strPasswd = ui->lePasswd->text();
-    if (strUserName.isEmpty())
-    {
-        QMessageBox::information(this, "提示", "请输入用户名！");
-        return;
-    }
-    if (strPasswd.isEmpty())
-    {
-        QMessageBox::information(this, "提示", "请输入密码！");
-        return;
-    }
 
-    T_UserInfo tUserInfo;
-    QString strErr;
-    QByteArray byteArrayMd5 = QCryptographicHash::hash(strPasswd.toLatin1(), QCryptographicHash::Md5);
-    QString strPasswdMd5 = byteArrayMd5.toHex().mid(8, 16);	//md5:mid(8, 16) 32位转16位,字符截断, 一般规定取9-25
-    if(CSqlOperate::login(strUserName, strPasswdMd5, tUserInfo, strErr))
-    {
-        QSettings conf("conf.ini", QSettings::IniFormat);
-        conf.beginGroup("user");
-        if (ui->ckboxRememberUserName->isChecked())
-        {
-            conf.setValue("user_name", strUserName);
-        }
-        if (ui->ckboxRememberPasswd->isChecked())
-        {
-            conf.setValue("passwd", strPasswd);
-        }
-
-        CDairyApp::setUserInfoLocal(tUserInfo);
-        CDairyMainWindow* pDairyMainWindow = new CDairyMainWindow;
-        pDairyMainWindow->setLoginWidget(this);
-        //pDairyMainWindow->SetZhanghao(ui->lineEditzanghao->currentText());
-        pDairyMainWindow->show();
-        close();
-    }
-    else
-    {
-        QMessageBox::information(this, "ERROR", strErr);
-    }
-}
 
 void CLoginWidget::on_ckboxRememberUserName_clicked(bool checked)
 {

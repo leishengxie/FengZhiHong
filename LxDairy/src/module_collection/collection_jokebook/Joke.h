@@ -47,8 +47,9 @@ Q_DECLARE_METATYPE(T_Joke)
 enum E_SelectType
 {
     ES_SelectByWorld,
-    ES_SelectByPenfriend,
-    ES_SelectByMyUpload
+//    ES_SelectByPenfriend,
+    ES_SelectByMyUpload,
+    ES_Max
 };
 
 enum E_SortFiled

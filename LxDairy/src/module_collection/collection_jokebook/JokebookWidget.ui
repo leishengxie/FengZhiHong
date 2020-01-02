@@ -45,11 +45,6 @@
        </item>
        <item>
         <property name="text">
-         <string>笔友</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
          <string>我上传的</string>
         </property>
        </item>

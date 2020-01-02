@@ -13,7 +13,7 @@ class CJokeEditor : public QWidget
     Q_OBJECT
 
 public:
-    explicit CJokeEditor(QWidget *parent = 0);
+    explicit CJokeEditor(QWidget *parent = 0, Qt::WindowFlags f = Qt::WindowFlags());
     ~CJokeEditor();
 
 signals:

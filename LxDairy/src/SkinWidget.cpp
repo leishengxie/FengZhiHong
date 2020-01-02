@@ -61,16 +61,29 @@ CSkinWidget::CSkinWidget(QWidget* parent)
     , m_unIndexCur(0)
 {
     ui->setupUi(this);
-    setAttribute(Qt::WA_ShowModal, true); // 设置模态
-    //setAttribute(Qt::WA_DeleteOnClose);
+
+     // 设置模态
+    //setAttribute(Qt::WA_ShowModal, true); // 这种方法已经在Qt4.5中被摒弃了，因为按照这样设置，对话框是无法使用触摸屏输入法的，只能用按键输入；
+    setWindowFlags(Qt::Window);
+    setWindowModality(Qt::WindowModal); // 需要指定父对象才起作用
+   // setWindowModality(Qt::ApplicationModal);    // 不能指定父对象
+
+    // 希望去掉对话框的关闭按钮和问号按钮，而保留外框
+    //setWindowFlags(Qt::SubWindow);
+
     connect(ui->btnCancel, SIGNAL(clicked()), this, SLOT(close()));
     connect(ui->btnOk, SIGNAL(clicked()), this, SLOT(slot_saveCurrentSet()));
     connect(ui->listWidget, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(slot_list_clicked(QListWidgetItem*)));
-    CLQt::moveToDeskCenter(this);
+
+
+
+        CLQt::moveToDeskCenter(this);
+
 
     //    QPalette pal;
     //    pal.setBrush(QPalette::Background, QBrush(QPixmap(":/img/bg/1.jpg").scaled(size())));
     //    setPalette(pal);
+    hide();
 
 }
 

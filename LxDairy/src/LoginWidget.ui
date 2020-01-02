@@ -117,22 +117,12 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="btnLogin">
-         <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;登录到本地多用户系统，仅使用本地资源、服务，以使用系统单机方面的功能为主，你的数据将存储在这台电脑上。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="text">
-          <string>本地登录</string>
-         </property>
-        </widget>
-       </item>
-       <item>
         <widget class="QPushButton" name="btnLoginServer">
          <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;登录到服务器系统，既可以使用本地资源、服务，也可以使用服务器系统支持的资源、服务。你可以将你的数据将存储在服务器。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;登录到服务器系统。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="text">
-          <string>网络登录</string>
+          <string>登录</string>
          </property>
         </widget>
        </item>

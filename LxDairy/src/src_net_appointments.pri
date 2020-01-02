@@ -12,10 +12,12 @@ INCLUDEPATH += $$PWD/module_collection
 
 HEADERS += $$PWD/net_appointments/NetAppointments.h \
     $$PWD/module_collection/collection_jokebook/Joke.h \
-    $$PWD/UserInfo.h
+    $$PWD/UserInfo.h \
+    $$PWD/SaveTipDialog.h
 SOURCES += $$PWD/net_appointments/NetAppointments.cpp \
     $$PWD/module_collection/collection_jokebook/Joke.cpp \
-    $$PWD/UserInfo.cpp
+    $$PWD/UserInfo.cpp \
+    $$PWD/SaveTipDialog.cpp
 
 contains(DEFINES, APPOINTMENT_DATASTREAM){
         INCLUDEPATH += $$PWD/net_appointments/datastream_type
@@ -31,5 +33,8 @@ contains(DEFINES, APPOINTMENT_DATASTREAM){
 #        INCLUDEPATH += $$PWD/protobuff_type
 #        HEADERS += $$PWD/protobuff_type/NetProtobuff.h
 #}
+
+FORMS += \
+    $$PWD/SaveTipDialog.ui
 
 

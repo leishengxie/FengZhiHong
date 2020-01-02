@@ -39,7 +39,7 @@ CJokebookWidget::CJokebookWidget(QWidget* parent) :
     connect(pItemSelectionModel, SIGNAL(selectionChanged(QItemSelection, QItemSelection)),
             this, SLOT(onSelectionChanged(QItemSelection, QItemSelection)));
 
-    m_pJokeEditor = new CJokeEditor();
+    m_pJokeEditor = new CJokeEditor(this, Qt::Window);
     connect(m_pJokeEditor, SIGNAL(requreUploadJoke(T_Joke)), this, SLOT(requestUploadJoke(T_Joke)));
     connect(ui->starEditor, SIGNAL(editingFinished(qreal)), this, SLOT(onStarEidtFinished(qreal)));
 
@@ -150,7 +150,7 @@ void CJokebookWidget::hideEvent(QHideEvent* event)
 
 void CJokebookWidget::on_comboBox_currentIndexChanged(int index)
 {
-    Q_ASSERT(index < 3);
+    Q_ASSERT(index < ES_Max);
     m_tJokeListRequest.nSelectType = index;
     requestJokeList(m_tJokeListRequest);
 }

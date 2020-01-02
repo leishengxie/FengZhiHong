@@ -63,6 +63,9 @@
        <iconset resource="../../res.qrc">
         <normaloff>:/img/tool_img/maple_leaf_book.png</normaloff>:/img/tool_img/maple_leaf_book.png</iconset>
       </property>
+      <property name="flags">
+       <set>ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+      </property>
      </item>
      <item>
       <property name="text">

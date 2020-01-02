@@ -4,8 +4,8 @@
 #include <QDateTime>
 #include "DairyApp.h"
 
-CJokeEditor::CJokeEditor(QWidget *parent) :
-    QWidget(parent),
+CJokeEditor::CJokeEditor(QWidget *parent, Qt::WindowFlags f) :
+    QWidget(parent, f),
     ui(new Ui::CJokeEditor)
 {
     ui->setupUi(this);

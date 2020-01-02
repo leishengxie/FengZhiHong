@@ -39,7 +39,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="CDairyWidget" name="tabDairy">
        <attribute name="title">
@@ -54,14 +54,6 @@
       <widget class="CCollectionWidget" name="tabCollection">
        <attribute name="title">
         <string>集</string>
-       </attribute>
-      </widget>
-      <widget class="QWidget" name="tabFriend">
-       <property name="autoFillBackground">
-        <bool>true</bool>
-       </property>
-       <attribute name="title">
-        <string>笔友</string>
        </attribute>
       </widget>
      </widget>

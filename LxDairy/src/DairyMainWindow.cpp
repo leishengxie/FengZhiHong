@@ -21,7 +21,7 @@
 CDairyMainWindow::CDairyMainWindow(QWidget* parent)
     : QMainWindow(parent)
     , ui(new Ui::DairyMainWindow)
-    , m_pSkinWidget(new CSkinWidget())
+    , m_pSkinWidget(new CSkinWidget(this))
     , m_pMusicPlayer(new CLMusicPlayer(this))
     , m_pLoginWidget(NULL)
 {

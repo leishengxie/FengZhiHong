@@ -1,7 +1,7 @@
 TEMPLATE = subdirs
 
 SUBDIRS = LxDairy \
-    LxDairyUpd \
+#    LxDairyUpd \
     PaletteSetting
 
 CONFIG += ordered

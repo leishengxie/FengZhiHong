@@ -147,13 +147,6 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="btnOK">
-       <property name="text">
-        <string>仅注册为本地账号</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QPushButton" name="btnRegister">
        <property name="text">
         <string>注册</string>

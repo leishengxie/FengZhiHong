@@ -39,10 +39,10 @@ CLMusicPlayer::~CLMusicPlayer()
     disconnect(m_pMediaPlayer, SIGNAL(durationChanged(qint64)), this, SLOT(onDurationChanged(qint64)));
     disconnect(m_pMediaPlayer, SIGNAL(positionChanged(qint64)), this, SLOT(onPositionChanged(qint64)));
     disconnect(m_pMediaPlaylist, SIGNAL(currentIndexChanged(int)), this, SLOT(onCurrentIndexChanged(int)));
-    if (m_pLrcWidget->isWindow())
-    {
-        m_pLrcWidget->deleteLater();
-    }
+//    if (m_pLrcWidget->isWindow())
+//    {
+//        m_pLrcWidget->deleteLater();
+//    }
     m_pMusicSettingDialog->deleteLater();
 }
 
