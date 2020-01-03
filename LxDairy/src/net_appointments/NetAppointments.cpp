@@ -14,6 +14,10 @@ static const int HTTP_SERVER_PORT = 8181;
 
 const char * const VIRTUAL_DIR_PATH_JOKE_TEST_DUMP = "/dump";
 
+const char * const VIRTUAL_DIR_PATH_DAIRY_ROOT = "/dairy";
+const char * const VIRTUAL_DIR_PATH_DAIRY_LIST = "/dairy/list";
+const char* const VIRTUAL_DIR_PATH_DAIRY_UPLOAD = "/dairy/upload";
+
 const char * const VIRTUAL_DIR_PATH_JOKE_ROOT = "/joke";
 const char * const VIRTUAL_DIR_PATH_JOKE_LIST = "/joke/list";
 const char * const VIRTUAL_DIR_PATH_JOKE_RATING = "/joke/rating";
@@ -105,6 +109,24 @@ QString CNetAppointments::urlLogin()
     T_NetAppointment tNetAppointment;
     tNetAppointment.eRequsetType = T_NetAppointment::ER_Post;
     tNetAppointment.strVirtualDirectory = VIRTUAL_DIR_PATH_LOGIN;
+
+    return tNetAppointment.url();
+}
+
+QString CNetAppointments::urlDairyList()
+{
+    T_NetAppointment tNetAppointment;
+    tNetAppointment.eRequsetType = T_NetAppointment::ER_Post;
+    tNetAppointment.strVirtualDirectory = VIRTUAL_DIR_PATH_DAIRY_LIST;
+
+    return tNetAppointment.url();
+}
+
+QString CNetAppointments::urlDairyUpload()
+{
+    T_NetAppointment tNetAppointment;
+    tNetAppointment.eRequsetType = T_NetAppointment::ER_Post;
+    tNetAppointment.strVirtualDirectory = VIRTUAL_DIR_PATH_DAIRY_UPLOAD;
 
     return tNetAppointment.url();
 }

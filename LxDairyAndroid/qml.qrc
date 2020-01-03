@@ -1,10 +1,15 @@
 <RCC>
     <qresource prefix="/">
-        <file>main.qml</file>
-        <file>MainForm.ui.qml</file>
-        <file>RedButton.qml</file>
         <file>img/ok.png</file>
-        <file>DairyEdit.qml</file>
-        <file>DairyEditForm.ui.qml</file>
+        <file>qml/DairyEdit.qml</file>
+        <file>qml/DairyEditForm.ui.qml</file>
+        <file>qml/main.qml</file>
+        <file>qml/button/HelloButton.qml</file>
+        <file>qml/DairyList.qml</file>
+        <file>qml/DairyListForm.ui.qml</file>
+        <file>qml/DairyAppLoing.qml</file>
+        <file>qml/DairyAppLoingForm.ui.qml</file>
+        <file>qml/Button.qml</file>
+        <file>qml/LineInput.qml</file>
     </qresource>
 </RCC>

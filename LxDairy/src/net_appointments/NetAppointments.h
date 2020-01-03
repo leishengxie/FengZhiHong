@@ -28,6 +28,10 @@
 extern const char * const VIRTUAL_DIR_PATH_REGISTER;
 extern const char * const VIRTUAL_DIR_PATH_LOGIN;
 
+extern const char * const VIRTUAL_DIR_PATH_DAIRY_ROOT;
+extern const char * const VIRTUAL_DIR_PATH_DAIRY_LIST;
+extern const char* const VIRTUAL_DIR_PATH_DAIRY_UPLOAD;
+
 extern const char * const VIRTUAL_DIR_PATH_JOKE_ROOT;
 extern const char * const VIRTUAL_DIR_PATH_JOKE_LIST;
 extern const char * const VIRTUAL_DIR_PATH_JOKE_RATING;
@@ -86,6 +90,9 @@ public:
 
     static QString urlRegister();
     static QString urlLogin();
+
+    static QString urlDairyList();
+    static QString urlDairyUpload();
 
     static QString urlJokeList();
     static QString urlUploadJoke();

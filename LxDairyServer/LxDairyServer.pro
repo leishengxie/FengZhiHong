@@ -9,8 +9,7 @@ TARGET = LxDairyServer
 
 DESTDIR = $$PWD/bin
 
-# if not exist exe, 先注释，生成exe再开放
-win32:CONFIG(release, debug|release): {
+# if not exist exe, 先注释，生成exe再开�win32:CONFIG(release, debug|release): {
 #QMAKE_LFLAGS += /MANIFESTUAC:\"level=\'requireAdministrator\' uiAccess=\'false\'\" #以管理员运行
 #QMAKE_LFLAGS += /SUBSYSTEM:WINDOWS,\"5.01\" #VS2013 在XP运行
 }
@@ -84,7 +83,8 @@ HEADERS += \
     src/LDairyApp.h \
     src/LSqlOperate.h \
     src/diary_responder/LLoginRigsterResponder.h \
-    src/LSqlConnectionPool.h
+    src/LSqlConnectionPool.h \
+    src/diary_responder/LDairyResponder.h
 
 SOURCES += \
     src/main.cpp \
@@ -111,7 +111,8 @@ SOURCES += \
     src/LDairyApp.cpp \
     src/LSqlOperate.cpp \
     src/diary_responder/LLoginRigsterResponder.cpp \
-    src/LSqlConnectionPool.cpp
+    src/LSqlConnectionPool.cpp \
+    src/diary_responder/LDairyResponder.cpp
 
 
 include(qtservice/qtservice.pri)

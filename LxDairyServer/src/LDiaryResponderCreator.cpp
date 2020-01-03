@@ -9,6 +9,7 @@
 #include "responder/LDefaultResponder.h"
 #include "diary_responder/LJokeResponder.h"
 #include "diary_responder/LLoginRigsterResponder.h"
+#include "diary_responder/LDairyResponder.h"
 
 #include <QTime>
 #include "utils/LAsyncLogger.h"
@@ -28,6 +29,11 @@ IResponder* CLDiaryResponderCreator::service(CLHttpRequest *request, CLHttpRespo
     if (path.startsWith("/dump"))
     {
         pResponder = new CLDumpResponder(request, resp);
+
+    }
+    else if (path.startsWith(VIRTUAL_DIR_PATH_DAIRY_ROOT))
+    {
+        pResponder = new CLDairyResponder(request, resp);
 
     }
     else if (path.startsWith(VIRTUAL_DIR_PATH_JOKE_ROOT))

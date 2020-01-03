@@ -7,7 +7,7 @@
 #include "UserInfo.h"
 
 ///
-/// \brief The CSqlOperate class 本地sqlite数据库操作
+/// \brief The CSqlOperate class 断网情况临时保存数据到本地sqlite数据库
 ///
 class CSqlOperate : public QObject
 {
@@ -19,9 +19,6 @@ public:
 
     static void createTable();
 
-    static bool registerAccount(QString strUserName, QString strPasswd, QString & strErr);
-
-    static bool login(QString strUserName, QString strPasswd, T_UserInfo & tUserInfo, QString & strErr);
 
     static QList<CDairy> getDairyList(int uid);
     static CDairy getDairy(int did, int uid, bool & bOk);
