@@ -9,6 +9,7 @@
     #include "datastream_type/NetDataStream.h"
 
     #include "collection_jokebook/Joke.h"
+#include "module_dairy/Dairy.h"
     #include "UserInfo.h"
 #endif
 

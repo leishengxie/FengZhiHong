@@ -63,7 +63,7 @@ struct T_DairyDateItem
 
     T_DairyDateItem();
     T_DairyDateItem(E_DairyDateNodeType eDairyDateNodeType);
-    T_DairyDateItem(E_DairyDateNodeType eDairyDateNodeType, CDairy dairy);
+    T_DairyDateItem(E_DairyDateNodeType eDairyDateNodeType, T_Dairy dairy);
     ~T_DairyDateItem();
 
     void release();
@@ -73,7 +73,7 @@ struct T_DairyDateItem
     // 显示的文本
     QString text();
 
-    void dairyModify(const CDairy & dairyBefore, const CDairy & dairyAfter
+    void dairyModify(const T_Dairy & dairyBefore, const T_Dairy & dairyAfter
                      , T_DairyDateItem *&pDairyDateItem);
 
     void findItemById(int did, T_DairyDateItem *&pDairyDateItem);
@@ -128,8 +128,8 @@ public:
     bool hasChildren(const QModelIndex &parent) const;
 
     // 加载所有日记
-    void loadDairyList(const QList<CDairy> &lstDairy);
-    QList<CDairy> dairyList() const
+    void loadDairyList(const QList<T_Dairy> &lstDairy);
+    QList<T_Dairy> dairyList() const
     {
         return m_lstDairy;
     }
@@ -137,24 +137,24 @@ public:
     void sortDairyByTag(const QString & strTagName);
 
     // 日记内容改变
-    void dairyModify(const CDairy & dairyBefore, const CDairy & dairyAfter);
+    void dairyModify(const T_Dairy & dairyBefore, const T_Dairy & dairyAfter);
 
 public slots:
     void expandDairy(int did);
 
 
 signals:
-    void loadTodayDairyFinished(const CDairy &dairy);
+    void loadTodayDairyFinished(const T_Dairy &dairy);
     void requireExpand(const QModelIndex & index);
-    void sortDairyByTagFinished(const QString & strTagName, const QList<CDairy> &lstDairy);
+    void sortDairyByTagFinished(const QString & strTagName, const QList<T_Dairy> &lstDairy);
 
 private:
     // 根据日志列表完成树数据类型的转换
-    void convertDiaryListToTree(const QList<CDairy> &lstDairy);
-    void addDairyToTree(CDairy dairy);
+    void convertDiaryListToTree(const QList<T_Dairy> &lstDairy);
+    void addDairyToTree(T_Dairy dairy);
 
 private:
-    QList<CDairy> m_lstDairy;   // 原始结构
+    QList<T_Dairy> m_lstDairy;   // 原始结构
 
     T_DairyDateItem* m_pDairyDateItemRoot;  // 树结构
 };

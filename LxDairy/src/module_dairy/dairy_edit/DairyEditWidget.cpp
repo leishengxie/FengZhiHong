@@ -14,7 +14,8 @@
 #include "dairy_tag/DairyTagListModel.h"
 #include "DairyApp.h"
 
-
+#include "NetAppointments.h"
+#include "DairyHttpClient.h"
 
 CDairyEditWidget::CDairyEditWidget(QWidget* parent) :
     QWidget(parent),
@@ -23,23 +24,23 @@ CDairyEditWidget::CDairyEditWidget(QWidget* parent) :
     init();
 }
 
-CDairyEditWidget::CDairyEditWidget(CDairy dairy, QWidget* parent) :
+CDairyEditWidget::CDairyEditWidget(T_Dairy dairy, QWidget* parent) :
     QWidget(parent),
     ui(new Ui::CDairyEditWidget)
 {
     init();
 
-    setWindowTitle(dairy.getTitle());
+    setWindowTitle(dairy.strTitle);
 
-    QString strDateTime = dairy.getDateTime();
+    QString strDateTime = dairy.strDateTime;
     QDateTime datetime = QDateTime::fromString(strDateTime, FORMAT_DATETIME);
     QString strDateTimeDisplay = datetime.toString(FORMAT_DATETIME_DISPLAYER);
-    did = dairy.getDid();
-    ui->comboBoxWeather->setCurrentText(dairy.getWeather());
-    ui->comboBoxTag->setCurrentText(dairy.getTag());
+    did = dairy.did;
+    ui->comboBoxWeather->setCurrentText(dairy.strWeather);
+    ui->comboBoxTag->setCurrentText(dairy.strTag);
     ui->labelDateTime->setText(strDateTimeDisplay);
-    ui->leTitle->setText(dairy.getTitle());
-    ui->dairyEdit->setPlainText(dairy.getContent());
+    ui->leTitle->setText(dairy.strTitle);
+    ui->dairyEdit->setPlainText(dairy.strContent);
 
 
 }
@@ -77,29 +78,45 @@ void CDairyEditWidget::onSave()
     QDateTime datetime = QDateTime::fromString(strDateTimeDisplayer, FORMAT_DATETIME_DISPLAYER);
     QString strDateTime = datetime.toString(FORMAT_DATETIME);
 
-    CDairy dairy;
-    CDairy dairySaved;
-    dairy.setDid(did);
-    dairy.setUid(CDairyApp::userInfo().uid);
-    dairy.setTitle(ui->leTitle->text());
-    dairy.setDateTime(strDateTime);
-    dairy.setTag(ui->comboBoxTag->currentText());
-    dairy.setWeather(ui->comboBoxWeather->currentText());
-    dairy.setContent(ui->dairyEdit->toPlainText()); //toPlainText 去除textEdit当中的纯文本
-    QApplication::setOverrideCursor(Qt::WaitCursor);//设置整个应用程序的光标形状为等待形状，因为如果文件的内容非常多时可以提醒用户
-    QString strError;
-    if (!CSqlOperate::saveDairy(dairy, dairySaved, strError))
+    T_Dairy dairy;
+    //T_Dairy dairySaved;
+    dairy.did = did;
+    dairy.uid = CDairyApp::userInfo().uid;
+    dairy.strTitle = ui->leTitle->text();
+    dairy.strDateTime = strDateTime;
+    dairy.strTag = ui->comboBoxTag->currentText();
+    dairy.strWeather = ui->comboBoxWeather->currentText();
+    dairy.strContent = ui->dairyEdit->toPlainText(); //toPlainText 去除textEdit当中的纯文本
+
+
+    CDairyHttpClient* pDairyHttpClient = new CDairyHttpClient(this, true);
+    connect(pDairyHttpClient, &CDairyHttpClient::finished_1, [ = ](QByteArray byteArray)
     {
-        QMessageBox::warning(this, "save error", strError);
-    }
-    else
-    {
-        emit saveDairyfinished(dairy, dairySaved);
-        did = dairySaved.getDid();
-        setWindowTitle(dairySaved.getTitle());
-        ui->dairyEdit->document()->setModified(false);
-    }
-    QApplication::restoreOverrideCursor();//恢复开始时的光标状态
+        T_Dairy dairySaved = CNetAppointments::deserialization<T_Dairy>(byteArray);
+        if (dairy.isNewDairy())
+        {
+            emit saveDairyfinished(dairy, dairySaved);
+            did = dairySaved.did;
+            setWindowTitle(dairySaved.strTitle);
+            ui->dairyEdit->document()->setModified(false);
+        }
+    });
+    pDairyHttpClient->post(CNetAppointments::urlDairyUpload(), CNetAppointments::serializa(dairy));
+
+
+//    QString strError;
+//    if (!CSqlOperate::saveDairy(dairy, dairySaved, strError))
+//    {
+//        QMessageBox::warning(this, "save error", strError);
+//    }
+//    else
+//    {
+//        emit saveDairyfinished(dairy, dairySaved);
+//        did = dairySaved.did;
+//        setWindowTitle(dairySaved.strTitle);
+//        ui->dairyEdit->document()->setModified(false);
+//    }
+
 
 
 }

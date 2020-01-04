@@ -21,35 +21,22 @@ int CLDairyResponder::handle()
     qDebug("handle: path=%s", path.data());
     if (path.startsWith(VIRTUAL_DIR_PATH_DAIRY_LIST))
     {
-        T_JokeListRequest tJokeListRequest = CNetAppointments::deserialization<T_JokeListRequest>(m_req->getBody());
-        T_JokeListResp tJokeListResp;
+        T_DairyListRequest tDairyListRequest = CNetAppointments::deserialization<T_DairyListRequest>(m_req->getBody());
+        T_DairyListResp tDairyListResp;
         T_HttpStatusMsg tHttpStatusMsg;
-        CLSqlOperate::getInstance()->getJokeList(tJokeListRequest, tJokeListResp, tHttpStatusMsg);
+        CLSqlOperate::getInstance()->getDairyList(tDairyListRequest, tDairyListResp, tHttpStatusMsg);
         m_resp->setStatus(tHttpStatusMsg.nStatusCode, tHttpStatusMsg.strMsg.toUtf8());
-        m_resp->write(CNetAppointments::serializa(tJokeListResp), true);
+        m_resp->write(CNetAppointments::serializa(tDairyListResp), true);
     }
     else if (path.startsWith(VIRTUAL_DIR_PATH_DAIRY_UPLOAD))
     {
-        T_Joke tJoke = CNetAppointments::deserialization<T_Joke>(m_req->getBody());
+        T_Dairy dairy = CNetAppointments::deserialization<T_Dairy>(m_req->getBody());
+        T_Dairy dairySaved;
         T_HttpStatusMsg tHttpStatusMsg;
-        CLSqlOperate::getInstance()->saveUserUploadJoke(tJoke, tHttpStatusMsg);
+        CLSqlOperate::getInstance()->saveDairy(dairy, dairySaved, tHttpStatusMsg);
 
         m_resp->setStatus(tHttpStatusMsg.nStatusCode, tHttpStatusMsg.strMsg.toUtf8());
-
-        qDebug() << "strDate=" << tJoke.strDate;
-        qDebug() << "strTitle=" << tJoke.strTitle;
-
-        m_resp->write("<html><body>");
-        m_resp->write("  diaryDate: <input type=\"text\" name=\"");
-        m_resp->write(tJoke.strDate.toUtf8());
-        m_resp->write("\"><br>");
-        m_resp->write("  dairyTitle: <input type=\"text\" name=\"");
-        m_resp->write(tJoke.strTitle.toUtf8());
-        m_resp->write("\"><br>");
-        m_resp->write("</body></html>",true);
-
-//        QByteArray resp_body;
-//        m_resp->write(resp_body, true);
+        m_resp->write(CNetAppointments::serializa(dairySaved), true);
     }
 
 

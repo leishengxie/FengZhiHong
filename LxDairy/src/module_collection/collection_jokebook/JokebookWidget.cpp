@@ -191,7 +191,7 @@ void CJokebookWidget::onStarEidtFinished(qreal dRating)
     T_Joke tJoke = qvariant_cast<T_Joke>(IndexList.at(0).data());
     T_JokeRating tJokeRating;
     tJokeRating.jId = tJoke.jId;
-    tJokeRating.uId = CDairyApp::userInfoNet().uid;
+    tJokeRating.uId = CDairyApp::userInfo().uid;
     tJokeRating.dRating = dRating;
     CDairyHttpClient* pDairyHttpClient = new CDairyHttpClient(this, true);
     connect(pDairyHttpClient, &CDairyHttpClient::finished_1, [ = ](QByteArray byteArray)

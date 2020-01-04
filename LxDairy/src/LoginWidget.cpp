@@ -161,7 +161,7 @@ void CLoginWidget::on_btnLoginServer_clicked()
             conf.setValue("passwd", strPasswd);
         }
         T_UserInfo tUserInfo = CNetAppointments::deserialization<T_UserInfo>(byteArray);
-        CDairyApp::setUserInfoNet(tUserInfo);
+        CDairyApp::setUserInfo(tUserInfo);
 
         CDairyMainWindow* pDairyMainWindow = new CDairyMainWindow;
         pDairyMainWindow->setLoginWidget(this);

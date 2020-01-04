@@ -2,7 +2,8 @@
 #include "ui_DairyWidget.h"
 
 
-
+#include "NetAppointments.h"
+#include "DairyHttpClient.h"
 
 #include "SqlOperate.h"
 #include "DairyApp.h"
@@ -25,7 +26,7 @@ CDairyWidget::CDairyWidget(QWidget* parent)
 void CDairyWidget::init()
 {
     // dairy_edit
-    connect(ui->page_dairy, SIGNAL(saveDairyfinishedS1(CDairy, CDairy)), ui->treeDairy, SLOT(onSaveDairyfinished(CDairy, CDairy)));
+    connect(ui->page_dairy, SIGNAL(saveDairyfinishedS1(T_Dairy, T_Dairy)), ui->treeDairy, SLOT(onSaveDairyfinished(T_Dairy, T_Dairy)));
     connect(ui->page_dairy, SIGNAL(requirePlayMusic()), this, SIGNAL(requirePlayMusicS1()));
     connect(ui->page_dairy, SIGNAL(requireTTSspeak(QString)), this, SIGNAL(requireTTSspeakS1(QString)));
     connect(this, SIGNAL(musicFinishedS1()), ui->page_dairy, SLOT(onMusicFinished()));
@@ -34,11 +35,11 @@ void CDairyWidget::init()
     connect(ui->listViewTag, SIGNAL(dairyTagListClicked(QString)), ui->treeDairy, SLOT(sortDairyByTag(QString)));
 
     // dairy_date
-    connect(ui->treeDairy, SIGNAL(sortDairyByTagFinished(QString, QList<CDairy>))
-            , ui->page_dairy_statistics, SLOT(showStatisticsByTag(QString, QList<CDairy>)));
-    connect(ui->treeDairy, SIGNAL(sortDairyByDateFinished(QString, QString, QList<CDairy>))
-            , ui->page_dairy_statistics, SLOT(showStatisticsByDate(QString, QString, QList<CDairy>)));
-    connect(ui->treeDairy, SIGNAL(requreOpenDairy(CDairy)), ui->page_dairy, SLOT(onOpenDairy(CDairy)));
+    connect(ui->treeDairy, SIGNAL(sortDairyByTagFinished(QString, QList<T_Dairy>))
+            , ui->page_dairy_statistics, SLOT(showStatisticsByTag(QString, QList<T_Dairy>)));
+    connect(ui->treeDairy, SIGNAL(sortDairyByDateFinished(QString, QString, QList<T_Dairy>))
+            , ui->page_dairy_statistics, SLOT(showStatisticsByDate(QString, QString, QList<T_Dairy>)));
+    connect(ui->treeDairy, SIGNAL(requreOpenDairy(T_Dairy)), ui->page_dairy, SLOT(onOpenDairy(T_Dairy)));
     connect(ui->treeDairy, &CDairyDateTreeView::sortDairyByTagFinished, [ = ]()
     {
         ui->stackedWidget->setCurrentIndex(EP_Statistics);
@@ -53,7 +54,7 @@ void CDairyWidget::init()
     });
 
     // dairy_statistics
-    connect(ui->page_dairy_statistics, SIGNAL(openDairyClicked(CDairy)), ui->treeDairy, SLOT(onOpenDairyClicked(CDairy)));
+    connect(ui->page_dairy_statistics, SIGNAL(openDairyClicked(T_Dairy)), ui->treeDairy, SLOT(onOpenDairyClicked(T_Dairy)));
     connect(ui->page_dairy_statistics, &CDairyStatisticsWidget::openDairyClicked, [ = ]()
     {
         ui->stackedWidget->setCurrentIndex(EP_Dairy);
@@ -66,10 +67,13 @@ void CDairyWidget::init()
     //connect(ui->mdiArea, SIGNAL(customContextMenuRequested(QPoint))
     QTimer::singleShot(500, [ = ]()
     {
-        QList<CDairy> lstDairy = CSqlOperate::getDairyList(CDairyApp::userInfoLocal().uid);
-        ui->listViewTag->loadDiaryList(lstDairy);
-        ui->treeDairy->loadDairyList(lstDairy);
-        ui->page_dairy_statistics->showStatisticsByTag("全部日记", lstDairy);
+//        QList<T_Dairy> lstDairy = CSqlOperate::getDairyList(CDairyApp::userInfoLocal().uid);
+//        ui->listViewTag->loadDiaryList(lstDairy);
+//        ui->treeDairy->loadDairyList(lstDairy);
+//        ui->page_dairy_statistics->showStatisticsByTag("全部日记", lstDairy);
+        T_DairyListRequest tDairyListRequest;
+        tDairyListRequest.uid = CDairyApp::userInfo().uid;
+        requestDairyList(tDairyListRequest);
     });
 }
 
@@ -81,6 +85,27 @@ CDairyWidget::~CDairyWidget()
 void CDairyWidget::saveAllDairy()
 {
     ui->page_dairy->saveAllDairy();
+}
+
+void CDairyWidget::requestDairyList(const T_DairyListRequest &tDairyListRequest, bool bAppend)
+{
+    CDairyHttpClient* pDairyHttpClient = new CDairyHttpClient(this, true);
+    connect(pDairyHttpClient, &CDairyHttpClient::finished_1, [ = ](QByteArray byteArray)
+    {
+        T_DairyListResp tDairyListResp = CNetAppointments::deserialization<T_DairyListResp>(byteArray);
+        if (bAppend)
+        {
+            //m_pJokeModel->appendListJoke(tDairyListResp.dairyList);
+        }
+        else
+        {
+            ui->listViewTag->loadDiaryList(tDairyListResp.dairyList);
+            ui->treeDairy->loadDairyList(tDairyListResp.dairyList);
+            ui->page_dairy_statistics->showStatisticsByTag("全部日记", tDairyListResp.dairyList);
+
+        }
+    });
+    pDairyHttpClient->post(CNetAppointments::urlDairyList(), CNetAppointments::serializa(tDairyListRequest));
 }
 
 

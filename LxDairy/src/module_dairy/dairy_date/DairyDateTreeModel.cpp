@@ -12,15 +12,15 @@ T_DairyDateItem::T_DairyDateItem(E_DairyDateNodeType eDairyDateNodeType)
     this->eDairyDateNodeType = eDairyDateNodeType;
 }
 
-T_DairyDateItem::T_DairyDateItem(E_DairyDateNodeType eDairyDateNodeType, CDairy dairy)
+T_DairyDateItem::T_DairyDateItem(E_DairyDateNodeType eDairyDateNodeType, T_Dairy dairy)
 {
     init();
     this->eDairyDateNodeType = eDairyDateNodeType;
     //QMultiMap
     //"2010-07-02 17:35:00";
-    did = dairy.getDid();
-    strTitle = dairy.getTitle();
-    QString strDateTime = dairy.getDateTime();
+    did = dairy.did;
+    strTitle = dairy.strTitle;
+    QString strDateTime = dairy.strDateTime;
     strYear = strDateTime.mid(0, 4);
     strMonth = strDateTime.mid(5, 2);
     strDay = strDateTime.mid(8, 2);
@@ -257,13 +257,13 @@ QString T_DairyDateItem::text()
 /// \param dairyBefore
 /// \param dairyAfter
 ///
-void T_DairyDateItem::dairyModify(const CDairy & dairyBefore, const CDairy & dairyAfter
+void T_DairyDateItem::dairyModify(const T_Dairy & dairyBefore, const T_Dairy & dairyAfter
                                   , T_DairyDateItem* & pDairyDateItem)
 {
-    if (did == dairyBefore.getDid() && eDairyDateNodeType == ED_Day)
+    if (did == dairyBefore.did && eDairyDateNodeType == ED_Day)
     {
-        did = dairyAfter.getDid();
-        strTitle = dairyAfter.getTitle();
+        did = dairyAfter.did;
+        strTitle = dairyAfter.strTitle;
         pDairyDateItem = this;
     }
     if (m_setChildItems.empty())
@@ -480,7 +480,7 @@ bool CDairyDateTreeModel::hasChildren(const QModelIndex & parent) const
 
 
 
-void CDairyDateTreeModel::loadDairyList(const QList<CDairy> & lstDairy)
+void CDairyDateTreeModel::loadDairyList(const QList<T_Dairy> & lstDairy)
 {
     m_lstDairy = lstDairy;
 
@@ -488,10 +488,10 @@ void CDairyDateTreeModel::loadDairyList(const QList<CDairy> & lstDairy)
     bool bHaveTodayDairy = false;
     QString strDateTime = QDateTime::currentDateTime().toString(FORMAT_DATETIME);
 
-    CDairy dairyToday;
-    foreach (CDairy dairy, m_lstDairy)
+    T_Dairy dairyToday;
+    foreach (T_Dairy dairy, m_lstDairy)
     {
-        if (dairy.getDateTime().mid(0, 10) == strDateTime.mid(0, 10))
+        if (dairy.strDateTime.mid(0, 10) == strDateTime.mid(0, 10))
         {
             bHaveTodayDairy = true;
             dairyToday = dairy;
@@ -508,16 +508,16 @@ void CDairyDateTreeModel::loadDairyList(const QList<CDairy> & lstDairy)
 
 void CDairyDateTreeModel::sortDairyByTag(const QString & strTagName)
 {
-    QList<CDairy> lstDairySort;
+    QList<T_Dairy> lstDairySort;
     if ( "全部日记" == strTagName)
     {
         lstDairySort = m_lstDairy;
     }
     else
     {
-        for (CDairy dairy : m_lstDairy)
+        for (T_Dairy dairy : m_lstDairy)
         {
-            if (strTagName == dairy.getTag())
+            if (strTagName == dairy.strTag)
             {
                 lstDairySort.append(dairy);
             }
@@ -536,7 +536,7 @@ void CDairyDateTreeModel::sortDairyByTag(const QString & strTagName)
     emit sortDairyByTagFinished(strTagName, lstDairySort);
 }
 
-void CDairyDateTreeModel::convertDiaryListToTree(const QList<CDairy> & lstDairy)
+void CDairyDateTreeModel::convertDiaryListToTree(const QList<T_Dairy> & lstDairy)
 {
     if (NULL == m_pDairyDateItemRoot)
     {
@@ -544,14 +544,14 @@ void CDairyDateTreeModel::convertDiaryListToTree(const QList<CDairy> & lstDairy)
     }
     m_pDairyDateItemRoot->deleteChildren();
     beginResetModel();
-    foreach (CDairy dairy, lstDairy)
+    foreach (T_Dairy dairy, lstDairy)
     {
         addDairyToTree(dairy);
     }
     endResetModel();
 }
 
-void CDairyDateTreeModel::addDairyToTree(CDairy dairy)
+void CDairyDateTreeModel::addDairyToTree(T_Dairy dairy)
 {
     T_DairyDateItem* pItemYear = new T_DairyDateItem(ED_Year, dairy);
     T_DairyDateItem* pItemMonth = new T_DairyDateItem(ED_Month, dairy);
@@ -600,7 +600,7 @@ void CDairyDateTreeModel::addDairyToTree(CDairy dairy)
 
 }
 
-void CDairyDateTreeModel::dairyModify(const CDairy & dairyBefore, const CDairy & dairyAfter)
+void CDairyDateTreeModel::dairyModify(const T_Dairy & dairyBefore, const T_Dairy & dairyAfter)
 {
     if (m_pDairyDateItemRoot == NULL)
     {

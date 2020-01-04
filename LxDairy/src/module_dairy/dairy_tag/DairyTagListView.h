@@ -12,7 +12,7 @@ class CDairyTagListView : public QListView
 public:
     CDairyTagListView(QWidget* parent);
 
-    void loadDiaryList(const QList<CDairy> &lstDairy);
+    void loadDiaryList(const QList<T_Dairy> &lstDairy);
 
 signals:
     void dairyTagListClicked(const QString & strTag);

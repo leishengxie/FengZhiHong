@@ -62,7 +62,7 @@ void CAccPasswdWidget::on_btnAdd_clicked()
     QSqlTableModel* model = (QSqlTableModel*)ui->tableViewPrivate->model();
     int rowNum = model->rowCount(); //获得表的行数
         model->insertRow(rowNum); //添加一行
-        model->setData(model->index(rowNum, 0), CDairyApp::userInfoLocal().uid);
+        model->setData(model->index(rowNum, 0), CDairyApp::userInfo().uid);
         //model->submitAll(); //可以直接提交
 }
 

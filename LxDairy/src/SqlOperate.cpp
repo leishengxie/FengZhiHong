@@ -10,7 +10,7 @@
 #include <time.h>
 
 
-CSqlOperate::CSqlOperate(QObject *parent) : QObject(parent)
+CSqlOperate::CSqlOperate(QObject* parent) : QObject(parent)
 {
     //    model = new QSqlRelationalTableModel (this);
     //    model->setTable("stations_train_pass"); //要打开的表
@@ -63,36 +63,52 @@ bool CSqlOperate::connect(QString strDbName)
 void CSqlOperate::createTable()
 {
     QSqlQuery query;
-    QString strSql=" CREATE TABLE IF NOT EXISTS tUser( " \
-                   "uid INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL DEFAULT 1," \
-                   "user_name  TEXT(32) NOT NULL," \
-                   "passwd  TEXT(16) NOT NULL)";
+    QString strSql;
+    /**
+    strSql = " CREATE TABLE IF NOT EXISTS tUser( " \
+                     "uid INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL DEFAULT 1," \
+                     "user_name  TEXT(32) NOT NULL," \
+                     "passwd  TEXT(16) NOT NULL)";
     if (!query.exec(strSql))
     {
         qDebug() << query.lastError();
     }
 
     strSql = "CREATE TABLE IF NOT EXISTS tDairy(" \
-    "did INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL DEFAULT 1," \
-    "uid INTEGER NOT NULL," \
-    "title TEXT," \
-    "datetime  TEXT," \
-    "weather TEXT," \
-    "tag TEXT," \
-    "content TEXT," \
-    "CONSTRAINT 'fk_user_uid' FOREIGN KEY ('uid') REFERENCES 'tUser' ('uid') ON DELETE CASCADE ON UPDATE CASCADE)";
+             "did INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL DEFAULT 1," \
+             "uid INTEGER NOT NULL," \
+             "title TEXT," \
+             "datetime  TEXT," \
+             "weather TEXT," \
+             "tag TEXT," \
+             "content TEXT," \
+             "CONSTRAINT 'fk_user_uid' FOREIGN KEY ('uid') REFERENCES 'tUser' ('uid') ON DELETE CASCADE ON UPDATE CASCADE)";
     if (!query.exec(strSql))
     {
         qDebug() << query.lastError();
     }
 
     strSql = "CREATE TABLE IF NOT EXISTS tAPasswd(" \
-    "aid INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL DEFAULT 1," \
-    "uid INTEGER NOT NULL," \
-    "item TEXT," \
-    "account  TEXT," \
-    "passwd TEXT," \
-    "CONSTRAINT 'fk_user_uid' FOREIGN KEY ('uid') REFERENCES 'tUser' ('uid') ON DELETE CASCADE ON UPDATE CASCADE)";
+             "aid INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL DEFAULT 1," \
+             "uid INTEGER NOT NULL," \
+             "item TEXT," \
+             "account  TEXT," \
+             "passwd TEXT," \
+             "CONSTRAINT 'fk_user_uid' FOREIGN KEY ('uid') REFERENCES 'tUser' ('uid') ON DELETE CASCADE ON UPDATE CASCADE)";
+    if (!query.exec(strSql))
+    {
+        qDebug() << query.lastError();
+    }
+    */
+
+    strSql = "CREATE TABLE IF NOT EXISTS tDairy(" \
+             "did INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL DEFAULT 1," \
+             "uid INTEGER NOT NULL," \
+             "title TEXT," \
+             "datetime  TEXT," \
+             "weather TEXT," \
+             "tag TEXT," \
+             "content TEXT)";
     if (!query.exec(strSql))
     {
         qDebug() << query.lastError();
@@ -104,101 +120,32 @@ void CSqlOperate::createTable()
 
 
 
-    // 读取日记
-QList<CDairy> CSqlOperate::getDairyList(int uid)
+// 读取日记
+QList<T_Dairy> CSqlOperate::getDairyList(int uid)
 {
     QSqlQuery query;
-    QList<CDairy> lstDairy;
+    QList<T_Dairy> lstDairy;
     query.exec("select * from tDairy where uid = '" + QString::number(uid) + "'");
     while (query.next())
     {
         //为避免内存占用只需要did和datetime
-        CDairy dairy;
-        dairy.setDid(query.value("did").toInt());
-        dairy.setTitle(query.value("title").toString());
-        dairy.setDateTime(query.value("datetime").toString());
-                dairy.setTag(query.value("tag").toString());
-                dairy.setWeather(query.value("weather").toString());
-                dairy.setContent(query.value("content").toString());
+        T_Dairy dairy;
+        dairy.did = query.value("did").toInt();
+        dairy.strTitle = query.value("title").toString();
+        dairy.strDateTime = query.value("datetime").toString();
+        dairy.strTag = query.value("tag").toString();
+        dairy.strWeather = query.value("weather").toString();
+        dairy.strContent = query.value("content").toString();
         lstDairy.append(dairy);
     }
     return lstDairy;
 }
 
-CDairy CSqlOperate::getDairy(int did, int uid, bool &bOk)
-{
-    CDairy dairy;
-    QSqlQuery query;
-    query.exec("select * from tDairy where uid = '"
-               + QString::number(uid)
-               + "' and did = '" + QString::number(did) + "'");
-    if (query.next())
-    {
-        bOk = true;
-        dairy.setDid(query.value("did").toInt());
-        dairy.setTitle(query.value("title").toString());
-        dairy.setDateTime(query.value("datetime").toString());
-        dairy.setTag(query.value("tag").toString());
-        dairy.setWeather(query.value("weather").toString());
-        dairy.setContent(query.value("content").toString());
-    }
-    else
-    {
-        bOk = false;
-    }
-    return dairy;
-}
 
-QList<CDairy> CSqlOperate::getListDairyByLimit(QString strFormatDate, QString strTagName)
-{
-    // eg: select * from tDairy where substr(date(datetime),1,7) = '2019-09';
-    //
-    QList<CDairy> lstDairy;
-    QSqlQuery query;
-    QString strSql;
-    if (!strFormatDate.isEmpty() && strTagName.isEmpty())
-    {
-        strSql = QString("select * from tDairy where substr(date(datetime),1,%1) = '%2'")
-                .arg(strFormatDate.length())
-                .arg(strFormatDate);
-    }
-    else if (strFormatDate.isEmpty() && !strTagName.isEmpty())
-    {
-        strSql = QString("select * from tDairy where tag = '%1'").arg(strTagName);
-    }
-    else if (!strFormatDate.isEmpty() && !strTagName.isEmpty())
-    {
-        strSql = QString("select * from tDairy where substr(date(datetime),1,%1) = '%2' and tag = '%3'")
-                .arg(strFormatDate.length())
-                .arg(strFormatDate)
-                .arg(strTagName);
-    }
-    else
-    {
-        strSql = QString("select * from tDairy");
-    }
-    bool ok = query.exec(strSql);
 
-    if (!ok)
-    {
-        qDebug() << query.lastError();
-        return lstDairy;
-    }
-    while (query.next())
-    {
-        CDairy dairy;
-        dairy.setDid(query.value("did").toInt());
-        dairy.setTitle(query.value("title").toString());
-        dairy.setDateTime(query.value("datetime").toString());
-        dairy.setTag(query.value("tag").toString());
-        dairy.setWeather(query.value("weather").toString());
-        dairy.setContent(query.value("content").toString());
-        lstDairy.append(dairy);
-    }
-    return lstDairy;
-}
 
-bool CSqlOperate::saveDairy(const CDairy & dairyModify, CDairy & dairySaved, QString & strError)
+
+bool CSqlOperate::saveDairy(const T_Dairy & dairyModify, T_Dairy & dairySaved, QString & strError)
 {
     QSqlQuery query;
     dairySaved = dairyModify;
@@ -206,12 +153,12 @@ bool CSqlOperate::saveDairy(const CDairy & dairyModify, CDairy & dairySaved, QSt
     {
         bool ok = query.prepare("INSERT INTO tDairy(uid, title,datetime,tag,weather,content) "
                                 "VALUES (?, ?, ?, ?, ?, ?)");
-        query.bindValue(0, dairyModify.getUid());
-        query.bindValue(1, dairyModify.getTitle());
-        query.bindValue(2, dairyModify.getDateTime());
-        query.bindValue(3, dairyModify.getTag());
-        query.bindValue(4, dairyModify.getWeather());
-        query.bindValue(5, dairyModify.getContent());
+        query.bindValue(0, dairyModify.uid);
+        query.bindValue(1, dairyModify.strTitle);
+        query.bindValue(2, dairyModify.strDateTime);
+        query.bindValue(3, dairyModify.strTag);
+        query.bindValue(4, dairyModify.strWeather);
+        query.bindValue(5, dairyModify.strWeather);
         ok = query.exec();
         if (!ok)
         {
@@ -232,17 +179,17 @@ bool CSqlOperate::saveDairy(const CDairy & dairyModify, CDairy & dairySaved, QSt
         }
         if (query.next())
         {
-            dairySaved.setDid(query.value(0).toInt());
+            dairySaved.did = query.value(0).toInt();
         }
     }
     else
     {
         QString strSql = QString("update tDairy set title='%1', tag='%2', weather='%3', content='%4' where did='%5'")
-                         .arg(dairyModify.getTitle())
-                         .arg(dairyModify.getTag())
-                         .arg(dairyModify.getWeather())
-                         .arg(dairyModify.getContent())
-                         .arg(dairyModify.getDid());
+                         .arg(dairyModify.strTitle)
+                         .arg(dairyModify.strTag)
+                         .arg(dairyModify.strWeather)
+                         .arg(dairyModify.strContent)
+                         .arg(dairyModify.did);
         bool ok = query.exec(strSql);
 
         if (!ok)
@@ -270,16 +217,17 @@ bool isDirExist(QString fullPath)
 }
 void CSqlOperate::SetXinXi(QString zhanghao, QString ziti, QString beijing, QString touxiang, QString wangming, QString geqian)
 {
-    QString path=QCoreApplication::applicationDirPath()+"/file";
+    QString path = QCoreApplication::applicationDirPath() + "/file";
     isDirExist(path);
-    QString tupian=path+QString("/%1.png").arg(zhanghao);
-    QPixmap(touxiang).save(tupian,"png");
+    QString tupian = path + QString("/%1.png").arg(zhanghao);
+    QPixmap(touxiang).save(tupian, "png");
     QSqlQuery query;
     query.exec("select * from zhanghao");
     while (query.next())
     {
-        if(query.value(0).toInt()==zhanghao.toInt())
-        {//zhanghao,mima,wangming,qianming,beizhu,touxiang,ziti，beijing
+        if(query.value(0).toInt() == zhanghao.toInt())
+        {
+            //zhanghao,mima,wangming,qianming,beizhu,touxiang,ziti，beijing
             query.exec(QString("update zhanghao set [ziti]='%1' where [zhanghao]='%2';").arg(ziti).arg(zhanghao));
             query.exec(QString("update zhanghao set [beijing]='%1' where [zhanghao]='%2';").arg(beijing).arg(zhanghao));
             query.exec(QString("update zhanghao set [touxiang]='%1' where [zhanghao]='%2';").arg(tupian).arg(zhanghao));

@@ -75,7 +75,7 @@ void CDairyTagListModel::loadCustomDairyTag(const QStringList & strlstTagName)
 
 }
 
-void CDairyTagListModel::loadDiaryList(const QList<CDairy> & lstDairy)
+void CDairyTagListModel::loadDiaryList(const QList<T_Dairy> & lstDairy)
 {
     if (m_lstDairyTag.isEmpty())
     {
@@ -83,11 +83,11 @@ void CDairyTagListModel::loadDiaryList(const QList<CDairy> & lstDairy)
     }
 
     m_lstDairyTag[0].nNum = lstDairy.size();
-    foreach (CDairy dairy, lstDairy)
+    foreach (T_Dairy dairy, lstDairy)
     {
         for (int i = 0; i < m_lstDairyTag.size(); ++i)
         {
-            if (m_lstDairyTag[i].strTagName == dairy.getTag())
+            if (m_lstDairyTag[i].strTagName == dairy.strTag)
             {
                 ++m_lstDairyTag[i].nNum;
             }

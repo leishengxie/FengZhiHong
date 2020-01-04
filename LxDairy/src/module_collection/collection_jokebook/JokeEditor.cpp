@@ -24,8 +24,8 @@ void CJokeEditor::on_btnUpload_clicked()
     tJoke.strDate = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
     tJoke.bOriginal = (ui->combSource->currentIndex() == 1 ? true : false);
     tJoke.strContent = ui->plainTextEdit->document()->toPlainText();
-    tJoke.upUid = CDairyApp::userInfoNet().uid;
-    tJoke.strNickname = CDairyApp::userInfoNet().strNickName;
+    tJoke.upUid = CDairyApp::userInfo().uid;
+    tJoke.strNickname = CDairyApp::userInfo().strNickName;
     emit requreUploadJoke(tJoke);
     close();
 }

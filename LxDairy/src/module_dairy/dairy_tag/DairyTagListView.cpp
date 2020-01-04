@@ -14,7 +14,7 @@ CDairyTagListView::CDairyTagListView(QWidget *parent)
     connect(this, SIGNAL(clicked(QModelIndex)), this, SLOT(on_listViewTag_clicked(QModelIndex)));
 }
 
-void CDairyTagListView::loadDiaryList(const QList<CDairy> &lstDairy)
+void CDairyTagListView::loadDiaryList(const QList<T_Dairy> &lstDairy)
 {
     pDairyTagListModel->loadDiaryList(lstDairy);
 }

@@ -35,11 +35,15 @@ public:
      void login(QString strUserName, QString strPasswd, T_UserInfo &tUserInfo, T_HttpStatusMsg &tHttpStatusMsg);
 
 
-//     QList<CDairy> getDairyList(int uid);
+
 //     CDairy getDairy(int did, bool & bOk);
 //     QList<CDairy> getListDairyByLimit(QString strFormatDate
 //                                              , QString strTagName = ""); //strFormatDate  eg:"'2019-09'", 2019-09-01, 2019
-//     static bool saveDairy(const CDairy & dairyModify, CDairy & dairySaved);
+//     static QList<T_Dairy> getDairyList(int uid);
+     void saveDairy(const T_Dairy & dairyModify, T_Dairy & dairySaved, T_HttpStatusMsg &tHttpStatusMsg);
+     void getDairyList(const T_DairyListRequest & tDairyListRequest
+                      , T_DairyListResp & tDairyListResp
+                      , T_HttpStatusMsg &tHttpStatusMsg);
 
      void saveUserUploadJoke(const T_Joke & tJoke, T_HttpStatusMsg &tHttpStatusMsg);
      void getJokeList(const T_JokeListRequest & tJokeListRequest

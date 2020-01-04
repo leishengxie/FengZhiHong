@@ -25,9 +25,9 @@ void CDairyStatisticsDelegate::paint(QPainter* painter, const QStyleOptionViewIt
     }
     painter->save();
     QVariant var = index.data(Qt::DisplayRole);
-    CDairy dairy = var.value<CDairy>();
-    QString strDate = dairy.getDateTime().left(10);
-    QString strContent = dairy.getTitle() + " - " + dairy.getContent();
+    T_Dairy dairy = var.value<T_Dairy>();
+    QString strDate = dairy.strDateTime.left(10);
+    QString strContent = dairy.strTitle + " - " + dairy.strContent;
     // item 矩形区域
         QFontMetrics fontMetrics(painter->font());
         int nWidth = fontMetrics.width(strDate);

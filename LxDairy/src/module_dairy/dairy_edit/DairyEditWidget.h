@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QLabel>
 #include "Dairy.h"
+#include "func.h"
 
 namespace Ui {
 class CDairyEditWidget;
@@ -42,7 +43,7 @@ public:
 //    };
 
     explicit CDairyEditWidget(QWidget *parent = 0);
-    explicit CDairyEditWidget(CDairy dairy, QWidget *parent = 0);
+    explicit CDairyEditWidget(T_Dairy dairy, QWidget *parent = 0);
     ~CDairyEditWidget();
 
     SETGETCONST(int, did, Did)
@@ -52,7 +53,7 @@ public:
     CDairyEdit* dairyEdit();
 
 signals:
-    void saveDairyfinished(const CDairy & dairySaveBefore, const CDairy & dairySaved);
+    void saveDairyfinished(const T_Dairy & dairySaveBefore, const T_Dairy & dairySaved);
 
 protected:
     void closeEvent(QCloseEvent *event);//重写关闭事件

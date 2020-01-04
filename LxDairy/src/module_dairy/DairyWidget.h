@@ -36,6 +36,9 @@ signals:
     void requirePlayMusicS1();
     void musicFinishedS1();
 
+public:
+    void requestDairyList(const T_DairyListRequest &tDairyListRequest, bool bAppend = false);
+
 protected:
     void closeEvent(QCloseEvent *event);
     void actSaveEvent();

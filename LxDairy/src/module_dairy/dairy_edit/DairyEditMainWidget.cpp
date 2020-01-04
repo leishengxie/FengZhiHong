@@ -77,23 +77,10 @@ void CDairyEditMainWidget::slotUpdateMenu(QMdiSubWindow* pMdiSubWindow)
 
 
 
-void CDairyEditMainWidget::onOpenDairy(const CDairy & dairy)
+void CDairyEditMainWidget::onOpenDairy(const T_Dairy & dairy)
 {
     // 确定日记
-    if (dairy.isNewDairy())
-    {
         m_dairyActive = dairy;
-    }
-    else
-    {
-        bool bOk = false;
-        m_dairyActive = CSqlOperate::getDairy(dairy.getDid(), CDairyApp::userInfo().uid, bOk);
-        if (!bOk)
-        {
-            // print error
-            return;
-        }
-    }
 
     // 根据did确定是否已经加载了edit，否则创建新的edit
     bool bNeedCreateEdit = true;
@@ -102,7 +89,7 @@ void CDairyEditMainWidget::onOpenDairy(const CDairy & dairy)
     foreach (QMdiSubWindow* pMdiSubWindow, lstSubWindow)
     {
         CDairyEditWidget* pDairyEditWidget = qobject_cast<CDairyEditWidget*>(pMdiSubWindow->widget());
-        if (pDairyEditWidget->getDid() == m_dairyActive.getDid())
+        if (pDairyEditWidget->getDid() == m_dairyActive.did)
         {
             bNeedCreateEdit = false;
             pMdiSubWindowDest = pMdiSubWindow;
@@ -114,7 +101,7 @@ void CDairyEditMainWidget::onOpenDairy(const CDairy & dairy)
     {
         // 创建edit
         CDairyEditWidget* pDairyEditWidget = new CDairyEditWidget(m_dairyActive);
-        connect(pDairyEditWidget, SIGNAL(saveDairyfinished(CDairy, CDairy)), this, SIGNAL(saveDairyfinishedS1(CDairy,CDairy)));
+        connect(pDairyEditWidget, SIGNAL(saveDairyfinished(T_Dairy, T_Dairy)), this, SIGNAL(saveDairyfinishedS1(T_Dairy,T_Dairy)));
         QMdiSubWindow* pSubWindow = ui->mdiArea->addSubWindow(pDairyEditWidget);
         pSubWindow->showMaximized();
     }

@@ -67,7 +67,7 @@ public:
     void loadCustomDairyTag(const QStringList &strlstTagName);
 
     // 加载日记刷新标签
-    void loadDiaryList(const QList<CDairy> &lstDairy);
+    void loadDiaryList(const QList<T_Dairy> &lstDairy);
 
 
 

@@ -230,6 +230,94 @@ void CLSqlOperate::login(QString strUserName, QString strPasswd, T_UserInfo & tU
     CSqlConnectionPool::getInstance()->closeConnection(db);
 }
 
+void CLSqlOperate::saveDairy(const T_Dairy &dairyModify, T_Dairy &dairySaved, T_HttpStatusMsg &tHttpStatusMsg)
+{
+    QSqlDatabase db = CSqlConnectionPool::getInstance()->getOpenConnection();
+    QSqlQuery query(db);
+    dairySaved = dairyModify;
+    if (dairyModify.isNewDairy())
+    {
+        bool ok = query.prepare("INSERT INTO tDairy(uid, title,wirte_datetime,tag,weather,content) "
+                                "VALUES (?, ?, ?, ?, ?, ?)");
+        query.bindValue(0, dairyModify.uid);
+        query.bindValue(1, dairyModify.strTitle);
+        query.bindValue(2, dairyModify.strDateTime);
+        query.bindValue(3, dairyModify.strTag);
+        query.bindValue(4, dairyModify.strWeather);
+        query.bindValue(5, dairyModify.strContent);
+        ok = query.exec();
+        if (!ok)
+        {
+            qDebug() << query.lastError();
+            tHttpStatusMsg.nStatusCode = EH_Ex_SqlError;
+            tHttpStatusMsg.strMsg = query.lastError().text();
+            CSqlConnectionPool::getInstance()->closeConnection(db);
+            return;
+        }
+
+        // 重新获取今天的日记did
+        //select max(did) from tDairy
+        //select * from tDairy WHERE did = (select max(did) from tDairy)
+        //select top 1 * From tDairy Order by did Desc #sqlite没有top函数
+        //getDairyList(CUser::getInstance()->getUid());
+        query.exec("select max(did) from tDairy");
+        if (query.next())
+        {
+            dairySaved.did = query.value(0).toInt();
+        }
+    }
+    else
+    {
+        QString strSql = QString("update tDairy set title='%1', tag='%2', weather='%3', content='%4' where did='%5'")
+                         .arg(dairyModify.strTitle)
+                         .arg(dairyModify.strTag)
+                         .arg(dairyModify.strWeather)
+                         .arg(dairyModify.strContent)
+                         .arg(dairyModify.did);
+        bool ok = query.exec(strSql);
+
+        if (!ok)
+        {
+            qDebug() << query.lastError();
+            tHttpStatusMsg.nStatusCode = EH_Ex_SqlError;
+            tHttpStatusMsg.strMsg = query.lastError().text();
+            CSqlConnectionPool::getInstance()->closeConnection(db);
+            return;
+        }
+    }
+    CSqlConnectionPool::getInstance()->closeConnection(db);
+}
+
+
+void CLSqlOperate::getDairyList(const T_DairyListRequest &tDairyListRequest
+                                , T_DairyListResp &tDairyListResp
+                                , T_HttpStatusMsg &tHttpStatusMsg)
+{
+    QSqlDatabase db = CSqlConnectionPool::getInstance()->getOpenConnection();
+    QSqlQuery query(db);
+
+    QList<T_Dairy> lstDairy;
+    query.exec("select * from tDairy where uid = '" + QString::number(tDairyListRequest.uid) + "'");
+    while (query.next())
+    {
+        //为避免内存占用只需要did和datetime
+        T_Dairy dairy;
+        dairy.did = query.value("did").toInt();
+        dairy.strTitle = query.value("title").toString();
+        dairy.strDateTime = query.value("wirte_datetime").toString();
+        dairy.strTag = query.value("tag").toString();
+        dairy.strWeather = query.value("weather").toString();
+        dairy.strContent = query.value("content").toString();
+        lstDairy.append(dairy);
+    }
+    tDairyListResp.nTotalItems = lstDairy.size();
+    tDairyListResp.dairyList = lstDairy;
+    CSqlConnectionPool::getInstance()->closeConnection(db);
+
+}
+
+
+
 void CLSqlOperate::saveUserUploadJoke(const T_Joke & tJoke, T_HttpStatusMsg & tHttpStatusMsg)
 {
     QSqlDatabase db = CSqlConnectionPool::getInstance()->getOpenConnection();
@@ -254,6 +342,81 @@ void CLSqlOperate::saveUserUploadJoke(const T_Joke & tJoke, T_HttpStatusMsg & tH
 
     CSqlConnectionPool::getInstance()->closeConnection(db);
 }
+
+
+//QList<T_Dairy> CSqlOperate::getListDairyByLimit(QString strFormatDate, QString strTagName)
+//{
+//    // eg: select * from tDairy where substr(date(datetime),1,7) = '2019-09';
+//    //
+//    QList<T_Dairy> lstDairy;
+//    QSqlQuery query;
+//    QString strSql;
+//    if (!strFormatDate.isEmpty() && strTagName.isEmpty())
+//    {
+//        strSql = QString("select * from tDairy where substr(date(datetime),1,%1) = '%2'")
+//                 .arg(strFormatDate.length())
+//                 .arg(strFormatDate);
+//    }
+//    else if (strFormatDate.isEmpty() && !strTagName.isEmpty())
+//    {
+//        strSql = QString("select * from tDairy where tag = '%1'").arg(strTagName);
+//    }
+//    else if (!strFormatDate.isEmpty() && !strTagName.isEmpty())
+//    {
+//        strSql = QString("select * from tDairy where substr(date(datetime),1,%1) = '%2' and tag = '%3'")
+//                 .arg(strFormatDate.length())
+//                 .arg(strFormatDate)
+//                 .arg(strTagName);
+//    }
+//    else
+//    {
+//        strSql = QString("select * from tDairy");
+//    }
+//    bool ok = query.exec(strSql);
+
+//    if (!ok)
+//    {
+//        qDebug() << query.lastError();
+//        return lstDairy;
+//    }
+//    while (query.next())
+//    {
+//        T_Dairy dairy;
+//        dairy.setDid(query.value("did").toInt());
+//        dairy.setTitle(query.value("title").toString());
+//        dairy.setDateTime(query.value("datetime").toString());
+//        dairy.setTag(query.value("tag").toString());
+//        dairy.setWeather(query.value("weather").toString());
+//        dairy.setContent(query.value("content").toString());
+//        lstDairy.append(dairy);
+//    }
+//    return lstDairy;
+//}
+
+//T_Dairy CSqlOperate::getDairy(int did, int uid, bool & bOk)
+//{
+//    T_Dairy dairy;
+//    QSqlQuery query;
+//    query.exec("select * from tDairy where uid = '"
+//               + QString::number(uid)
+//               + "' and did = '" + QString::number(did) + "'");
+//    if (query.next())
+//    {
+//        bOk = true;
+//        dairy.setDid(query.value("did").toInt());
+//        dairy.setTitle(query.value("title").toString());
+//        dairy.setDateTime(query.value("datetime").toString());
+//        dairy.setTag(query.value("tag").toString());
+//        dairy.setWeather(query.value("weather").toString());
+//        dairy.setContent(query.value("content").toString());
+//    }
+//    else
+//    {
+//        bOk = false;
+//    }
+//    return dairy;
+//}
+
 
 void CLSqlOperate::getJokeList(const T_JokeListRequest & tJokeListRequest
                                , T_JokeListResp & tJokeListResp

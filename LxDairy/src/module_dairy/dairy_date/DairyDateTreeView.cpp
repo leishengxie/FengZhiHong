@@ -13,14 +13,14 @@ CDairyDateTreeView::CDairyDateTreeView(QWidget* parent)
     setItemDelegate(pDairyDateDelegate);
     connect(this, SIGNAL(clicked(QModelIndex)), this, SLOT(on_treeDairy_clicked(QModelIndex)));
 
-    connect(pDairyDateTreeModel, SIGNAL(loadTodayDairyFinished(CDairy)), this, SIGNAL(requreOpenDairy(CDairy)));
+    connect(pDairyDateTreeModel, SIGNAL(loadTodayDairyFinished(T_Dairy)), this, SIGNAL(requreOpenDairy(T_Dairy)));
     connect(pDairyDateTreeModel, SIGNAL(requireExpand(QModelIndex)), this, SLOT(onRequireExpand(QModelIndex)));
 
-    connect(pDairyDateTreeModel, SIGNAL(sortDairyByTagFinished(QString, QList<CDairy>)),
-            this, SIGNAL(sortDairyByTagFinished(QString, QList<CDairy>)));
+    connect(pDairyDateTreeModel, SIGNAL(sortDairyByTagFinished(QString, QList<T_Dairy>)),
+            this, SIGNAL(sortDairyByTagFinished(QString, QList<T_Dairy>)));
 }
 
-void CDairyDateTreeView::loadDairyList(const QList<CDairy> & lstDairy)
+void CDairyDateTreeView::loadDairyList(const QList<T_Dairy> & lstDairy)
 {
     pDairyDateTreeModel->loadDairyList(lstDairy);
 }
@@ -30,12 +30,12 @@ void CDairyDateTreeView::sortDairyByTag(const QString & strTagName)
     pDairyDateTreeModel->sortDairyByTag(strTagName);
 }
 
-void CDairyDateTreeView::onOpenDairyClicked(const CDairy & dairy)
+void CDairyDateTreeView::onOpenDairyClicked(const T_Dairy & dairy)
 {
-    pDairyDateTreeModel->expandDairy(dairy.getDid());
+    pDairyDateTreeModel->expandDairy(dairy.did);
 }
 
-void CDairyDateTreeView::onSaveDairyfinished(const CDairy & dairySaveBefore, const CDairy & dairySaved)
+void CDairyDateTreeView::onSaveDairyfinished(const T_Dairy & dairySaveBefore, const T_Dairy & dairySaved)
 {
     pDairyDateTreeModel->dairyModify(dairySaveBefore, dairySaved);
 }
@@ -44,17 +44,17 @@ void CDairyDateTreeView::on_treeDairy_clicked(const QModelIndex & index)
 {
     qDebug() << "tree click " << "row=" << index.row() << " column=" << index.column();
     T_DairyDateItem* tDairyTagItem = qvariant_cast<T_DairyDateItem*>(index.data());
-    QList<CDairy> lstDairy = pDairyDateTreeModel->dairyList();
-    QList<CDairy> lstDairySortByDate;
+    QList<T_Dairy> lstDairy = pDairyDateTreeModel->dairyList();
+    QList<T_Dairy> lstDairySortByDate;
     switch (tDairyTagItem->eDairyDateNodeType)
     {
         case ED_Year:
             {
                 //ui->stackedWidget->setCurrentIndex(1);
                 //ui->page_dairy_statistics->showStatisticsByDate(tDairyTagItem->strYear, "");
-                foreach (CDairy dairy, lstDairy)
+                foreach (T_Dairy dairy, lstDairy)
                 {
-                    if (dairy.getDateTime().left(4) == tDairyTagItem->strYear)
+                    if (dairy.strDateTime.left(4) == tDairyTagItem->strYear)
                     {
                         lstDairySortByDate.append(dairy);
                     }
@@ -67,9 +67,9 @@ void CDairyDateTreeView::on_treeDairy_clicked(const QModelIndex & index)
 
 //                ui->stackedWidget->setCurrentIndex(1);
 //                ui->page_dairy_statistics->showStatisticsByDate(tDairyTagItem->strYear, tDairyTagItem->strMonth);
-                foreach (CDairy dairy, lstDairy)
+                foreach (T_Dairy dairy, lstDairy)
                 {
-                    if (dairy.getDateTime().left(4) == tDairyTagItem->strYear && dairy.getDateTime().mid(5, 2) == tDairyTagItem->strMonth)
+                    if (dairy.strDateTime.left(4) == tDairyTagItem->strYear && dairy.strDateTime.mid(5, 2) == tDairyTagItem->strMonth)
                     {
                         lstDairySortByDate.append(dairy);
                     }
@@ -84,9 +84,9 @@ void CDairyDateTreeView::on_treeDairy_clicked(const QModelIndex & index)
 //                CDairy dairy;
 //                dairy.setDid(tDairyTagItem->did);
 //                ui->page_dairy->slot_displayDairy(dairy);
-                foreach (CDairy dairy, lstDairy)
+                foreach (T_Dairy dairy, lstDairy)
                 {
-                    if (dairy.getDid() == tDairyTagItem->did)
+                    if (dairy.did == tDairyTagItem->did)
                     {
                         emit requreOpenDairy(dairy);
                         break;

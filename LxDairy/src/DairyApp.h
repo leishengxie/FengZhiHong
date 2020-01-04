@@ -18,16 +18,9 @@ public:
 
     bool notify(QObject *obj, QEvent *e);
 
-    enum E_LoginType
-    {
-        EL_Local,
-        EL_Net
-    };
 
-    static setUserInfoLocal(const T_UserInfo & tUserInfo);
-    static setUserInfoNet(const T_UserInfo & tUserInfo);
-    static T_UserInfo userInfoLocal();
-    static T_UserInfo userInfoNet();
+
+    static setUserInfo(const T_UserInfo & tUserInfo);
     static T_UserInfo userInfo();
 
 signals:
@@ -38,9 +31,7 @@ private:
     void init();
 
 private:
-    static E_LoginType s_eLoginType;
-    static T_UserInfo s_tUserInfoLocal;
-    static T_UserInfo s_tUserInfoNet;
+    static T_UserInfo s_tUserInfo;
 
 };
 

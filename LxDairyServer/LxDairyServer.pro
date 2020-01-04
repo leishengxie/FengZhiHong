@@ -9,7 +9,8 @@ TARGET = LxDairyServer
 
 DESTDIR = $$PWD/bin
 
-# if not exist exe, 先注释，生成exe再开�win32:CONFIG(release, debug|release): {
+# if not exist exe
+win32:CONFIG(release, debug|release): {
 #QMAKE_LFLAGS += /MANIFESTUAC:\"level=\'requireAdministrator\' uiAccess=\'false\'\" #以管理员运行
 #QMAKE_LFLAGS += /SUBSYSTEM:WINDOWS,\"5.01\" #VS2013 在XP运行
 }

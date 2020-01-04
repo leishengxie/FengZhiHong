@@ -24,12 +24,12 @@ public:
     void saveAllDairy();
 
 public slots:
-    void onOpenDairy(const CDairy & dairy);
+    void onOpenDairy(const T_Dairy & dairy);
     void onMusicFinished();
 
 signals:
     // 中转信号S1
-    void saveDairyfinishedS1(const CDairy & dairySaveBefore, const CDairy & dairySaved);
+    void saveDairyfinishedS1(const T_Dairy & dairySaveBefore, const T_Dairy & dairySaved);
     // 请求tts处理
     void requireTTSspeak(const QString & txt);
     // 请求播放音乐
@@ -51,7 +51,7 @@ private:
     Ui::CDairyEditMainWidget* ui;
 
     // 当前活动的日记
-    CDairy m_dairyActive;
+    T_Dairy m_dairyActive;
 };
 
 #endif // DAIRYEDITMAINWIDGET_H

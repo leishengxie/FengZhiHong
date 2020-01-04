@@ -30,14 +30,14 @@ QVariant CDairyStatisticsModel::data(const QModelIndex &index, int role) const
     {
         return QVariant();
     }
-    CDairy dairy = m_lstDairy.at(index.row());
+    T_Dairy dairy = m_lstDairy.at(index.row());
     QVariant variant;
     variant.setValue(dairy);
     return variant;
 
 }
 
-void CDairyStatisticsModel::showDairyStatistics(const QList<CDairy> & lstDairy)
+void CDairyStatisticsModel::showDairyStatistics(const QList<T_Dairy> & lstDairy)
 {
     beginResetModel();
     m_lstDairy = lstDairy;

@@ -13,19 +13,19 @@ public:
     int rowCount(const QModelIndex& parent = QModelIndex()) const;
     QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
 
-    QList<CDairy> dairList()
+    QList<T_Dairy> dairList()
     {
         return m_lstDairy;
     }
 
-    void showDairyStatistics(const QList<CDairy> &lstDairy);
+    void showDairyStatistics(const QList<T_Dairy> &lstDairy);
 
 private:
     void loadDairyTag();
 
 private:
     // 标签数据
-    QList<CDairy> m_lstDairy;
+    QList<T_Dairy> m_lstDairy;
 };
 
 

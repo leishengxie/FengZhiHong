@@ -18,12 +18,12 @@ public:
     ~CDairyStatisticsWidget();
 
 public slots:
-    void showStatisticsByTag(const QString & strTag, const QList<CDairy> &lstDairy);
-    void showStatisticsByDate(const QString & strYear, const QString & strMonth, const QList<CDairy> &lstDairy);
+    void showStatisticsByTag(const QString & strTag, const QList<T_Dairy> &lstDairy);
+    void showStatisticsByDate(const QString & strYear, const QString & strMonth, const QList<T_Dairy> &lstDairy);
 
 
 signals:
-   void openDairyClicked(const CDairy & dairy);
+   void openDairyClicked(const T_Dairy & dairy);
 
 private slots:
     void slotSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
