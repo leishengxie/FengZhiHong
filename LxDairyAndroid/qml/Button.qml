@@ -8,26 +8,25 @@ Rectangle {
     width: buttonLabel.width + 20;
     height: buttonLabel.height + 5
     border {
-
         width: 1;
-        color: Qt.darker(activePalette.button)
+        color: Qt.darker(sysPalette.button)
     }
+    // 反锯齿
     antialiasing: true
     radius: 8
-    // color the button with a gradient
     gradient: Gradient {
         GradientStop {
             position: 0.0
             color: {
                 if (mouseArea.pressed)
-                    return activePalette.dark
+                    return sysPalette.dark
                 else
-                    return activePalette.light
+                    return sysPalette.light
             }
         }
         GradientStop {
             position: 1.0;
-            color: activePalette.button
+            color: sysPalette.button
         }
     }
     MouseArea {
@@ -38,7 +37,7 @@ Rectangle {
     Text {
         id: buttonLabel
         anchors.centerIn: container
-        color: activePalette.buttonText
+        color: sysPalette.buttonText
         text: container.text
     }
 }

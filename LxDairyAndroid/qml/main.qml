@@ -9,26 +9,30 @@ Window {
     height: 800
     title: qsTr("LxDairy")
 
-//    ListModel {
-//        id: pageModel
-//        ListElement {
-//            page: "content/ButtonPage.qml"
-//        }
-//        ListElement {
-//            page: "content/SliderPage.qml"
-//        }
-//    }
+    //    ListModel {
+    //        id: pageModel
+    //        ListElement {
+    //            page: "content/ButtonPage.qml"
+    //        }
+    //        ListElement {
+    //            page: "content/SliderPage.qml"
+    //        }
+    //    }
 
-//    property var componentMap: {
-//        "CircularGauge": circularGauge,
-//                "DelayButton": delayButton,
-//                "Dial": dial,
-//                "Gauge": gauge,
-//                "PieMenu": pieMenu,
-//                "StatusIndicator": statusIndicator,
-//                "ToggleButton": toggleButton,
-//                "Tumbler": tumbler
-//    }
+    //    property var componentMap: {
+    //        "CircularGauge": circularGauge,
+    //                "DelayButton": delayButton,
+    //                "Dial": dial,
+    //                "Gauge": gauge,
+    //                "PieMenu": pieMenu,
+    //                "StatusIndicator": statusIndicator,
+    //                "ToggleButton": toggleButton,
+    //                "Tumbler": tumbler
+    //    }
+
+
+    /*
+      // 使用StackView切换场景
     StackView {
         id: stackView
         anchors.fill: parent
@@ -44,6 +48,17 @@ Window {
                              event.accepted = true;
                          }
 
+
+    }
+    */
+
+//    DairyAppLogin {
+//        anchors.fill: parent
+//    }
+
+    Component.onCompleted: {
+        // 使用Component动态加载场景
+        var componentLogin = Qt.createComponent("DairyAppLogin.qml").createObject(root);
 
     }
 
