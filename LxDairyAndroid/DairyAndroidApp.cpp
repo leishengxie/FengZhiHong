@@ -13,12 +13,13 @@ T_UserInfo CDairyAndroidApp::s_tUserInfo;
 CDairyAndroidApp::CDairyAndroidApp(int &argc, char **argv)
     : QApplication(argc, argv)
 {
+    init();
 }
 #else
 CDairyAndroidApp::CDairyAndroidApp(int &argc, char **argv, int nQtVersion)
     : QApplication(argc, argv, nQtVersion)
 {
-
+    init();
 }
 #endif
 
@@ -49,5 +50,8 @@ T_UserInfo CDairyAndroidApp::userInfo()
 
 void CDairyAndroidApp::init()
 {
-
+    // qml使用settings所需
+    setApplicationName("LxDairy");
+    setOrganizationName("Lx");
+    setAttribute(Qt::AA_EnableHighDpiScaling);
 }

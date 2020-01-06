@@ -8,7 +8,7 @@ FocusScope {
     property int font_size: 18
     signal accepted
     width: 200
-    height: 20
+    height: 30
 
     Rectangle {
         anchors.fill: parent

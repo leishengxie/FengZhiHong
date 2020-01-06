@@ -2,12 +2,12 @@
 #define CMODELMANAGER_H
 
 #include <QObject>
-
+#include "Singleton.h"
 
 class CDairyListModel;
 class QQmlContext;
 
-class CModelManager: public QObject
+class CModelManager: public QObject, public CSingleton<CModelManager>
 {
 
 Q_OBJECT

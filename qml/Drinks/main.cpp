@@ -9,6 +9,7 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
+    // 20200107测试用 CModelMander应该是单例
 	qmlRegisterType<CModelMander>("leisx.qt.ModelMander", 1, 0,"ModelMander");
     QQmlApplicationEngine engine;
 	CModelMander::g_pQmlContext = engine.rootContext();

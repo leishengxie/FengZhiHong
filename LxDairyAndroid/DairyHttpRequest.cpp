@@ -73,8 +73,11 @@ void CDairyHttpRequest::login(QString strUserName, QString strPasswd, QJSValue j
     }
 
     CDairyHttpClient* pDairyHttpClient = new CDairyHttpClient(this, true);
+
+    // 这里使用了成员变量保存局部变量的值
+    m_jsValue = jsCallback;
     // 此处为什么不能识别父类的finished???
-    connect(pDairyHttpClient, &CDairyHttpClient::finished_1, [&](QByteArray byteArray)
+    connect(pDairyHttpClient, &CDairyHttpClient::finished_1, [=](QByteArray byteArray)
     {
         /*
         QSettings conf("conf.ini", QSettings::IniFormat);
@@ -93,7 +96,7 @@ void CDairyHttpRequest::login(QString strUserName, QString strPasswd, QJSValue j
 
         // 放在闭包里出现问题
         bool bSucceed = true;
-        QJSEngine *jsEngine = jsCallback.engine();
+        QJSEngine *jsEngine = m_jsValue.engine();
         if (!jsEngine)
         {
             return;
@@ -101,7 +104,7 @@ void CDairyHttpRequest::login(QString strUserName, QString strPasswd, QJSValue j
         QJSValue val = jsEngine->toScriptValue(bSucceed);
         QJSValueList paramList;
         paramList.append(val);
-        qDebug() << jsCallback.call(paramList).toBool();  //js fucntion的返回值
+        qDebug() << m_jsValue.call(paramList).toBool();  //js fucntion的返回值
 
     });
 
@@ -113,4 +116,27 @@ void CDairyHttpRequest::login(QString strUserName, QString strPasswd, QJSValue j
     out.setVersion(QDataStream::Qt_5_6);
     out << strUserName << strPasswdMd5;
     pDairyHttpClient->post(CNetAppointments::urlLogin(), byteArray.data(), byteArray.length());
+}
+
+void CDairyHttpRequest::dairyList()
+{
+    T_DairyListRequest tDairyListRequest;
+    tDairyListRequest.uid = CDairyAndroidApp::userInfo().uid;
+    CDairyHttpClient* pDairyHttpClient = new CDairyHttpClient(this, true);
+    connect(pDairyHttpClient, &CDairyHttpClient::finished_1, [ = ](QByteArray byteArray)
+    {
+        T_DairyListResp tDairyListResp = CNetAppointments::deserialization<T_DairyListResp>(byteArray);
+//        if (bAppend)
+//        {
+//            //m_pJokeModel->appendListJoke(tDairyListResp.dairyList);
+//        }
+//        else
+//        {
+            ui->listViewTag->loadDiaryList(tDairyListResp.dairyList);
+            ui->treeDairy->loadDairyList(tDairyListResp.dairyList);
+            ui->page_dairy_statistics->showStatisticsByTag("全部日记", tDairyListResp.dairyList);
+
+//        }
+    });
+    pDairyHttpClient->post(CNetAppointments::urlDairyList(), CNetAppointments::serializa(tDairyListRequest));
 }

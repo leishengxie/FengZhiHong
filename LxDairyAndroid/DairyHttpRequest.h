@@ -19,6 +19,10 @@ public slots:
 //    void post(const QUrl &urlRequest, const QByteArray &data, int nTimeout = 6000);
 
     void login(QString strUserName, QString strPasswd, QJSValue jsCallback);
+    void dairyList();
+
+private:
+    QJSValue m_jsValue;
 };
 
 #endif // CQMLHTTPREQUEST_H
