@@ -17,6 +17,9 @@ CModelManager::CModelManager(QObject* pParent)
     m_pDairyListModel = new CDairyListModel(this);
 
     g_pQmlContext->setContextProperty("dairyListModel", m_pDairyListModel);
+
+    // 单例
+    //g_pQmlContext->setContextProperty("dairyListModel", m_pDairyListModel);
 }
 
 CModelManager::~CModelManager()

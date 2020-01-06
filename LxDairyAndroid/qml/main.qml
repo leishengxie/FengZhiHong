@@ -8,58 +8,33 @@ Window {
     width: 480
     height: 800
     title: qsTr("LxDairy")
-
-    //    ListModel {
-    //        id: pageModel
-    //        ListElement {
-    //            page: "content/ButtonPage.qml"
-    //        }
-    //        ListElement {
-    //            page: "content/SliderPage.qml"
-    //        }
-    //    }
-
-    //    property var componentMap: {
-    //        "CircularGauge": circularGauge,
-    //                "DelayButton": delayButton,
-    //                "Dial": dial,
-    //                "Gauge": gauge,
-    //                "PieMenu": pieMenu,
-    //                "StatusIndicator": statusIndicator,
-    //                "ToggleButton": toggleButton,
-    //                "Tumbler": tumbler
-    //    }
+    //property Component componentCur: null;
+    property var objLogin: null;
+    property var objMain: null;
 
 
-    /*
-      // 使用StackView切换场景
-    StackView {
-        id: stackView
-        anchors.fill: parent
-
-        DairyList {
-
-            anchors.fill: parent
-        }
-
-        focus: true
-        Keys.onReleased: if (event.key === Qt.Key_Back && stackView.depth > 1) {
-                             stackView.pop();
-                             event.accepted = true;
-                         }
-
-
+    function loginSucess() {
+        root.objLogin.destroy();
+        root.objMain = Qt.createComponent("DairyAppMain.qml").createObject(root);
     }
-    */
 
-//    DairyAppLogin {
-//        anchors.fill: parent
-//    }
-
+    // 搜 组件与对象动态创建详解----（Qt Quick 教程六）
     Component.onCompleted: {
         // 使用Component动态加载场景
-        var componentLogin = Qt.createComponent("DairyAppLogin.qml").createObject(root);
+        root.objLogin = Qt.createComponent("DairyAppLogin.qml").createObject(root);
+        root.objLogin.loginSucess.connect(root.loginSucess);
 
     }
+
+    Component.onDestruction: {
+        if (null != root.objLogin) {
+            root.objLogin.destroy();
+        }
+        if (null != root.objMain) {
+            root.objMain.destroy();
+        }
+    }
+
+    // -qmljsdebugger=port:26666
 
 }

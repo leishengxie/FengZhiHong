@@ -7,9 +7,10 @@
         <file>qml/button/HelloButton.qml</file>
         <file>qml/DairyList.qml</file>
         <file>qml/DairyListForm.ui.qml</file>
-        <file>qml/Button.qml</file>
         <file>qml/LineInput.qml</file>
         <file>qml/DairyAppLogin.qml</file>
         <file>qml/DairyAppLoginForm.ui.qml</file>
+        <file>qml/GradientButton.qml</file>
+        <file>qml/DairyAppMain.qml</file>
     </qresource>
 </RCC>

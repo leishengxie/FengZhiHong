@@ -5,6 +5,11 @@ Rectangle {
     id: login_gui
     width: 240
     height: 400
+    property alias btn_login: btn_login
+    property alias btn_quit: btn_quit
+    property alias strUserName: lineInputUser.text
+    property alias strPasswd: lineInputPasswd.text
+
     ColumnLayout {
         id: column1
         anchors.fill: parent
@@ -62,11 +67,11 @@ Rectangle {
         Row {
             spacing: 10
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-            Button {
+            GradientButton {
                 id: btn_login
                 text: "登陆"
             }
-            Button {
+            GradientButton {
                 id: btn_quit
                 text: "退出"
             }
