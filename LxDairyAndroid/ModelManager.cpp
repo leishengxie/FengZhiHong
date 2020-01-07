@@ -8,23 +8,32 @@
 
 #include "DairyListModel.h"
 
-QQmlContext* CModelManager::g_pQmlContext = NULL;
-
 
 CModelManager::CModelManager(QObject* pParent)
     : QObject(pParent)
+    , m_pQmlContext(NULL)
+    , m_pDairyListModel(new CDairyListModel(this))
 {
-    m_pDairyListModel = new CDairyListModel(this);
 
-    g_pQmlContext->setContextProperty("dairyListModel", m_pDairyListModel);
-
-    // 单例
-    //g_pQmlContext->setContextProperty("dairyListModel", m_pDairyListModel);
 }
 
 CModelManager::~CModelManager()
 {
-    g_pQmlContext->deleteLater();
+
+}
+
+void CModelManager::loadContextProperty()
+{
+    if (NULL == m_pQmlContext)
+    {
+        return;
+    }
+    // 对象设置为 QML 的上下文属性
+    m_pQmlContext->setContextProperty("ModelManagerInstance", CModelManager::getInstance());
+
+    m_pQmlContext->setContextProperty("dairyListModel", m_pDairyListModel);
+
+
 }
 
 void CModelManager::onMyselfCompleted()

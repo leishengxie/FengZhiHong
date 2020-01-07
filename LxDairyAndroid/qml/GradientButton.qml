@@ -7,7 +7,6 @@ Rectangle {
     signal clicked
     width: buttonLabel.width + 20;
     height: buttonLabel.height + 5;
-
     border {
         width: 1;
         color: Qt.darker(sysPalette.button)
@@ -30,11 +29,17 @@ Rectangle {
             color: sysPalette.button
         }
     }
+
+    SystemPalette {
+        id: sysPalette
+    }
+
     MouseArea {
         id: mouseArea
         anchors.fill: parent
         onClicked: container.clicked();
     }
+
     Text {
         id: buttonLabel
         anchors.centerIn: container

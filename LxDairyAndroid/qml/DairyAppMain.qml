@@ -6,12 +6,12 @@ Item {
     id : itemMain
     anchors.fill: parent
 
-    ListModel {
-        id: pageModel
-        ListElement {
-            page: "DairyEdit.qml"
-        }
-    }
+    //    ListModel {
+    //        id: pageModel
+    //        ListElement {
+    //            page: "DairyEdit.qml"
+    //        }
+    //    }
 
     //    property var componentMap: {
     //        "CircularGauge": circularGauge,
@@ -30,17 +30,22 @@ Item {
         id: stackView
         anchors.fill: parent
 
-        DairyList {
+        initialItem:DairyList {
             anchors.fill: parent
+            onBtnAddClicked: {
+                stackView.push(Qt.resolvedUrl("DairyEdit.qml"))
+            }
         }
 
         //initialItem : var
 
         focus: true
-        Keys.onReleased: if (event.key === Qt.Key_Back && stackView.depth > 1) {
-                             stackView.pop();
-                             event.accepted = true;
-                         }
+        Keys.onReleased: {
+            if (event.key === Qt.Key_Back && stackView.depth > 1) {
+                stackView.pop();
+                event.accepted = true;
+            }
+        }
 
 
     }

@@ -44,5 +44,12 @@ QHash<int, QByteArray> CDairyListModel::roleNames() const
     return roles;
 }
 
+void CDairyListModel::loadDairyList(const QList<T_Dairy> &lstDairy)
+{
+    beginResetModel();
+    m_lstDairy = lstDairy;
+    endResetModel();
+}
+
 
 

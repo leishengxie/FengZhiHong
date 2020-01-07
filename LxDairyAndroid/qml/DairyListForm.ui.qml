@@ -7,6 +7,11 @@ Rectangle {
     id: rectDairyList
     width: 240
     height: 400
+    property alias mouseAreaAdd: mouseAreaAdd
+
+    // 此句会出现错误
+    //property alias mouseAreaListItem: mouseAreaListItem
+    property alias listViewDairyList: listViewDairyList
 
     ColumnLayout {
         id: columnLayout1
@@ -29,58 +34,43 @@ Rectangle {
             }
         }
 
+
         ListView {
-            id: listView1
+            id: listViewDairyList
             Layout.fillHeight: true
             Layout.fillWidth: true
-//            delegate: Rectangle {
-//                width: stackView.width
-//                height: root.height * 0.125
-//                Text {
-//                    id: textTitle
-//                    txt
-//                }
             delegate: Item {
                 x: 5
                 width: 80
                 height: 40
-                Row {
-                    id: row1
-                    spacing: 10
-                    Rectangle {
+                ColumnLayout {
+                    Text {
+                        id: textTitle
+                        text: title
+                        font.bold: true
                         width: 40
-                        height: 40
-                        color: colorCode
+                        height: parent.width * 0.75
+                        color: "red"
                     }
 
                     Text {
-                        text: name
-                        font.bold: true
-                        anchors.verticalCenter: parent.verticalCenter
+                        id: textDataTime
+                        text: date
+                        height: parent.width * 0.25
+                    }
+
+                    MouseArea {
+                        id: mouseAreaListItem
+                        anchors.fill: parent
                     }
                 }
             }
-            model: ListModel {
-                ListElement {
-                    name: "Grey"
-                    colorCode: "grey"
-                }
+            model: dairyListModel
+//            highlight: Rectangle {
+//                color:"lightsteelblue";
+//                radius:5
+//            }
 
-                ListElement {
-                    name: "Red"
-                    colorCode: "red"
-                }
-
-                ListElement {
-                    name: "Blue"
-                    colorCode: "blue"
-                }
-
-                ListElement {
-                    name: "Green"
-                    colorCode: "green"
-                }
-            }
         }
 
         Rectangle {
@@ -108,9 +98,8 @@ Rectangle {
                 }
 
                 MouseArea {
-                    id: mouseArea1
+                    id: mouseAreaAdd
                     anchors.fill: parent
-                    //onClicked:
                 }
             }
         }

@@ -20,7 +20,7 @@ public:
     QHash<int, QByteArray> roleNames() const;
 
 public:
-
+    void loadDairyList(const QList<T_Dairy> & lstDairy);
 
 
 private:

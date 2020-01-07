@@ -3,6 +3,8 @@
 #include "DairyHttpClient.h"
 #include "NetAppointments.h"
 #include "DairyAndroidApp.h"
+#include "ModelManager.h"
+#include "DairyListModel.h"
 
 #include <QMessageBox>
 
@@ -132,11 +134,35 @@ void CDairyHttpRequest::dairyList()
 //        }
 //        else
 //        {
-            ui->listViewTag->loadDiaryList(tDairyListResp.dairyList);
-            ui->treeDairy->loadDairyList(tDairyListResp.dairyList);
-            ui->page_dairy_statistics->showStatisticsByTag("全部日记", tDairyListResp.dairyList);
 
 //        }
+        CModelManager::getInstance()->dairyListModel()->loadDairyList(tDairyListResp.dairyList);
     });
     pDairyHttpClient->post(CNetAppointments::urlDairyList(), CNetAppointments::serializa(tDairyListRequest));
+}
+
+void CDairyHttpRequest::uploadDairy(QString strTitle, QString strContent)
+{
+
+    T_Dairy dairy;
+    //T_Dairy dairySaved;
+    //dairy.did = did;
+    dairy.uid = CDairyAndroidApp::userInfo().uid;
+    dairy.strTitle = strTitle;
+    dairy.strContent = strContent; //toPlainText 去除textEdit当中的纯文本
+
+
+    CDairyHttpClient* pDairyHttpClient = new CDairyHttpClient(this, true);
+    connect(pDairyHttpClient, &CDairyHttpClient::finished_1, [ = ](QByteArray byteArray)
+    {
+        T_Dairy dairySaved = CNetAppointments::deserialization<T_Dairy>(byteArray);
+        if (dairy.isNewDairy())
+        {
+            //emit saveDairyfinished(dairy, dairySaved);
+            //did = dairySaved.did;
+            //setWindowTitle(dairySaved.strTitle);
+            //ui->dairyEdit->document()->setModified(false);
+        }
+    });
+    pDairyHttpClient->post(CNetAppointments::urlDairyUpload(), CNetAppointments::serializa(dairy));
 }

@@ -2,6 +2,7 @@ import QtQuick 2.0
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
 import Qt.labs.settings 1.0
+import QtQuick.Particles 2.0
 
 Rectangle {
     id: login_gui
@@ -24,12 +25,42 @@ Rectangle {
         property string strPasswd: ""
     }
 
+    Item {
+
+        anchors.fill: parent
+        ParticleSystem {
+            id: particleSystem
+        }
+
+        Emitter {
+            id: emitter
+            anchors.fill: parent
+            system: particleSystem
+            emitRate: 10
+            lifeSpan: 2000
+            lifeSpanVariation: 500
+            size: 16
+            endSize: 32
+        }
+
+        ImageParticle {
+                system: particleSystem
+                source: "qrc:/img/leaf.png"
+                //color: "#FFD700"
+                //colorVariation: 0.6
+                rotation: 15
+                rotationVariation: 5
+                rotationVelocity: 45
+                rotationVelocityVariation: 15
+                entryEffect: ImageParticle.Scale
+            }
+    }
+
+    // :/img/leaf.png
     ColumnLayout {
         id: column1
         anchors.fill: parent
-        SystemPalette {
-            id: sysPalette
-        }
+
         //背景图片
         //    Image    {
         //        id: background
@@ -70,6 +101,7 @@ Rectangle {
                 font_size:height * 0.7
                 placeholderText: "请输入密码"
                 text: settings.strPasswd
+                echoMode: TextInput.Password
             }
 
             //        TextInput {

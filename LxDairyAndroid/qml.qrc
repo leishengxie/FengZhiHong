@@ -12,5 +12,7 @@
         <file>qml/DairyAppLoginForm.ui.qml</file>
         <file>qml/GradientButton.qml</file>
         <file>qml/DairyAppMain.qml</file>
+        <file>qml/particles/SimpleItemParticle.qml</file>
+        <file>img/leaf.png</file>
     </qresource>
 </RCC>

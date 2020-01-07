@@ -5,15 +5,15 @@ FocusScope {
     id: focusScope
     property alias text: textInput.text
     property alias placeholderText: textplaceholder.text
-    property int font_size: 18
+    property int font_size: 12
+    property alias echoMode: textInput.echoMode
     signal accepted
     width: 200
     height: 30
 
     Rectangle {
         anchors.fill: parent
-        border.color: "#707070"
-        color: "#c1c1c1"
+        border.color: "green"
         radius: 4
 
         TextInput {
@@ -21,8 +21,8 @@ FocusScope {
             focus: true
             anchors.fill: parent
             verticalAlignment: Text.AlignVCenter
-            font.pixelSize:00
             color: "black"
+            font.pixelSize: font_size
             onAccepted: focusScope.accepted()
         }
 

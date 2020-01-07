@@ -18,8 +18,9 @@ public slots:
 //    void get(const QUrl& urlRequest, int nTimeout = 6000);
 //    void post(const QUrl &urlRequest, const QByteArray &data, int nTimeout = 6000);
 
-    void login(QString strUserName, QString strPasswd, QJSValue jsCallback);
+    /*Q_INVOKABLE */void login(QString strUserName, QString strPasswd, QJSValue jsCallback);
     void dairyList();
+    void uploadDairy(QString strTitle, QString strContent);
 
 private:
     QJSValue m_jsValue;

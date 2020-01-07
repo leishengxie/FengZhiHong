@@ -5,6 +5,9 @@ Rectangle {
     id: rectDairyEdit
     width: 240
     height: 400
+    property alias mouseAreaUpload: mouseAreaUpload
+    property alias strTitle: lineInputTitle.text
+    property alias strContent: textEditContent.text
 
     ColumnLayout {
         id: columnLayout1
@@ -18,17 +21,16 @@ Rectangle {
             color: "#ffffff"
             Layout.fillWidth: true
 
-            TextInput {
-                id: textInput1
-                width: 80
-                height: 20
-                text: qsTr("Text Input")
-                font.pixelSize: 12
+            LineInput {
+                id: lineInputTitle
+                anchors.verticalCenter: parent.verticalCenter
+                //font.pixelSize: 12
+                placeholderText: "请输入标题"
             }
         }
 
         TextEdit {
-            id: textEdit1
+            id: textEditContent
             width: 80
             height: 20
             text: qsTr("Text Edit")
@@ -62,9 +64,8 @@ Rectangle {
                 }
 
                 MouseArea {
-                    id: mouseArea1
+                    id: mouseAreaUpload
                     anchors.fill: parent
-                    //onClicked:
                 }
             }
         }

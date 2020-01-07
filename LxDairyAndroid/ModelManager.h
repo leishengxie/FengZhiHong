@@ -16,7 +16,17 @@ public:
     CModelManager(QObject* pParent = 0);
     ~CModelManager();
 public:
-    static QQmlContext* g_pQmlContext;
+    void setQmlContext(QQmlContext* pQmlContext)
+    {
+        m_pQmlContext = pQmlContext;
+    }
+
+    CDairyListModel* dairyListModel()
+    {
+        return m_pDairyListModel;
+    }
+
+    void loadContextProperty();
 
 public slots:
     void onMyselfCompleted();
@@ -25,6 +35,7 @@ public slots:
 private:
      QObject* m_pObjParent;
      CDairyListModel* m_pDairyListModel;
+     QQmlContext* m_pQmlContext;
 };
 
 #endif // CMODELMANAGER_H
