@@ -39,37 +39,15 @@ Rectangle {
             id: listViewDairyList
             Layout.fillHeight: true
             Layout.fillWidth: true
-            delegate: Item {
-                x: 5
-                width: 80
-                height: 40
-                ColumnLayout {
-                    Text {
-                        id: textTitle
-                        text: title
-                        font.bold: true
-                        width: 40
-                        height: parent.width * 0.75
-                        color: "red"
-                    }
 
-                    Text {
-                        id: textDataTime
-                        text: date
-                        height: parent.width * 0.25
-                    }
-
-                    MouseArea {
-                        id: mouseAreaListItem
-                        anchors.fill: parent
-                    }
-                }
-            }
             model: dairyListModel
-//            highlight: Rectangle {
-//                color:"lightsteelblue";
-//                radius:5
-//            }
+            highlight: Rectangle {
+                color:"lightsteelblue";
+                radius:5
+            }
+            highlightFollowsCurrentItem: true;
+            focus: true;
+            spacing: 5
 
         }
 

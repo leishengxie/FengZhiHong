@@ -11,6 +11,7 @@ DairyEditForm {
 
     mouseAreaUpload.onClicked: {
         //btnUploadClicked();
+        dairyHttpRequest.uploadDairy(strTitle, strContent);
     }
 
 }

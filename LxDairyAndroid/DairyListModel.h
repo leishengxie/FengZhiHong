@@ -10,8 +10,10 @@ class CDairyListModel : public QAbstractListModel
 
 public:
     enum E_DairyRole {
+        ED_Did,
         ED_title,
         ED_Date,
+        ED_Content
     };
 
     CDairyListModel(QObject* parent = 0);

@@ -30,7 +30,7 @@ Item {
         id: stackView
         anchors.fill: parent
 
-        initialItem:DairyList {
+        initialItem: DairyList {
             anchors.fill: parent
             onBtnAddClicked: {
                 stackView.push(Qt.resolvedUrl("DairyEdit.qml"))

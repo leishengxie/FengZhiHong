@@ -19,7 +19,7 @@ DairyAppLoginForm {
             if (bSucceed) {
                 console.log(strUserName);
                 settings.bRememberUserName = checkBoxUserName.checked;
-                settings.bRememberUserName = checkBoxPasswd.checked;
+                settings.bRememberPasswd = checkBoxPasswd.checked;
                 if (checkBoxUserName.checked)
                 {
                     settings.strUserName = strUserName;
