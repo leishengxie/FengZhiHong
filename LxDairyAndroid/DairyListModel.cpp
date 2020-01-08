@@ -3,6 +3,7 @@
 
 CDairyListModel::CDairyListModel(QObject* parent)
     : QAbstractListModel(parent)
+    , m_nCurIndex(-1)
 {
 
 
@@ -51,6 +52,11 @@ QHash<int, QByteArray> CDairyListModel::roleNames() const
     roles[ED_Date]  = "date";
     roles[ED_Content]  = "content";
     return roles;
+}
+
+QVariant CDairyListModel::dataCurRow() const
+{
+    return data(index(m_nCurIndex));
 }
 
 void CDairyListModel::loadDairyList(const QList<T_Dairy> &lstDairy)

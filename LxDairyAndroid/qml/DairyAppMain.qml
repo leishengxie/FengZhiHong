@@ -2,6 +2,10 @@ import QtQuick 2.4
 import QtQuick.Window 2.2
 import QtQuick.Controls 1.4
 
+
+// Item继承自c++ 的QQuickItem, 源文件所在路径为:
+// E:\software_work\qt\qt5\5.4.0 everyWhere\qt-everywhere-opensource-src-5.4.0\qtdeclarative\src\quick\items
+
 Item {
     id : itemMain
     anchors.fill: parent

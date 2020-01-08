@@ -20,4 +20,8 @@ DairyEditForm {
         strContent = content;
     }
 
+    Component.onCompleted: {
+        //dairyListModel.data()
+    }
+
 }

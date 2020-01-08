@@ -61,6 +61,7 @@ DairyListForm {
                 id: textDataTime
                 text: date
                 height: parent.width * 0.25
+                //color: ListView.isCurrentItem ? "#157efb" : "#53d769"
             }
 
             MouseArea {
@@ -68,10 +69,13 @@ DairyListForm {
                 anchors.fill: parent
                 onClicked: {
                     delegateDiary.ListView.view.currentIndex = index;
-                    dairyEdit(title, content);
-                    //listViewDairyList.
+//                    dairyEdit(title, content);
+//                    //listViewDairyList.
+//                    dairyListModel.curIndex = index;
+//                    //modelData
                 }
             }
+
         }
     }
 }
