@@ -44,16 +44,16 @@ Rectangle {
         }
 
         ImageParticle {
-                system: particleSystem
-                source: "qrc:/img/leaf.png"
-                //color: "#FFD700"
-                //colorVariation: 0.6
-                rotation: 15
-                rotationVariation: 5
-                rotationVelocity: 45
-                rotationVelocityVariation: 15
-                entryEffect: ImageParticle.Scale
-            }
+            system: particleSystem
+            source: "qrc:/img/leaf.png"
+            //color: "#FFD700"
+            //colorVariation: 0.6
+            rotation: 15
+            rotationVariation: 5
+            rotationVelocity: 45
+            rotationVelocityVariation: 15
+            entryEffect: ImageParticle.Scale
+        }
     }
 
     // :/img/leaf.png

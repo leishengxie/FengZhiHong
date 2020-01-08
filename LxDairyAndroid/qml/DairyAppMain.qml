@@ -24,8 +24,18 @@ Item {
     //                "Tumbler": tumbler
     //    }
 
+    //property Component componentDairyEdit: Qt.createComponent("DairyEdit.qml");
+    property Component componentDairyEdit: DairyEdit {
+
+
+    }
 
     // 使用StackView切换场景
+    //
+//    SwipeView {
+
+//    }
+
     StackView {
         id: stackView
         anchors.fill: parent
@@ -33,9 +43,22 @@ Item {
         initialItem: DairyList {
             anchors.fill: parent
             onBtnAddClicked: {
-                stackView.push(Qt.resolvedUrl("DairyEdit.qml"))
+                //stackView.push(Qt.resolvedUrl("DairyEdit.qml"))
+                stackView.push({item: componentDairyEdit});
+                //componentDairyEdit.strTitle
+            }
+            onDairyEdit: {
+//                componentDairyEdit.strTitle = strTitle;
+//                componentDairyEdit.strContent = strContent;
+                stackView.push({item: componentDairyEdit});
+//                componentDairyEdit.initData(strTitle, strContent);
             }
         }
+
+
+        // modify by 20200108
+        // -- example
+        // end modify
 
         //initialItem : var
 

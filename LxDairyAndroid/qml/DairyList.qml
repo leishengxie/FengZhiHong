@@ -5,7 +5,7 @@ import QtQuick.Layouts 1.3
 DairyListForm {
     anchors.fill: parent
     signal btnAddClicked();
-    signal dairyEdit();
+    signal dairyEdit(string strTitle, string strContent);
 
     DairyHttpRequest {
         id: dairyHttpRequest
@@ -68,6 +68,8 @@ DairyListForm {
                 anchors.fill: parent
                 onClicked: {
                     delegateDiary.ListView.view.currentIndex = index;
+                    dairyEdit(title, content);
+                    //listViewDairyList.
                 }
             }
         }
