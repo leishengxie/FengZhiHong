@@ -36,6 +36,14 @@ QVariant CDairyListModel::data(const QModelIndex& index, int role) const
     {
         return tDairy.strDateTime;
     }
+    else if (ED_Weather == role)
+    {
+        return tDairy.strWeather;
+    }
+    else if (ED_Tag == role)
+    {
+        return tDairy.strTag;
+    }
     else if (ED_Content == role)
     {
         return tDairy.strContent;
@@ -50,6 +58,8 @@ QHash<int, QByteArray> CDairyListModel::roleNames() const
     roles[ED_Did]  = "did";
     roles[ED_title]  = "title";
     roles[ED_Date]  = "date";
+    roles[ED_Weather]  = "weather";
+    roles[ED_Tag]  = "tag";
     roles[ED_Content]  = "content";
     return roles;
 }

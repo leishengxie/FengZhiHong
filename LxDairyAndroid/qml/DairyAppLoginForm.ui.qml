@@ -3,6 +3,8 @@ import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
 import Qt.labs.settings 1.0
 import QtQuick.Particles 2.0
+import "button"
+import "input"
 
 Rectangle {
     id: login_gui

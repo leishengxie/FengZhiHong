@@ -60,7 +60,7 @@ Rectangle {
                 color:"lightsteelblue";
                 radius:5
             }
-            highlightFollowsCurrentItem: true;
+            highlightFollowsCurrentItem: false
 
             //highlightRangeMode: ListView.StrictlyEnforceRange
 

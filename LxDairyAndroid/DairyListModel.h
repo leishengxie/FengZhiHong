@@ -15,6 +15,8 @@ public:
         ED_Did,
         ED_title,
         ED_Date,
+        ED_Weather,
+        ED_Tag,
         ED_Content
     };
 
