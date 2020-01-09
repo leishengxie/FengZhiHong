@@ -54,9 +54,22 @@ QHash<int, QByteArray> CDairyListModel::roleNames() const
     return roles;
 }
 
-QVariant CDairyListModel::dataCurRow() const
+QVariantMap CDairyListModel::dataCurRow() const
 {
-    return data(index(m_nCurIndex));
+    QVariantMap map;
+
+    //return data(index(m_nCurIndex), role);
+    if (m_nCurIndex < 0 || m_nCurIndex >= m_lstDairy.size())
+    {
+        return map;
+    }
+    const T_Dairy& tDairy = m_lstDairy[m_nCurIndex];
+    map.insert("did", tDairy.did);
+    map.insert("title", tDairy.strTitle);
+    map.insert("date", tDairy.strDateTime);
+    map.insert("content", tDairy.strContent);
+
+    return map;
 }
 
 void CDairyListModel::loadDairyList(const QList<T_Dairy> &lstDairy)

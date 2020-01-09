@@ -28,9 +28,19 @@ Item {
     //                "Tumbler": tumbler
     //    }
 
-    //property Component componentDairyEdit: Qt.createComponent("DairyEdit.qml");
-    property Component componentDairyEdit: DairyEdit {
+//    // eg
+//    Component {
+//        id: component1
+//        Item {
+//            id: name
+//        }
+//    }
+//    property Component componentTest: component1;
 
+    //property Component componentDairyEdit: Qt.createComponent("DairyEdit.qml");
+    // componentDairyEdit为变量
+    property Component componentDairyEdit: DairyEdit {
+        id: dairyEdit
 
     }
 
@@ -39,6 +49,11 @@ Item {
 //    SwipeView {
 
 //    }
+
+    Rectangle {
+        id: ahel
+        property int sss: 0
+    }
 
     StackView {
         id: stackView
@@ -51,11 +66,30 @@ Item {
                 stackView.push({item: componentDairyEdit});
                 //componentDairyEdit.strTitle
             }
-            onDairyEdit: {
-//                componentDairyEdit.strTitle = strTitle;
-//                componentDairyEdit.strContent = strContent;
-                stackView.push({item: componentDairyEdit});
-//                componentDairyEdit.initData(strTitle, strContent);
+            onToDairyEdit: {
+                console.log("strTitle:" + strTitle);
+                // 传值失败
+                // componentDairyEdit貌似不是对象,或者说只有id属性，其他的全无
+                //componentDairyEdit.strTitle = strTitle;
+                //componentDairyEdit.strContent = strContent;
+                //componentDairyEdit.initData(strTitle, strContent);
+                //ahel.color
+
+                // 传值失败
+                // dairyEdit貌似还没有实例化
+//                dairyEdit.strTitle = strTitle;
+//                dairyEdit.strContent = strContent;
+//                ahel.sss = 3;
+//                stackView.push({item: componentDairyEdit});
+
+                // 传值失败
+                //stackView.push({item: componentDairyEdit, strTitle:strTitle, strContent:strContent});
+
+                // 传值成功
+                stackView.push(componentDairyEdit, {strTitle:strTitle, strContent:strContent});
+                //stackView.push(componentDairyEdit, {strTitle:strTitle, strContent:strContent}, StackView.Immediate);
+
+
             }
         }
 

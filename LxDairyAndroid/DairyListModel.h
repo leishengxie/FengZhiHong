@@ -7,6 +7,7 @@
 class CDairyListModel : public QAbstractListModel
 {
     Q_OBJECT
+    Q_ENUMS(E_DairyRole)
     Q_PROPERTY(int curIndex READ curIndex WRITE setCurIndex NOTIFY curIndexChanged)
 
 public:
@@ -17,6 +18,7 @@ public:
         ED_Content
     };
 
+
     CDairyListModel(QObject* parent = 0);
     int rowCount(const QModelIndex& parent = QModelIndex()) const;
     QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
@@ -26,7 +28,7 @@ signals:
     void curIndexChanged();
 
 public:
-    Q_INVOKABLE QVariant dataCurRow() const;
+    Q_INVOKABLE QVariantMap dataCurRow() const;
 
     void loadDairyList(const QList<T_Dairy> & lstDairy);
 

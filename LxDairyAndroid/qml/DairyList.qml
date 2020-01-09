@@ -5,7 +5,7 @@ import QtQuick.Layouts 1.3
 DairyListForm {
     anchors.fill: parent
     signal btnAddClicked();
-    signal dairyEdit(string strTitle, string strContent);
+    signal toDairyEdit(string strTitle, string strContent);
 
     DairyHttpRequest {
         id: dairyHttpRequest
@@ -20,7 +20,7 @@ DairyListForm {
     }
 
     //    mouseAreaListItem.onClicked: {
-    //        dairyEdit();
+    //        toDairyEdit();
     //    }
 
     listViewDairyList.onCurrentIndexChanged: {
@@ -41,41 +41,59 @@ DairyListForm {
     //    }
 
     //listViewDairyList.mo
-    listViewDairyList.delegate: Item {
+    listViewDairyList.delegate: Rectangle {
         id: delegateDiary
         x: 5
         width: listViewDairyList.width
         height: 40
-        ColumnLayout {
-            id: col
-            Text {
-                id: textTitle
-                text: title
-                font.bold: true
-                width: 40
-                height: parent.width * 0.75
-                color: "red"
-            }
+//        border.color: "green"
+//        border.width: 2
 
-            Text {
-                id: textDataTime
-                text: date
-                height: parent.width * 0.25
-                //color: ListView.isCurrentItem ? "#157efb" : "#53d769"
+        Row{
+            Rectangle{//选中当前 颜色高亮
+                id:curRect
+                width: 5
+                height: delegateDiary.height
+                color: index===delegateDiary.ListView.view.currentIndex ? "lightseagreen" : "black"//选中颜色设置
             }
-
-            MouseArea {
-                id: mouseAreaListItem
-                anchors.fill: parent
-                onClicked: {
-                    delegateDiary.ListView.view.currentIndex = index;
-//                    dairyEdit(title, content);
-//                    //listViewDairyList.
-//                    dairyListModel.curIndex = index;
-//                    //modelData
+            ColumnLayout {
+                width: delegateDiary.width - 5
+                height: delegateDiary.height
+                id: col
+                Rectangle {
+                    implicitWidth: textTitle.width
+                    implicitHeight: textTitle.height
+                    radius: 28;
+                    color: "#81EE8E"
+                    Text {
+                        id: textTitle
+                        text: title
+                        font.bold: true
+//                        width: 40
+//                        height: parent.width * 0.75
+                    }
                 }
-            }
 
+                Text {
+                    id: textDataTime
+                    text: date
+//                    height: parent.width * 0.25
+                    //color: ListView.isCurrentItem ? "#157efb" : "#53d769"
+                }
+
+                MouseArea {
+                    id: mouseAreaListItem
+                    anchors.fill: parent
+                    onClicked: {
+                        delegateDiary.ListView.view.currentIndex = index;
+                        //toDairyEdit(title, content);
+                        //                    //listViewDairyList.
+                        //                    dairyListModel.curIndex = index;
+                        //                    //modelData
+                    }
+                }
+
+            }
         }
     }
 }

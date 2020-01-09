@@ -34,6 +34,21 @@ Rectangle {
             }
         }
 
+//        ListModel {
+//            id: modelTest
+//             ListElement {
+//                 title: "Bill Smith"
+//                 date: "555 3264"
+//             }
+//             ListElement {
+//                 title: "John Brown"
+//                 date: "555 8426"
+//             }
+//             ListElement {
+//                 title: "Sam Wise"
+//                 date: "555 0473"
+//             }
+//         }
 
         ListView {
             id: listViewDairyList
@@ -46,8 +61,11 @@ Rectangle {
                 radius:5
             }
             highlightFollowsCurrentItem: true;
+
+            //highlightRangeMode: ListView.StrictlyEnforceRange
+
             focus: true;
-            spacing: 5
+            spacing: 4
 
 
         }
