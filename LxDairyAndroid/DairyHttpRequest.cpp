@@ -5,6 +5,7 @@
 #include "DairyAndroidApp.h"
 #include "ModelManager.h"
 #include "DairyListModel.h"
+#include "LToast.h"
 
 #include <QMessageBox>
 
@@ -141,13 +142,14 @@ void CDairyHttpRequest::dairyList()
     pDairyHttpClient->post(CNetAppointments::urlDairyList(), CNetAppointments::serializa(tDairyListRequest));
 }
 
-void CDairyHttpRequest::uploadDairy(QString strTitle, QString strContent)
+void CDairyHttpRequest::uploadDairy(int did, QString strTitle, QString strContent)
 {
 
     T_Dairy dairy;
     //T_Dairy dairySaved;
     //dairy.did = did;
     dairy.uid = CDairyAndroidApp::userInfo().uid;
+    dairy.did = did;
     dairy.strTitle = strTitle;
     dairy.strContent = strContent; //toPlainText 去除textEdit当中的纯文本
 
@@ -156,13 +158,18 @@ void CDairyHttpRequest::uploadDairy(QString strTitle, QString strContent)
     connect(pDairyHttpClient, &CDairyHttpClient::finished_1, [ = ](QByteArray byteArray)
     {
         T_Dairy dairySaved = CNetAppointments::deserialization<T_Dairy>(byteArray);
-        if (dairy.isNewDairy())
-        {
-            //emit saveDairyfinished(dairy, dairySaved);
-            //did = dairySaved.did;
-            //setWindowTitle(dairySaved.strTitle);
-            //ui->dairyEdit->document()->setModified(false);
-        }
+        CModelManager::getInstance()->dairyListModel()->addDairy(dairySaved);
+
+//        if (dairy.isNewDairy())
+//        {
+            CLToast::showStr(NULL, "提交成功");
+//            CModelManager::getInstance()->dairyListModel()->addDairy(dairySaved);
+
+//            //emit saveDairyfinished(dairy, dairySaved);
+//            //did = dairySaved.did;
+//            //setWindowTitle(dairySaved.strTitle);
+//            //ui->dairyEdit->document()->setModified(false);
+//        }
     });
     pDairyHttpClient->post(CNetAppointments::urlDairyUpload(), CNetAppointments::serializa(dairy));
 }

@@ -1,8 +1,0 @@
-[Desktop Entry]
-Name=jsonlistmodeltest
-Exec=qmlscene $@ Main.qml
-Icon=jsonlistmodeltest.png
-Terminal=false
-Type=Application
-X-Ubuntu-Touch=true
-

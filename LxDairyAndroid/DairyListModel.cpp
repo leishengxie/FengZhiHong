@@ -89,5 +89,31 @@ void CDairyListModel::loadDairyList(const QList<T_Dairy> &lstDairy)
     endResetModel();
 }
 
+void CDairyListModel::updateDairy(const T_Dairy &tDairy)
+{
+    for (int i = 0; i < rowCount(); ++i)
+    {
+        if (data(index(i), ED_Did).toInt() == tDairy.did)
+        {
+            m_lstDairy[i] = tDairy;
+            emit dataChanged(index(i), index(i));
+            //emit layoutChanged();
+            break;
+        }
+    }
+}
+
+void CDairyListModel::addDairy(const T_Dairy &tDairy)
+{
+    if (m_lstDairy.contains(tDairy))
+    {
+        updateDairy(tDairy);
+        return;
+    }
+    beginInsertRows(QModelIndex(), rowCount(), rowCount());
+    m_lstDairy.append(tDairy);
+    endInsertRows();
+}
+
 
 

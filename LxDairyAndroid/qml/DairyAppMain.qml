@@ -86,7 +86,7 @@ Item {
                 //stackView.push({item: componentDairyEdit, strTitle:strTitle, strContent:strContent});
 
                 // 传值成功
-                stackView.push(componentDairyEdit, {strTitle:strTitle, strContent:strContent});
+                stackView.push(componentDairyEdit, {did:did, strTitle:strTitle, strContent:strContent});
                 //stackView.push(componentDairyEdit, {strTitle:strTitle, strContent:strContent}, StackView.Immediate);
 
 

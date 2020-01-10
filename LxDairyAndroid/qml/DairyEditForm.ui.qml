@@ -1,14 +1,16 @@
 import QtQuick 2.4
 import QtQuick.Layouts 1.3
-import "input"
+//import "./com_input"
 
 Rectangle {
     id: rectDairyEdit
     width: 240
     height: 400
     property alias mouseAreaUpload: mouseAreaUpload
+    property alias mouseAreaBack: mouseAreaBack
     property alias strTitle: lineInputTitle.text
     property alias strContent: textEditContent.text
+    property int did: -1
 
     ColumnLayout {
         id: columnLayout1
@@ -17,16 +19,27 @@ Rectangle {
 
         Rectangle {
             id: rectangle1
-            width: 200
+            width: parent.width
             height: 50
-            color: "#ffffff"
+            color: "lightgray"
             Layout.fillWidth: true
-
-            LineInput {
-                id: lineInputTitle
+            RowLayout {
+                spacing: 10
                 anchors.verticalCenter: parent.verticalCenter
-                //font.pixelSize: 12
-                placeholderText: "请输入标题"
+                Text {
+                    id: textback
+                    text: qsTr(" << ")
+                    MouseArea {
+                        id:  mouseAreaBack
+                        anchors.fill: parent
+                    }
+                }
+
+                LineInput {
+                    id: lineInputTitle
+                    //font.pixelSize: 12
+                    placeholderText: "请输入标题"
+                }
             }
         }
 
@@ -34,7 +47,7 @@ Rectangle {
             id: textEditContent
             width: 80
             height: 20
-            text: qsTr("Text Edit")
+            text: qsTr("")
             Layout.fillHeight: true
             Layout.fillWidth: true
             font.pixelSize: 12
@@ -42,9 +55,9 @@ Rectangle {
 
         Rectangle {
             id: rectangle2
-            width: 200
+            width: parent.width
             height: 50
-            color: "#ffffff"
+            color: "lightgray"
             Layout.fillWidth: true
             Rectangle {
                 id: rectangle3
@@ -58,10 +71,10 @@ Rectangle {
 
                 Text {
                     id: textUpload
-                    text: qsTr("上传")
+                    text: qsTr("提交")
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.verticalCenter: parent.verticalCenter
-                    font.pixelSize: 16
+                    font.pixelSize: 18
                 }
 
                 MouseArea {

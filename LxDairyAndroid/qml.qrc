@@ -13,6 +13,7 @@
         <file>img/leaf.png</file>
         <file>qml/button/DairyButton.qml</file>
         <file>qml/button/GradientButton.qml</file>
-        <file>qml/input/LineInput.qml</file>
+        <file>qml/anim/unkonw_anim.qml</file>
+        <file>qml/com_input/LineInput.qml</file>
     </qresource>
 </RCC>

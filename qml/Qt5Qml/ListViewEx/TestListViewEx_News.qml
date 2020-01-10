@@ -12,7 +12,7 @@ import "./PageView"
     当前行高亮
 Author: surfsky.cnblogs.com 2015-01
 */
-ListViewEx{
+ListViewEx {
     id: view
     width: 500
     height: 800

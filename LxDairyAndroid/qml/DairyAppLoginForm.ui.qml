@@ -3,13 +3,14 @@ import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
 import Qt.labs.settings 1.0
 import QtQuick.Particles 2.0
-import "button"
-import "input"
+import "./button"
+import "./com_input"
 
 Rectangle {
     id: login_gui
     width: 240
     height: 400
+    property alias lineInputPasswd: lineInputPasswd
     property alias btn_login: btn_login
     property alias btn_quit: btn_quit
     property alias strUserName: lineInputUser.text
@@ -106,13 +107,13 @@ Rectangle {
                 echoMode: TextInput.Password
             }
 
-            //        TextInput {
-            //            text: "请输入用户号"
-            //        }
-            //        TextInput {
-            //            text: "请输入密码"
-            //            font.pointSize: 9
-            //        }
+//            TextInput {
+//                id: lineInputUser
+//            }
+//            TextInput {
+//                id: lineInputPasswd
+//            }
+
 
             Row {
                 spacing: 10

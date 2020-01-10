@@ -42,7 +42,7 @@ ListView{
     boundsBehavior: Flickable.StopAtBounds
 
     // 当前页指示器
-    ListViewIndicator{
+    ListViewIndicator {
         target : root
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom

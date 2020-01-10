@@ -57,16 +57,16 @@ public:
     struct Data
     {
         Data() { }
-        Data( int _id, const QString &_userName, const QString &_phoneNum, int _photoId, const QByteArray &_photo)
+        Data( int _id, const QString & _userName, const QString & _phoneNum, int _photoId, const QByteArray & _photo)
             : id(_id), userName(_userName), phoneNum(_phoneNum), photoId(_photoId), photo(_photo), selected(false)
         { }
 
-        Data(const Data &other)
+        Data(const Data & other)
             : id(other.id), userName(other.userName), phoneNum(other.phoneNum),
               photoId(other.photoId), photo(other.photo), selected(other.selected)
         { }
 
-        Data &operator =(const Data &other)
+        Data & operator =(const Data & other)
         {
             id = other.id;
             userName = other.userName;
@@ -87,14 +87,14 @@ public:
     };
 
 
-    explicit ContactListItem(QObject *parent = 0);
-    explicit ContactListItem(const ContactListItem::Data &data, QObject *parent = 0);
+    explicit ContactListItem(QObject* parent = 0);
+    explicit ContactListItem(const ContactListItem::Data & data, QObject* parent = 0);
 
     virtual QString id() const;
     virtual bool selected() const;
     virtual void setSelected(bool selected);
     virtual QVariant data(int role) const;
-    virtual bool setData(int role, const QVariant &value);
+    virtual bool setData(int role, const QVariant & value);
     virtual QHash<int, QByteArray> roleNames() const;
 
 private:

@@ -34,6 +34,9 @@ public:
 
     void loadDairyList(const QList<T_Dairy> & lstDairy);
 
+    void updateDairy(const T_Dairy & tDairy);
+    void addDairy(const T_Dairy & tDairy);
+
     int curIndex() const
     {
         return m_nCurIndex;

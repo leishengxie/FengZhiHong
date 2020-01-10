@@ -12,6 +12,11 @@ T_Dairy::T_Dairy()
 
 }
 
+bool T_Dairy::operator ==(const T_Dairy &right) const
+{
+    return did == right.did;
+}
+
 
 
 QDataStream &operator>>(QDataStream &in, T_Dairy &data)

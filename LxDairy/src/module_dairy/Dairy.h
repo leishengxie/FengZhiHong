@@ -42,6 +42,9 @@ struct T_Dairy
         return did == INVAILD_DAIRY_ID;
     }
 
+    //QList contains need
+    bool operator == (const T_Dairy &right) const;
+
     friend QDataStream & operator>>(QDataStream & in, T_Dairy & data);
     friend QDataStream & operator<<(QDataStream & out, const T_Dairy & data);
 

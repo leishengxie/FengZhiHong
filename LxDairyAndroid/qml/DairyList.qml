@@ -5,7 +5,7 @@ import QtQuick.Layouts 1.3
 DairyListForm {
     anchors.fill: parent
     signal btnAddClicked();
-    signal toDairyEdit(string strTitle, string strContent);
+    signal toDairyEdit(int did, string strTitle, string strContent);
 
     DairyHttpRequest {
         id: dairyHttpRequest
@@ -18,10 +18,6 @@ DairyListForm {
     mouseAreaAdd.onClicked: {
         btnAddClicked();
     }
-
-    //    mouseAreaListItem.onClicked: {
-    //        toDairyEdit();
-    //    }
 
     listViewDairyList.onCurrentIndexChanged: {
         console.log("onCurrentIndexChanged");
@@ -103,7 +99,7 @@ DairyListForm {
                 anchors.verticalCenter: parent.verticalCenter
                 width: textTag.width + 5
                 //height: textTag.height + 3
-//                width: 50
+                //                width: 50
                 height: 25
                 radius: 5;
                 border.color: "palegreen"
@@ -122,11 +118,114 @@ DairyListForm {
             anchors.fill: parent
             onClicked: {
                 delegateDiary.ListView.view.currentIndex = index;
-                toDairyEdit(title, content);
+                //parent.state = "expanded"
+                //parent.state == 'expanded' ? parent.state = '' : parent.state = 'expanded'
+
+                //toDairyEdit(did, title, content);
+
                 //                    //listViewDairyList.
                 //                    dairyListModel.curIndex = index;
                 //                    //modelData
             }
         }
+
+//        // 形变代理
+//        Item {
+//            id: factsView
+
+//            anchors.top: curRect.bottom
+//            anchors.left: parent.left
+//            anchors.right: parent.right
+//            anchors.bottom: parent.bottom
+
+//            opacity: 0
+
+//            Rectangle {
+//                anchors.fill: parent
+
+//                gradient: Gradient {
+//                    GradientStop { position: 0.0; color: "#fed958" }
+//                    GradientStop { position: 1.0; color: "#fecc2f" }
+//                }
+//                border.color: '#000000'
+//                border.width: 2
+
+//                Text {
+//                    anchors.fill: parent
+//                    anchors.margins: 5
+
+//                    clip: true
+//                    wrapMode: Text.WordWrap
+//                    color: '#1f1f21'
+
+//                    font.pixelSize: 12
+
+//                    text: content
+//                }
+//            }
+//        }
+
+//        states: [
+//            //            State {
+//            //                name: "shrink"
+//            //                PropertyChanges {
+//            //                    target: toolbtn
+//            //                    bkColor:"#E4666F"
+//            //                }
+//            //            },
+
+//            State {
+//                name: "expanded"
+
+//                PropertyChanges { target: delegateDiary; height: listViewDairyList.height }
+//                PropertyChanges { target: factsView; opacity: 1 }
+//                PropertyChanges { target: delegateDiary.ListView.view; contentY: delegateDiary.y; interactive: false }
+//            }
+//        ]
+
+//        transitions: [
+//            Transition {
+//                NumberAnimation {
+//                    duration: 200;
+//                    properties: "height,width,anchors.rightMargin,anchors.topMargin,opacity,contentY"
+//                }
+//            }
+//        ]
+
+//        //        transitions: [
+//        //            Transition {
+//        //                PropertyAnimation {
+//        //                    property:"bkColor"
+//        //                    easing.type: Easing.Linear
+//        //                    duration: 200
+//        //                }
+//        //            }
+//        //        ]
+
     }
+
+    /*
+    // 另一种风格, listview的space需要设置为0
+    Component {
+        id: listViewDelegate
+        Rectangle {
+            width: rectWidth
+            height: rectHeight
+            color: "#00000000"
+            border.color: "#d5d5d5"
+            border.width: 1
+
+            Text {
+                width: rectWidth
+                height: rectHeight
+                wrapMode: Text.Wrap;
+                horizontalAlignment: Text.AlignHCenter;
+                verticalAlignment: Text.AlignVCenter;
+                text: String(arrayTitle[index])
+                color: "black"
+                font.pixelSize: 16
+            }
+        }
+    }
+    */
 }

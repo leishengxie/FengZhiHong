@@ -1,6 +1,5 @@
-import QtQuick 2.0
+import QtQuick 2.4
 
-// 创建焦点范围。他继承与Item, 因此拥有Item拥有的一切属性。
 FocusScope {
     id: focusScope
     property alias text: textInput.text
@@ -17,6 +16,8 @@ FocusScope {
         radius: 4
 
         TextInput {
+            // 草拟吗什么时候加的Z
+            //id: textInputZ
             id: textInput
             focus: true
             anchors.fill: parent
@@ -31,16 +32,13 @@ FocusScope {
             id: textplaceholder
             anchors {
                 fill: parent;
-                leftMargin: 14
+                leftMargin: 2
             }
             verticalAlignment: Text.AlignVCenter
-            text: "Enter word"
             font.pixelSize: font_size
             color: "#707070"
             opacity: textInput.length ? 0 : 1
         }
-
-
 
     }
 }

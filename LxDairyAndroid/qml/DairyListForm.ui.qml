@@ -1,6 +1,8 @@
 import QtQuick 2.4
-import "button"
 import QtQuick.Layouts 1.3
+import "./button"
+import "./com_input"
+
 
 // Rectangle继承Item
 Rectangle {
@@ -11,6 +13,7 @@ Rectangle {
 
     // 此句会出现错误
     //property alias mouseAreaListItem: mouseAreaListItem
+
     property alias listViewDairyList: listViewDairyList
 
     ColumnLayout {
@@ -18,37 +21,24 @@ Rectangle {
         anchors.fill: parent
         spacing: 0
 
-        Rectangle {
-            id: rectangle3
-            height: 50
-            color: "#ffffff"
-            Layout.fillWidth: true
 
-            TextInput {
-                id: textInput1
-                width: 80
-                height: 20
-                text: qsTr("")
-                anchors.verticalCenter: parent.verticalCenter
-                font.pixelSize: 12
-            }
+        Rectangle {
+            height: 50
+            color: "lightgray"
+            Layout.fillWidth: true
+//            RowLayout {
+//                anchors.horizontalCenter: parent.horizontalCenter
+//                spacing: 10
+//                anchors.verticalCenter: parent.verticalCenter
+
+//                LineInput{
+//                    id: lineInputSearch
+//                    text: qsTr("")
+//                    placeholderText: "请输入搜索内容"
+//                }
+//            }
         }
 
-//        ListModel {
-//            id: modelTest
-//             ListElement {
-//                 title: "Bill Smith"
-//                 date: "555 3264"
-//             }
-//             ListElement {
-//                 title: "John Brown"
-//                 date: "555 8426"
-//             }
-//             ListElement {
-//                 title: "Sam Wise"
-//                 date: "555 0473"
-//             }
-//         }
 
         ListView {
             id: listViewDairyList
@@ -66,14 +56,14 @@ Rectangle {
 
             focus: true;
             spacing: 4
+            clip: true
 
 
         }
 
         Rectangle {
-            id: rectangle2
             height: 50
-            color: "#ffffff"
+            color: "lightgray"
             Layout.fillWidth: true
 
             Rectangle {
@@ -91,7 +81,7 @@ Rectangle {
                     text: qsTr("+")
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.verticalCenter: parent.verticalCenter
-                    font.pixelSize: 16
+                    font.pixelSize: 28
                 }
 
                 MouseArea {

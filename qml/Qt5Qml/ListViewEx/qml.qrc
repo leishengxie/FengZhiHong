@@ -22,5 +22,7 @@
         <file>images/ok-16.png</file>
         <file>images/ok-24.png</file>
         <file>images/ok-32.png</file>
+        <file>PageView/PageView.qml</file>
+        <file>PageView/ListViewIndicator.qml</file>
     </qresource>
 </RCC>

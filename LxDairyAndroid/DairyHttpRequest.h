@@ -20,7 +20,7 @@ public slots:
 
     /*Q_INVOKABLE */void login(QString strUserName, QString strPasswd, QJSValue jsCallback);
     void dairyList();
-    void uploadDairy(QString strTitle, QString strContent);
+    void uploadDairy(int did, QString strTitle, QString strContent);
 
 private:
     QJSValue m_jsValue;
