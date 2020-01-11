@@ -35,7 +35,7 @@ CDairyAndroidApp::~CDairyAndroidApp()
 
 
 
-CDairyAndroidApp::setUserInfo(const T_UserInfo &tUserInfo)
+void CDairyAndroidApp::setUserInfo(const T_UserInfo &tUserInfo)
 {
     s_tUserInfo = tUserInfo;
 }
@@ -51,7 +51,10 @@ T_UserInfo CDairyAndroidApp::userInfo()
 void CDairyAndroidApp::init()
 {
     // qml使用settings所需
-    setApplicationName("LxDairy");
-    setOrganizationName("Lx");
+    setApplicationName("LxDairyAndroid"); // 1
+    setOrganizationDomain("lx.com"); //2
+    setOrganizationName("Lx"); // 3
+
+
     setAttribute(Qt::AA_EnableHighDpiScaling);
 }

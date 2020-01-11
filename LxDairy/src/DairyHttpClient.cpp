@@ -8,10 +8,12 @@ CDairyHttpClient::CDairyHttpClient(QObject* parent, bool bAutoReleaseOnFinished)
     : LHttpClient(parent)
     , m_bAutoReleaseOnFinished(bAutoReleaseOnFinished)
 {
+    #ifndef ANDROID_MOBILE_PALTFORM_QML
     if (s_pLoopLoading == NULL)
     {
         s_pLoopLoading = new CLLoopLoading();
     }
+#endif
 //    QWidget* pWidget = qobject_cast<QWidget*>(parent);
 //    if (pWidget)
 //    {
@@ -33,7 +35,9 @@ void CDairyHttpClient::get(const QUrl &urlRequest, int nTimeout)
     connect(m_netReply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(onError(QNetworkReply::NetworkError)));
     connect(m_netReply, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(onDownloadProgress(qint64, qint64)));
 
+    #ifndef ANDROID_MOBILE_PALTFORM_QML
     s_pLoopLoading->start("正在加载中!");
+#endif
 }
 
 
@@ -98,7 +102,12 @@ void CDairyHttpClient::post(const QUrl & urlRequest, const QByteArray & data, in
     connect(m_netReply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(onError(QNetworkReply::NetworkError)));
     connect(m_netReply, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(onDownloadProgress(qint64, qint64)));
 
+#ifndef ANDROID_MOBILE_PALTFORM_QML
+    // add 20200111
+    // 测试证明， QWidget作为加载提示框，其窗口大小被Android最大化问题， qml界面和QWidget会界面分离. 按手机的返回键即使模态也会消失
     s_pLoopLoading->start("正在加载中!");
+    // end add
+#endif
 }
 
 void CDairyHttpClient::post(const QUrl & urlRequest, const void* pData, int nDataLen, int nTimeout)
@@ -180,7 +189,9 @@ void CDairyHttpClient::onFinished()
     m_netReply->deleteLater();
     m_netReply = NULL;
 
+    #ifndef ANDROID_MOBILE_PALTFORM_QML
     s_pLoopLoading->stop();
+#endif
 
 
     if (status_code == 200)

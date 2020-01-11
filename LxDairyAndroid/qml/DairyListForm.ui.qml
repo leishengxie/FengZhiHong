@@ -9,6 +9,7 @@ Rectangle {
     id: rectDairyList
     width: 240
     height: 400
+    anchors.fill: parent
     property alias mouseAreaAdd: mouseAreaAdd
 
     // 此句会出现错误
@@ -17,13 +18,13 @@ Rectangle {
     property alias listViewDairyList: listViewDairyList
 
     ColumnLayout {
-        id: columnLayout1
+        id: columnMain
         anchors.fill: parent
         spacing: 0
 
 
         Rectangle {
-            height: 50
+            Layout.preferredHeight: parent.height*0.08
             color: "lightgray"
             Layout.fillWidth: true
 //            RowLayout {
@@ -62,26 +63,21 @@ Rectangle {
         }
 
         Rectangle {
-            height: 50
+            Layout.preferredHeight: parent.height*0.08
             color: "lightgray"
             Layout.fillWidth: true
 
             Rectangle {
-                id: rectangle1
-                width: 30
+                height: parent.height*0.8
+                width: height
                 color: "#ffffff"
-                anchors.bottom: parent.bottom
-                anchors.bottomMargin: 10
-                anchors.top: parent.top
-                anchors.topMargin: 10
-                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.centerIn: parent
 
                 Text {
                     id: textAdd
                     text: qsTr("+")
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.verticalCenter: parent.verticalCenter
-                    font.pixelSize: 28
+                    anchors.centerIn: parent
+                    font.pixelSize: parent.height*0.8
                 }
 
                 MouseArea {

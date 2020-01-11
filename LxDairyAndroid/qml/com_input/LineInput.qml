@@ -4,7 +4,7 @@ FocusScope {
     id: focusScope
     property alias text: textInput.text
     property alias placeholderText: textplaceholder.text
-    property int font_size: 12
+    property alias font: textInput.font
     property alias echoMode: textInput.echoMode
     signal accepted
     width: 200
@@ -23,7 +23,6 @@ FocusScope {
             anchors.fill: parent
             verticalAlignment: Text.AlignVCenter
             color: "black"
-            font.pixelSize: font_size
             onAccepted: focusScope.accepted()
         }
 
@@ -35,7 +34,6 @@ FocusScope {
                 leftMargin: 2
             }
             verticalAlignment: Text.AlignVCenter
-            font.pixelSize: font_size
             color: "#707070"
             opacity: textInput.length ? 0 : 1
         }

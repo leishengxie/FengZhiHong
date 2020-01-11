@@ -1,6 +1,6 @@
 TEMPLATE = app
 
-QT += qml quick core gui widgets
+QT += qml quick core gui widgets multimedia xml
 CONFIG += c++11
 
 # tiao shi
@@ -20,9 +20,13 @@ SOURCES += main.cpp \
 RESOURCES += qml.qrc# \
 #    img.qrc
 
+RC_FILE += icon.rc
+
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
 
+# add define for android mobile paltform, it use qml for ui.
+DEFINES += ANDROID_MOBILE_PALTFORM_QML
 
 #copy dll
 win32:CONFIG(release, debug|release): {
@@ -47,9 +51,15 @@ DEPENDPATH += $$PWD/../../LxTool/LQtTool/include
 
 
 #链接#
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../LxTool/LQtTool/bin/ -lLQtTool
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../LxTool/LQtTool/bin/ -lLQtToold
-else:unix: LIBS += -L$$PWD/../../LxTool/LQtTool/bin/ -lLQtTool
+win32 {
+    CONFIG(release, debug|release): LIBS += -L$$PWD/../../LxTool/LQtTool/bin/ -lLQtTool
+    CONFIG(debug, debug|release): LIBS += -L$$PWD/../../LxTool/LQtTool/bin/ -lLQtToold
+}
+
+unix {
+    CONFIG(release, debug|release): LIBS += -L$$PWD/../../LxTool/LQtTool/bin/ -lLQtTool
+   CONFIG(debug, debug|release): LIBS += -L$$PWD/../../LxTool/LQtTool/bin/ -lLQtToold
+}
 
 
 # Default rules for deployment.
@@ -61,3 +71,18 @@ HEADERS += \
     ModelManager.h \
     DairyAndroidApp.h \
     DairyHttpRequest.h
+
+contains(ANDROID_TARGET_ARCH,armeabi-v7a) {
+    ANDROID_EXTRA_LIBS = \
+        $$PWD/../../LxTool/LQtTool/bin/libLQtTool.so
+}
+
+DISTFILES += \
+    android_src/AndroidManifest.xml \
+    android_src/res/values/libs.xml \
+    android_src/build.gradle
+
+ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android_src
+
+
+

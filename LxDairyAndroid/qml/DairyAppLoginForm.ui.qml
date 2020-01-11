@@ -5,6 +5,7 @@ import Qt.labs.settings 1.0
 import QtQuick.Particles 2.0
 import "./button"
 import "./com_input"
+import "./loading"
 
 Rectangle {
     id: login_gui
@@ -18,6 +19,7 @@ Rectangle {
     property alias settings: settings
     property alias checkBoxUserName: checkBoxUserName
     property alias checkBoxPasswd: checkBoxPasswd
+    property alias busyIndicator: busyIndicator
 
 
     Settings {
@@ -29,7 +31,6 @@ Rectangle {
     }
 
     Item {
-
         anchors.fill: parent
         ParticleSystem {
             id: particleSystem
@@ -42,7 +43,7 @@ Rectangle {
             emitRate: 10
             lifeSpan: 2000
             lifeSpanVariation: 500
-            size: 16
+            size: login_gui.width * 0.08
             endSize: 32
         }
 
@@ -61,7 +62,7 @@ Rectangle {
 
     // :/img/leaf.png
     ColumnLayout {
-        id: column1
+        id: columnMain
         anchors.fill: parent
 
         //背景图片
@@ -95,23 +96,33 @@ Rectangle {
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
             LineInput {
                 id: lineInputUser
-                font_size:height * 0.7
+                height: login_gui.height*0.04
+                width: login_gui.width*0.6
                 placeholderText: "请输入用户号"
                 text: settings.strUserName
             }
             LineInput {
                 id: lineInputPasswd
-                font_size:height * 0.7
+                height: login_gui.height*0.04
+                width: login_gui.width*0.6
                 placeholderText: "请输入密码"
                 text: settings.strPasswd
                 echoMode: TextInput.Password
             }
 
-//            TextInput {
+//            TextField
+//            {
 //                id: lineInputUser
+//                placeholderText: "请输入用户号"
+//                text: settings.strUserName
 //            }
-//            TextInput {
+
+//            TextField
+//            {
 //                id: lineInputPasswd
+//                placeholderText: "请输入密码"
+//                text: settings.strPasswd
+//                echoMode: TextInput.Password
 //            }
 
 
@@ -143,5 +154,15 @@ Rectangle {
             }
         }
     }
+
+    BusyIndicator {
+        id: busyIndicator
+        anchors.centerIn: parent
+        implicitWidth: 96
+        implicitHeight: 96
+        opacity: running ? 0.0 : 1.0
+        //contentItem: BusyIndicator{}
+    }
+
 
 }

@@ -14,6 +14,7 @@ DairyAppLoginForm {
     // ui文件不支持javascript
     btn_login.onClicked: {
         //loginSucess();
+        busyIndicator.running = !busyIndicator.running
         dairyHttpRequest.login(strUserName, strPasswd, function(bSucceed) {
             console.log("c++ js callback", bSucceed);
             if (bSucceed) {

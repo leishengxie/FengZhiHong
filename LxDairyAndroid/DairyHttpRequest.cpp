@@ -51,6 +51,9 @@ CDairyHttpRequest::CDairyHttpRequest(QObject *parent)
 
 void CDairyHttpRequest::login(QString strUserName, QString strPasswd, QJSValue jsCallback)
 {
+
+    //
+    qDebug() << strUserName << strPasswd;
 /** 放在外面可以
     bool bSucceed = true;
     QJSEngine *jsEngine = jsCallback.engine();

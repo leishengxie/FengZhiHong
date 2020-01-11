@@ -12,6 +12,10 @@
 #include <QQuickItem>
 #include <QQmlContext>
 
+// 由于qt打包时并没有把LQtTool依赖的qt库打完整， 所以需要手动加一下pro QT+=
+#include <QMediaPlayer>
+#include <QDomDocument>
+
 int main(int argc, char *argv[])
 {
     CDairyAndroidApp app(argc, argv);

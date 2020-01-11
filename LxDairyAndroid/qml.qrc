@@ -15,5 +15,6 @@
         <file>qml/button/GradientButton.qml</file>
         <file>qml/anim/unkonw_anim.qml</file>
         <file>qml/com_input/LineInput.qml</file>
+        <file>qml/loading/BusyIndicator.qml</file>
     </qresource>
 </RCC>
