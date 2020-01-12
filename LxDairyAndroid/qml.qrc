@@ -16,5 +16,6 @@
         <file>qml/anim/unkonw_anim.qml</file>
         <file>qml/com_input/LineInput.qml</file>
         <file>qml/loading/BusyIndicator.qml</file>
+        <file>qml/global/QmlGlobalObj.qml</file>
     </qresource>
 </RCC>

@@ -32,7 +32,6 @@ Item {
         }
 
         RotationAnimation on rotation {
-            id: rotationAnimation
             from: 0
             to: 360
             duration: 800

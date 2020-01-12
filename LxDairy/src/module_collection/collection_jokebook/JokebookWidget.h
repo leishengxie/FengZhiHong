@@ -6,6 +6,8 @@
 #include "JokeModel.h"
 #include <QItemSelectionModel>
 
+class CJokeSortFilterProxyModel;
+
 namespace Ui {
 class CJokebookWidget;
 }
@@ -58,6 +60,7 @@ private:
     Ui::CJokebookWidget *ui;
 
     CJokeModel* m_pJokeModel;
+    CJokeSortFilterProxyModel* m_pProxyModel;
     CJokeEditor* m_pJokeEditor;
 
     //QNetworkAccessManager m_networkAccessManager;

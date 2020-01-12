@@ -6,6 +6,7 @@
 #include "ModelManager.h"
 #include "DairyListModel.h"
 #include "LToast.h"
+#include "DairyGlobalInstance.h"
 
 #include <QMessageBox>
 
@@ -51,8 +52,7 @@ CDairyHttpRequest::CDairyHttpRequest(QObject *parent)
 
 void CDairyHttpRequest::login(QString strUserName, QString strPasswd, QJSValue jsCallback)
 {
-
-    //
+    CDairyGlobalInstance::getInstance()->httpLoading();
     qDebug() << strUserName << strPasswd;
 /** 放在外面可以
     bool bSucceed = true;
@@ -111,6 +111,7 @@ void CDairyHttpRequest::login(QString strUserName, QString strPasswd, QJSValue j
         QJSValueList paramList;
         paramList.append(val);
         qDebug() << m_jsValue.call(paramList).toBool();  //js fucntion的返回值
+        CDairyGlobalInstance::getInstance()->httpLoadingFinished();
 
     });
 

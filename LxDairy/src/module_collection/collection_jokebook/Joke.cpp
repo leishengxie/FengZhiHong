@@ -20,13 +20,13 @@ QDataStream & operator<<(QDataStream & out, const T_Joke & data)
 
 QDataStream & operator>>(QDataStream &in, T_JokeListRequest &data)
 {
-    in >> data.nPageIndex >> data.nPageItems >> data.nSelectType >> data.nSortFiled >> data.nOrderType;
+    in >> data.uId >> data.nPageIndex >> data.nPageItems >> data.nSelectType >> data.nSortFiled >> data.nOrderType;
     return in;
 }
 
 QDataStream & operator<<(QDataStream &out, const T_JokeListRequest &data)
 {
-    out << data.nPageIndex << data.nPageItems << data.nSelectType << data.nSortFiled << data.nOrderType;
+    out << data.uId << data.nPageIndex << data.nPageItems << data.nSelectType << data.nSortFiled << data.nOrderType;
     return out;
 }
 

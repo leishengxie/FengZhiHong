@@ -7,10 +7,12 @@
 #include "DairyListModel.h" // 有了ModelManager.h为什么还有包含此文件???
 #include "ModelManager.h"
 #include "DairyHttpRequest.h"
+#include "DairyGlobalInstance.h"
 
 #include <QQuickView>
 #include <QQuickItem>
 #include <QQmlContext>
+#include <QtQml>
 
 // 由于qt打包时并没有把LQtTool依赖的qt库打完整， 所以需要手动加一下pro QT+=
 #include <QMediaPlayer>
@@ -29,8 +31,10 @@ int main(int argc, char *argv[])
     qmlRegisterType<CDairyListModel>("lxdairy.qt.model", 1, 0,"DairyListModel");
     //qmlRegisterType<CModelManager>("lxdairy.qt.ModelManager", 1, 0,"ModelManager");
 
-    // 注册单例类 --看了官方例子，没看出哪里是单例，所以没什么卵用
+    // 注册单例类 --看了官方例子
     //qmlRegisterSingletonType
+    qmlRegisterSingletonType( QUrl("qrc:/qml/global/QmlGlobalObj.qml"), "lxdairy.global", 1, 0, "QmlGlobalObj" );
+    qmlRegisterSingletonType<CDairyGlobalInstance>( "lxdairy.cpp.global", 1, 0, "DairyGlobalInstance", provider );
 
     QQmlApplicationEngine engine;
     CModelManager::getInstance()->setQmlContext(engine.rootContext());

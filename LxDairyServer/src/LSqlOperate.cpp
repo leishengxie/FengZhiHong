@@ -63,7 +63,7 @@ void CLSqlOperate::createTable()
     QSqlDatabase db = CSqlConnectionPool::getInstance()->getOpenConnection();
     QSqlQuery query(db);
 
-/// tUser 主要mysql的主键没有默认值
+    /// tUser 主要mysql的主键没有默认值
     QString strSql = "create table if not exists tUser(" \
                      "uid int not null primary key auto_increment, " \
                      "user_name varchar(32) not null, " \
@@ -76,16 +76,16 @@ void CLSqlOperate::createTable()
     }
 
     // 用户授权信息表 - 暂时不使用第三方登录
-//    QString strSql = "create table if not exists tUserAuths(" \
-//                     "id int not null primary key auto_increment, " \
-//                     "uid int not null, " \
-//                     "identity_type varchar(32) not null, " \
-//                     "identifier varchar(32) not null, " \
-//                     "credential varchar(128) not null)";
-//    if (!query.exec(strSql))
-//    {
-//        qDebug() << query.lastError();
-//    }
+    //    QString strSql = "create table if not exists tUserAuths(" \
+    //                     "id int not null primary key auto_increment, " \
+    //                     "uid int not null, " \
+    //                     "identity_type varchar(32) not null, " \
+    //                     "identifier varchar(32) not null, " \
+    //                     "credential varchar(128) not null)";
+    //    if (!query.exec(strSql))
+    //    {
+    //        qDebug() << query.lastError();
+    //    }
 
     /// tDairy
     strSql = "create table if not exists tDairy(" \
@@ -269,11 +269,11 @@ void CLSqlOperate::saveDairy(const T_Dairy &dairyModify, T_Dairy &dairySaved, T_
     else
     {
         QString strSql = QString("update tDairy set title='%1', tag='%2', weather='%3', content='%4' where did='%5'")
-                         .arg(dairyModify.strTitle)
-                         .arg(dairyModify.strTag)
-                         .arg(dairyModify.strWeather)
-                         .arg(dairyModify.strContent)
-                         .arg(dairyModify.did);
+                .arg(dairyModify.strTitle)
+                .arg(dairyModify.strTag)
+                .arg(dairyModify.strWeather)
+                .arg(dairyModify.strContent)
+                .arg(dairyModify.did);
         bool ok = query.exec(strSql);
 
         if (!ok)
@@ -424,13 +424,20 @@ void CLSqlOperate::getJokeList(const T_JokeListRequest & tJokeListRequest
 {
     QSqlDatabase db = CSqlConnectionPool::getInstance()->getOpenConnection();
     QSqlQuery query(db);
-//    int nPageIndex; // 页码
-//    int nPageItems; // 当前页最大条目数
-//    int nSelectType;
-//    int nSortFiled;
-//    int nOrderType;
+    //    int nPageIndex; // 页码
+    //    int nPageItems; // 当前页最大条目数
+    //    int nSelectType;
+    //    int nSortFiled;
+    //    int nOrderType;
 
-    QString strQuery = "select count(1) from tJoke";
+
+    QString strUserLimit = "";
+    if (tJokeListRequest.nSelectType == ES_SelectByMyUpload)
+    {
+        strUserLimit = QString(" where up_uid = %1").arg(tJokeListRequest.uId);
+    }
+    QString strQuery = "select count(1) from tJoke" + strUserLimit;
+    qDebug() << strQuery;
     query.exec(strQuery);
     if(query.next())
     {
@@ -439,7 +446,8 @@ void CLSqlOperate::getJokeList(const T_JokeListRequest & tJokeListRequest
 
     //select * from table_name limit 0,10
     int nPos = (tJokeListRequest.nPageIndex - 1) * tJokeListRequest.nPageItems;
-    strQuery = QString("select * from tJoke limit %1, %2").arg(nPos).arg(tJokeListRequest.nPageItems);
+    strQuery = QString("select * from tJoke" + strUserLimit + " limit %1, %2").arg(nPos).arg(tJokeListRequest.nPageItems);
+    qDebug() << strQuery;
     if (!query.exec(strQuery))
     {
         qDebug() << query.lastError();
@@ -493,23 +501,23 @@ void CLSqlOperate::jokeRating(const T_JokeRating & tJokeRating, T_HttpStatusMsg 
         //strQuery = "update tJoke set total_rating_people= total_rating_score= average_rating_score=";
         */
 
-//    以下是访问oracle存储过程的示例，多个输入、输出都可以。
-//    QSqlQuery query(db);
-//    if (!query.prepare("call test_out2(:p1,:p2,:out1,:out2)"))
-//    {
-//    return false;
-//    }
-//    query.bindValue(":p1", "abcd", QSql::In);
-//    query.bindValue(":p2", "edfg", QSql::In);
-//    QString t1(128,'\0'),t2(128,'\0');
-//    query.bindValue(":out1", t1, QSql::Out);
-//    query.bindValue(":out2", t2, QSql::Out);
-//    if (!query.exec())
-//    {
-//    return false;
-//    }
-//    QString str1 = query.boundValue(":out1").toInt();
-//    QString str2 = query.boundValue(":out2").toInt();
+    //    以下是访问oracle存储过程的示例，多个输入、输出都可以。
+    //    QSqlQuery query(db);
+    //    if (!query.prepare("call test_out2(:p1,:p2,:out1,:out2)"))
+    //    {
+    //    return false;
+    //    }
+    //    query.bindValue(":p1", "abcd", QSql::In);
+    //    query.bindValue(":p2", "edfg", QSql::In);
+    //    QString t1(128,'\0'),t2(128,'\0');
+    //    query.bindValue(":out1", t1, QSql::Out);
+    //    query.bindValue(":out2", t2, QSql::Out);
+    //    if (!query.exec())
+    //    {
+    //    return false;
+    //    }
+    //    QString str1 = query.boundValue(":out1").toInt();
+    //    QString str2 = query.boundValue(":out2").toInt();
 
     // 使用存储过程
     qDebug() << "使用存储过程" << tJokeRating.jId << tJokeRating.uId << tJokeRating.dRating;

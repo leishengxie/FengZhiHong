@@ -15,7 +15,8 @@ SOURCES += main.cpp \
     DairyListModel.cpp \
     ModelManager.cpp \
     DairyAndroidApp.cpp \
-    DairyHttpRequest.cpp
+    DairyHttpRequest.cpp \
+    DairyGlobalInstance.cpp
 
 RESOURCES += qml.qrc# \
 #    img.qrc
@@ -70,7 +71,8 @@ HEADERS += \
     DairyListModel.h \
     ModelManager.h \
     DairyAndroidApp.h \
-    DairyHttpRequest.h
+    DairyHttpRequest.h \
+    DairyGlobalInstance.h
 
 contains(ANDROID_TARGET_ARCH,armeabi-v7a) {
     ANDROID_EXTRA_LIBS = \

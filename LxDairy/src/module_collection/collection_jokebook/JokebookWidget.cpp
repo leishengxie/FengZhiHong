@@ -1,6 +1,7 @@
 #include "JokebookWidget.h"
 #include "ui_JokebookWidget.h"
 #include "JokeModel.h"
+#include "JokeSortFilterProxyModel.h"
 #include "JokeDelegate.h"
 #include "JokeEditor.h"
 
@@ -23,8 +24,10 @@ CJokebookWidget::CJokebookWidget(QWidget* parent) :
 
     // tableview set
     m_pJokeModel = new CJokeModel(this);
+    m_pProxyModel = new CJokeSortFilterProxyModel;
+    m_pProxyModel->setSourceModel(m_pJokeModel);
     CJokeDelegate* pJokeDelegate = new CJokeDelegate(this);
-    ui->tableView->setModel(m_pJokeModel);
+    ui->tableView->setModel(m_pProxyModel);
     ui->tableView->setItemDelegate(pJokeDelegate);
     ui->tableView->setShowGrid(false);
     ui->tableView->setEditTriggers(QAbstractItemView::SelectedClicked);
@@ -151,8 +154,26 @@ void CJokebookWidget::hideEvent(QHideEvent* event)
 void CJokebookWidget::on_comboBox_currentIndexChanged(int index)
 {
     Q_ASSERT(index < ES_Max);
+
+    // 后台整理
+    m_tJokeListRequest.uId = CDairyApp::userInfo().uid;
     m_tJokeListRequest.nSelectType = index;
+    m_tJokeListRequest.nPageIndex = 1;
     requestJokeList(m_tJokeListRequest);
+
+    // ok, 本地整理 -- 利：减轻后台压力， 弊:因为是分页请求导致未请求的没有加载上
+//    switch (E_SelectType(index))
+//    {
+//    case ES_SelectByWorld:
+//        m_pProxyModel->setSortFilterUid(-1);
+//        break;
+//    case ES_SelectByMyUpload:
+//        m_pProxyModel->setSortFilterUid(CDairyApp::userInfo().uid);
+//        break;
+//    default:
+//        break;
+//    }
+
 }
 
 

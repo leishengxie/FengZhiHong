@@ -67,6 +67,7 @@ enum E_OrderType
 
 struct T_JokeListRequest
 {
+    int uId;
     int nPageIndex; // 页码
     int nPageItems; // 当前页最大条目数
     int nSelectType;

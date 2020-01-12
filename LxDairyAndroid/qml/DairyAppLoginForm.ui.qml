@@ -19,7 +19,6 @@ Rectangle {
     property alias settings: settings
     property alias checkBoxUserName: checkBoxUserName
     property alias checkBoxPasswd: checkBoxPasswd
-    property alias busyIndicator: busyIndicator
 
 
     Settings {
@@ -110,20 +109,20 @@ Rectangle {
                 echoMode: TextInput.Password
             }
 
-//            TextField
-//            {
-//                id: lineInputUser
-//                placeholderText: "请输入用户号"
-//                text: settings.strUserName
-//            }
+            //            TextField
+            //            {
+            //                id: lineInputUser
+            //                placeholderText: "请输入用户号"
+            //                text: settings.strUserName
+            //            }
 
-//            TextField
-//            {
-//                id: lineInputPasswd
-//                placeholderText: "请输入密码"
-//                text: settings.strPasswd
-//                echoMode: TextInput.Password
-//            }
+            //            TextField
+            //            {
+            //                id: lineInputPasswd
+            //                placeholderText: "请输入密码"
+            //                text: settings.strPasswd
+            //                echoMode: TextInput.Password
+            //            }
 
 
             Row {
@@ -155,14 +154,7 @@ Rectangle {
         }
     }
 
-    BusyIndicator {
-        id: busyIndicator
-        anchors.centerIn: parent
-        implicitWidth: 96
-        implicitHeight: 96
-        opacity: running ? 0.0 : 1.0
-        //contentItem: BusyIndicator{}
-    }
+
 
 
 }
