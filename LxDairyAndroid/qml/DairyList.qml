@@ -45,92 +45,136 @@ DairyListForm {
         color: "snow"
 
         // 定义项的默认固定高度
+        property int constant_width: ListView.view.width
+        property int constant_width_extra: ListView.view.width*0.25
         property int constant_height: ListView.view.height * 0.08
+        readonly property int constant_space: 5;
 
         Flickable {
-            width: parent.width
+            id: listItem
+            width: parent.constant_width
             height: parent.constant_height
 
-            contentWidth: width + 200
+            contentWidth: parent.constant_width + parent.constant_width_extra
             contentHeight: parent.constant_height
 
-        Row{
-            id: rowItem
-            width: parent.width + 200
-            height: parent.constant_height
-            spacing: 5
-
-            Rectangle{//选中当前 颜色高亮
-                id:curRect
-                width: 5
-                height: parent.height
-                color: index===delegateDiary.ListView.view.currentIndex ? "lightseagreen" : "black"//选中颜色设置
-            }
-
-            Rectangle {
-                implicitWidth: parent.height*0.5
-                implicitHeight: parent.height*0.5
-                anchors.verticalCenter: parent.verticalCenter
-                radius: parent.height*0.5;
-                color: "#81EE8E"
-                Text {
-                    anchors.centerIn: parent
-                    text: weather
+            rebound: Transition {
+                NumberAnimation {
+                    properties: "x,y"
+                    duration: 1000
+                    easing.type: Easing.OutBounce
                 }
             }
 
-            ColumnLayout {
-                width: parent.width - 32*2 - rectTag.width
-                height: parent.height
-                id: col
-                Text {
-                    id: textTitle
-                    text: title
-                    font.bold: true
-                }
-                Text {
-                    id: textDataTime
-                    text: date
-                }
-            }
+            MouseArea {
+                id: mouseAreaListItem
+                anchors.fill: parent
+                onClicked: {
+                    //delegateDiary.ListView.view.currentIndex = index;
+                    //parent.state = "expanded"
+                    delegateDiary.state == 'expanded' ? delegateDiary.state = '' : delegateDiary.state = 'expanded'
 
-            Rectangle {
-                id: rectTag
-                anchors.rightMargin: 2
-                anchors.verticalCenter: parent.verticalCenter
-                width: textTag.width + 5
-                height: parent.height*0.5;
-                radius: 5;
-                border.color: "palegreen"
-                border.width: 2
-                color: "springgreen"
-                Text {
-                    id: textTag
-                    anchors.centerIn: parent
-                    text: tag
+                    //toDairyEdit(did, title, content);
+
+                    //                    //listViewDairyList.
+                    //                    dairyListModel.curIndex = index;
+                    //                    //modelData
+                }
+                onPressAndHold: {
+
                 }
             }
 
+            Row{
+                width: delegateDiary.constant_width + delegateDiary.constant_width_extra
+                height: delegateDiary.constant_height
+                spacing: delegateDiary.constant_space
 
-        }
-        MouseArea {
-            id: mouseAreaListItem
-            anchors.fill: parent
-            onClicked: {
-                //delegateDiary.ListView.view.currentIndex = index;
-                //parent.state = "expanded"
-                delegateDiary.state == 'expanded' ? delegateDiary.state = '' : delegateDiary.state = 'expanded'
+                Rectangle{//选中当前 颜色高亮
+                    id:curRect
+                    width: 5
+                    height: parent.height
+                    color: index===delegateDiary.ListView.view.currentIndex ? "lightseagreen" : "black"//选中颜色设置
+                }
 
-                //toDairyEdit(did, title, content);
+                Rectangle {
+                    id: rectWeather
+                    implicitWidth: parent.height*0.5
+                    implicitHeight: parent.height*0.5
+                    anchors.verticalCenter: parent.verticalCenter
+                    radius: parent.height*0.5;
+                    color: "#81EE8E"
+                    Text {
+                        anchors.centerIn: parent
+                        text: weather
+                    }
+                }
 
-                //                    //listViewDairyList.
-                //                    dairyListModel.curIndex = index;
-                //                    //modelData
+                ColumnLayout {
+                    width: delegateDiary.constant_width - curRect.width - rectWeather.width - rectTag.width
+                           - delegateDiary.constant_space*5
+                    height: parent.height
+                    id: col
+                    Text {
+                        id: textTitle
+                        text: title
+                        font.bold: true
+                    }
+                    Text {
+                        id: textDataTime
+                        text: date
+                    }
+                }
+
+                Rectangle {
+                    id: rectTag
+                    anchors.rightMargin: 2
+                    anchors.verticalCenter: parent.verticalCenter
+                    width: textTag.width + 5
+                    height: parent.height*0.5;
+                    radius: 5;
+                    border.color: "palegreen"
+                    border.width: 2
+                    color: "springgreen"
+                    Text {
+                        id: textTag
+                        anchors.centerIn: parent
+                        text: tag
+                    }
+                }
+
+                Rectangle {
+                    width: delegateDiary.constant_width_extra*0.5
+                    height: parent.height;
+                    anchors.verticalCenter: parent.verticalCenter
+                    Image {
+                        id: imgEdit
+                        anchors.centerIn: parent
+                        source: "qrc:/img/edit.png"
+                    }
+                    MouseArea {
+                        id: mouseAreaEdit
+                        anchors.fill: parent
+                        onClicked: {
+                            toDairyEdit(did, title, content);
+                        }
+                    }
+                }
+
+                Rectangle {
+                    width: delegateDiary.constant_width_extra*0.5
+                    height: parent.height;
+                    anchors.verticalCenter: parent.verticalCenter
+                    Image {
+                        id: imgDelete
+                        anchors.centerIn: parent
+                        source: "qrc:/img/delete.png"
+
+                    }
+                }
+
             }
-            onPressAndHold: {
 
-            }
-        }
         }
 
 
@@ -138,7 +182,7 @@ DairyListForm {
         Item {
             id: factsView
 
-            anchors.top: rowItem.bottom
+            anchors.top: listItem.bottom
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.bottom: parent.bottom

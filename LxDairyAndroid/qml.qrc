@@ -18,5 +18,7 @@
         <file>qml/global/QmlGlobalObj.qml</file>
         <file>qml/loading/BusyIndicatorLoading.qml</file>
         <file>qml/tip/Toast.qml</file>
+        <file>img/edit.png</file>
+        <file>img/delete.png</file>
     </qresource>
 </RCC>
