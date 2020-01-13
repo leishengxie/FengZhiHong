@@ -13,12 +13,14 @@ class QJSEngine;
 class CDairyGlobalInstance : public QObject, public CSingleton<CDairyGlobalInstance>
 {
     Q_OBJECT
+    //Q_PROPERTY(QString data READ data WRITE setData NOTIFY dataChanged)
 public:
     explicit CDairyGlobalInstance(QObject *parent = 0);
 
 signals:
     void httpLoading();
     void httpLoadingFinished();
+    void toast(QString strTip);
 
 public slots:
 };

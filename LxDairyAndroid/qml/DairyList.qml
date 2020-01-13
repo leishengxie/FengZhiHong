@@ -43,12 +43,20 @@ DairyListForm {
         width: ListView.view.width
         height: ListView.view.height * 0.08
         color: "snow"
+
         // 定义项的默认固定高度
         property int constant_height: ListView.view.height * 0.08
 
+        Flickable {
+            width: parent.width
+            height: parent.constant_height
+
+            contentWidth: width + 200
+            contentHeight: parent.constant_height
+
         Row{
             id: rowItem
-            width: parent.width
+            width: parent.width + 200
             height: parent.constant_height
             spacing: 5
 
@@ -102,15 +110,16 @@ DairyListForm {
                     text: tag
                 }
             }
-        }
 
+
+        }
         MouseArea {
             id: mouseAreaListItem
             anchors.fill: parent
             onClicked: {
-                delegateDiary.ListView.view.currentIndex = index;
+                //delegateDiary.ListView.view.currentIndex = index;
                 //parent.state = "expanded"
-                parent.state == 'expanded' ? parent.state = '' : parent.state = 'expanded'
+                delegateDiary.state == 'expanded' ? delegateDiary.state = '' : delegateDiary.state = 'expanded'
 
                 //toDairyEdit(did, title, content);
 
@@ -118,7 +127,12 @@ DairyListForm {
                 //                    dairyListModel.curIndex = index;
                 //                    //modelData
             }
+            onPressAndHold: {
+
+            }
         }
+        }
+
 
         // 形变代理
         Item {
@@ -170,7 +184,9 @@ DairyListForm {
 
                 PropertyChanges { target: delegateDiary; height: delegateDiary.ListView.view.height*0.5 }
                 PropertyChanges { target: factsView; opacity: 1 }
-                PropertyChanges { target: delegateDiary.ListView.view; contentY: delegateDiary.y; interactive: false }
+                //PropertyChanges { target: delegateDiary.ListView.view; contentY: delegateDiary.y; interactive: false }
+                // interactive 取消禁用交互
+                PropertyChanges { target: delegateDiary.ListView.view; contentY: delegateDiary.y}
             }
         ]
 

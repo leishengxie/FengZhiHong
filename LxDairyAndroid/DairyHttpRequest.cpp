@@ -111,7 +111,9 @@ void CDairyHttpRequest::login(QString strUserName, QString strPasswd, QJSValue j
         QJSValueList paramList;
         paramList.append(val);
         qDebug() << m_jsValue.call(paramList).toBool();  //js fucntion的返回值
+
         CDairyGlobalInstance::getInstance()->httpLoadingFinished();
+        CDairyGlobalInstance::getInstance()->toast("登录成功");
 
     });
 
@@ -166,7 +168,8 @@ void CDairyHttpRequest::uploadDairy(int did, QString strTitle, QString strConten
 
 //        if (dairy.isNewDairy())
 //        {
-            CLToast::showStr(NULL, "提交成功");
+            //CLToast::showStr(NULL, "提交成功");
+        //CDairyGlobalInstance::getInstance()->toast("提交成功");
 //            CModelManager::getInstance()->dairyListModel()->addDairy(dairySaved);
 
 //            //emit saveDairyfinished(dairy, dairySaved);

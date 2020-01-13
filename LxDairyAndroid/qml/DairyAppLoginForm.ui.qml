@@ -81,7 +81,7 @@ Rectangle {
 
         Text {
             id: title
-            text: "登陆"
+            text: "登录"
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
             font.bold: true
             font.pointSize: login_gui.height * 0.05 * 0.7
@@ -145,7 +145,7 @@ Rectangle {
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
             GradientButton {
                 id: btn_login
-                text: "登陆"
+                text: "登录"
             }
             GradientButton {
                 id: btn_quit
