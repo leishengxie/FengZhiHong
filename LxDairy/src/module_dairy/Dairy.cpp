@@ -58,3 +58,16 @@ QDataStream &operator<<(QDataStream &out, const T_DairyListResp &data)
     out << data.nTotalItems << data.dairyList;
     return out;
 }
+
+
+QDataStream &operator>>(QDataStream &in, T_DairyDeleteReq &data)
+{
+    in >> data.dairyList;
+    return in;
+}
+
+QDataStream &operator<<(QDataStream &out, const T_DairyDeleteReq &data)
+{
+    out << data.dairyList;
+    return out;
+}

@@ -69,6 +69,8 @@ private slots:
 
 
 
+    void on_action_download_android_triggered();
+
 private:
     Ui::DairyMainWindow *ui;
 

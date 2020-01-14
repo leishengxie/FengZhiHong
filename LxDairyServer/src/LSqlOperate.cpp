@@ -316,6 +316,12 @@ void CLSqlOperate::getDairyList(const T_DairyListRequest &tDairyListRequest
 
 }
 
+// 根据需求，用户的日记数据不是特别重要，直接使用物理删除，不必用逻辑删除
+void CLSqlOperate::deleteDairy(const T_DairyDeleteReq &tDairyDeleteReq, T_HttpStatusMsg &tHttpStatusMsg)
+{
+
+}
+
 
 
 void CLSqlOperate::saveUserUploadJoke(const T_Joke & tJoke, T_HttpStatusMsg & tHttpStatusMsg)

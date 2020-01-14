@@ -1,6 +1,8 @@
 import QtQuick 2.4
 import lxdairy.qt.http 1.0
 import QtQuick.Layouts 1.3
+import QtQuick.Controls 1.4
+import Qt.labs.controls 1.0
 
 DairyListForm {
     anchors.fill: parent
@@ -50,6 +52,14 @@ DairyListForm {
         property int constant_height: ListView.view.height * 0.08
         readonly property int constant_space: 5;
 
+//        Drawer {
+//        }
+
+//        ScrollView {
+
+//        }
+        // qml 控件大全
+
         Flickable {
             id: listItem
             width: parent.constant_width
@@ -66,10 +76,22 @@ DairyListForm {
                 }
             }
 
+            //leftMargin :1
+            //boundsBehavior: Flickable.StopAtBounds
+            flickableDirection : Flickable.HorizontalFlick
+
+
             MouseArea {
                 id: mouseAreaListItem
                 anchors.fill: parent
                 onClicked: {
+                    if (!listItem.atXBeginning)
+                    {
+                        listItem.contentX = 0;
+                        console.log("not atXBeginning ")
+                        return;
+                    }
+
                     //delegateDiary.ListView.view.currentIndex = index;
                     //parent.state = "expanded"
                     delegateDiary.state == 'expanded' ? delegateDiary.state = '' : delegateDiary.state = 'expanded'

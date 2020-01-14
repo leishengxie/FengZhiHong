@@ -77,8 +77,8 @@ HEADERS += \
     $$PWD/UserInfo.h \
     $$PWD/module_dairy/dairy_date/DairyDateTreeView.h \
     $$PWD/module_dairy/dairy_tag/DairyTagListView.h \
-    $$PWD/module_collection/collection_jokebook/JokeSortFilterProxyModel.h
-
+    $$PWD/module_collection/collection_jokebook/JokeSortFilterProxyModel.h \
+    $$PWD/DownloadDialog.h
 
 SOURCES += \
     $$PWD/core/LBaseWidget.cpp \
@@ -144,7 +144,8 @@ SOURCES += \
     $$PWD/UserInfo.cpp \
     $$PWD/module_dairy/dairy_date/DairyDateTreeView.cpp \
     $$PWD/module_dairy/dairy_tag/DairyTagListView.cpp \
-    $$PWD/module_collection/collection_jokebook/JokeSortFilterProxyModel.cpp
+    $$PWD/module_collection/collection_jokebook/JokeSortFilterProxyModel.cpp \
+    $$PWD/DownloadDialog.cpp
 
 
 FORMS += \
@@ -163,4 +164,5 @@ FORMS += \
     $$PWD/module_dairy/dairy_edit/DairyEditWidget.ui \
     $$PWD/module_dairy/dairy_statistics/DairyStatisticsWidget.ui \
     $$PWD/module_dairy/dairy_edit/DairyEditMainWidget.ui \
-    $$PWD/module_collection/collection_jokebook/JokeEditor.ui
+    $$PWD/module_collection/collection_jokebook/JokeEditor.ui \
+    $$PWD/DownloadDialog.ui

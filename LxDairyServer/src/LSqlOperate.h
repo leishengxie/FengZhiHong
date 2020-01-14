@@ -44,6 +44,7 @@ public:
      void getDairyList(const T_DairyListRequest & tDairyListRequest
                       , T_DairyListResp & tDairyListResp
                       , T_HttpStatusMsg &tHttpStatusMsg);
+     void deleteDairy(const T_DairyDeleteReq & tDairyDeleteReq, T_HttpStatusMsg &tHttpStatusMsg);
 
      void saveUserUploadJoke(const T_Joke & tJoke, T_HttpStatusMsg &tHttpStatusMsg);
      void getJokeList(const T_JokeListRequest & tJokeListRequest

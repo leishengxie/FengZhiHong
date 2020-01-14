@@ -99,4 +99,16 @@ struct T_DairyListResp
     friend QDataStream & operator<<(QDataStream & out, const T_DairyListResp & data);
 };
 
+struct T_DairyDeleteReq
+{
+    QList<T_Dairy> dairyList;
+    T_DairyDeleteReq()
+    {
+
+    }
+
+    friend QDataStream & operator>>(QDataStream & in, T_DairyDeleteReq & data);
+    friend QDataStream & operator<<(QDataStream & out, const T_DairyDeleteReq & data);
+};
+
 #endif // CDAIRY_H

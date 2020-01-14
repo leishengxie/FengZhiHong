@@ -169,7 +169,7 @@ void CDairyHttpRequest::uploadDairy(int did, QString strTitle, QString strConten
 //        if (dairy.isNewDairy())
 //        {
             //CLToast::showStr(NULL, "提交成功");
-        //CDairyGlobalInstance::getInstance()->toast("提交成功");
+        CDairyGlobalInstance::getInstance()->toast("提交成功");
 //            CModelManager::getInstance()->dairyListModel()->addDairy(dairySaved);
 
 //            //emit saveDairyfinished(dairy, dairySaved);

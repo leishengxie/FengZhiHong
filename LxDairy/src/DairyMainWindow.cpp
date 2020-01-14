@@ -13,6 +13,7 @@
 #include "music/LMusicPlayer.h"
 #include "tts/windows/LWindowsTTSS.h"
 #include "AboutDialog.h"
+#include "DownloadDialog.h"
 #include "DairyApp.h"
 #include "LEvent.h"
 #include "DairyAppStation.h"
@@ -234,3 +235,9 @@ void CDairyMainWindow::on_action_music_triggered()
 
 
 
+
+void CDairyMainWindow::on_action_download_android_triggered()
+{
+    CDownloadDialog downloadDialog(this);
+    downloadDialog.exec();
+}

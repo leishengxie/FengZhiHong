@@ -111,10 +111,17 @@
     <addaction name="action_skin"/>
     <addaction name="action_music"/>
    </widget>
+   <widget class="QMenu" name="menu_download">
+    <property name="title">
+     <string>下载 (&amp;D)</string>
+    </property>
+    <addaction name="action_download_android"/>
+   </widget>
    <addaction name="menu_F"/>
    <addaction name="menu_F_2"/>
    <addaction name="menu_Q"/>
    <addaction name="menu_T"/>
+   <addaction name="menu_download"/>
    <addaction name="menu_H"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
@@ -251,6 +258,14 @@
   <action name="action_music">
    <property name="text">
     <string>心情音乐设置</string>
+   </property>
+  </action>
+  <action name="action_download_android">
+   <property name="text">
+    <string>下载Android版</string>
+   </property>
+   <property name="toolTip">
+    <string>下载本应用到Android系统手机、平板等设备中</string>
    </property>
   </action>
  </widget>
