@@ -16,6 +16,7 @@ DESTDIR = $$PWD/bin
 message("hello LxDairy!")
 
 DEFINES += LX_DAIRY_APP
+DEFINES += ENABLE_ENCODER_GENERIC
 
 RESOURCES += \
     res.qrc
@@ -38,12 +39,15 @@ INCLUDEPATH += $$PWD/../../LxTool/LQtTool/include
 DEPENDPATH += $$PWD/../../LxTool/LQtTool/include
 INCLUDEPATH += $$PWD/../../LxMultimedia/LxTTS/include
 DEPENDPATH += $$PWD/../../LxMultimedia/LxTTS/include
+INCLUDEPATH += $$PWD/../../qtThirdParty/install/qzxing/include
+DEPENDPATH += $$PWD/../../qtThirdParty/install/qzxing/include
 
 #链接#
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../LxTool/LQtTool/bin/ -lLQtTool
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../LxTool/LQtTool/bin/ -lLQtToold
 else:unix: LIBS += -L$$PWD/../../LxTool/LQtTool/bin/ -lLQtTool
 win32: LIBS += -L$$PWD/../../LxMultimedia/LxTTS/lib/ -lTTS_Win32
+win32: LIBS += -L$$PWD/../../qtThirdParty/install/qzxing/lib/ -lQZXing2
 
 #copy dll
 win32{
@@ -86,4 +90,6 @@ win32 {
 
 include($$PWD/src/src.pri)
 #include($$PWD/src/src_net_appointments.pri)
+
+
 
