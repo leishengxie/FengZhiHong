@@ -64,6 +64,7 @@ DairyListForm {
             id: listItem
             width: parent.constant_width
             height: parent.constant_height
+            z: 1
 
             contentWidth: parent.constant_width + parent.constant_width_extra
             contentHeight: parent.constant_height
@@ -139,11 +140,13 @@ DairyListForm {
                     id: col
                     Text {
                         id: textTitle
+                        Layout.alignment: Qt.AlignBottom
                         text: title
                         font.bold: true
                     }
                     Text {
                         id: textDataTime
+                        Layout.alignment: Qt.AlignTop
                         text: date
                     }
                 }

@@ -10,7 +10,9 @@ Rectangle {
     property alias mouseAreaUpload: mouseAreaUpload
     property alias mouseAreaBack: mouseAreaBack
     property alias strTitle: lineInputTitle.text
+    property alias textEditContent: textEditContent
     property alias strContent: textEditContent.text
+    property alias flick: flick
     property int did: -1
 
     ColumnLayout {
@@ -52,13 +54,23 @@ Rectangle {
             }
         }
 
-        TextEdit {
-            id: textEditContent
-            text: qsTr("")
-            focus: true
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-        }
+
+        Flickable {
+              id: flick
+              Layout.fillHeight: true
+              Layout.fillWidth: true
+              contentWidth: textEditContent.paintedWidth
+              contentHeight: textEditContent.paintedHeight
+              clip: true
+              TextEdit {
+                  id: textEditContent
+                  width: flick.width
+                  height: flick.height
+                  focus: true
+                  wrapMode: TextEdit.Wrap
+                  //selectByMouse: true
+              }
+          }
 
         Rectangle {
             id: rectangleCommit
