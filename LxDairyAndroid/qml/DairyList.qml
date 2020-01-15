@@ -1,8 +1,8 @@
 import QtQuick 2.4
 import lxdairy.qt.http 1.0
 import QtQuick.Layouts 1.3
-import QtQuick.Controls 1.4
-import Qt.labs.controls 1.0
+//import QtQuick.Controls 1.4
+//import Qt.labs.controls 1.0
 
 DairyListForm {
     anchors.fill: parent
@@ -48,7 +48,7 @@ DairyListForm {
 
         // 定义项的默认固定高度
         property int constant_width: ListView.view.width
-        property int constant_width_extra: ListView.view.width*0.25
+        property int constant_width_extra: ListView.view.width*0.3
         property int constant_height: ListView.view.height * 0.08
         readonly property int constant_space: 5;
 
@@ -171,6 +171,8 @@ DairyListForm {
                     anchors.verticalCenter: parent.verticalCenter
                     Image {
                         id: imgEdit
+                        height: parent.height*0.5
+                        width: parent.height*0.5
                         anchors.centerIn: parent
                         source: "qrc:/img/edit.png"
                     }
@@ -189,6 +191,8 @@ DairyListForm {
                     anchors.verticalCenter: parent.verticalCenter
                     Image {
                         id: imgDelete
+                        height: parent.height*0.5
+                        width: parent.height*0.5
                         anchors.centerIn: parent
                         source: "qrc:/img/delete.png"
 
