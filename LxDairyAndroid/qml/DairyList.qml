@@ -138,15 +138,20 @@ DairyListForm {
                            - delegateDiary.constant_space*5
                     height: parent.height
                     id: col
+                    spacing: 0
                     Text {
                         id: textTitle
                         Layout.alignment: Qt.AlignBottom
+                        verticalAlignment: Text.AlignBottom
+                        Layout.topMargin: 5
                         text: title
                         font.bold: true
                     }
                     Text {
                         id: textDataTime
                         Layout.alignment: Qt.AlignTop
+                        verticalAlignment: Text.AlignTop
+                        Layout.bottomMargin : 5
                         text: date
                     }
                 }

@@ -25,7 +25,7 @@ RESOURCES += \
 #RC_FILE += icon.rc
 #RC_FILE += version.rc
 RC_ICONS = "img/appIcon/app.ico"
-VERSION = 0.2.0.0
+VERSION = 0.3.0.0
 QMAKE_TARGET_PRODUCT = LxDairy
 QMAKE_TARGET_COMPANY = Lx
 QMAKE_TARGET_DESCRIPTION = this is a personal diary
@@ -56,7 +56,8 @@ win32{
 copy_deps.target=copy_lqttool
 copy_deps.depends=FORCE
 copy_deps.commands = copy $$PWD/../../LxTool/LQtTool/bin/LQtTool.dll $$PWD/bin && \
-                     copy $$PWD/../../LxMultimedia/LxTTS/lib/TTS_Win32.dll $$PWD/bin
+                     copy $$PWD/../../LxMultimedia/LxTTS/lib/TTS_Win32.dll $$PWD/bin && \
+                        copy $$PWD/../../qtThirdParty/install/qzxing/lib/QZXing2.dll $$PWD/bin
 # POST_TARGETDEPS:The target will run after build finished
 POST_TARGETDEPS += copy_lqttool
 QMAKE_EXTRA_TARGETS += copy_deps
