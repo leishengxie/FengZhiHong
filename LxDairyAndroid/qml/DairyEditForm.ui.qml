@@ -1,5 +1,7 @@
 import QtQuick 2.4
 import QtQuick.Layouts 1.3
+//import Qt.labs.controls 1.0
+import QtQuick.Controls 1.4
 import "./com_input"
 
 Rectangle {
@@ -66,10 +68,21 @@ Rectangle {
                   id: textEditContent
                   width: flick.width
                   height: flick.height
+                  //canPaste: true ---is read only
                   focus: true
                   wrapMode: TextEdit.Wrap
-                  //selectByMouse: true
-              }
+                  selectByMouse: true
+
+                  //onClicked: menu.open()
+
+//                          Menu {
+//                              id: menu
+//                              Action { text: "剪切" }
+//                              Action { text: "复制" }
+//                              Action { text: "粘贴" }
+//                          }
+
+//              }
           }
 
         Rectangle {
