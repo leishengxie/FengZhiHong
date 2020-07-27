@@ -4,6 +4,7 @@
 #include "QZXing.h"
 #include <QPixmap>
 
+static const char* const URL_LXDAIRY_WINDOWS = "http://47.104.141.61/LxDairy0.2.0.1.exe";
 static const char* const URL_APK = "http://47.104.141.61/QtApp-debug.apk";
 
 CDownloadDialog::CDownloadDialog(QWidget *parent) :
