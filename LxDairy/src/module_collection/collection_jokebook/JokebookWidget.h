@@ -13,6 +13,7 @@ class CJokebookWidget;
 }
 
 class CJokeEditor;
+class CJokeModel;
 
 class CJokebookWidget : public QWidget
 {

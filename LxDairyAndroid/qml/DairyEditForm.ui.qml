@@ -58,55 +58,47 @@ Rectangle {
 
 
         Flickable {
-              id: flick
-              Layout.fillHeight: true
-              Layout.fillWidth: true
-              contentWidth: textEditContent.paintedWidth
-              contentHeight: textEditContent.paintedHeight
-              clip: true
-              TextEdit {
-                  id: textEditContent
-                  width: flick.width
-                  height: flick.height
-                  //canPaste: true ---is read only
-                  focus: true
-                  wrapMode: TextEdit.Wrap
-                  selectByMouse: true
-
-                  //onClicked: menu.open()
-
-//                          Menu {
-//                              id: menu
-//                              Action { text: "剪切" }
-//                              Action { text: "复制" }
-//                              Action { text: "粘贴" }
-//                          }
-
-//              }
-          }
-
-        Rectangle {
-            id: rectangleCommit
-            Layout.preferredHeight: parent.height*0.08
-            color: "lightgray"
+            id: flick
+            Layout.fillHeight: true
             Layout.fillWidth: true
+            contentWidth: textEditContent.paintedWidth
+            contentHeight: textEditContent.paintedHeight
+            clip: true
+            TextArea {
+                id: textEditContent
+                width: flick.width
+                height: flick.height
+                canPaste: true
+                focus: true
+                wrapMode: TextEdit.Wrap
+                selectByMouse: true
+
+            }
+            }
+
             Rectangle {
-                height: parent.height*0.8
-                width: height*1.5
-                color: "#ffffff"
-                anchors.centerIn: parent
-
-                Text {
-                    id: textUpload
-                    text: qsTr("提交")
+                id: rectangleCommit
+                Layout.preferredHeight: parent.height*0.08
+                color: "lightgray"
+                Layout.fillWidth: true
+                Rectangle {
+                    height: parent.height*0.8
+                    width: height*1.5
+                    color: "#ffffff"
                     anchors.centerIn: parent
-                }
 
-                MouseArea {
-                    id: mouseAreaUpload
-                    anchors.fill: parent
+                    Text {
+                        id: textUpload
+                        text: qsTr("提交")
+                        anchors.centerIn: parent
+                    }
+
+                    MouseArea {
+                        id: mouseAreaUpload
+                        anchors.fill: parent
+                    }
                 }
             }
         }
     }
-}
+

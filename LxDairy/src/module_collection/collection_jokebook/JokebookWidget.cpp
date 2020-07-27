@@ -14,6 +14,7 @@
 #include "NetAppointments.h"
 #include "DairyApp.h"
 #include "LToast.h"
+#include "JokeModel.h"
 
 
 CJokebookWidget::CJokebookWidget(QWidget* parent) :

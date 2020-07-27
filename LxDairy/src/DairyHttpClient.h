@@ -3,7 +3,7 @@
 
 #include "LHttpClient.h"
 
-struct T_DairyUserData : QObjectUserData
+struct T_DairyUserData : public QObjectUserData
 {
     int nTag;   // 唯一标示
    bool bAsync; // 是否异步
@@ -22,7 +22,9 @@ struct T_DairyUserData : QObjectUserData
 
    }
 };
-Q_DECLARE_METATYPE(T_DairyUserData)
+
+/*注意，qt5.8后 QOb已申明jectUserDataQ_DISABLE_COPY， 故这里不要Q_DECLARE_METATYPE*/
+//Q_DECLARE_METATYPE(T_DairyUserData)
 
 
 enum E_RequsetType
