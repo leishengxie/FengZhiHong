@@ -1,6 +1,6 @@
-import QtQuick 2.5
-import QtQuick.Window 2.2
-import QtQuick.Controls 1.4
+import QtQuick 2.12
+import QtQuick.Window 2.12
+import QtQuick.Controls 2.12
 import lxdairy.global 1.0
 import lxdairy.cpp.global 1.0
 import "./global" //本方法导入单例貌似不灵, 所以又导入lxdairy.global 1.0
@@ -12,68 +12,42 @@ Window {
     width: 480
     height: 800
     title: qsTr("LxDairy")
+
+    // 主界面显示区域
     Rectangle {
-        id: rectMain
+        id: rectCenter
         anchors.fill: parent
-    //property Component componentCur: null;
-    property var objLogin: null;
-    property var objMain: null;
+        //property Component componentCur: null;
+        property var objLogin: null;
+        property var objMain: null;
 
 
-    function loginSucess() {
-        rectMain.objLogin.destroy();
-        rectMain.objMain = Qt.createComponent("DairyAppMain.qml").createObject(rectMain);
-    }
-
-    // 搜 组件与对象动态创建详解----（Qt Quick 教程六）
-    Component.onCompleted: {
-        // 使用Component动态加载场景
-        console.log(QmlGlobalObj.appName);
-        rectMain.objLogin = Qt.createComponent("DairyAppLogin.qml").createObject(rectMain);
-        rectMain.objLogin.loginSucess.connect(rectMain.loginSucess);
-
-    }
-
-    Component.onDestruction: {
-        if (null !== rectMain.objLogin) {
-            rectMain.objLogin.destroy();
+        function loginSucess() {
+            rectCenter.objLogin.destroy();
+            rectCenter.objMain = Qt.createComponent("DairyAppMain.qml").createObject(rectCenter);
         }
-        if (null !== rectMain.objMain) {
-            rectMain.objMain.destroy();
-        }
-    }
-    }
 
+        // 搜 组件与对象动态创建详解----（Qt Quick 教程六）
+        Component.onCompleted: {
+            // 使用Component动态加载场景
+            console.log(QmlGlobalObj.appName);
+            rectCenter.objLogin = Qt.createComponent("DairyAppLogin.qml").createObject(rectCenter);
+            rectCenter.objLogin.loginSucess.connect(rectCenter.loginSucess);
 
-    Connections {
-        target: DairyGlobalInstance
-        onHttpLoading: {
-            busyIndicator.running = true
-            console.log("oHttpLoading")
         }
-        onHttpLoadingFinished: {
-            busyIndicator.running = false
-        }
-        onToast: {
-            //console.log(strTip)
-            toast.showToast(strTip)
+
+        Component.onDestruction: {
+            if (null !== rectCenter.objLogin) {
+                rectCenter.objLogin.destroy();
+            }
+            if (null !== rectCenter.objMain) {
+                rectCenter.objMain.destroy();
+            }
         }
     }
 
 
-    // -qmljsdebugger=port:26666
 
-    // 等待指示器
-    //    BusyIndicator {
-    //        id: busyIndicator
-    //        anchors.centerIn: parent
-    //        implicitWidth: 96
-    //        implicitHeight: 96
-    //        opacity: running ? 0.0 : 1.0
-    //        //contentItem: BusyIndicator{}
-    //    }
-
-    // 繁忙指示器组件被用于指明内容被加载或UI被阻塞在等待资源可用中。
     // qml自带的
     BusyIndicator {
         id:busyIndicator
@@ -94,8 +68,31 @@ Window {
 
     }
 
+    //
     Toast {
         id: toast
         anchors.centerIn: parent
     }
+
+
+    /*
+      相关函数
+      */
+    Connections {
+        target: DairyGlobalInstance
+        onHttpLoading: {
+            busyIndicator.running = true
+            console.log("oHttpLoading")
+        }
+        onHttpLoadingFinished: {
+            busyIndicator.running = false
+        }
+        onToast: {
+            //console.log(strTip)
+            toast.showToast(strTip)
+        }
+    }
+
+
+    // -qmljsdebugger=port:26666
 }

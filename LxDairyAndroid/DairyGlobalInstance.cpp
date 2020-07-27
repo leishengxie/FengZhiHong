@@ -13,7 +13,7 @@ QObject *provider(QQmlEngine *engine, QJSEngine *scriptEngine)
 {
     Q_UNUSED(engine)
     Q_UNUSED(scriptEngine)
-    qDebug() << "-----provider------";
+    qDebug() << __FUNCTION__ <<__LINE__;
     CDairyGlobalInstance * p = CDairyGlobalInstance::getInstance();
     QQmlEngine::setObjectOwnership(p, QQmlEngine::CppOwnership);
     return p;

@@ -20,6 +20,7 @@
 
 int main(int argc, char *argv[])
 {
+    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     CDairyAndroidApp app(argc, argv);
     //QApplication app(argc, argv);
 

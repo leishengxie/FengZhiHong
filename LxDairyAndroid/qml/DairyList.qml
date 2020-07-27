@@ -1,6 +1,6 @@
-import QtQuick 2.4
+import QtQuick 2.12
 import lxdairy.qt.http 1.0
-import QtQuick.Layouts 1.3
+import QtQuick.Layouts 1.12
 //import QtQuick.Controls 1.4
 //import Qt.labs.controls 1.0
 
@@ -52,12 +52,12 @@ DairyListForm {
         property int constant_height: ListView.view.height * 0.08
         readonly property int constant_space: 5;
 
-//        Drawer {
-//        }
+        //        Drawer {
+        //        }
 
-//        ScrollView {
+        //        ScrollView {
 
-//        }
+        //        }
         // qml 控件大全
 
         Flickable {
@@ -102,9 +102,6 @@ DairyListForm {
                     //                    //listViewDairyList.
                     //                    dairyListModel.curIndex = index;
                     //                    //modelData
-                }
-                onPressAndHold: {
-
                 }
             }
 

@@ -1,6 +1,17 @@
 import QtQuick 2.4
 import QtGraphicalEffects 1.0
 
+// 等待指示器
+//    BusyIndicator {
+//        id: busyIndicator
+//        anchors.centerIn: parent
+//        implicitWidth: 96
+//        implicitHeight: 96
+//        opacity: running ? 0.0 : 1.0
+//        //contentItem: BusyIndicator{}
+//    }
+
+// 繁忙指示器组件被用于指明内容被加载或UI被阻塞在等待资源可用中。
 Item {
     property alias running: rotationAnimation.running
     Rectangle {

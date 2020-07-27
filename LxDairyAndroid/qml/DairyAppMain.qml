@@ -1,6 +1,6 @@
-import QtQuick 2.4
-import QtQuick.Window 2.2
-import QtQuick.Controls 1.4
+import QtQuick 2.12
+import QtQuick.Window 2.12
+import QtQuick.Controls 2.12
 
 
 // Item继承自c++ 的QQuickItem, 源文件所在路径为:
@@ -28,17 +28,19 @@ Item {
     //                "Tumbler": tumbler
     //    }
 
-//    // eg
-//    Component {
-//        id: component1
-//        Item {
-//            id: name
-//        }
-//    }
-//    property Component componentTest: component1;
+    //    // eg
+    //    Component {
+    //        id: component1
+    //        Item {
+    //            id: name
+    //        }
+    //    }
+    //    property Component componentTest: component1;
 
     //property Component componentDairyEdit: Qt.createComponent("DairyEdit.qml");
     // componentDairyEdit为变量
+
+    // componentDairyEdit当前已经实例化了
     property Component componentDairyEdit: DairyEdit {
         id: dairyEdit
 
@@ -46,9 +48,9 @@ Item {
 
     // 使用StackView切换场景
     //
-//    SwipeView {
+    //    SwipeView {
 
-//    }
+    //    }
 
     Rectangle {
         id: ahel
@@ -77,10 +79,10 @@ Item {
 
                 // 传值失败
                 // dairyEdit貌似还没有实例化
-//                dairyEdit.strTitle = strTitle;
-//                dairyEdit.strContent = strContent;
-//                ahel.sss = 3;
-//                stackView.push({item: componentDairyEdit});
+                //                dairyEdit.strTitle = strTitle;
+                //                dairyEdit.strContent = strContent;
+                //                ahel.sss = 3;
+                //                stackView.push({item: componentDairyEdit});
 
                 // 传值失败
                 //stackView.push({item: componentDairyEdit, strTitle:strTitle, strContent:strContent});
