@@ -20,5 +20,7 @@
         <file>qml/tip/Toast.qml</file>
         <file>img/edit.png</file>
         <file>img/delete.png</file>
+        <file>qml/com_input/MenuTextField.qml</file>
+        <file>qml/com_input/MenuTextArea.qml</file>
     </qresource>
 </RCC>
