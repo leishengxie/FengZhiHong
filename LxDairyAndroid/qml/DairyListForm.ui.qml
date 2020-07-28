@@ -7,9 +7,9 @@ import "./com_input"
 // Rectangle继承Item
 Rectangle {
     id: rectDairyList
-    width: 240
-    height: 400
-    anchors.fill: parent
+    //width: 240
+    //height: 400
+    //anchors.fill: parent
     property alias mouseAreaAdd: mouseAreaAdd
 
     // 此句会出现错误
@@ -90,3 +90,9 @@ Rectangle {
 
     }
 }
+
+/*##^##
+Designer {
+    D{i:0;autoSize:true;height:480;width:640}
+}
+##^##*/

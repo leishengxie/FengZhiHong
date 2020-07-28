@@ -5,7 +5,7 @@ import QtQuick.Layouts 1.12
 //import Qt.labs.controls 1.0
 
 DairyListForm {
-    anchors.fill: parent
+    //anchors.fill: parent
     signal btnAddClicked();
     signal toDairyEdit(int did, string strTitle, string strContent);
 

@@ -62,11 +62,12 @@ Item {
         anchors.fill: parent
 
         initialItem: DairyList {
-            anchors.fill: parent
+            //anchors.fill: parent
             onBtnAddClicked: {
                 //stackView.push(Qt.resolvedUrl("DairyEdit.qml"))
-                stackView.push({item: componentDairyEdit});
+                //stackView.push({item: componentDairyEdit});
                 //componentDairyEdit.strTitle
+                stackView.push(componentDairyEdit);
             }
             onToDairyEdit: {
                 console.log("strTitle:" + strTitle);
