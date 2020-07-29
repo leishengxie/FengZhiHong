@@ -15,12 +15,14 @@ TEMPLATE = app
 SOURCES += main.cpp\
     DailyScheduleModel.cpp \
     DailyScheduleDelegate.cpp \
+    DailyScheduleTableView.cpp \
     StartEndTimeEditor.cpp \
     DailyScheduleWidget.cpp
 
 HEADERS  += \
     DailyScheduleModel.h \
     DailyScheduleDelegate.h \
+    DailyScheduleTableView.h \
     StartEndTimeEditor.h \
     DailyScheduleWidget.h
 

@@ -1,7 +1,33 @@
 #include "DailyScheduleModel.h"
 #include <QTime>
+#include <list>
 #define SCHEDULE_TIEM_FORMAT    "hh:mm"
 
+///
+/// \brief T_ScheduleItem::operator <
+/// \param tScheduleItem
+/// \return
+///
+bool T_ScheduleItem::operator <(const T_ScheduleItem &tScheduleItem) const
+{
+    QTime timeStart = QTime::fromString(strStartTime, SCHEDULE_TIEM_FORMAT);
+    QTime timeStartRhs = QTime::fromString(tScheduleItem.strStartTime, SCHEDULE_TIEM_FORMAT);
+    return timeStart < timeStartRhs;
+}
+
+bool T_ScheduleItem::isContainsNow()
+{
+    QTime timeStart = QTime::fromString(strStartTime, SCHEDULE_TIEM_FORMAT);
+    QTime timeEnd = QTime::fromString(strEndTime, SCHEDULE_TIEM_FORMAT);
+    QTime timeNow = QTime::currentTime();
+    return (timeStart <= timeNow) && (timeNow <= timeEnd);
+}
+
+
+///
+/// \brief CDailyScheduleModel::CDailyScheduleModel
+/// \param parent
+///
 CDailyScheduleModel::CDailyScheduleModel(QObject* parent)
     : QAbstractTableModel(parent)
 {
@@ -211,4 +237,40 @@ void CDailyScheduleModel::clear()
     m_lstScheduleItem.clear();
     endResetModel();
 }
+
+void CDailyScheduleModel::orderByTime()
+{
+    //m_lstScheduleItem.
+    std::sort(m_lstScheduleItem.begin(), m_lstScheduleItem.end());
+    emit dataChanged(index(0,0), index(rowCount(), columnCount()));
+}
+
+// 按起始时间去除项之间的时间交错，会自动修改交错项的终止时间
+void CDailyScheduleModel::fixCrossItem()
+{
+    if (m_lstScheduleItem.isEmpty() || m_lstScheduleItem.size() == 1)
+    {
+        return;
+    }
+
+    // 先排序
+    std::sort(m_lstScheduleItem.begin(), m_lstScheduleItem.end());
+
+    // 依次取当前项与其后一项检测是否有时间交错，有交错则把当前项的终止时间修改为后一项的起始时间
+    QTime time_1st_end;
+    QTime time_2nd_start;
+    for (int i = 0; i < m_lstScheduleItem.size() - 1; ++i)
+    {
+        time_1st_end = QTime::fromString(m_lstScheduleItem.at(i).strEndTime, SCHEDULE_TIEM_FORMAT);
+        time_2nd_start = QTime::fromString(m_lstScheduleItem.at(i + 1).strStartTime, SCHEDULE_TIEM_FORMAT);
+        // 如果有交错
+        if (time_1st_end > time_2nd_start)
+        {
+            m_lstScheduleItem[i].strEndTime = m_lstScheduleItem[i+1].strStartTime;
+        }
+    }
+    emit dataChanged(index(0,0), index(rowCount(), columnCount()));
+}
+
+
 

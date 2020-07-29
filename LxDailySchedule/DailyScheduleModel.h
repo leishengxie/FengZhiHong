@@ -16,10 +16,22 @@ struct T_ScheduleItem
 
     }
 
+    // std::sort指针
+//    bool operator() (const T_ScheduleItem & tScheduleItem)
+//    {
+//        return false;
+//    }
+
+    // std::sort对象
+    bool operator < (const T_ScheduleItem & tScheduleItem) const;
+
     QString startAndEndRime()const
     {
         return strStartTime + "-" + strEndTime;
     }
+
+    bool isContainsNow();
+
 };
 Q_DECLARE_METATYPE(T_ScheduleItem)
 
@@ -52,7 +64,9 @@ public:
     // 在当前行前插入行
     // 在当前行后插入行
     // 按起始时间排序
+    void orderByTime();
     // 按起始时间去除项之间的时间交错，会自动修改交错项的终止时间
+    void fixCrossItem();
 
 private:
 

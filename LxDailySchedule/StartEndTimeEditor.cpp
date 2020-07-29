@@ -30,12 +30,12 @@ void CStartEndTimeEditor::setEndStartTime(const QString &strStartTime, const QSt
 
 QString CStartEndTimeEditor::startTime() const
 {
-    return pTimeStart->text();
+    return pTimeStart->time().toString("hh:mm");
 }
 
 QString CStartEndTimeEditor::endTime() const
 {
-    return pTimeEnd->text();
+    return pTimeEnd->time().toString("hh:mm");
 }
 
 void CStartEndTimeEditor::paintEvent(QPaintEvent *event)

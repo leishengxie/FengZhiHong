@@ -33,6 +33,7 @@ void CDailyScheduleDelegate::paint(QPainter* painter, const QStyleOptionViewItem
         return QStyledItemDelegate::paint(painter, option, index);
     }
     T_ScheduleItem tScheduleItem = qvariant_cast<T_ScheduleItem>(index.data());
+    if tScheduleItem.isContainsNow();
 
     QStyleOptionViewItem  view_option(option);
     QRect rect = view_option.rect;
@@ -67,13 +68,21 @@ void CDailyScheduleDelegate::paint(QPainter* painter, const QStyleOptionViewItem
 
     if (index.column() == 1)
     {
-        QApplication::style()->drawItemText ( painter
-                                              , rect
-                                              , Qt::AlignLeft | Qt::AlignVCenter
-                                              , QApplication::palette()
-                                              , true
-                                              , tScheduleItem.strContent
-                                              , role);
+//        QApplication::style()->drawItemText ( painter
+//                                              , rect
+//                                              , Qt::AlignLeft | Qt::AlignVCenter
+//                                              , QApplication::palette()
+//                                              , true
+//                                              , tScheduleItem.strContent
+//                                              , role);
+        QTextOption textOption(Qt::AlignLeft | Qt::AlignVCenter);
+        textOption.setWrapMode(QTextOption::WordWrap);//设置换行,在单独的QWidget能实现,这里没有生效，估计是不让修改
+        painter->save();
+        painter->setPen(QColor(0, 160, 230));
+        painter->drawText( option.rect, tScheduleItem.strContent, textOption);
+        painter->restore();
+
+        //painter->drawText(option.rect,  Qt::TextWordWrap | Qt::AlignVCenter, tScheduleItem.strContent);
     }
     if (index.column() == 2)
     {
@@ -94,8 +103,23 @@ void CDailyScheduleDelegate::paint(QPainter* painter, const QStyleOptionViewItem
 
 QSize CDailyScheduleDelegate::sizeHint(const QStyleOptionViewItem & option, const QModelIndex & index) const
 {
-    Q_UNUSED(index)
-    return QSize(option.rect.width(), 20);
+
+//    if (index.column() == 0)
+//    {
+//        return QSize(100, option.rect.height());
+//    }
+//    else if (index.column() == 2)
+//    {
+//        return QSize(50, option.rect.height());
+//    }
+
+//    if (index.column() == 1)
+//    {
+//        return QSize(300,300);
+//    }
+
+        return QStyledItemDelegate::sizeHint(option, index);
+
 }
 
 QWidget *CDailyScheduleDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
