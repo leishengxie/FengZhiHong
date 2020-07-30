@@ -33,7 +33,7 @@ void CDailyScheduleDelegate::paint(QPainter* painter, const QStyleOptionViewItem
         return QStyledItemDelegate::paint(painter, option, index);
     }
     T_ScheduleItem tScheduleItem = qvariant_cast<T_ScheduleItem>(index.data());
-    if tScheduleItem.isContainsNow();
+    //if tScheduleItem.isContainsNow();
 
     QStyleOptionViewItem  view_option(option);
     QRect rect = view_option.rect;
@@ -78,7 +78,10 @@ void CDailyScheduleDelegate::paint(QPainter* painter, const QStyleOptionViewItem
         QTextOption textOption(Qt::AlignLeft | Qt::AlignVCenter);
         textOption.setWrapMode(QTextOption::WordWrap);//设置换行,在单独的QWidget能实现,这里没有生效，估计是不让修改
         painter->save();
-        painter->setPen(QColor(0, 160, 230));
+        if (tScheduleItem.isContainsNow())
+        {
+            painter->setPen(QColor(0, 160, 230));
+        }
         painter->drawText( option.rect, tScheduleItem.strContent, textOption);
         painter->restore();
 
