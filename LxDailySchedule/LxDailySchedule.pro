@@ -13,6 +13,8 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
+    DailyScheduleBookListView.cpp \
+    DailyScheduleBookModel.cpp \
     DailyScheduleModel.cpp \
     DailyScheduleDelegate.cpp \
     DailyScheduleTableView.cpp \
@@ -20,6 +22,8 @@ SOURCES += main.cpp\
     DailyScheduleWidget.cpp
 
 HEADERS  += \
+    DailyScheduleBookListView.h \
+    DailyScheduleBookModel.h \
     DailyScheduleModel.h \
     DailyScheduleDelegate.h \
     DailyScheduleTableView.h \
@@ -28,3 +32,6 @@ HEADERS  += \
 
 FORMS    += \
     DailyScheduleWidget.ui
+
+RESOURCES += \
+    res.qrc

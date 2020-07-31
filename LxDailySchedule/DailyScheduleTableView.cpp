@@ -35,11 +35,17 @@ CDailyScheduleTableView::CDailyScheduleTableView(QWidget *parent)
     m_menu->addAction(actOrder);
     m_menu->addAction(actFix);
     //m_menu->addAction(new QAction("", m_menu));
+
 }
 
 void CDailyScheduleTableView::addItem()
 {
     m_pDailyScheduleModel->addDefaultScheduleItem();
+}
+
+void CDailyScheduleTableView::slotLoadBook(const T_DailyScheduleBook &book)
+{
+    m_pDailyScheduleModel->setDailyScheduleList(book.lstScheduleItem);
 }
 
 void CDailyScheduleTableView::contextMenuEvent(QContextMenuEvent *event)

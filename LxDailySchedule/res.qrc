@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>img/tool_img/maple_leaf_book.png</file>
+    </qresource>
+</RCC>

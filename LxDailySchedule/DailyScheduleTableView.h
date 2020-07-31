@@ -1,8 +1,8 @@
 #ifndef CDAILYSCHEDULETABLEVIEW_H
 #define CDAILYSCHEDULETABLEVIEW_H
 
+#include "DailyScheduleBookModel.h"
 #include <QTableView>
-
 
 class CDailyScheduleModel;
 class QMenu;
@@ -14,6 +14,9 @@ public:
     explicit CDailyScheduleTableView(QWidget *parent = nullptr);
 
     void addItem();
+
+public slots:
+    void slotLoadBook(const T_DailyScheduleBook & book);
 
 signals:
 

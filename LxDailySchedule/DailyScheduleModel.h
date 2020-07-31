@@ -16,6 +16,7 @@ struct T_ScheduleItem
 
     }
 
+
     // std::sort指针
 //    bool operator() (const T_ScheduleItem & tScheduleItem)
 //    {
@@ -57,8 +58,8 @@ public:
     bool setData(const QModelIndex &index, const QVariant &value, int role);
 
     void addDefaultScheduleItem();
-    void setListJoke(const QList<T_ScheduleItem> & lstScheduleItem);
-    void appendListJoke(const QList<T_ScheduleItem> & lstScheduleItem);
+    void setDailyScheduleList(const QList<T_ScheduleItem> & lstScheduleItem);
+    void appendDailyScheduleList(const QList<T_ScheduleItem> & lstScheduleItem);
     void clear();
 
     // 在当前行前插入行
