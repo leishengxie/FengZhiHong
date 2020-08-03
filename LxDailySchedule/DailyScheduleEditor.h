@@ -1,6 +1,7 @@
 #ifndef DAILYSCHEDULEEDITOR_H
 #define DAILYSCHEDULEEDITOR_H
 
+#include "DailyScheduleModel.h"
 #include <QWidget>
 
 namespace Ui {
@@ -12,8 +13,11 @@ class CDailyScheduleEditor : public QWidget
     Q_OBJECT
 
 public:
-    explicit CDailyScheduleEditor(QWidget *parent = nullptr);
+    explicit CDailyScheduleEditor(QWidget *parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
     ~CDailyScheduleEditor();
+
+signals:
+    void sigSaveDailySchedule(const T_ScheduleItem & tScheduleItem);
 
 private slots:
     void on_btnAdd_clicked();

@@ -26,7 +26,12 @@ void CDailyScheduleBookListView::paintEvent(QPaintEvent *e)
     }
 
     QPainter painter(viewport());
-    painter.drawText(rect(), Qt::AlignCenter, "请创建日作息时间表");
+    QTextOption textOption(Qt::AlignLeft | Qt::AlignVCenter);
+    textOption.setWrapMode(QTextOption::WordWrap);//设置换行,在单独的QWidget能实现,这里没有生效，估计是不让修改
+    painter.save();
+    painter.setPen(QColor(0, 160, 230));
+    painter.drawText(rect(), "请创建日作息时间表", textOption);
+    painter.restore();
 }
 
 void CDailyScheduleBookListView::onListViewClicked(const QModelIndex &index)

@@ -5,7 +5,8 @@
 
 CMiniWidget::CMiniWidget(QWidget *parent) : QWidget(parent)
 {
-    setWindowFlags( Qt::WindowStaysOnTopHint );
+    setWindowFlags(Qt::WindowStaysOnTopHint | Qt::Window | Qt::FramelessWindowHint);
+
 
     QScreen *screen = QGuiApplication::primaryScreen ();
     QRect screenRect =  screen->availableVirtualGeometry();
@@ -23,6 +24,7 @@ void CMiniWidget::showText(const QString &strText)
 void CMiniWidget::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
+    painter.setPen(QColor(0, 160, 230));
     painter.drawText(rect(), Qt::AlignCenter, m_strText);
 }
 

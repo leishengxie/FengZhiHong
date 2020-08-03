@@ -37,6 +37,14 @@ struct T_ScheduleItem
 Q_DECLARE_METATYPE(T_ScheduleItem)
 
 
+//struct T_DailySchedule
+//{
+//    QString strTitle;
+//    QString strCreateDateTime;
+//    QList<T_ScheduleItem> lstScheduleItem;
+//};
+
+
 class CDailyScheduleModel : public QAbstractTableModel
 {
     Q_OBJECT
@@ -58,8 +66,8 @@ public:
     bool setData(const QModelIndex &index, const QVariant &value, int role);
 
     void addDefaultScheduleItem();
-    void setDailyScheduleList(const QList<T_ScheduleItem> & lstScheduleItem);
-    void appendDailyScheduleList(const QList<T_ScheduleItem> & lstScheduleItem);
+    void setDailySchedule(const QList<T_ScheduleItem> & lstScheduleItem);
+    void appendDailySchedule(const QList<T_ScheduleItem> & lstScheduleItem);
     void clear();
 
     // 在当前行前插入行

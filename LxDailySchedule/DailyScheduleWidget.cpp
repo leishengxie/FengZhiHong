@@ -1,6 +1,7 @@
 #include "DailyScheduleWidget.h"
 #include "ui_DailyScheduleWidget.h"
 #include "MiniWidget.h"
+#include "DailyScheduleEditor.h"
 #include <QMenu>
 #include <QCloseEvent>
 
@@ -12,8 +13,12 @@ CDailyScheduleWidget::CDailyScheduleWidget(QWidget *parent) :
     connect(ui->listView, SIGNAL(sigBookClicked(T_DailyScheduleBook))
             , ui->tableView, SLOT(slotLoadBook(T_DailyScheduleBook)));
 
-    m_pMiniWidget = new CMiniWidget();
+    m_pMiniWidget = new CMiniWidget(this);
     m_pMiniWidget->hide();
+
+    m_pDailyScheduleEditor = new CDailyScheduleEditor(this, Qt::Window);
+    connect(m_pDailyScheduleEditor, SIGNAL(requreUploadJoke(T_Joke))
+            , this, SLOT(requestUploadJoke(T_Joke)));
 
     m_pSystemTrayIcon = new QSystemTrayIcon(QIcon(":/img/tool_img/maple_leaf_book.png"), this);
     connect(m_pSystemTrayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason))
@@ -40,8 +45,9 @@ CDailyScheduleWidget::~CDailyScheduleWidget()
 
 void CDailyScheduleWidget::closeEvent(QCloseEvent *event)
 {
-    hide();
     event->ignore();
+    hide();
+    m_pSystemTrayIcon->show();
 }
 
 void CDailyScheduleWidget::changeEvent(QEvent *event)

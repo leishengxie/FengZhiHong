@@ -10,6 +10,7 @@ class CDailyScheduleWidget;
 }
 
 class CMiniWidget;
+class CDailyScheduleEditor;
 
 class CDailyScheduleWidget : public QWidget
 {
@@ -35,6 +36,7 @@ private:
     Ui::CDailyScheduleWidget *ui;
     QSystemTrayIcon* m_pSystemTrayIcon;
     CMiniWidget* m_pMiniWidget;
+    CDailyScheduleEditor* m_pDailyScheduleEditor;
 };
 
 #endif // DAILYSCHEDULEWIDGET_H

@@ -1,8 +1,8 @@
 #include "DailyScheduleEditor.h"
 #include "ui_DailyScheduleEditor.h"
 
-CDailyScheduleEditor::CDailyScheduleEditor(QWidget *parent) :
-    QWidget(parent),
+CDailyScheduleEditor::CDailyScheduleEditor(QWidget *parent, Qt::WindowFlags f) :
+    QWidget(parent, f),
     ui(new Ui::CDailyScheduleEditor)
 {
     ui->setupUi(this);
@@ -25,5 +25,9 @@ void CDailyScheduleEditor::on_btnSub_clicked()
 
 void CDailyScheduleEditor::on_btnSave_clicked()
 {
+    T_ScheduleItem tScheduleItem;
+    tScheduleItem.
 
+    emit sigSaveDailySchedule(tScheduleItem);
+    close();
 }

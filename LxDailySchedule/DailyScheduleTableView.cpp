@@ -46,7 +46,7 @@ void CDailyScheduleTableView::addItem()
 
 void CDailyScheduleTableView::slotLoadBook(const T_DailyScheduleBook &book)
 {
-    m_pDailyScheduleModel->setDailyScheduleList(book.lstScheduleItem);
+    m_pDailyScheduleModel->setDailySchedule(book.lstScheduleItem);
 }
 
 void CDailyScheduleTableView::contextMenuEvent(QContextMenuEvent *event)

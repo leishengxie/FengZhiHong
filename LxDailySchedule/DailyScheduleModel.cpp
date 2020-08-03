@@ -213,14 +213,14 @@ void CDailyScheduleModel::addDefaultScheduleItem()
 
 }
 
-void CDailyScheduleModel::setDailyScheduleList(const QList<T_ScheduleItem> & lstScheduleItem)
+void CDailyScheduleModel::setDailySchedule(const QList<T_ScheduleItem> & lstScheduleItem)
 {
     beginResetModel();
     m_lstScheduleItem = lstScheduleItem;
     endResetModel();
 }
 
-void CDailyScheduleModel::appendDailyScheduleList(const QList<T_ScheduleItem> &lstScheduleItem)
+void CDailyScheduleModel::appendDailySchedule(const QList<T_ScheduleItem> &lstScheduleItem)
 {
     if (lstScheduleItem.isEmpty())
     {
