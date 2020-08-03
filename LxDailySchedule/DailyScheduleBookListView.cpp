@@ -1,5 +1,5 @@
 #include "DailyScheduleBookListView.h"
-
+#include <QPainter>
 
 
 CDailyScheduleBookListView::CDailyScheduleBookListView(QWidget *parent)
@@ -15,6 +15,18 @@ CDailyScheduleBookListView::CDailyScheduleBookListView(QWidget *parent)
     setModel(m_pDailyScheduleBookModel);
     //QListView
     connect(this, SIGNAL(clicked(QModelIndex)), this, SLOT(onListViewClicked(QModelIndex)));
+}
+
+void CDailyScheduleBookListView::paintEvent(QPaintEvent *e)
+{
+    int row = m_pDailyScheduleBookModel->rowCount();
+    if (row > 0)
+    {
+        return QListView::paintEvent(e);
+    }
+
+    QPainter painter(viewport());
+    painter.drawText(rect(), Qt::AlignCenter, "请创建日作息时间表");
 }
 
 void CDailyScheduleBookListView::onListViewClicked(const QModelIndex &index)

@@ -10,9 +10,13 @@ class CDailyScheduleBookListView : public QListView
 public:
     explicit CDailyScheduleBookListView(QWidget *parent = nullptr);
 
-
+    // 类似Android的列表为空提示
+    //void setListEmptyText(QString strTip);
 signals:
     void sigBookClicked(const T_DailyScheduleBook & book);
+
+protected:
+    void paintEvent(QPaintEvent *e);
 
 private slots:
     void onListViewClicked(const QModelIndex &index);

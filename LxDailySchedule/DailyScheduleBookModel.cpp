@@ -5,25 +5,25 @@
 CDailyScheduleBookModel::CDailyScheduleBookModel(QObject *parent)
     : QAbstractListModel(parent)
 {
-    QList<T_ScheduleItem> lstScheduleItem;
-    lstScheduleItem << T_ScheduleItem() << T_ScheduleItem();
+//    QList<T_ScheduleItem> lstScheduleItem;
+//    lstScheduleItem << T_ScheduleItem() << T_ScheduleItem();
 
-    m_lstDailyScheduleBook << T_DailyScheduleBook("123", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"))
-    << T_DailyScheduleBook("456", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"), lstScheduleItem)
-    << T_DailyScheduleBook("456", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"))
-    << T_DailyScheduleBook("456", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"))
-    << T_DailyScheduleBook("456", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"))
-    << T_DailyScheduleBook("456", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"))
-    << T_DailyScheduleBook("456", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"))
-    << T_DailyScheduleBook("456", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"))
-    << T_DailyScheduleBook("456", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"))
-    << T_DailyScheduleBook("456", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"))
-    << T_DailyScheduleBook("456", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"))
-    << T_DailyScheduleBook("456", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"))
-    << T_DailyScheduleBook("456", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"))
-    << T_DailyScheduleBook("456", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"))
-    << T_DailyScheduleBook("456", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"))
-    << T_DailyScheduleBook("456", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"));
+//    m_lstDailyScheduleBook << T_DailyScheduleBook("123", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"))
+//    << T_DailyScheduleBook("456", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"), lstScheduleItem)
+//    << T_DailyScheduleBook("456", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"))
+//    << T_DailyScheduleBook("456", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"))
+//    << T_DailyScheduleBook("456", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"))
+//    << T_DailyScheduleBook("456", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"))
+//    << T_DailyScheduleBook("456", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"))
+//    << T_DailyScheduleBook("456", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"))
+//    << T_DailyScheduleBook("456", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"))
+//    << T_DailyScheduleBook("456", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"))
+//    << T_DailyScheduleBook("456", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"))
+//    << T_DailyScheduleBook("456", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"))
+//    << T_DailyScheduleBook("456", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"))
+//    << T_DailyScheduleBook("456", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"))
+//    << T_DailyScheduleBook("456", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"))
+//    << T_DailyScheduleBook("456", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"));
 
 }
 

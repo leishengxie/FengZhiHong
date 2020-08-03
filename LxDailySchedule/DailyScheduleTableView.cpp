@@ -3,6 +3,7 @@
 #include "DailyScheduleModel.h"
 #include <QHeaderView>
 #include <QMenu>
+#include <QPainter>
 
 CDailyScheduleTableView::CDailyScheduleTableView(QWidget *parent)
     : QTableView(parent)
@@ -52,6 +53,17 @@ void CDailyScheduleTableView::contextMenuEvent(QContextMenuEvent *event)
 {
     //m_menu->move();
     m_menu->popup(cursor().pos());
+}
+
+void CDailyScheduleTableView::paintEvent(QPaintEvent *e)
+{
+    if (m_pDailyScheduleModel->rowCount() > 0)
+    {
+        return QTableView::paintEvent(e);
+    }
+
+    QPainter painter(this->viewport());
+    painter.drawText(rect(), Qt::AlignCenter, "请选择一个日作息时间表");
 }
 
 void CDailyScheduleTableView::slotOrderByTime()

@@ -15,22 +15,27 @@ TEMPLATE = app
 SOURCES += main.cpp\
     DailyScheduleBookListView.cpp \
     DailyScheduleBookModel.cpp \
+    DailyScheduleEditor.cpp \
     DailyScheduleModel.cpp \
     DailyScheduleDelegate.cpp \
     DailyScheduleTableView.cpp \
+    MiniWidget.cpp \
     StartEndTimeEditor.cpp \
     DailyScheduleWidget.cpp
 
 HEADERS  += \
     DailyScheduleBookListView.h \
     DailyScheduleBookModel.h \
+    DailyScheduleEditor.h \
     DailyScheduleModel.h \
     DailyScheduleDelegate.h \
     DailyScheduleTableView.h \
+    MiniWidget.h \
     StartEndTimeEditor.h \
     DailyScheduleWidget.h
 
 FORMS    += \
+    DailyScheduleEditor.ui \
     DailyScheduleWidget.ui
 
 RESOURCES += \
