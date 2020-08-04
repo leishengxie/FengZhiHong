@@ -25,9 +25,10 @@ void CDailyScheduleEditor::on_btnSub_clicked()
 
 void CDailyScheduleEditor::on_btnSave_clicked()
 {
-    T_ScheduleItem tScheduleItem;
-    tScheduleItem.
+    T_DailySchedule tDailySchedule;
+    tDailySchedule.strScheduleName = ui->leScheduleName->text();
+    tDailySchedule.lstScheduleItem = ui->tableView->scheduleItemList();
 
-    emit sigSaveDailySchedule(tScheduleItem);
+    emit sigSaveDailySchedule(tDailySchedule);
     close();
 }

@@ -14,9 +14,10 @@ public:
     explicit CDailyScheduleTableView(QWidget *parent = nullptr);
 
     void addItem();
+    QList<T_ScheduleItem> scheduleItemList();
 
 public slots:
-    void slotLoadBook(const T_DailyScheduleBook & book);
+    void slotLoadBook(const T_DailySchedule & book);
 
 signals:
 

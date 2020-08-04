@@ -10,14 +10,14 @@ CDailyScheduleWidget::CDailyScheduleWidget(QWidget *parent) :
     ui(new Ui::CDailyScheduleWidget)
 {
     ui->setupUi(this);
-    connect(ui->listView, SIGNAL(sigBookClicked(T_DailyScheduleBook))
-            , ui->tableView, SLOT(slotLoadBook(T_DailyScheduleBook)));
+    connect(ui->listView, SIGNAL(sigBookClicked(T_DailySchedule))
+            , ui->tableView, SLOT(slotLoadBook(T_DailySchedule)));
 
     m_pMiniWidget = new CMiniWidget(this);
     m_pMiniWidget->hide();
 
     m_pDailyScheduleEditor = new CDailyScheduleEditor(this, Qt::Window);
-    connect(m_pDailyScheduleEditor, SIGNAL(requreUploadJoke(T_Joke))
+    connect(m_pDailyScheduleEditor, SIGNAL(sigSaveDailySchedule(T_DailySchedule))
             , this, SLOT(requestUploadJoke(T_Joke)));
 
     m_pSystemTrayIcon = new QSystemTrayIcon(QIcon(":/img/tool_img/maple_leaf_book.png"), this);
@@ -82,7 +82,7 @@ void CDailyScheduleWidget::on_sysTrayIcon_activated(QSystemTrayIcon::ActivationR
 
 void CDailyScheduleWidget::on_btnAdd_clicked()
 {
-
+    m_pDailyScheduleEditor->show();
 }
 
 void CDailyScheduleWidget::slotShowWindows(bool checked)

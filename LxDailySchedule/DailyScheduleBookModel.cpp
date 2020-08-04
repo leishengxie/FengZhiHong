@@ -29,7 +29,7 @@ CDailyScheduleBookModel::CDailyScheduleBookModel(QObject *parent)
 
 int CDailyScheduleBookModel::rowCount(const QModelIndex &parent) const
 {
-    return m_lstDailyScheduleBook.count();
+    return m_lstDailySchedule.count();
 }
 
 QVariant CDailyScheduleBookModel::data(const QModelIndex &index, int role) const
@@ -39,23 +39,23 @@ QVariant CDailyScheduleBookModel::data(const QModelIndex &index, int role) const
         return QVariant();
     }
 
-    if (index.row() < 0 || index.row() >= m_lstDailyScheduleBook.count())
+    if (index.row() < 0 || index.row() >= m_lstDailySchedule.count())
     {
         return QVariant();
     }
 
-    T_DailyScheduleBook tDailyScheduleBook = m_lstDailyScheduleBook.at(index.row());
+    T_DailySchedule tDailySchedule = m_lstDailySchedule.at(index.row());
     if(role == Qt::DecorationRole)
     {
         return QPixmap(":/img/tool_img/maple_leaf_book.png");
     }
     else if(role == Qt::DisplayRole)
     {
-        return tDailyScheduleBook.strBookName;
+        return tDailySchedule.strScheduleName;
     }
     else if (role == Qt::ToolTipRole)
     {
-        return tDailyScheduleBook.strCreateDateTime;
+        return tDailySchedule.strCreateDateTime;
     }
     else if (role == Qt::TextAlignmentRole)
     {
@@ -73,18 +73,18 @@ QVariant CDailyScheduleBookModel::data(const QModelIndex &index, int role) const
     //    return variant;
 }
 
-T_DailyScheduleBook CDailyScheduleBookModel::bookData(const QModelIndex &index)
+T_DailySchedule CDailyScheduleBookModel::bookData(const QModelIndex &index)
 {
     if (!index.isValid())
     {
-        return T_DailyScheduleBook();
+        return T_DailySchedule();
     }
 
-    if (index.row() < 0 || index.row() >= m_lstDailyScheduleBook.count())
+    if (index.row() < 0 || index.row() >= m_lstDailySchedule.count())
     {
-        return T_DailyScheduleBook();
+        return T_DailySchedule();
     }
 
-    T_DailyScheduleBook tDailyScheduleBook = m_lstDailyScheduleBook.at(index.row());
-    return tDailyScheduleBook;
+    T_DailySchedule tDailySchedule = m_lstDailySchedule.at(index.row());
+    return tDailySchedule;
 }

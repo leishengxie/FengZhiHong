@@ -44,7 +44,12 @@ void CDailyScheduleTableView::addItem()
     m_pDailyScheduleModel->addDefaultScheduleItem();
 }
 
-void CDailyScheduleTableView::slotLoadBook(const T_DailyScheduleBook &book)
+QList<T_ScheduleItem> CDailyScheduleTableView::scheduleItemList()
+{
+    return m_pDailyScheduleModel->scheduleItemList();
+}
+
+void CDailyScheduleTableView::slotLoadBook(const T_DailySchedule &book)
 {
     m_pDailyScheduleModel->setDailySchedule(book.lstScheduleItem);
 }

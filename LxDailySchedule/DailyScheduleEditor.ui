@@ -30,7 +30,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit">
+      <widget class="QLineEdit" name="leScheduleName">
        <property name="placeholderText">
         <string>请输入标题</string>
        </property>

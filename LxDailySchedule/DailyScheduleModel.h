@@ -2,6 +2,9 @@
 #define CDAILYSCHEDULEMODEL_H
 #include <QAbstractTableModel>
 
+///
+/// \brief The T_ScheduleItem struct 时间项
+///
 struct T_ScheduleItem
 {
     QString strStartTime;
@@ -37,14 +40,11 @@ struct T_ScheduleItem
 Q_DECLARE_METATYPE(T_ScheduleItem)
 
 
-//struct T_DailySchedule
-//{
-//    QString strTitle;
-//    QString strCreateDateTime;
-//    QList<T_ScheduleItem> lstScheduleItem;
-//};
 
-
+///
+/// \brief The CDailyScheduleModel class
+/// 作息时间表model
+///
 class CDailyScheduleModel : public QAbstractTableModel
 {
     Q_OBJECT
@@ -57,7 +57,7 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
     Qt::ItemFlags flags(const QModelIndex & index) const;
 
-    QList<T_ScheduleItem> listScheduleItem()
+    QList<T_ScheduleItem> scheduleItemList()
     {
         return m_lstScheduleItem;
     }
