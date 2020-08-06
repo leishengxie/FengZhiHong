@@ -13,6 +13,18 @@ CDailyScheduleEditor::~CDailyScheduleEditor()
     delete ui;
 }
 
+void CDailyScheduleEditor::showWithAdd()
+{
+    ui->tableView->clear();
+    show();
+}
+
+void CDailyScheduleEditor::showWithEdit(const T_DailySchedule &tDailySchedule)
+{
+    ui->tableView->slotLoadDailySchedule(tDailySchedule);
+    show();
+}
+
 void CDailyScheduleEditor::on_btnAdd_clicked()
 {
     ui->tableView->addItem();

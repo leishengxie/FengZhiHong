@@ -49,9 +49,14 @@ QList<T_ScheduleItem> CDailyScheduleTableView::scheduleItemList()
     return m_pDailyScheduleModel->scheduleItemList();
 }
 
-void CDailyScheduleTableView::slotLoadBook(const T_DailySchedule &book)
+void CDailyScheduleTableView::clear()
 {
-    m_pDailyScheduleModel->setDailySchedule(book.lstScheduleItem);
+    m_pDailyScheduleModel->clear();
+}
+
+void CDailyScheduleTableView::slotLoadDailySchedule(const T_DailySchedule & tDailySchedule)
+{
+    m_pDailyScheduleModel->setDailySchedule( tDailySchedule.lstScheduleItem);
 }
 
 void CDailyScheduleTableView::contextMenuEvent(QContextMenuEvent *event)

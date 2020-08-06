@@ -88,3 +88,32 @@ T_DailySchedule CDailyScheduleBookModel::bookData(const QModelIndex &index)
     T_DailySchedule tDailySchedule = m_lstDailySchedule.at(index.row());
     return tDailySchedule;
 }
+
+void CDailyScheduleBookModel::saveDailySchedule(const T_DailySchedule &tDailySchedule)
+{
+//    if (tDailySchedule.isInvaild())
+//    {
+//        return;
+//    }
+
+    // 如果是新的则添加
+    if (!m_lstDailySchedule.contains(tDailySchedule))
+    {
+        beginInsertRows(QModelIndex(), rowCount(), rowCount());
+        m_lstDailySchedule.append(tDailySchedule);
+        endInsertRows();
+        return;
+    }
+
+    // 这里因为没有数据库 id，直接根据name判定
+    for (int i = 0; 0 < m_lstDailySchedule.count(); ++i)
+    {
+        if (m_lstDailySchedule.at(i).strScheduleName == tDailySchedule.strScheduleName)
+        {
+            m_lstDailySchedule.replace(i, tDailySchedule);
+            emit dataChanged(index(i), index(i));
+            break;
+        }
+    }
+
+}

@@ -6,22 +6,37 @@
 
 struct T_DailySchedule
 {
+    int id;
     QString strScheduleName;
     QString strCreateDateTime;
     QList<T_ScheduleItem> lstScheduleItem;
     T_DailySchedule()
+        : id(-1)
     {
 
     }
     T_DailySchedule(const QString & strScheduleName
                         , const QString & strCreateDateTime
                         , const QList<T_ScheduleItem> & lstScheduleItem = QList<T_ScheduleItem>())
-        : strScheduleName(strScheduleName)
+        : id(-1)
+        , strScheduleName(strScheduleName)
         , strCreateDateTime(strCreateDateTime)
         , lstScheduleItem(lstScheduleItem)
     {
 
     }
+
+    bool isInvaild()
+    {
+        return -1 == id;
+    }
+
+    bool operator ==(const T_DailySchedule & rhs)
+    {
+        //return id == rhs.id;
+        return strScheduleName == rhs.strScheduleName;
+    }
+
 };
 Q_DECLARE_METATYPE(T_DailySchedule)
 
@@ -45,6 +60,8 @@ public:
     QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
 
     T_DailySchedule bookData(const QModelIndex& index);
+
+    void saveDailySchedule(const T_DailySchedule & tDailySchedule);
 signals:
 
 private:

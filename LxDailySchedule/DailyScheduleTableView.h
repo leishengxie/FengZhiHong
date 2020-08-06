@@ -15,9 +15,10 @@ public:
 
     void addItem();
     QList<T_ScheduleItem> scheduleItemList();
+    void clear();
 
 public slots:
-    void slotLoadBook(const T_DailySchedule & book);
+    void slotLoadDailySchedule(const T_DailySchedule & tDailySchedule);
 
 signals:
 

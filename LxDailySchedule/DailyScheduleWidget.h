@@ -4,7 +4,6 @@
 #include <QWidget>
 #include <QSystemTrayIcon>
 
-
 namespace Ui {
 class CDailyScheduleWidget;
 }
@@ -31,6 +30,7 @@ private slots:
 
     void slotShowWindows(bool checked = false);
     void slotExitApp(bool checked = false);
+
 
 private:
     Ui::CDailyScheduleWidget *ui;

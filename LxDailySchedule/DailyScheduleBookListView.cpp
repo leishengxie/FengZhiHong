@@ -17,6 +17,17 @@ CDailyScheduleBookListView::CDailyScheduleBookListView(QWidget *parent)
     connect(this, SIGNAL(clicked(QModelIndex)), this, SLOT(onListViewClicked(QModelIndex)));
 }
 
+// 如果有后台应该向后台请求保存数据
+void CDailyScheduleBookListView::slotReqSaveDailySchedule(const T_DailySchedule &tDailySchedule)
+{
+    saveDailySchedule(tDailySchedule);
+}
+
+void CDailyScheduleBookListView::saveDailySchedule(const T_DailySchedule &tDailySchedule)
+{
+    m_pDailyScheduleBookModel->saveDailySchedule(tDailySchedule);
+}
+
 void CDailyScheduleBookListView::paintEvent(QPaintEvent *e)
 {
     int row = m_pDailyScheduleBookModel->rowCount();
@@ -38,3 +49,4 @@ void CDailyScheduleBookListView::onListViewClicked(const QModelIndex &index)
 {
     emit sigBookClicked(m_pDailyScheduleBookModel->bookData(index));
 }
+

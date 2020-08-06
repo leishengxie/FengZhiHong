@@ -11,14 +11,14 @@ CDailyScheduleWidget::CDailyScheduleWidget(QWidget *parent) :
 {
     ui->setupUi(this);
     connect(ui->listView, SIGNAL(sigBookClicked(T_DailySchedule))
-            , ui->tableView, SLOT(slotLoadBook(T_DailySchedule)));
+            , ui->tableView, SLOT(slotLoadDailySchedule(T_DailySchedule)));
 
     m_pMiniWidget = new CMiniWidget(this);
     m_pMiniWidget->hide();
 
     m_pDailyScheduleEditor = new CDailyScheduleEditor(this, Qt::Window);
     connect(m_pDailyScheduleEditor, SIGNAL(sigSaveDailySchedule(T_DailySchedule))
-            , this, SLOT(requestUploadJoke(T_Joke)));
+            , ui->listView, SLOT(slotReqSaveDailySchedule(T_DailySchedule)));
 
     m_pSystemTrayIcon = new QSystemTrayIcon(QIcon(":/img/tool_img/maple_leaf_book.png"), this);
     connect(m_pSystemTrayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason))
@@ -82,7 +82,7 @@ void CDailyScheduleWidget::on_sysTrayIcon_activated(QSystemTrayIcon::ActivationR
 
 void CDailyScheduleWidget::on_btnAdd_clicked()
 {
-    m_pDailyScheduleEditor->show();
+    m_pDailyScheduleEditor->showWithAdd();
 }
 
 void CDailyScheduleWidget::slotShowWindows(bool checked)
@@ -94,3 +94,5 @@ void CDailyScheduleWidget::slotExitApp(bool checked)
 {
     QApplication::exit(0);
 }
+
+

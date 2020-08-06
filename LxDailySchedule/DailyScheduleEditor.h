@@ -19,6 +19,10 @@ public:
 signals:
     void sigSaveDailySchedule(const T_DailySchedule & tDailySchedule);
 
+public:
+    void showWithAdd();
+    void showWithEdit(const T_DailySchedule & tDailySchedule);
+
 private slots:
     void on_btnAdd_clicked();
 

@@ -12,6 +12,13 @@ public:
 
     // 类似Android的列表为空提示
     //void setListEmptyText(QString strTip);
+public slots:
+    void slotReqSaveDailySchedule(const T_DailySchedule & tDailySchedule);
+
+public:
+    void saveDailySchedule(const T_DailySchedule & tDailySchedule);
+
+
 signals:
     void sigBookClicked(const T_DailySchedule & book);
 
