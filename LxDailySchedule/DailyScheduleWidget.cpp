@@ -3,6 +3,7 @@
 #include "MiniWidget.h"
 #include "DailyScheduleEditor.h"
 #include <QMenu>
+#include <QtDebug>
 #include <QCloseEvent>
 
 CDailyScheduleWidget::CDailyScheduleWidget(QWidget *parent) :
@@ -22,7 +23,7 @@ CDailyScheduleWidget::CDailyScheduleWidget(QWidget *parent) :
 
     m_pSystemTrayIcon = new QSystemTrayIcon(QIcon(":/img/tool_img/maple_leaf_book.png"), this);
     connect(m_pSystemTrayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason))
-            , this, SLOT(on_sysTrayIcon_activated(QSystemTrayIcon::ActivationReason)));
+            , this, SLOT(slot_sysTrayIcon_activated(QSystemTrayIcon::ActivationReason)));
 
     QMenu* menu = new QMenu();
     QAction* actShowWindow = new QAction("桌面显示");
@@ -61,8 +62,8 @@ void CDailyScheduleWidget::changeEvent(QEvent *event)
             if(windowState() & Qt::WindowMinimized)
             {
                 hide();
-                m_pMiniWidget->showText("abcdefg");
-                m_pMiniWidget->show();
+                m_pMiniWidget->show("abcdefg");
+                qDebug() << __FUNCTION__;
             }
 //                QTimer::singleShot(0, this, SLOT(HideMainWindow()));
 //            else if(windowState() & Qt::WindowNoState)
@@ -71,7 +72,7 @@ void CDailyScheduleWidget::changeEvent(QEvent *event)
         QWidget::changeEvent(event);
 }
 
-void CDailyScheduleWidget::on_sysTrayIcon_activated(QSystemTrayIcon::ActivationReason reason)
+void CDailyScheduleWidget::slot_sysTrayIcon_activated(QSystemTrayIcon::ActivationReason reason)
 {
     if (QSystemTrayIcon::Trigger == reason)
     {

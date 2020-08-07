@@ -72,7 +72,7 @@ void CDailyScheduleTableView::paintEvent(QPaintEvent *e)
         return QTableView::paintEvent(e);
     }
 
-    QPainter painter(this->viewport());
+    QPainter painter(viewport());
     painter.drawText(rect(), Qt::AlignCenter, "请选择一个日作息时间表");
 }
 

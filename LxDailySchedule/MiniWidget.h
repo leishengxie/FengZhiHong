@@ -1,7 +1,7 @@
 #ifndef CMINIWIDGET_H
 #define CMINIWIDGET_H
 
-#include <QWidget>
+#include "widgets/NoTitleMenuMainWidget.h"
 
 class CMiniWidget : public QWidget
 {
@@ -10,13 +10,14 @@ public:
     explicit CMiniWidget(QWidget *parent = nullptr);
 
 public:
-    void showText(const QString & strText);
+    void show(const QString & strText);
     QSize sizeHint() const;
 
 signals:
 
 protected:
     void paintEvent(QPaintEvent *event);
+    virtual void enterEvent(QEvent *event);
 
 
 private:

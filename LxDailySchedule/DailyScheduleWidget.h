@@ -25,7 +25,7 @@ protected:
 
 private slots:
 
-    void on_sysTrayIcon_activated(QSystemTrayIcon::ActivationReason reason);
+    void slot_sysTrayIcon_activated(QSystemTrayIcon::ActivationReason reason);
     void on_btnAdd_clicked();
 
     void slotShowWindows(bool checked = false);
