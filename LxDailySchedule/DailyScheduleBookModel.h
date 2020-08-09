@@ -26,7 +26,12 @@ struct T_DailySchedule
 
     }
 
-    bool isInvaild()
+    bool isInvaild() const
+    {
+        return -1 == id;
+    }
+
+    bool isNew() const
     {
         return -1 == id;
     }
@@ -35,6 +40,28 @@ struct T_DailySchedule
     {
         //return id == rhs.id;
         return strScheduleName == rhs.strScheduleName;
+    }
+
+
+    // 序列化ScheduleItemList
+    QByteArray serializaScheduleItemList() const
+    {
+        QByteArray byteArray;
+        QDataStream out(&byteArray, QIODevice::WriteOnly);
+        out.setVersion(QDataStream::Qt_5_6);
+        out << lstScheduleItem;
+        return byteArray;
+    }
+
+
+    // 反序列化ScheduleItemList
+    void deserializationScheduleItemList(const QByteArray & byteArray)
+    {
+        lstScheduleItem.clear();
+        QByteArray byteArrayTemp = byteArray;
+        QDataStream in(&byteArrayTemp, QIODevice::ReadOnly);
+        in.setVersion(QDataStream::Qt_5_6);
+        in >> lstScheduleItem;
     }
 
 };
@@ -62,6 +89,8 @@ public:
     T_DailySchedule bookData(const QModelIndex& index);
 
     void saveDailySchedule(const T_DailySchedule & tDailySchedule);
+
+    void setDailyScheduleList(const QList<T_DailySchedule> & lstDailySchedule);
 signals:
 
 private:

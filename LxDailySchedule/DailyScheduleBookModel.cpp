@@ -117,3 +117,10 @@ void CDailyScheduleBookModel::saveDailySchedule(const T_DailySchedule &tDailySch
     }
 
 }
+
+void CDailyScheduleBookModel::setDailyScheduleList(const QList<T_DailySchedule> &lstDailySchedule)
+{
+    beginResetModel();
+    m_lstDailySchedule = lstDailySchedule;
+    endResetModel();
+}

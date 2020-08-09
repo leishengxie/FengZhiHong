@@ -11,11 +11,8 @@ CDailyScheduleWidget::CDailyScheduleWidget(QWidget *parent) :
     ui(new Ui::CDailyScheduleWidget)
 {
     ui->setupUi(this);
-    connect(ui->listView, SIGNAL(sigBookClicked(T_DailySchedule))
-            , ui->tableView, SLOT(slotLoadDailySchedule(T_DailySchedule)));
-
-    m_pMiniWidget = new CMiniWidget(this);
-    m_pMiniWidget->hide();
+//    connect(ui->listView, SIGNAL(sigBookClicked(T_DailySchedule))
+//            , ui->tableView, SLOT(slotLoadDailySchedule(T_DailySchedule)));
 
     m_pDailyScheduleEditor = new CDailyScheduleEditor(this, Qt::Window);
     connect(m_pDailyScheduleEditor, SIGNAL(sigSaveDailySchedule(T_DailySchedule))
@@ -37,38 +34,43 @@ CDailyScheduleWidget::CDailyScheduleWidget(QWidget *parent) :
     m_pSystemTrayIcon->setContextMenu(menu);
     m_pSystemTrayIcon->show();
 
+    //m_pMiniWidget = new CMiniWidget(this); // 有this主窗口最小化，子窗口也会跟随
+    m_pMiniWidget = new CMiniWidget();
+//    m_pMiniWidget->hide();
+    m_pMiniWidget->show("abcdefg");
+
 }
 
 CDailyScheduleWidget::~CDailyScheduleWidget()
 {
     delete ui;
+    m_pMiniWidget->deleteLater();
 }
 
 void CDailyScheduleWidget::closeEvent(QCloseEvent *event)
 {
     event->ignore();
     hide();
-    m_pSystemTrayIcon->show();
 }
 
 void CDailyScheduleWidget::changeEvent(QEvent *event)
 {
-    //重点，窗口最小化时最小化窗口（废话），显示浮标
-        //窗口还原时，隐藏浮标，还原主窗口（这里是一个LABEL）
-        if(event->type()==QEvent::WindowStateChange)
-        {
-            //changeEvent会在窗口最小化之前调用，如果不加QTimer，
-            //我们把窗口隐藏了，但是Qt还以为窗口正要最小化，这样就会出错
-            if(windowState() & Qt::WindowMinimized)
-            {
-                hide();
-                m_pMiniWidget->show("abcdefg");
-                qDebug() << __FUNCTION__;
-            }
-//                QTimer::singleShot(0, this, SLOT(HideMainWindow()));
-//            else if(windowState() & Qt::WindowNoState)
-//                QTimer::singleShot(0, this, SLOT(ShowMainWindow()));
-        }
+//    //重点，窗口最小化时最小化窗口（废话），显示浮标
+//        //窗口还原时，隐藏浮标，还原主窗口（这里是一个LABEL）
+//        if(event->type()==QEvent::WindowStateChange)
+//        {
+//            //changeEvent会在窗口最小化之前调用，如果不加QTimer，
+//            //我们把窗口隐藏了，但是Qt还以为窗口正要最小化，这样就会出错
+//            if(windowState() & Qt::WindowMinimized)
+//            {
+//                //hide();
+//                m_pMiniWidget->show("abcdefg");
+//                qDebug() << __FUNCTION__;
+//            }
+////                QTimer::singleShot(0, this, SLOT(HideMainWindow()));
+////            else if(windowState() & Qt::WindowNoState)
+////                QTimer::singleShot(0, this, SLOT(ShowMainWindow()));
+//        }
         QWidget::changeEvent(event);
 }
 

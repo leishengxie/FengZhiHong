@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -18,6 +18,7 @@ SOURCES += main.cpp\
     DailyScheduleEditor.cpp \
     DailyScheduleModel.cpp \
     DailyScheduleDelegate.cpp \
+    DailyScheduleSqlOperate.cpp \
     DailyScheduleTableView.cpp \
     MiniWidget.cpp \
     StartEndTimeEditor.cpp \
@@ -29,6 +30,7 @@ HEADERS  += \
     DailyScheduleEditor.h \
     DailyScheduleModel.h \
     DailyScheduleDelegate.h \
+    DailyScheduleSqlOperate.h \
     DailyScheduleTableView.h \
     MiniWidget.h \
     StartEndTimeEditor.h \

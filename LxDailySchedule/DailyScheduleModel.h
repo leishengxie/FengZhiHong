@@ -1,6 +1,7 @@
 #ifndef CDAILYSCHEDULEMODEL_H
 #define CDAILYSCHEDULEMODEL_H
 #include <QAbstractTableModel>
+#include <QDataStream>
 
 ///
 /// \brief The T_ScheduleItem struct 时间项
@@ -35,6 +36,9 @@ struct T_ScheduleItem
     }
 
     bool isContainsNow();
+
+    friend QDataStream & operator>>(QDataStream & in, T_ScheduleItem & data);
+    friend QDataStream & operator<<(QDataStream & out, const T_ScheduleItem & data);
 
 };
 Q_DECLARE_METATYPE(T_ScheduleItem)

@@ -1,5 +1,7 @@
 #include "DailyScheduleBookListView.h"
 #include <QPainter>
+#include <QMessageBox>
+#include "DailyScheduleSqlOperate.h"
 
 
 CDailyScheduleBookListView::CDailyScheduleBookListView(QWidget *parent)
@@ -7,14 +9,16 @@ CDailyScheduleBookListView::CDailyScheduleBookListView(QWidget *parent)
 {
     setViewMode(QListView::IconMode);
     setResizeMode(QListView::Adjust);
-    setFlow(QListView::LeftToRight);
-    setWrapping(false);
+    //setFlow(QListView::LeftToRight);
+    //setWrapping(false);
     //setSpacing(5);
 
     m_pDailyScheduleBookModel = new CDailyScheduleBookModel(this);
     setModel(m_pDailyScheduleBookModel);
     //QListView
     connect(this, SIGNAL(clicked(QModelIndex)), this, SLOT(onListViewClicked(QModelIndex)));
+
+    m_pDailyScheduleBookModel->setDailyScheduleList(CDailyScheduleSqlOperate::getInstance()->getDailyScheduleList());
 }
 
 // 如果有后台应该向后台请求保存数据
@@ -25,7 +29,14 @@ void CDailyScheduleBookListView::slotReqSaveDailySchedule(const T_DailySchedule 
 
 void CDailyScheduleBookListView::saveDailySchedule(const T_DailySchedule &tDailySchedule)
 {
-    m_pDailyScheduleBookModel->saveDailySchedule(tDailySchedule);
+    QString strErr;
+    bool ok = CDailyScheduleSqlOperate::getInstance()->saveDailySchedule(tDailySchedule, strErr);
+    if (!ok)
+    {
+        QMessageBox::warning(this, "error", strErr);
+    }
+    // 刷新列表
+    //m_pDailyScheduleBookModel->saveDailySchedule(tDailySchedule);
 }
 
 void CDailyScheduleBookListView::paintEvent(QPaintEvent *e)

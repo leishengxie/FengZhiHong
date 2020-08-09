@@ -23,6 +23,20 @@ bool T_ScheduleItem::isContainsNow()
     return (timeStart <= timeNow) && (timeNow <= timeEnd);
 }
 
+QDataStream & operator>>(QDataStream &in, T_ScheduleItem &data)
+{
+    in >> data.strStartTime >> data.strEndTime >> data.strContent >> data.bUseAlarmClock;
+    return in;
+}
+
+QDataStream & operator<<(QDataStream &out, const T_ScheduleItem &data)
+{
+    out << data.strStartTime << data.strEndTime << data.strContent << data.bUseAlarmClock;
+    return out;
+}
+
+
+
 
 ///
 /// \brief CDailyScheduleModel::CDailyScheduleModel
