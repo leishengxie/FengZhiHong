@@ -107,6 +107,7 @@ struct T_JokeListResp
 {
     int nTotalItems;
     QList<T_Joke> listJoke;
+
     T_JokeListResp()
         : nTotalItems(0)
     {
