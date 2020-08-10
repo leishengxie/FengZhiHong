@@ -49,6 +49,7 @@ FORMS    += \
 RESOURCES += \
     res.qrc
 
+RC_ICONS = "img/appIcon/app.ico"
 
 #依赖头文#
 INCLUDEPATH += $$PWD/../../LxTool/LQtTool/include

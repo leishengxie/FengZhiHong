@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>img/tool_img/maple_leaf_book.png</file>
         <file>img/alarm_clock.png</file>
+        <file>img/appIcon/app.ico</file>
     </qresource>
 </RCC>

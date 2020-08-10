@@ -3,6 +3,7 @@
 #include <QPainter>
 #include <QApplication>
 
+
 CDailyScheduleListDelegate::CDailyScheduleListDelegate(QObject *parent)
     : QStyledItemDelegate(parent)
 {
@@ -21,7 +22,10 @@ void CDailyScheduleListDelegate::paint(QPainter *painter, const QStyleOptionView
     QStyleOptionViewItem  view_option(option);
     QRect rect = view_option.rect;
 
+    // 定义QPalette的ColorRole
     auto role = QPalette::Text;
+    // 获取QApplication的QPalette
+    QPalette pa = QApplication::palette();
     if (view_option.state & QStyle::State_Selected)
     {
         role = QPalette::HighlightedText;
@@ -30,7 +34,8 @@ void CDailyScheduleListDelegate::paint(QPainter *painter, const QStyleOptionView
     }
     else if (view_option.state & QStyle::State_MouseOver)
     {
-        painter->fillRect(view_option.rect, view_option.palette.light());
+        //painter->fillRect(view_option.rect, view_option.palette.light());
+        painter->fillRect(view_option.rect, QColor( 247,252,255));
     }
     else
     {
@@ -40,6 +45,8 @@ void CDailyScheduleListDelegate::paint(QPainter *painter, const QStyleOptionView
     painter->save();
     if (tScheduleItem.isContainsNow())
     {
+        pa.setBrush(QPalette::HighlightedText, QBrush(Qt::red));
+        pa.setBrush(QPalette::Text, QBrush(Qt::red));
         painter->setPen(QColor(Qt::red));
         QFont font = painter->font();
         font.setPointSize(font.pointSize() + 5);
@@ -50,8 +57,15 @@ void CDailyScheduleListDelegate::paint(QPainter *painter, const QStyleOptionView
     QString strStartAndEndRime = tScheduleItem.startAndEndRime() + ":";
     int nWidthStartEndTime = fontMetrics.width(strStartAndEndRime) + 5;
     QRect rectStartEndTime(rect.x(), rect.y(), nWidthStartEndTime, rect.height());
-    QTextOption textOption(Qt::AlignLeft | Qt::AlignVCenter);
-    painter->drawText( rectStartEndTime, strStartAndEndRime, textOption);
+    QApplication::style()->drawItemText ( painter
+                                          , rectStartEndTime
+                                          , Qt::AlignLeft | Qt::AlignVCenter
+                                          , pa
+                                          , true
+                                          , strStartAndEndRime
+                                          , role);
+//    QTextOption textOption(Qt::AlignLeft | Qt::AlignVCenter);
+//    painter->drawText( rectStartEndTime, strStartAndEndRime, textOption);
 
 
     int nWidthClockIcon = 0;
@@ -65,14 +79,15 @@ void CDailyScheduleListDelegate::paint(QPainter *painter, const QStyleOptionView
 
     int nWidthContent = fontMetrics.width(tScheduleItem.strContent) + 5;
     QRect rectContent(rect.x() + nWidthStartEndTime + nWidthClockIcon, rect.y(), nWidthContent, rect.height());
-//    QApplication::style()->drawItemText ( painter
-//                                          , rectContent
-//                                          , Qt::AlignLeft | Qt::AlignVCenter
-//                                          , QApplication::palette()
-//                                          , true
-//                                          , tScheduleItem.strContent
-//                                          , role);
-    painter->drawText( rectContent, tScheduleItem.strContent, textOption);
+    // 使用style已有的东西绘制
+    QApplication::style()->drawItemText ( painter
+                                          , rectContent
+                                          , Qt::AlignLeft | Qt::AlignVCenter
+                                          , pa
+                                          , true
+                                          , tScheduleItem.strContent
+                                          , role);
+    //painter->drawText( rectContent, tScheduleItem.strContent, textOption);
     painter->restore();
 
     painter->save();

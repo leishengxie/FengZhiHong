@@ -54,7 +54,7 @@ void CMiniWidget::paintEvent(QPaintEvent *event)
 
     // 画头像
     painter.save();
-    QPixmap pix(":/img/tool_img/maple_leaf_book.png");
+    QPixmap pix(":/img/appIcon/app.ico");
     QRect rectPixSrc = pix.rect();
     QRect rectPixDest = rectPixSrc;
     QPainterPath path;

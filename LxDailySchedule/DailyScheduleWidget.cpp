@@ -20,7 +20,7 @@ CDailyScheduleWidget::CDailyScheduleWidget(QWidget *parent) :
     connect(ui->listView, SIGNAL(sigDailyScheduleEdit(T_DailySchedule))
             , m_pDailyScheduleEditor, SLOT(slot_showWithEdit(T_DailySchedule)));
 
-    m_pSystemTrayIcon = new QSystemTrayIcon(QIcon(":/img/tool_img/maple_leaf_book.png"), this);
+    m_pSystemTrayIcon = new QSystemTrayIcon(QIcon(":/img/appIcon/app.ico"), this);
     connect(m_pSystemTrayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason))
             , this, SLOT(slot_sysTrayIcon_activated(QSystemTrayIcon::ActivationReason)));
 
