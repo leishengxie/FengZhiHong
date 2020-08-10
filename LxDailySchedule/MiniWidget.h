@@ -10,8 +10,10 @@ public:
     explicit CMiniWidget(QWidget *parent = nullptr);
 
 public:
-    void show(const QString & strText);
     QSize sizeHint() const;
+
+public slots:
+    void slot_show(const QString & strText);
 
 signals:
 

@@ -11,12 +11,14 @@ CDailyScheduleWidget::CDailyScheduleWidget(QWidget *parent) :
     ui(new Ui::CDailyScheduleWidget)
 {
     ui->setupUi(this);
-//    connect(ui->listView, SIGNAL(sigBookClicked(T_DailySchedule))
-//            , ui->tableView, SLOT(slotLoadDailySchedule(T_DailySchedule)));
+    connect(ui->listView, SIGNAL(sigDailyScheduleClicked(T_DailySchedule))
+            , this, SLOT(slotLoadDailySchedule(T_DailySchedule)));
 
     m_pDailyScheduleEditor = new CDailyScheduleEditor(this, Qt::Window);
     connect(m_pDailyScheduleEditor, SIGNAL(sigSaveDailySchedule(T_DailySchedule))
             , ui->listView, SLOT(slotReqSaveDailySchedule(T_DailySchedule)));
+    connect(ui->listView, SIGNAL(sigDailyScheduleEdit(T_DailySchedule))
+            , m_pDailyScheduleEditor, SLOT(slot_showWithEdit(T_DailySchedule)));
 
     m_pSystemTrayIcon = new QSystemTrayIcon(QIcon(":/img/tool_img/maple_leaf_book.png"), this);
     connect(m_pSystemTrayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason))
@@ -34,10 +36,14 @@ CDailyScheduleWidget::CDailyScheduleWidget(QWidget *parent) :
     m_pSystemTrayIcon->setContextMenu(menu);
     m_pSystemTrayIcon->show();
 
+    ui->laTitle->clear();
+
     //m_pMiniWidget = new CMiniWidget(this); // 有this主窗口最小化，子窗口也会跟随
     m_pMiniWidget = new CMiniWidget();
 //    m_pMiniWidget->hide();
-    m_pMiniWidget->show("abcdefg");
+    m_pMiniWidget->slot_show("无");
+    connect(ui->listViewSchedule, SIGNAL(sigCurScheduleChanged(QString))
+            , m_pMiniWidget, SLOT(slot_show(QString)));
 
 }
 
@@ -85,7 +91,7 @@ void CDailyScheduleWidget::slot_sysTrayIcon_activated(QSystemTrayIcon::Activatio
 
 void CDailyScheduleWidget::on_btnAdd_clicked()
 {
-    m_pDailyScheduleEditor->showWithAdd();
+    m_pDailyScheduleEditor->slot_showWithAdd();
 }
 
 void CDailyScheduleWidget::slotShowWindows(bool checked)
@@ -96,6 +102,12 @@ void CDailyScheduleWidget::slotShowWindows(bool checked)
 void CDailyScheduleWidget::slotExitApp(bool checked)
 {
     QApplication::exit(0);
+}
+
+void CDailyScheduleWidget::slotLoadDailySchedule(const T_DailySchedule &tDailySchedule)
+{
+    ui->laTitle->setText(tDailySchedule.strScheduleName);
+    ui->listViewSchedule->loadDailySchedule(tDailySchedule);
 }
 
 

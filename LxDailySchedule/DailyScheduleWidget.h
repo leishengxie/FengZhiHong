@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QSystemTrayIcon>
+#include "DailyScheduleBookModel.h"
 
 namespace Ui {
 class CDailyScheduleWidget;
@@ -24,12 +25,15 @@ protected:
     virtual void changeEvent(QEvent *event);
 
 private slots:
+    void on_btnAdd_clicked();
 
     void slot_sysTrayIcon_activated(QSystemTrayIcon::ActivationReason reason);
-    void on_btnAdd_clicked();
+
 
     void slotShowWindows(bool checked = false);
     void slotExitApp(bool checked = false);
+
+    void slotLoadDailySchedule(const T_DailySchedule & tDailySchedule);
 
 
 private:

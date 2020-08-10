@@ -24,7 +24,7 @@ CMiniWidget::CMiniWidget(QWidget *parent)
     qDebug() << __FUNCTION__ << rect();
 }
 
-void CMiniWidget::show(const QString &strText)
+void CMiniWidget::slot_show(const QString &strText)
 {
     m_strText = strText;
     update();
@@ -64,9 +64,15 @@ void CMiniWidget::paintEvent(QPaintEvent *event)
     painter.restore();
 
     // 画文本内容
+    painter.save();
     QRect rectCurScheduleContent = rectContent.adjusted(rectPixDest.size().width(), 0, 0, 0);
+    QFont fontBold = font();
+    fontBold.setPointSize(fontBold.pointSize() + 5);
+    fontBold.setBold(true);
+    painter.setFont(fontBold);
     painter.setPen(QColor(Qt::red));
     painter.drawText(rectCurScheduleContent, Qt::AlignCenter, m_strText);
+    painter.restore();
 
     // 画文本标题
     QFontMetrics fontMetrics(font());

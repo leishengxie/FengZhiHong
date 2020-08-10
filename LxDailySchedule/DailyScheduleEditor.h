@@ -19,9 +19,9 @@ public:
 signals:
     void sigSaveDailySchedule(const T_DailySchedule & tDailySchedule);
 
-public:
-    void showWithAdd();
-    void showWithEdit(const T_DailySchedule & tDailySchedule);
+public slots:
+    void slot_showWithAdd();
+    void slot_showWithEdit(const T_DailySchedule & tDailySchedule);
 
 private slots:
     void on_btnAdd_clicked();
@@ -32,6 +32,7 @@ private slots:
 
 private:
     Ui::CDailyScheduleEditor *ui;
+    int m_id;
 };
 
 #endif // DAILYSCHEDULEEDITOR_H

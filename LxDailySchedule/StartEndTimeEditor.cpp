@@ -10,9 +10,11 @@ CStartEndTimeEditor::CStartEndTimeEditor(QWidget *parent)
     QHBoxLayout* hLayMain = new QHBoxLayout;
     hLayMain->setMargin(0);
     pTimeStart = new QTimeEdit;
+    connect(pTimeStart, SIGNAL(timeChanged(QTime)), this, SLOT(slot_startTimeChanged(QTime)));
 
     QLabel* label = new QLabel("-");
     pTimeEnd = new QTimeEdit;
+    connect(pTimeEnd, SIGNAL(timeChanged(QTime)), this, SLOT(slot_endTimeChanged(QTime)));
     hLayMain->addWidget(pTimeStart);
     hLayMain->addWidget(label);
     hLayMain->addWidget(pTimeEnd);
@@ -46,4 +48,14 @@ void CStartEndTimeEditor::paintEvent(QPaintEvent *event)
     painter.setPen(Qt::NoPen);
 
     painter.fillRect(rect(), palette().background().color());
+}
+
+void CStartEndTimeEditor::slot_startTimeChanged(const QTime &time)
+{
+    pTimeEnd->setMinimumTime(time);
+}
+
+void CStartEndTimeEditor::slot_endTimeChanged(const QTime &time)
+{
+    pTimeStart->setMaximumTime(time);
 }

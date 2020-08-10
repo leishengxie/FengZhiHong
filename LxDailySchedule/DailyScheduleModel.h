@@ -30,12 +30,12 @@ struct T_ScheduleItem
     // std::sort对象
     bool operator < (const T_ScheduleItem & tScheduleItem) const;
 
-    QString startAndEndRime()const
+    QString startAndEndRime() const
     {
         return strStartTime + "-" + strEndTime;
     }
 
-    bool isContainsNow();
+    bool isContainsNow() const;
 
     friend QDataStream & operator>>(QDataStream & in, T_ScheduleItem & data);
     friend QDataStream & operator<<(QDataStream & out, const T_ScheduleItem & data);

@@ -4,6 +4,8 @@
 #include "DailyScheduleBookModel.h"
 #include <QListView>
 
+class QMenu;
+
 class CDailyScheduleBookListView : public QListView
 {
     Q_OBJECT
@@ -20,16 +22,21 @@ public:
 
 
 signals:
-    void sigBookClicked(const T_DailySchedule & book);
+    void sigDailyScheduleClicked(const T_DailySchedule & book);
+    void sigDailyScheduleEdit(const T_DailySchedule & book);
 
 protected:
+    void contextMenuEvent(QContextMenuEvent *event);
     void paintEvent(QPaintEvent *e);
 
 private slots:
     void onListViewClicked(const QModelIndex &index);
+    void slot_edit();
+    void slot_delete();
 
 private:
     CDailyScheduleBookModel* m_pDailyScheduleBookModel;
+    QMenu *m_menu;
 
 };
 

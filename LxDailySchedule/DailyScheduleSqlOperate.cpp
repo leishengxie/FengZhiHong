@@ -171,13 +171,14 @@ bool CDailyScheduleSqlOperate::saveDailySchedule(const T_DailySchedule &tDailySc
     {
 
 
-        m_strSql = QString("update tDailySchedule set name = :name, content_data = :content_data where id = :id");
+        m_strSql = "update tDailySchedule set name = :name, content_data = :content_data where id = :id";
         query.prepare(m_strSql);
         query.bindValue(":name", tDailySchedule.strScheduleName);
         query.bindValue(":content_data", tDailySchedule.serializaScheduleItemList());
         query.bindValue(":id", tDailySchedule.id);
-        bool ok = query.exec(m_strSql);
-
+        //注意：执行了prepare后，exec里不要再加入语句了
+        //bool ok = query.exec(m_strSql);
+        bool ok = query.exec();
         if (!ok)
         {
             strError = query.lastError().text();

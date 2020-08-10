@@ -15,7 +15,7 @@ bool T_ScheduleItem::operator <(const T_ScheduleItem &tScheduleItem) const
     return timeStart < timeStartRhs;
 }
 
-bool T_ScheduleItem::isContainsNow()
+bool T_ScheduleItem::isContainsNow() const
 {
     QTime timeStart = QTime::fromString(strStartTime, SCHEDULE_TIEM_FORMAT);
     QTime timeEnd = QTime::fromString(strEndTime, SCHEDULE_TIEM_FORMAT);

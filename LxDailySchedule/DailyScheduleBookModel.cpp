@@ -73,7 +73,7 @@ QVariant CDailyScheduleBookModel::data(const QModelIndex &index, int role) const
     //    return variant;
 }
 
-T_DailySchedule CDailyScheduleBookModel::bookData(const QModelIndex &index)
+T_DailySchedule CDailyScheduleBookModel::dailyScheduleData(const QModelIndex &index)
 {
     if (!index.isValid())
     {

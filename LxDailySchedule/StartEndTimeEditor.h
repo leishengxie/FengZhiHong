@@ -21,6 +21,10 @@ public slots:
 protected:
     void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
 
+private slots:
+    void slot_startTimeChanged(const QTime &time);
+    void slot_endTimeChanged(const QTime &time);
+
 private:
     QTimeEdit* pTimeStart;
     QTimeEdit* pTimeEnd;

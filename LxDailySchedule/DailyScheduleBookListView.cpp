@@ -1,6 +1,7 @@
 #include "DailyScheduleBookListView.h"
 #include <QPainter>
 #include <QMessageBox>
+#include <QMenu>
 #include "DailyScheduleSqlOperate.h"
 
 
@@ -12,6 +13,15 @@ CDailyScheduleBookListView::CDailyScheduleBookListView(QWidget *parent)
     //setFlow(QListView::LeftToRight);
     //setWrapping(false);
     //setSpacing(5);
+
+    m_menu = new QMenu(this);
+    QAction* actEdit = new QAction("编辑", m_menu);
+    connect(actEdit, SIGNAL(triggered()), this, SLOT(slot_edit()));
+    m_menu->addAction(actEdit);
+    QAction* actDelete = new QAction("删除", m_menu);
+    connect(actDelete, SIGNAL(triggered()), this, SLOT(slot_delete()));
+    m_menu->addAction(actDelete);
+
 
     m_pDailyScheduleBookModel = new CDailyScheduleBookModel(this);
     setModel(m_pDailyScheduleBookModel);
@@ -36,7 +46,12 @@ void CDailyScheduleBookListView::saveDailySchedule(const T_DailySchedule &tDaily
         QMessageBox::warning(this, "error", strErr);
     }
     // 刷新列表
-    //m_pDailyScheduleBookModel->saveDailySchedule(tDailySchedule);
+    m_pDailyScheduleBookModel->setDailyScheduleList(CDailyScheduleSqlOperate::getInstance()->getDailyScheduleList());
+}
+
+void CDailyScheduleBookListView::contextMenuEvent(QContextMenuEvent *event)
+{
+    m_menu->popup(cursor().pos());
 }
 
 void CDailyScheduleBookListView::paintEvent(QPaintEvent *e)
@@ -58,6 +73,16 @@ void CDailyScheduleBookListView::paintEvent(QPaintEvent *e)
 
 void CDailyScheduleBookListView::onListViewClicked(const QModelIndex &index)
 {
-    emit sigBookClicked(m_pDailyScheduleBookModel->bookData(index));
+    emit sigDailyScheduleClicked(m_pDailyScheduleBookModel->dailyScheduleData(index));
+}
+
+void CDailyScheduleBookListView::slot_edit()
+{
+    emit sigDailyScheduleEdit(m_pDailyScheduleBookModel->dailyScheduleData(currentIndex()));
+}
+
+void CDailyScheduleBookListView::slot_delete()
+{
+
 }
 

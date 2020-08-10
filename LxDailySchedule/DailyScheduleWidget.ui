@@ -64,9 +64,16 @@
         </spacer>
        </item>
        <item>
-        <widget class="QLabel" name="label">
+        <widget class="QLabel" name="laTitle">
+         <property name="font">
+          <font>
+           <pointsize>16</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
          <property name="text">
-          <string>TextLabel</string>
+          <string>标题</string>
          </property>
         </widget>
        </item>
@@ -86,7 +93,7 @@
       </layout>
      </item>
      <item>
-      <widget class="QTableView" name="tableView"/>
+      <widget class="CDailyScheduleListView" name="listViewSchedule"/>
      </item>
     </layout>
    </item>
@@ -97,6 +104,11 @@
    <class>CDailyScheduleBookListView</class>
    <extends>QListView</extends>
    <header>DailyScheduleBookListView.h</header>
+  </customwidget>
+  <customwidget>
+   <class>CDailyScheduleListView</class>
+   <extends>QListView</extends>
+   <header>DailyScheduleListView.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

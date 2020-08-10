@@ -16,6 +16,9 @@ SOURCES += main.cpp\
     DailyScheduleBookListView.cpp \
     DailyScheduleBookModel.cpp \
     DailyScheduleEditor.cpp \
+    DailyScheduleListDelegate.cpp \
+    DailyScheduleListModel.cpp \
+    DailyScheduleListView.cpp \
     DailyScheduleModel.cpp \
     DailyScheduleDelegate.cpp \
     DailyScheduleSqlOperate.cpp \
@@ -28,6 +31,9 @@ HEADERS  += \
     DailyScheduleBookListView.h \
     DailyScheduleBookModel.h \
     DailyScheduleEditor.h \
+    DailyScheduleListDelegate.h \
+    DailyScheduleListModel.h \
+    DailyScheduleListView.h \
     DailyScheduleModel.h \
     DailyScheduleDelegate.h \
     DailyScheduleSqlOperate.h \
@@ -70,3 +76,4 @@ QMAKE_EXTRA_TARGETS += copy_deps
 win32 {
     copy_deps.commands ~= s,/,\\\\,g
 }
+

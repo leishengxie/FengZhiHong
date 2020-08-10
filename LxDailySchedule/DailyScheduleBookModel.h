@@ -86,7 +86,7 @@ public:
     int rowCount(const QModelIndex& parent = QModelIndex()) const;
     QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
 
-    T_DailySchedule bookData(const QModelIndex& index);
+    T_DailySchedule dailyScheduleData(const QModelIndex& index);
 
     void saveDailySchedule(const T_DailySchedule & tDailySchedule);
 

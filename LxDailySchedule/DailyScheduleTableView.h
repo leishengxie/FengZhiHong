@@ -24,7 +24,7 @@ signals:
 
 protected:
     void contextMenuEvent(QContextMenuEvent *event);
-    void paintEvent(QPaintEvent *e);
+
 
 private slots:
     void slotOrderByTime();
