@@ -10,7 +10,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = LxDailySchedule
 TEMPLATE = app
-
+DESTDIR = $$PWD/bin
 
 SOURCES += main.cpp\
     DailyScheduleBookListView.cpp \
@@ -67,7 +67,8 @@ win32{
 # PRE_TARGETDEPS
 copy_deps.target=copy_lqttool
 copy_deps.depends=FORCE
-copy_deps.commands = copy $$PWD/../../LxTool/LQtTool/bin/LQtTool.dll $$PWD/bin
+copy_deps.commands = copy $$PWD/../../LxTool/LQtTool/bin/LQtTool.dll $$PWD/bin && \
+                        copy $$PWD/../../LxTool/LQtTool/bin/LQtToold.dll $$PWD/bin
 # POST_TARGETDEPS:The target will run after build finished
 POST_TARGETDEPS += copy_lqttool
 QMAKE_EXTRA_TARGETS += copy_deps

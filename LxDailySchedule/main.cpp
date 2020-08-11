@@ -3,6 +3,7 @@
 #include <QMessageBox>
 #include <QStandardPaths>
 #include "DailyScheduleSqlOperate.h"
+#include "LQt.h"
 
 /***
  *
@@ -16,6 +17,8 @@ static const QString s_strDocDirDB = QStandardPaths::writableLocation(QStandardP
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+
+    CLQt::autoRunWithSystem(true, QApplication::applicationName() ,QApplication::applicationFilePath());
 
     if (!CDailyScheduleSqlOperate::getInstance()->connectSqlite(s_strDocDirDB))
     {
