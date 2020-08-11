@@ -188,5 +188,20 @@ bool CDailyScheduleSqlOperate::saveDailySchedule(const T_DailySchedule &tDailySc
     return true;
 }
 
+bool CDailyScheduleSqlOperate::deleteDailySchedule(int id, QString &strError)
+{
+
+    QSqlQuery query;
+    query.prepare("DELETE FROM tDailySchedule WHERE id=?");
+    query.addBindValue(id);
+    bool ok = query.exec();
+    if(ok)
+    {
+        return true;
+    }
+    strError = query.lastError().text();
+    return false;
+}
+
 
 

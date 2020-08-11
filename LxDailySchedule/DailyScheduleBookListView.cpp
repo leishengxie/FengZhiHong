@@ -83,6 +83,14 @@ void CDailyScheduleBookListView::slot_edit()
 
 void CDailyScheduleBookListView::slot_delete()
 {
-
+    int id = m_pDailyScheduleBookModel->dailyScheduleData(currentIndex()).id;
+    QString strErr;
+    bool ok = CDailyScheduleSqlOperate::getInstance()->deleteDailySchedule(id, strErr);
+    if (!ok)
+    {
+        QMessageBox::warning(this, "error", strErr);
+    }
+    // 刷新列表
+    m_pDailyScheduleBookModel->setDailyScheduleList(CDailyScheduleSqlOperate::getInstance()->getDailyScheduleList());
 }
 
