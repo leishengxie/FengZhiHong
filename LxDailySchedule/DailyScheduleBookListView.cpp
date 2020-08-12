@@ -2,6 +2,7 @@
 #include <QPainter>
 #include <QMessageBox>
 #include <QMenu>
+#include <QtDebug>
 #include "DailyScheduleSqlOperate.h"
 
 
@@ -27,6 +28,8 @@ CDailyScheduleBookListView::CDailyScheduleBookListView(QWidget *parent)
     setModel(m_pDailyScheduleBookModel);
     //QListView
     connect(this, SIGNAL(clicked(QModelIndex)), this, SLOT(onListViewClicked(QModelIndex)));
+    connect(selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection))
+            , this, SLOT(slot_selectionChanged(QItemSelection,QItemSelection)));
 
     m_pDailyScheduleBookModel->setDailyScheduleList(CDailyScheduleSqlOperate::getInstance()->getDailyScheduleList());
 }
@@ -92,5 +95,11 @@ void CDailyScheduleBookListView::slot_delete()
     }
     // 刷新列表
     m_pDailyScheduleBookModel->setDailyScheduleList(CDailyScheduleSqlOperate::getInstance()->getDailyScheduleList());
+    emit sigDailyScheduleClicked(T_DailySchedule());
+}
+
+void CDailyScheduleBookListView::slot_selectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
+{
+    qDebug() << selected;
 }
 

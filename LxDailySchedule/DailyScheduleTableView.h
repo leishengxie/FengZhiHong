@@ -19,8 +19,10 @@ public:
 
 public slots:
     void slotLoadDailySchedule(const T_DailySchedule & tDailySchedule);
+    void slot_delete();
 
 signals:
+    void sigSelectedChanged(bool bHaveSelected);
 
 protected:
     void contextMenuEvent(QContextMenuEvent *event);
@@ -29,6 +31,8 @@ protected:
 private slots:
     void slotOrderByTime();
     void slotFixCrossItem();
+
+    void slot_selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 
 private:
     CDailyScheduleModel* m_pDailyScheduleModel;

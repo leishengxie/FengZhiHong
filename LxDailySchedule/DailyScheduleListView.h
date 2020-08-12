@@ -15,6 +15,7 @@ public:
     void loadDailySchedule(const T_DailySchedule & tDailySchedule);
 
 signals:
+    // 用于通知其他部件内容已改变，如小浮窗
     void sigCurScheduleChanged(const QString & strContent);
 
 protected:

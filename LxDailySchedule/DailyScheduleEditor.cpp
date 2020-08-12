@@ -8,6 +8,8 @@ CDailyScheduleEditor::CDailyScheduleEditor(QWidget *parent, Qt::WindowFlags f) :
   , m_id(-1)
 {
     ui->setupUi(this);
+
+    connect(ui->tableView, SIGNAL(sigSelectedChanged(bool)), ui->btnSub, SLOT(setEnabled(bool)));
 }
 
 CDailyScheduleEditor::~CDailyScheduleEditor()
@@ -18,6 +20,8 @@ CDailyScheduleEditor::~CDailyScheduleEditor()
 void CDailyScheduleEditor::slot_showWithAdd()
 {
     m_id = -1;
+    ui->btnSub->setEnabled(false);
+    ui->leScheduleName->clear();
     ui->tableView->clear();
     show();
 }
@@ -25,6 +29,7 @@ void CDailyScheduleEditor::slot_showWithAdd()
 void CDailyScheduleEditor::slot_showWithEdit(const T_DailySchedule &tDailySchedule)
 {
     m_id = tDailySchedule.id;
+    ui->btnSub->setEnabled(false);
     ui->leScheduleName->setText(tDailySchedule.strScheduleName);
     ui->tableView->slotLoadDailySchedule(tDailySchedule);
     show();
@@ -37,7 +42,7 @@ void CDailyScheduleEditor::on_btnAdd_clicked()
 
 void CDailyScheduleEditor::on_btnSub_clicked()
 {
-    //((CDairyStatisticsModel*)ui->tableView->model())->showDairyStatistics(lstDairy);
+    ui->tableView->slot_delete();
 }
 
 void CDailyScheduleEditor::on_btnSave_clicked()

@@ -120,6 +120,7 @@ void CDailyScheduleBookModel::saveDailySchedule(const T_DailySchedule &tDailySch
 
 void CDailyScheduleBookModel::setDailyScheduleList(const QList<T_DailySchedule> &lstDailySchedule)
 {
+    //This also means that the current item and any selected items will become invalid.
     beginResetModel();
     m_lstDailySchedule = lstDailySchedule;
     endResetModel();

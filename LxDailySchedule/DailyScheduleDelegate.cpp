@@ -47,7 +47,8 @@ void CDailyScheduleDelegate::paint(QPainter* painter, const QStyleOptionViewItem
     }
     else if (view_option.state & QStyle::State_MouseOver)
     {
-        painter->fillRect(view_option.rect, view_option.palette.light());
+        //painter->fillRect(view_option.rect, view_option.palette.light());
+        painter->fillRect(view_option.rect, QColor( 247,252,255));
     }
     else
     {
@@ -100,6 +101,7 @@ void CDailyScheduleDelegate::paint(QPainter* painter, const QStyleOptionViewItem
 
     painter->save();
     painter->setPen(LINE_COLOR);
+    painter->drawLine(option.rect.topLeft(), option.rect.topRight());
     painter->drawLine(option.rect.bottomLeft(), option.rect.bottomRight());
     painter->restore();
 }

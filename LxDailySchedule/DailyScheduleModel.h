@@ -73,6 +73,7 @@ public:
     void setDailySchedule(const QList<T_ScheduleItem> & lstScheduleItem);
     void appendDailySchedule(const QList<T_ScheduleItem> & lstScheduleItem);
     void clear();
+    void removeItem(const QModelIndex & index);
 
     // 在当前行前插入行
     // 在当前行后插入行

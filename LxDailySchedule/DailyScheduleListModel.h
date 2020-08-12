@@ -16,7 +16,9 @@ public:
     QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
 
     void setDailySchedule(const QList<T_ScheduleItem> & lstScheduleItem);
+
 signals:
+    // 用于通知其他部件内容已改变，如小浮窗
     void sigCurScheduleChanged(const QString & strContent);
 
 private slots:

@@ -33,6 +33,7 @@ private slots:
     void onListViewClicked(const QModelIndex &index);
     void slot_edit();
     void slot_delete();
+    void slot_selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 
 private:
     CDailyScheduleBookModel* m_pDailyScheduleBookModel;

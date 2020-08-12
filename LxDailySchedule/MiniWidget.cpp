@@ -8,8 +8,10 @@
 #include <QMouseEvent>
 #include <QPainterPath>
 
+
 CMiniWidget::CMiniWidget(QWidget *parent)
     : QWidget(parent, Qt::WindowStaysOnTopHint | Qt::CoverWindow | Qt::Window | Qt::FramelessWindowHint)
+    , m_pMediaPlayer(new QMediaPlayer(this))
 {
 
     setAttribute(Qt::WA_TranslucentBackground, true);
@@ -22,6 +24,9 @@ CMiniWidget::CMiniWidget(QWidget *parent)
     //int dHeight = screenRect.height();//桌面大小
     move(dWidth - width(), 0);
     qDebug() << __FUNCTION__ << rect();
+
+    connect(m_pMediaPlayer, SIGNAL(stateChanged(QMediaPlayer::State))
+            , this, SLOT(slot_mediaPlayerStateChanged(QMediaPlayer::State)));
 }
 
 void CMiniWidget::slot_show(const QString &strText)
@@ -90,7 +95,7 @@ void CMiniWidget::enterEvent(QEvent *event)
     qDebug() << __FUNCTION__;
 
     QWidget::enterEvent(event);
-    setCursor(QCursor(Qt::PointingHandCursor));
+    setCursor(QCursor(Qt::SizeAllCursor));
 }
 
 void CMiniWidget::mouseMoveEvent(QMouseEvent *event)
@@ -129,6 +134,11 @@ void CMiniWidget::changeEvent(QEvent *event)
             }
         }
     //QWidget::changeEvent(event);
+
+}
+
+void CMiniWidget::slot_mediaPlayerStateChanged(QMediaPlayer::State newState)
+{
 
 }
 

@@ -14,6 +14,8 @@ CDailyScheduleTableView::CDailyScheduleTableView(QWidget *parent)
     setItemDelegate(pDailyScheduleDelegate);
     //setTextElideMode(Qt::ElideLeft);
     // 根据内容自动调整所有行的行高
+    setSelectionBehavior(QAbstractItemView::SelectRows);
+    setSelectionMode(QAbstractItemView::SingleSelection);
     resizeRowsToContents();
     //horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
@@ -32,10 +34,16 @@ CDailyScheduleTableView::CDailyScheduleTableView(QWidget *parent)
     connect(actOrder, SIGNAL(triggered()), this, SLOT(slotOrderByTime()));
     QAction* actFix = new QAction("按起始时间去除时间交错", m_menu);
     connect(actFix, SIGNAL(triggered()), this, SLOT(slotFixCrossItem()));
+    QAction* actDelete = new QAction("删除时间项", m_menu);
+    connect(actDelete, SIGNAL(triggered()), this, SLOT(slot_delete()));
 
     m_menu->addAction(actOrder);
     m_menu->addAction(actFix);
+    m_menu->addAction(actDelete);
     //m_menu->addAction(new QAction("", m_menu));
+
+    connect(selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection))
+            , this, SLOT(slot_selectionChanged(QItemSelection,QItemSelection)));
 
 }
 
@@ -74,4 +82,21 @@ void CDailyScheduleTableView::slotOrderByTime()
 void CDailyScheduleTableView::slotFixCrossItem()
 {
     m_pDailyScheduleModel->fixCrossItem();
+}
+
+void CDailyScheduleTableView::slot_delete()
+{
+    if (selectionModel()->selectedIndexes().isEmpty())
+    {
+        return;
+    }
+    QModelIndex index = selectionModel()->selectedIndexes().at(0);
+    m_pDailyScheduleModel->removeItem(index);
+}
+
+void CDailyScheduleTableView::slot_selectionChanged(const QItemSelection &selected
+                                                    , const QItemSelection &deselected)
+{
+     //T_ScheduleItem tScheduleItem = qvariant_cast<T_ScheduleItem>(currentIndex().data());
+    emit sigSelectedChanged(selectionModel()->selectedIndexes().count() > 0);
 }

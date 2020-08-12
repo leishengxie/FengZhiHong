@@ -32,6 +32,8 @@ private slots:
 
 private:
     Ui::CDailyScheduleEditor *ui;
+
+    // 记录当前编辑的时间表id， -1表示新表
     int m_id;
 };
 

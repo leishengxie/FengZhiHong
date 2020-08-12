@@ -133,11 +133,11 @@ Qt::ItemFlags CDailyScheduleModel::flags(const QModelIndex & index) const
     //    ItemIsEnabled = 32,
     if (index.column() == 0 || index.column() == 1)
     {
-        return Qt::ItemIsEnabled | Qt::ItemIsEditable ;
+        return Qt::ItemIsEnabled| Qt::ItemIsSelectable | Qt::ItemIsEditable ;
     }
     else if (index.column() == 2)
     {
-        return Qt::ItemIsEnabled | Qt::ItemIsUserCheckable; //| Qt::ItemIsSelectable
+        return Qt::ItemIsEnabled| Qt::ItemIsSelectable | Qt::ItemIsUserCheckable; //| Qt::ItemIsSelectable
     }
 
     //return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsUserCheckable;
@@ -250,6 +250,13 @@ void CDailyScheduleModel::clear()
     beginResetModel();
     m_lstScheduleItem.clear();
     endResetModel();
+}
+
+void CDailyScheduleModel::removeItem(const QModelIndex &index)
+{
+    beginRemoveRows(QModelIndex(), index.row(), index.row());
+    m_lstScheduleItem.removeAt(index.row());
+    endRemoveRows();
 }
 
 void CDailyScheduleModel::orderByTime()

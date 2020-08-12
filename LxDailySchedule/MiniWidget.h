@@ -2,6 +2,7 @@
 #define CMINIWIDGET_H
 
 #include "widgets/NoTitleMenuMainWidget.h"
+#include <QMediaPlayer>
 
 class CMiniWidget : public QWidget
 {
@@ -27,6 +28,8 @@ protected:
 
     void changeEvent(QEvent *event);
 
+private:
+    void slot_mediaPlayerStateChanged(QMediaPlayer::State newState);
 
 private:
     QString m_strText;
@@ -36,6 +39,9 @@ private:
 
     // 是否可以拖动窗口
     bool m_bCanDrag;
+
+    // 媒体播放器
+    QMediaPlayer* m_pMediaPlayer;
 
 };
 
