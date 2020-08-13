@@ -31,12 +31,13 @@ extern const char * const VIRTUAL_DIR_PATH_LOGIN;
 
 extern const char * const VIRTUAL_DIR_PATH_DAIRY_ROOT;
 extern const char * const VIRTUAL_DIR_PATH_DAIRY_LIST;
-extern const char* const VIRTUAL_DIR_PATH_DAIRY_UPLOAD;
+extern const char * const VIRTUAL_DIR_PATH_DAIRY_UPLOAD;
+extern const char * const VIRTUAL_DIR_PATH_DAIRY_DELETE;
 
 extern const char * const VIRTUAL_DIR_PATH_JOKE_ROOT;
 extern const char * const VIRTUAL_DIR_PATH_JOKE_LIST;
 extern const char * const VIRTUAL_DIR_PATH_JOKE_RATING;
-extern const char* const VIRTUAL_DIR_PATH_JOKE_UPLOAD;
+extern const char * const VIRTUAL_DIR_PATH_JOKE_UPLOAD;
 
 
 struct T_NetAppointment
@@ -94,6 +95,7 @@ public:
 
     static QString urlDairyList();
     static QString urlDairyUpload();
+    static QString urlDairyDelete();
 
     static QString urlJokeList();
     static QString urlUploadJoke();

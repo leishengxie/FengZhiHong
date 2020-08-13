@@ -18,7 +18,11 @@ DairyEditForm {
 
     mouseAreaUpload.onClicked: {
         //btnUploadClicked();
-        dairyHttpRequest.uploadDairy(did, strTitle, strContent);
+        dairyHttpRequest.uploadDairy(did, strTitle, strContent, function(bSucceed) {
+            if (bSucceed) {
+                stackView.pop()
+            }
+        })
     }
 
     mouseAreaBack.onClicked: {

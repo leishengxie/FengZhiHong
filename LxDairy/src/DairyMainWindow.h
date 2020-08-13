@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 #include <QMainWindow>
+#include <QSystemTrayIcon>
 
 namespace Ui {
 class DairyMainWindow;
@@ -71,6 +72,10 @@ private slots:
 
     void on_action_download_android_triggered();
 
+    void slot_sysTrayIcon_activated(QSystemTrayIcon::ActivationReason reason);
+    void slot_exit(bool checked = false);
+    void slotShowWindows(bool checked = false);
+
 private:
     Ui::DairyMainWindow *ui;
 
@@ -89,6 +94,8 @@ private:
 
     // 背景图片
     QPixmap m_pixBg;
+
+    QSystemTrayIcon* m_pSystemTrayIcon;
 
 };
 

@@ -38,6 +38,14 @@ int CLDairyResponder::handle()
         m_resp->setStatus(tHttpStatusMsg.nStatusCode, tHttpStatusMsg.strMsg.toUtf8());
         m_resp->write(CNetAppointments::serializa(dairySaved), true);
     }
+    else if (path.startsWith(VIRTUAL_DIR_PATH_DAIRY_DELETE))
+    {
+        T_DairyDeleteReq tDairyDeleteReq = CNetAppointments::deserialization<T_DairyDeleteReq>(m_req->getBody());
+        T_HttpStatusMsg tHttpStatusMsg;
+        CLSqlOperate::getInstance()->deleteDairy(tDairyDeleteReq, tHttpStatusMsg);
+        m_resp->setStatus(tHttpStatusMsg.nStatusCode, tHttpStatusMsg.strMsg.toUtf8());
+        m_resp->write("ok", true);
+    }
 
 
     return 1;

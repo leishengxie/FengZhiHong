@@ -148,7 +148,7 @@ void CDairyHttpRequest::dairyList()
     pDairyHttpClient->post(CNetAppointments::urlDairyList(), CNetAppointments::serializa(tDairyListRequest));
 }
 
-void CDairyHttpRequest::uploadDairy(int did, QString strTitle, QString strContent)
+void CDairyHttpRequest::uploadDairy(int did, QString strTitle, QString strContent, QJSValue jsCallback)
 {
 
     T_Dairy dairy;
@@ -159,6 +159,7 @@ void CDairyHttpRequest::uploadDairy(int did, QString strTitle, QString strConten
     dairy.strTitle = strTitle;
     dairy.strContent = strContent; //toPlainText 去除textEdit当中的纯文本
 
+    m_jsValue = jsCallback;
 
     CDairyHttpClient* pDairyHttpClient = new CDairyHttpClient(this, true);
     connect(pDairyHttpClient, &CDairyHttpClient::finished_1, [ = ](QByteArray byteArray)
@@ -169,6 +170,19 @@ void CDairyHttpRequest::uploadDairy(int did, QString strTitle, QString strConten
 //        if (dairy.isNewDairy())
 //        {
             //CLToast::showStr(NULL, "提交成功");
+
+        // 放在闭包里出现问题
+        bool bSucceed = true;
+        QJSEngine *jsEngine = m_jsValue.engine();
+        if (!jsEngine)
+        {
+            return;
+        }
+        QJSValue val = jsEngine->toScriptValue(bSucceed);
+        QJSValueList paramList;
+        paramList.append(val);
+        qDebug() << m_jsValue.call(paramList).toBool();  //js fucntion的返回值
+
         CDairyGlobalInstance::getInstance()->toast("提交成功");
 //            CModelManager::getInstance()->dairyListModel()->addDairy(dairySaved);
 
@@ -179,4 +193,34 @@ void CDairyHttpRequest::uploadDairy(int did, QString strTitle, QString strConten
 //        }
     });
     pDairyHttpClient->post(CNetAppointments::urlDairyUpload(), CNetAppointments::serializa(dairy));
+}
+
+void CDairyHttpRequest::deleteDairy(int did, QJSValue jsCallback)
+{
+    T_DairyDeleteReq tDairyDeleteReq;
+    T_Dairy dairy;
+    dairy.uid = CDairyAndroidApp::userInfo().uid;
+    dairy.did = did;
+    tDairyDeleteReq << dairy;
+
+    m_jsValue = jsCallback;
+
+    CDairyHttpClient* pDairyHttpClient = new CDairyHttpClient(this, true);
+    connect(pDairyHttpClient, &CDairyHttpClient::finished_1, [ = ](QByteArray byteArray)
+    {
+        bool bSucceed = true;
+        QJSEngine *jsEngine = m_jsValue.engine();
+        if (!jsEngine)
+        {
+            return;
+        }
+        QJSValue val = jsEngine->toScriptValue(bSucceed);
+        QJSValueList paramList;
+        paramList.append(val);
+        qDebug() << m_jsValue.call(paramList).toBool();  //js fucntion的返回值
+
+        CDairyGlobalInstance::getInstance()->toast("删除成功");
+
+    });
+    pDairyHttpClient->post(CNetAppointments::urlDairyDelete(), CNetAppointments::serializa(tDairyDeleteReq));
 }

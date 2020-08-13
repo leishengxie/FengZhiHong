@@ -101,6 +101,7 @@ struct T_DairyListResp
 
 struct T_DairyDeleteReq
 {
+    // 可批量删除
     QList<T_Dairy> dairyList;
     T_DairyDeleteReq()
     {

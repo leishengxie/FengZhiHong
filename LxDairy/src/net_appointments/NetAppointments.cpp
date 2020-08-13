@@ -17,6 +17,7 @@ const char * const VIRTUAL_DIR_PATH_JOKE_TEST_DUMP = "/dump";
 const char * const VIRTUAL_DIR_PATH_DAIRY_ROOT = "/dairy";
 const char * const VIRTUAL_DIR_PATH_DAIRY_LIST = "/dairy/list";
 const char* const VIRTUAL_DIR_PATH_DAIRY_UPLOAD = "/dairy/upload";
+const char* const VIRTUAL_DIR_PATH_DAIRY_DELETE = "/dairy/delete";
 
 const char * const VIRTUAL_DIR_PATH_JOKE_ROOT = "/joke";
 const char * const VIRTUAL_DIR_PATH_JOKE_LIST = "/joke/list";
@@ -117,12 +118,21 @@ QString CNetAppointments::urlDairyList()
 {
     T_NetAppointment tNetAppointment;
     tNetAppointment.eRequsetType = T_NetAppointment::ER_Post;
-    tNetAppointment.strVirtualDirectory = VIRTUAL_DIR_PATH_DAIRY_LIST;
+    tNetAppointment.strVirtualDirectory = VIRTUAL_DIR_PATH_DAIRY_DELETE;
 
     return tNetAppointment.url();
 }
 
 QString CNetAppointments::urlDairyUpload()
+{
+    T_NetAppointment tNetAppointment;
+    tNetAppointment.eRequsetType = T_NetAppointment::ER_Post;
+    tNetAppointment.strVirtualDirectory = VIRTUAL_DIR_PATH_DAIRY_UPLOAD;
+
+    return tNetAppointment.url();
+}
+
+QString CNetAppointments::urlDairyDelete()
 {
     T_NetAppointment tNetAppointment;
     tNetAppointment.eRequsetType = T_NetAppointment::ER_Post;

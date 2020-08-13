@@ -3,11 +3,11 @@
 #include <QAbstractTableModel>
 #include "Joke.h"
 
-class CFlowLogModel : public QAbstractTableModel
+class CJokeModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    explicit CFlowLogModel(QObject* parent = 0);
+    explicit CJokeModel(QObject* parent = 0);
 
     int rowCount(const QModelIndex & parent = QModelIndex()) const;
     int columnCount(const QModelIndex & parent = QModelIndex()) const;

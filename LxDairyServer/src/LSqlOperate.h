@@ -30,12 +30,13 @@ public:
      // 创建函数
      void createFunc();
 
-     //
+     // 登录注册服务
      void registerAccount(QString strUserName, QString strPasswd, T_HttpStatusMsg &tHttpStatusMsg);
      void login(QString strUserName, QString strPasswd, T_UserInfo &tUserInfo, T_HttpStatusMsg &tHttpStatusMsg);
 
 
 
+     // 日记服务
 //     CDairy getDairy(int did, bool & bOk);
 //     QList<CDairy> getListDairyByLimit(QString strFormatDate
 //                                              , QString strTagName = ""); //strFormatDate  eg:"'2019-09'", 2019-09-01, 2019
@@ -46,6 +47,7 @@ public:
                       , T_HttpStatusMsg &tHttpStatusMsg);
      void deleteDairy(const T_DairyDeleteReq & tDairyDeleteReq, T_HttpStatusMsg &tHttpStatusMsg);
 
+     // 集服务
      void saveUserUploadJoke(const T_Joke & tJoke, T_HttpStatusMsg &tHttpStatusMsg);
      void getJokeList(const T_JokeListRequest & tJokeListRequest
                       , T_JokeListResp & tJokeListResp

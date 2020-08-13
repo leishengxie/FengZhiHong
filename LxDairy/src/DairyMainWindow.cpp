@@ -53,6 +53,22 @@ CDairyMainWindow::CDairyMainWindow(QWidget* parent)
     ui->tabWidget->setTabToolTip(1, "系统集成的一些通用工具，目前尚不包含专业工具，系统还在扩展中，如有需要做的工具，记得留言哦……");
     ui->tabWidget->setTabToolTip(2, "系统提供基于网络的个人作品、知识、资料的分享，正在建设中……");
     ui->tabWidget->setTabToolTip(3, "你可以添加世界里的人为笔友，此模块正在筹划。");
+
+    // 托盘
+    m_pSystemTrayIcon = new QSystemTrayIcon(QIcon(":/img/appIcon/app.ico"), this);
+    connect(m_pSystemTrayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason))
+            , this, SLOT(slot_sysTrayIcon_activated(QSystemTrayIcon::ActivationReason)));
+    QMenu* menu = new QMenu();
+    QAction* actShowWindow = new QAction("桌面显示");
+    connect(actShowWindow, SIGNAL(triggered(bool)), this, SLOT(slotShowWindows(bool)));
+    QAction* actExitApp = new QAction("关闭程序");
+    connect(actExitApp, SIGNAL(triggered(bool)), this, SLOT(slot_exit(bool)));
+    menu->addAction(actShowWindow);
+    menu->addSeparator();
+    menu->addAction(actExitApp);
+    m_pSystemTrayIcon->setToolTip("日作息时间表");
+    m_pSystemTrayIcon->setContextMenu(menu);
+    m_pSystemTrayIcon->show();
 }
 
 CDairyMainWindow::~CDairyMainWindow()
@@ -101,18 +117,8 @@ void CDairyMainWindow::paintEvent(QPaintEvent* event)
 
 void CDairyMainWindow::closeEvent(QCloseEvent* event)
 {
-    // 检测所有应该关闭时提示保存的子类
-    bool bCloseDairy = ui->tabDairy->close();
-    bool bCloseTool = ui->tabTool->close();
-    bool bCloseCollect = ui->tabCollection->close();
-
-    if(bCloseDairy && bCloseTool && bCloseCollect)
-    {
-        event->accept();
-        return;
-    }
     event->ignore();
-
+    hide();
 }
 
 
@@ -200,8 +206,7 @@ void CDairyMainWindow::on_action_skin_triggered()
 
 void CDairyMainWindow::on_action_exit_triggered()
 {
-    //ui->textEdit->clear();
-    close();
+    slot_exit();
 }
 
 void CDairyMainWindow::on_action_font_triggered()
@@ -240,4 +245,33 @@ void CDairyMainWindow::on_action_download_android_triggered()
 {
     CDownloadDialog downloadDialog(this);
     downloadDialog.exec();
+}
+
+void CDairyMainWindow::slot_sysTrayIcon_activated(QSystemTrayIcon::ActivationReason reason)
+{
+    if (QSystemTrayIcon::Trigger == reason)
+    {
+        show();
+    }
+}
+
+void CDairyMainWindow::slot_exit(bool checked)
+{
+    Q_UNUSED(checked)
+    // 检测所有应该关闭时提示保存的子类
+    bool bCloseDairy = ui->tabDairy->close();
+    bool bCloseTool = ui->tabTool->close();
+    bool bCloseCollect = ui->tabCollection->close();
+
+    if(bCloseDairy && bCloseTool && bCloseCollect)
+    {
+        CDairyApp::exit(0);
+        return;
+    }
+}
+
+void CDairyMainWindow::slotShowWindows(bool checked)
+{
+    Q_UNUSED(checked)
+    show();
 }

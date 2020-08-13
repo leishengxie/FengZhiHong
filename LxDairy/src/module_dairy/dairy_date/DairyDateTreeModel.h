@@ -109,6 +109,12 @@ Q_DECLARE_METATYPE(T_DairyDateItem*)
 /// 手动释放，写一个函数release，调用时release才delete孩子节点
 
 
+///Qt QModelIndex的理解，QModelIndex对象具备很短的生命周期，如果在使用一个若干指令操作前已经存在的
+/// QModelIndex，那么应该调用QModelIndex的isValid.
+
+///2种实现数据模型:
+/// 一种是重新实现QAbstractItemModel的被动接口，包括数据呈现
+/// ，另一种是复用一个通用用途的数据模型，比如QStandardItemModel 填充其数据
 
 // 定义排序规则Qset所需
 //uint qHash(const T_DairyDateItem key, uint seed = 0);

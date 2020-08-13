@@ -316,10 +316,38 @@ void CLSqlOperate::getDairyList(const T_DairyListRequest &tDairyListRequest
 
 }
 
-// 根据需求，用户的日记数据不是特别重要，直接使用物理删除，不必用逻辑删除
+
+///
+/// \brief CLSqlOperate::deleteDairy 根据需求，用户的日记数据不是特别重要，直接使用物理删除，不必用逻辑删除
+/// \param tDairyDeleteReq 批量删除
+/// \param tHttpStatusMsg
+///
 void CLSqlOperate::deleteDairy(const T_DairyDeleteReq &tDairyDeleteReq, T_HttpStatusMsg &tHttpStatusMsg)
 {
+    QSqlDatabase db = CSqlConnectionPool::getInstance()->getOpenConnection();
+    QSqlQuery query(db);
 
+    db.transaction();
+    QVariantList varlist_id;
+    foreach (int id, tDairyDeleteReq.dairyList)
+    {
+        varlist_id << id;
+    }
+
+    query.prepare("delete from tDairy where did=?");
+    query.addBindValue(varlist_id);	//绑定数据
+    bool ok = query.execBatch();		//进行批处理操作
+    if (!ok)
+    {
+        tHttpStatusMsg.nStatusCode = EH_Ex_SqlError;
+        tHttpStatusMsg.strMsg = query.lastError().text();
+        db.rollback();
+        CSqlConnectionPool::getInstance()->closeConnection(db);
+        return;
+    }
+    db.commit();		//提交事务，此时打开数据库文件执行SQL语句
+
+    CSqlConnectionPool::getInstance()->closeConnection(db);
 }
 
 
