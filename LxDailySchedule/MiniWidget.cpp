@@ -76,7 +76,9 @@ void CMiniWidget::paintEvent(QPaintEvent *event)
     fontBold.setBold(true);
     painter.setFont(fontBold);
     painter.setPen(QColor(Qt::red));
-    painter.drawText(rectCurScheduleContent, Qt::AlignCenter, m_strText);
+    QFontMetrics fontMetricsContent(painter.font());
+    QString strTextElided = fontMetricsContent.elidedText(m_strText, Qt::ElideRight, width() - rectPixDest.size().width());
+    painter.drawText(rectCurScheduleContent, Qt::AlignCenter, strTextElided);
     painter.restore();
 
     // 画文本标题
@@ -144,5 +146,5 @@ void CMiniWidget::slot_mediaPlayerStateChanged(QMediaPlayer::State newState)
 
 QSize CMiniWidget::sizeHint() const
 {
-    return QSize(256, 64);
+    return QSize(300, 64);
 }
