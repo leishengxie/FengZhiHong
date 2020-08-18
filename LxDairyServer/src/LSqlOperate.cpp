@@ -155,7 +155,44 @@ void CLSqlOperate::createTable()
 
 void CLSqlOperate::createProc()
 {
+//    DROP PROCEDURE IF EXISTS `proc_joke_rating`;
+//    delimiter ;;
+//    CREATE PROCEDURE `proc_joke_rating`(IN `i_jid` int,IN `i_uid` int,IN `i_rating` double)
+//    BEGIN
+//        #Routine body goes here...
+//    DECLARE bExist TINYINT default 0;
+//    DECLARE var_total_rating_people int default 0;
+//    DECLARE var_total_rating_score double default 0;
+//    DECLARE var_average_rating_score double default 0;
 
+//    DECLARE t_error int DEFAULT 0;
+//    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET t_error=1;
+
+//        select count(1) into bExist from tjokerating where jid=i_jid and uid=i_uid;
+//    # 开始事务
+//    START TRANSACTION;
+//        if bExist
+//        then
+//        update tJokeRating set rating=i_rating where jid=i_jid and uid=i_uid;
+//    else
+//    INSERT INTO tJokeRating(jid, uid, rating) VALUES(i_jid, i_uid, i_rating);
+
+//    end if;
+
+//    # select COUNT(1) into var_total_rating_people from tjokerating where jid=i_jid;
+//    #	set @var_total_rating_score = (select SUM(rating) from tjokerating where jid=i_jid);
+//    #	set @var_average_rating_score = var_total_rating_people / var_total_rating_score;
+//    update tJoke, (select COUNT(1) as r_count from tjokerating where jid=i_jid) as t1, (select SUM(rating) as r_rating from tjokerating where jid=i_jid) as t2 set total_rating_people=t1.r_count, total_rating_score=t2.r_rating, average_rating_score = r_rating / r_count WHERE jid=i_jid;
+
+//    IF t_error = 1 THEN
+//                ROLLBACK;
+//            ELSE
+//                COMMIT;
+//            END IF;
+
+//    END
+//    ;;
+//    delimiter ;
 }
 
 void CLSqlOperate::createFunc()
