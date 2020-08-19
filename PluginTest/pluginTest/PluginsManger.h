@@ -3,39 +3,30 @@
 
 #include <QObject>
 
-struct PluginItem{
-	QString text;
-	QObject * plugin;
-};
-//#define LIBRARY_LIBRARY
+class IPlugin;
 
-class CPluginsManger : public QObject
+class CPluginsManger
 {
-    Q_OBJECT
 public:
     ~CPluginsManger();
 
 protected:
-
     CPluginsManger();
+
 public:
+    static CPluginsManger* getInstance();
 
-	void loadPlugins();
-	void deletePlugins();
+    QList<IPlugin*> loadPlugins();
+
 	void unloadPlugins();
-	void testPlugin();
-
+    void unloadPlugin(const QString & strFilePath);
 
 private:
-	void AddToPluginLst(QObject * plugin);
-private:
-	QMenuItemInterface *m_EchoInterface;
-	QMap<QString, PluginItem> m_pluginItemMap;
-	QMap<QString, QPluginLoader*>  m_pluginloaderMap;
-	//QThreadPool m_pluginsThreadPool;		//插件线程池
+    QList<IPlugin*> m_lstPlugin;
+    static CPluginsManger* s_pluginsManger;
+
 };
 
-//宏定义来获取配置
-#define QMENUITEMPULGINSMANGER  QPluginsManger::getInstance()
+
 
 #endif // QPULGINSMANGER_H

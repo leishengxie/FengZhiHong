@@ -15,6 +15,13 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+
+    void on_listWidget_clicked(const QModelIndex &index);
+
+private:
+    void loadPlugins();
+
 private:
     Ui::MainWindow *ui;
 };

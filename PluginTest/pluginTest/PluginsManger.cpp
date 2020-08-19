@@ -1,27 +1,25 @@
 ﻿#include "PluginsManger.h"
+#include <Plugin.h>
+#include <QPluginLoader>
+#include <QApplication>
+#include <QDir>
 
-
+CPluginsManger* CPluginsManger::s_pluginsManger = nullptr;
 
 CPluginsManger::CPluginsManger()
-    :Singleton<CPluginsManger>(),
-	m_EchoInterface(nullptr)
-
 {
-	m_pluginItemMap.clear();
-	m_pluginloaderMap.clear();
-	loadPlugins();
-	mdsv_add_logger("QPluginsManger插件加载完成");
+
 }
 
-void CPluginsManger::testPlugin()
+CPluginsManger *CPluginsManger::getInstance()
 {
-	//foreach(PluginItem item, m_pluginItemList)
-	//{
-	//	QMenuItemInterface *eInterface = qobject_cast<QMenuItemInterface *>(item.plugin);
-	//	double ret = eInterface->func(item.text);
-	//	eInterface->getAciton()->trigger();
-	//}
+    if(nullptr == s_pluginsManger)
+    {
+        s_pluginsManger = new CPluginsManger();
+    }
+    return s_pluginsManger;
 }
+
 
 CPluginsManger::~CPluginsManger()
 {
@@ -29,112 +27,66 @@ CPluginsManger::~CPluginsManger()
 }
 
 
-void CPluginsManger::deletePlugins()
+QList<IPlugin *> CPluginsManger::loadPlugins()
 {
-	QMutableMapIterator<QString, QPluginLoader*> plugins(m_pluginloaderMap);
-	for (; plugins.hasNext();)
-	{
-		QPluginLoader *loader = plugins.next().value();
-		QObject *plugin = loader->instance();
-		if (plugin != 0)
-		{
-			//plugin->disconnect();
-			//plugin->blockSignals(true);
-			plugin->deleteLater();
-			//delete plugin;
-		}
-		if (loader->isLoaded())
-		{
-			//loader->unload();
-			loader->deleteLater();
-		}
-	}
-	m_pluginloaderMap.clear();
+    // 加载静态插件
+    foreach (QObject *plugin, QPluginLoader::staticInstances())
+    {
+        //plugin->metaObject()->className();
+    }
+
+    // 加载动态插件
+    QDir dirPlugins(qApp->applicationDirPath());
+
+    // 新建了plugins文件夹，把上面生成的dll文件放到此文件夹下
+    dirPlugins.cd("plugins");
+
+    //加载当前文件夹下的库文件
+    foreach(QString fileName, dirPlugins.entryList(QDir::Files))
+    {
+        QPluginLoader pluginLoader(dirPlugins.absoluteFilePath(fileName));
+        QObject *objPlugin = pluginLoader.instance();
+        if (objPlugin)
+        {
+            IPlugin * pPlugin = qobject_cast<IPlugin *>(objPlugin);
+            if (pPlugin)
+            {
+                m_lstPlugin.append(pPlugin);
+            }
+        }
+    }
+    return m_lstPlugin;
 }
+
 void CPluginsManger::unloadPlugins()
 {
-	QMutableMapIterator<QString, QPluginLoader*> plugins(m_pluginloaderMap);
-	for (;plugins.hasNext();)
-	{
-		QPluginLoader *loader = plugins.next().value();
-		QObject *plugin = loader->instance();
-		if (plugin != 0)
-		{
-			QMenuItemInterface *eInterface = qobject_cast<QMenuItemInterface *>(plugin);
-			//eInterface->setCallBack(nullptr);
-			eInterface->unload();
-			//emit eInterface->signalUnload();
-		}
-		//if (loader->isLoaded())
-		//{
-		//	loader->unload();
-		//}
-	}
-	//m_pluginloaderMap.clear();
+    foreach (QObject *plugin, QPluginLoader::staticInstances())
+    {
+        //
+    }
+
+    // 加载动态插件
+    QDir dirPlugins(qApp->applicationDirPath());
+
+    // 新建了plugins文件夹，把上面生成的dll文件放到此文件夹下
+    dirPlugins.cd("plugins");
+
+    //加载当前文件夹下的库文件
+    foreach(QString fileName, dirPlugins.entryList(QDir::Files))
+    {
+        QPluginLoader pluginLoader(dirPlugins.absoluteFilePath(fileName));
+        QObject *objPlugin = pluginLoader.instance();
+        if (objPlugin)
+        {
+            pluginLoader.unload();
+        }
+    }
 }
 
-void CPluginsManger::loadPlugins()
+void CPluginsManger::unloadPlugin(const QString &strFilePath)
 {
-	m_pluginItemMap.clear();
-	m_pluginloaderMap.clear();
-	//QStringList pluginPath = QCoreApplication::libraryPaths();
-	//QCoreApplication::addLibraryPath("C:/some/other/path");   //添加库搜索路径
-	//静态调用插件
-	//Q_IMPORT_PLUGIN(EchoPlugin)
-	//foreach(QObject *plugin, QPluginLoader::staticInstances())
-	//{
-	//	AddToPluginLst(plugin);
-	//}
 
-	//动态调用插件
-	QDir pluginDir(MDSV_PLUGIN_PATH);
-
-	//遍历当前 文件夹下文件
-	foreach(QString filename, pluginDir.entryList(QDir::Files))
-	{
-		QPluginLoader *pluginloader = new QPluginLoader(pluginDir.absoluteFilePath(filename));
-		QObject *plugin = pluginloader->instance();
-		if (plugin != 0)
-		{
-			AddToPluginLst(plugin);
-			m_pluginloaderMap.insert(pluginDir.absoluteFilePath(filename), pluginloader);
-		}
-		else
-		{
-			pluginloader->unload();
-		}
-		//m_pluginloaderMap.insert(pluginDir.absoluteFilePath(filename), pluginloader);
-	}
 }
 
-void CPluginsManger::AddToPluginLst(QObject * plugin)
-{
-	QMenuItemInterface *eInterface = qobject_cast<QMenuItemInterface *>(plugin);
-	if (eInterface != 0)
-	{
-		QStringList typelist = eInterface->funcType();
-		eInterface->setCallBack(dataRecv);
-		foreach(QString ctype, typelist)
-		{
-			PluginItem item;
-			item.text = ctype;
-			item.plugin = plugin;
-			m_pluginItemMap.insert(ctype, item);
-		}
-	}
-}
 
-void CPluginsManger::updateEdtFileInfo(const QString& fileId, const QString& md5, const QString& fileName, quint64 filesize)
-{
-	QMutableMapIterator<QString, QPluginLoader*> plugins(m_pluginloaderMap);
-	for (; plugins.hasNext();)
-	{
-		QObject *plugin = plugins.next().value()->instance();
-		if (plugin != 0)
-		{
-			QMenuItemInterface *eInterface = qobject_cast<QMenuItemInterface *>(plugin);
-			eInterface->updateFileIdFileInfo(fileId, md5, fileName, filesize);
-		}
-	}
-}
 

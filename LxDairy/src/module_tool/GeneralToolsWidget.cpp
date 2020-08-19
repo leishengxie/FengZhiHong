@@ -12,6 +12,8 @@ CGeneralToolsWidget::CGeneralToolsWidget(QWidget *parent) :
     ui->listWidgetPrivate->setIconSize(QSize(64,64));
     ui->listWidgetPrivate->setGridSize(QSize(96,96));
 
+    // 由于加载后列表就不会修改，所以用QStanderModel就行了
+
     //ui->listWidgetPrivate->setResizeMode(QListView::Adjust); //设置QListView大小改变时，图标的调整模式，默认是固定的，但可以改成自动调整：
 //    CPrivateMenuModel *pModel = new CPrivateMenuModel(this);
 //    ui->listViewPrivate->setModel(pModel);
