@@ -41,6 +41,11 @@ CDairyMainWindow::CDairyMainWindow(QWidget* parent)
 
 
     // tts播放模块
+//#ifdef _MSC_VER
+////此处为MSVC编译器环境下的代码
+//#elif __GNUC__
+////此处为MinGW编译器环境下的代码
+//#endif
     m_pITTS = new CLWindowsTTSS(this);
     m_pITTS->initSpeech();
     connect(ui->tabDairy, SIGNAL(requireTTSspeakS1(QString)), m_pITTS, SLOT(ttsSpeak(QString)));

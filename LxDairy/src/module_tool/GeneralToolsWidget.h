@@ -19,6 +19,9 @@ private slots:
     void on_listWidgetPrivate_clicked(const QModelIndex &index);
 
 private:
+    void loadPlugins();
+
+private:
     Ui::CGeneralToolsWidget *ui;
 };
 

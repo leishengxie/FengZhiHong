@@ -17,10 +17,8 @@ INCLUDEPATH += \
 HEADERS += \
     $$PWD/core/LBaseWidget.h \
     $$PWD/module_tool/GeneralToolsWidget.h \
-    $$PWD/module_tool/tool_accpasswd_book/AccPasswdWidget.h \
-    $$PWD/module_tool/tool_accpasswd_book/APasswdTableModel.h \
-    $$PWD/module_tool/tool_rename/OriginNum.h \
-    $$PWD/module_tool/tool_rename/RenameWidget.h \
+    $$PWD/module_tool/Plugin.h \
+    $$PWD/module_tool/PluginsManger.h \
     $$PWD/music/LLrc.h \
     $$PWD/music/LLrcWidget.h \
     $$PWD/music/LMusicPlayer.h \
@@ -57,7 +55,6 @@ HEADERS += \
     $$PWD/DairyAppStation.h \
     $$PWD/module_collection/CollectionModel.h \
     $$PWD/module_collection/CollectionDelegate.h \
-    $$PWD/module_tool/GeneralToolsModel.h \
     $$PWD/module_collection/collection_jokebook/JokeEditor.h \
     $$PWD/styles/LBronzeStyle.h \
     $$PWD/styles/LColorStyle.h \
@@ -83,10 +80,7 @@ HEADERS += \
 SOURCES += \
     $$PWD/core/LBaseWidget.cpp \
     $$PWD/module_tool/GeneralToolsWidget.cpp \
-    $$PWD/module_tool/tool_accpasswd_book/AccPasswdWidget.cpp \
-    $$PWD/module_tool/tool_accpasswd_book/APasswdTableModel.cpp \
-    $$PWD/module_tool/tool_rename/OriginNum.cpp \
-    $$PWD/module_tool/tool_rename/RenameWidget.cpp \
+    $$PWD/module_tool/PluginsManger.cpp \
     $$PWD/music/LLrc.cpp \
     $$PWD/music/LLrcWidget.cpp \
     $$PWD/music/LMusicPlayer.cpp \
@@ -124,7 +118,6 @@ SOURCES += \
     $$PWD/DairyAppStation.cpp \
     $$PWD/module_collection/CollectionModel.cpp \
     $$PWD/module_collection/CollectionDelegate.cpp \
-    $$PWD/module_tool/GeneralToolsModel.cpp \
     $$PWD/module_collection/collection_jokebook/JokeEditor.cpp \
     $$PWD/styles/LBronzeStyle.cpp \
     $$PWD/styles/LColorStyle.cpp \
@@ -150,8 +143,6 @@ SOURCES += \
 
 FORMS += \
     $$PWD/module_tool/GeneralToolsWidget.ui \
-    $$PWD/module_tool/tool_accpasswd_book/AccPasswdWidget.ui \
-    $$PWD/module_tool/tool_rename/RenameWidget.ui \
     $$PWD/music/MusicSettingDialog.ui \
     $$PWD/AboutDialog.ui \
     $$PWD/DairyMainWindow.ui \

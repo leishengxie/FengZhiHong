@@ -30,7 +30,7 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="QListWidget" name="listWidgetPrivate">
+    <widget class="QListWidget" name="listWidget">
      <property name="maximumSize">
       <size>
        <width>100</width>
@@ -55,63 +55,13 @@
      <property name="viewMode">
       <enum>QListView::IconMode</enum>
      </property>
-     <item>
-      <property name="text">
-       <string>账号密码簿</string>
-      </property>
-      <property name="icon">
-       <iconset resource="../../res.qrc">
-        <normaloff>:/img/tool_img/maple_leaf_book.png</normaloff>:/img/tool_img/maple_leaf_book.png</iconset>
-      </property>
-      <property name="flags">
-       <set>ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>批量重命名</string>
-      </property>
-      <property name="icon">
-       <iconset resource="../../res.qrc">
-        <normaloff>:/img/tool_img/maple_leaf_book.png</normaloff>:/img/tool_img/maple_leaf_book.png</iconset>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>归纳本</string>
-      </property>
-      <property name="icon">
-       <iconset resource="../../res.qrc">
-        <normaloff>:/img/tool_img/maple_leaf_book.png</normaloff>:/img/tool_img/maple_leaf_book.png</iconset>
-      </property>
-     </item>
     </widget>
    </item>
    <item>
-    <widget class="QStackedWidget" name="stackedWidgetTool">
-     <widget class="CAccPasswdWidget" name="accPasswdWidget"/>
-     <widget class="CRenameWidget" name="renameWidget"/>
-     <widget class="QWidget" name="page"/>
-    </widget>
+    <widget class="QStackedWidget" name="stackedWidget"/>
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>CAccPasswdWidget</class>
-   <extends>QWidget</extends>
-   <header>module_tool/tool_accpasswd_book/AccPasswdWidget.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>CRenameWidget</class>
-   <extends>QWidget</extends>
-   <header>module_tool/tool_rename/RenameWidget.h</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
- <resources>
-  <include location="../../res.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

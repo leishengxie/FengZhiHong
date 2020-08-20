@@ -1,10 +1,9 @@
-
 TEMPLATE      = lib
 CONFIG       += plugin
 QT           += widgets
-INCLUDEPATH  += ../../pluginTest
+INCLUDEPATH  += ../../LxDairy/src/module_tool
 TARGET        = $$qtLibraryTarget(ToolA)
-DESTDIR       = ../../plugins
+DESTDIR       = ../../LxDairy/bin/plugins
 
 #! [0]
 # install
@@ -13,16 +12,15 @@ DESTDIR       = ../../plugins
 
 #CONFIG += install_ok  # Do not cargo-cult this!
 
-
-SOURCES += \
-    ToolA.cpp \
-    ToolAWidget.cpp
+FORMS += \
+    RenameWidget.ui
 
 HEADERS += \
-    ToolA.h \
-    ToolAWidget.h
+    OriginNum.h \
+    RenameWidget.h \
+    RenameToolPlugin.h
 
-FORMS += \
-    ToolAWidget.ui
-
-
+SOURCES += \
+    OriginNum.cpp \
+    RenameWidget.cpp \
+    RenameToolPlugin.cpp

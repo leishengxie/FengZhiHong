@@ -86,7 +86,13 @@ win32 {
 #}
 
 
+# plugin静态库加载
+#LIBS           = -L../plugins -lpnp_basictools
 
+#if(!debug_and_release|build_pass):CONFIG(debug, debug|release) {
+#   mac:LIBS = $$member(LIBS, 0) $$member(LIBS, 1)_debug
+#   win32:LIBS = $$member(LIBS, 0) $$member(LIBS, 1)d
+#}
 
 
 include($$PWD/src/src.pri)

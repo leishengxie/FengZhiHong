@@ -1,7 +1,7 @@
 #include "GeneralToolsWidget.h"
 #include "ui_GeneralToolsWidget.h"
-//#include "tool_rename/RenameWidget.h"
-//#include "tool_accpasswd_book/AccPasswdWidget.h"
+#include "PluginsManger.h"
+#include "Plugin.h"
 
 CGeneralToolsWidget::CGeneralToolsWidget(QWidget *parent) :
     QWidget(parent),
@@ -9,26 +9,19 @@ CGeneralToolsWidget::CGeneralToolsWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->listWidgetPrivate->setIconSize(QSize(64,64));
-    ui->listWidgetPrivate->setGridSize(QSize(96,96));
+    // 由于加载后列表就不会修改，所以用QListWidget + QListWidgetItem就行了
+    ui->listWidget->setIconSize(QSize(64,64));
+    ui->listWidget->setGridSize(QSize(96,96));
+    ui->listWidget->setViewMode(QListView::IconMode);
 
-    // 由于加载后列表就不会修改，所以用QStanderModel就行了
-
-    //ui->listWidgetPrivate->setResizeMode(QListView::Adjust); //设置QListView大小改变时，图标的调整模式，默认是固定的，但可以改成自动调整：
-//    CPrivateMenuModel *pModel = new CPrivateMenuModel(this);
-//    ui->listViewPrivate->setModel(pModel);
-//    ui->listViewPrivate->setViewMode(QListView::IconMode);
-    // 此处用listWidget替代listView
-
-//    CAccPasswdWidget* pAccPasswdWidget = new CAccPasswdWidget(ui->stackedWidgetTool);
-//    ui->stackedWidgetTool->addWidget(pAccPasswdWidget);
-//    //connect(ui->action_save, SIGNAL(toggled(bool))
-
-//    CRenameWidget* pRenameWidget = new CRenameWidget(ui->stackedWidgetTool);
-//    ui->stackedWidgetTool->addWidget(pRenameWidget);
-
-//    QWidget* pWidget = new QWidget(ui->stackedWidgetTool);
-//    ui->stackedWidgetTool->addWidget(pWidget);
+    //删除stackedWidget所有子窗口
+    for(int i = ui->stackedWidget->count(); i >= 0; i--)
+    {
+        QWidget* widget = ui->stackedWidget->widget(i);
+        ui->stackedWidget->removeWidget(widget);
+        widget->deleteLater();
+    }
+    loadPlugins();
 }
 
 CGeneralToolsWidget::~CGeneralToolsWidget()
@@ -38,5 +31,18 @@ CGeneralToolsWidget::~CGeneralToolsWidget()
 
 void CGeneralToolsWidget::on_listWidgetPrivate_clicked(const QModelIndex &index)
 {
-    ui->stackedWidgetTool->setCurrentIndex(index.row());
+    ui->stackedWidget->setCurrentIndex(index.row());
+}
+
+void CGeneralToolsWidget::loadPlugins()
+{
+    QList<IPlugin*> lstPlugin = CPluginsManger::getInstance()->loadPlugins();
+    foreach (IPlugin* pPlugin, lstPlugin)
+    {
+        QListWidgetItem* item = new QListWidgetItem(pPlugin->icon(), pPlugin->name());
+        ui->listWidget->addItem(item);
+        //QStandardItem *pItem = new QStandardItem(pPlugin->icon(), pPlugin->name());
+        //ui->listWidget->model()->appendRow(pItem);
+        ui->stackedWidget->addWidget(pPlugin->widget());
+    }
 }
