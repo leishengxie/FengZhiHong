@@ -37,3 +37,19 @@ QValidator::State Palindate::validate(QString &strInput, int &) const
         return Intermediate;
     }
 }
+
+
+///
+/// \brief CCommonRegExpValidator::CCommonRegExpValidator
+/// \param parent
+///
+CCommonRegExpValidator::CCommonRegExpValidator(QObject *parent)
+{
+    // 正则表达式
+    QRegExp regExp("[1][3,4,5,7,8][0-9]{9}");
+
+    //
+    QRegExp rxNum("[^ \u4e00-\u9fa5]+"); //非中文
+    //QRegExp rx("[\u4e00-\u9fa5]");//中文
+    //QRegExp rx("(([/xB0-/xF7][/xA1-/xFE])|([/x81-/xA0][/x40-/xFE])|([/xAA-/xFE][/x40-/xA0])|(/w))+"); //中文
+}

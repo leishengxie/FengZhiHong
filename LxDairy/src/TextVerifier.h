@@ -35,4 +35,13 @@ public:
     QValidator::State validate(QString & strInput, int &) const;
 };
 
+class CCommonRegExpValidator : public QRegExpValidator
+{
+    Q_OBJECT
+public:
+    explicit CCommonRegExpValidator(QObject* parent = 0);
+};
+
+
+
 #endif // CTEXTVERIFIER_H
