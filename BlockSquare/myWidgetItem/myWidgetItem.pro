@@ -12,9 +12,10 @@ TARGET = myWidgetItem
 TEMPLATE = app
 
 
-SOURCES += main.cpp\
-        mainwindow.cpp
+SOURCES += main.cpp \
+    LoginWidget.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += \
+    LoginWidget.h
 
-FORMS    += mainwindow.ui
+FORMS    +=
