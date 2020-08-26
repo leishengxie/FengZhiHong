@@ -15,6 +15,7 @@ INCLUDEPATH += \
 
 
 HEADERS += \
+    $$PWD/DairyAppVersion.h \
     $$PWD/core/LBaseWidget.h \
     $$PWD/module_tool/GeneralToolsWidget.h \
     $$PWD/module_tool/Plugin.h \
