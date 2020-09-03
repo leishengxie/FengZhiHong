@@ -51,7 +51,7 @@ void CComponent::paint(QPainter *painter, const QRect &rect, const QPalette &pal
 
 QPixmap CComponent::renderPixmap()
 {
-    QPixmap pixmap(size());
+    QPixmap pixmap(sizeHint());
     pixmap.fill(Qt::transparent);
 
     QPainter painter(&pixmap);

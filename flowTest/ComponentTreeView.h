@@ -14,7 +14,7 @@ public:
 protected:
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
-    void performDrag(const QPoint & pt);
+    void performDrag();
 
 signals:
 

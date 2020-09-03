@@ -1,8 +1,10 @@
 #include "GraphicsFlowScene.h"
 #include "GraphicsNodeItem.h"
 #include "ComponentMimeData.h"
+#include <QGraphicsView>
 #include <QGraphicsSceneDragDropEvent>
 #include <QtDebug>
+#include <QGraphicsRectItem>
 
 CGraphicsFlowScene::CGraphicsFlowScene(QObject *parent)
     : QGraphicsScene(parent)
@@ -15,9 +17,13 @@ void CGraphicsFlowScene::addNode(const QPointF &ptScene, const CComponent &compo
     CGraphicsNodeItem* node = new CGraphicsNodeItem(component);
     node->setPos(ptScene);
     addItem(node);
+
     //QPointF pt = node->mapFromScene(ptScene);
     //qDebug() << ptScene << pt;
 
+//    QGraphicsRectItem* item = new QGraphicsRectItem();
+//    item->setRect(ptScene.x(), ptScene.y(), 200, 40);
+//    addItem(item);
 }
 
 
@@ -48,8 +54,7 @@ void CGraphicsFlowScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 void CGraphicsFlowScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 {
     const CComponentMimeData *pComponentMimeData= qobject_cast<const CComponentMimeData *>(event->mimeData());
-    //QPointF ptScene = mapToScene(event->pos());
-    addNode(event->scenePos(), pComponentMimeData->component());
+    addNode(event->scenePos() - pComponentMimeData->hotspot(), pComponentMimeData->component());
 }
 
 

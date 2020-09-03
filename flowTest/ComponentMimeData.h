@@ -14,6 +14,11 @@ public:
     void setComponent(const CComponent &component);
     bool hasComponent() const;
 
+    QPoint hotspot() const;
+    void setHotspot(const QPoint &pt);
+    bool hasHotspot() const;
+
+
 //protected:
 //    virtual QVariant retrieveData(const QString &mimetype,
 //                                      QVariant::Type preferredType) const;

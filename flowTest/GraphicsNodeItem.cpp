@@ -7,24 +7,49 @@ CGraphicsNodeItem::CGraphicsNodeItem(const CComponent &component, QGraphicsItem 
     : CNode(component)
       , QGraphicsItem(parent)
 {
-
+    m_rect.setRect(0, 0, component.sizeHint().width(), component.sizeHint().height());
+    updateBoundingRect();
 }
+
+
 
 QRectF CGraphicsNodeItem::boundingRect() const
 {
-    return QRectF(pos(), m_component.size());
+    return m_rectBounding;
 }
 
-QRectF CGraphicsNodeItem::rectf() const
+void CGraphicsNodeItem::setRect(const QRectF &rect)
 {
-    return QRectF(pos(), m_component.size());
+    if (m_rect == rect)
+    {
+        return;
+    }
+    prepareGeometryChange();
+    m_rect = rect;
+    updateBoundingRect();
+    update();
+}
+
+QRectF CGraphicsNodeItem::rect() const
+{
+    return m_rect;
 }
 
 void CGraphicsNodeItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(option)
     Q_UNUSED(widget)
-    QRectF rect = rectf();
-    m_component.paint(painter, rect.toRect(), widget->palette());
+
+    m_component.paint(painter, m_rect.toRect(), widget->palette());
+
+}
+
+void CGraphicsNodeItem::updateBoundingRect()
+{
+    m_rectBounding = m_rect;
+}
+
+void CGraphicsNodeItem::createIOItem()
+{
 
 }

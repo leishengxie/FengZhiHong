@@ -24,8 +24,6 @@ SOURCES += \
     GraphicsFlowScene.cpp \
     GraphicsFlowView.cpp \
     GraphicsIOItem.cpp \
-    Node.cpp \
-    NodeFactory.cpp \
     main.cpp \
     mainwindow.cpp \
     GraphicsNodeItem.cpp
@@ -38,8 +36,6 @@ HEADERS += \
     GraphicsFlowScene.h \
     GraphicsFlowView.h \
     GraphicsIOItem.h \
-    Node.h \
-    NodeFactory.h \
     mainwindow.h \
     GraphicsNodeItem.h
 

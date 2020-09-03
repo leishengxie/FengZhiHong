@@ -37,12 +37,12 @@ void CComponentTreeView::mouseMoveEvent(QMouseEvent *event)
         int distance = (pt - m_ptPress).manhattanLength();
         if (distance >= QApplication::startDragDistance())
         {
-            performDrag(pt);
+            performDrag();
         }
     }
 }
 
-void CComponentTreeView::performDrag(const QPoint &pt)
+void CComponentTreeView::performDrag()
 {
     QModelIndex index = indexAt(m_ptPress);
     if(!index.isValid())
@@ -56,17 +56,16 @@ void CComponentTreeView::performDrag(const QPoint &pt)
     }
 
     CComponent component = m_pComponentTreeModel->component(index);
+    QPoint ptHotspot = m_ptPress - visualRect(index).topLeft();
 
     CComponentMimeData* mimeData = new CComponentMimeData;
+    mimeData->setHotspot(ptHotspot);
     mimeData->setComponent(component);
-
-    QPoint ptHotspot(cursor().hotSpot().x() + component.size().width() / 2
-                     , cursor().hotSpot().y() + component.size().height() / 2);
 
     QDrag* drag = new QDrag(this);
     drag->setMimeData(mimeData);
     drag->setPixmap(component.renderPixmap());
-    drag->setHotSpot(ptHotspot);
+    drag->setHotSpot(ptHotspot); // 通过setHotSpot来指定鼠标在拖动期间在pixmap上的位置
     drag->exec(Qt::MoveAction);
 }
 

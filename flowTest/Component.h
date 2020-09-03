@@ -3,6 +3,35 @@
 #include <QObject>
 #include <QIcon>
 
+// 组件io
+struct T_ComponentIO
+{
+    enum E_IOType
+    {
+        EI_In,
+        EI_Out
+    };
+
+    E_IOType eIOType;
+
+    bool bEnbale;
+
+    // 目标节点id
+    int nDestNodeId;
+
+    T_ComponentIO()
+        : eIOType(EI_Out)
+        , nDestNodeId(-1)
+        , bEnbale(false)
+    {
+
+    }
+
+};
+
+///
+/// \brief The CComponent class
+///
 class CComponent
 {
 public:
@@ -65,10 +94,12 @@ public:
     }
 
     // 区域大小
-    QSize size() const
+    QSize sizeHint() const
     {
         return QSize(200, 40);
     }
+
+    //int nId;
 
     // 组件名称
     QString strName;
@@ -83,7 +114,10 @@ public:
     E_ComponentBoxClass eComponentClass;
     E_ComponentStatus eNodeStatus;
 
-
+    T_ComponentIO tIOTop;
+    T_ComponentIO tIOLeft;
+    T_ComponentIO tIORight;
+    T_ComponentIO tIOBottom;
 
 };
 
