@@ -1,12 +1,12 @@
 #ifndef CGRAPHICSNODEITEM_H
 #define CGRAPHICSNODEITEM_H
 
-#include "Node.h"
+#include "Component.h"
 #include <QGraphicsItem>
 
 class CGraphicsIOItem;
 
-class CGraphicsNodeItem : public QGraphicsItem, public CNode
+class CGraphicsNodeItem : public QGraphicsItem
 {
 
 public:
@@ -32,6 +32,8 @@ private:
     mutable QRectF m_rectBounding;
 
     CGraphicsIOItem* m_pGraphicsIOItem[4];
+
+    CComponent m_component;
 
 };
 
