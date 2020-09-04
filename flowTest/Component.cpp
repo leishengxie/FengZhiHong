@@ -20,6 +20,17 @@ void CComponent::init()
     eNodeShape = EC_RoundRect;
 }
 
+QColor CComponent::statusColor() const
+{
+    switch (eStatus) {
+    case EC_Failed:
+        return Qt::red;
+    default:
+        break;
+    }
+    return Qt::white;
+}
+
 void CComponent::paint(QPainter *painter, const QRect &rect, const QPalette &palette) const
 {
     painter->save();
@@ -63,13 +74,13 @@ QPixmap CComponent::renderPixmap()
 QDataStream &operator>>(QDataStream &in, CComponent &data)
 {
     in >> data.strName >> data.m_icon >> data.eNodeShape >> data.eComponentType
-            >> data.eComponentClass >> data.eNodeStatus;
+            >> data.eComponentClass >> data.eStatus;
     return in;
 }
 
 QDataStream &operator<<(QDataStream &out, const CComponent &data)
 {
     out << data.strName << data.m_icon << data.eNodeShape << data.eComponentType
-        << data.eComponentClass << data.eNodeStatus;
+        << data.eComponentClass << data.eStatus;
     return out;
 }

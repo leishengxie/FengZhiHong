@@ -71,6 +71,19 @@ public:
         EC_Successed,
     };
 
+    // 直接使用Qt定义的
+    //Qt::Edge
+    //Qt::Edges
+    enum E_Direction
+    {
+        ED_Top,
+        ED_Left,
+        ED_Right,
+        ED_Bottom
+    };
+
+    QColor statusColor() const;
+
     bool operator ==(const CComponent &component) const
     {
        return strName == component.strName;
@@ -99,6 +112,8 @@ public:
         return QSize(200, 40);
     }
 
+    //QPainterPath shape() const;
+
     //int nId;
 
     // 组件名称
@@ -112,12 +127,9 @@ public:
     E_ComponentShape eNodeShape;
     E_ComponentType eComponentType;
     E_ComponentBoxClass eComponentClass;
-    E_ComponentStatus eNodeStatus;
+    E_ComponentStatus eStatus;
 
-    T_ComponentIO tIOTop;
-    T_ComponentIO tIOLeft;
-    T_ComponentIO tIORight;
-    T_ComponentIO tIOBottom;
+    //T_ComponentIO tArrIO[4];
 
 };
 

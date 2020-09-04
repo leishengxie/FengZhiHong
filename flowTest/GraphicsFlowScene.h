@@ -25,6 +25,9 @@ protected:
 
 signals:
 
+private:
+
+
 };
 
 #endif // CGRAPHICSFLOWSCENE_H

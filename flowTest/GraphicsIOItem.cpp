@@ -4,9 +4,10 @@
 CGraphicsIOItem::CGraphicsIOItem(QGraphicsItem *parent)
     : QAbstractGraphicsShapeItem(parent)
 {
-    m_rect.setRect(0, 0, 20, 20);
+    m_rect.setRect(0, 0, 16, 16);
     setBrush(QColor(150, 150, 150));
     setAcceptHoverEvents(true);
+    setFlags(QGraphicsItem::ItemIsSelectable);
 }
 
 QRectF CGraphicsIOItem::boundingRect() const
@@ -31,7 +32,7 @@ void CGraphicsIOItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
 
 void CGraphicsIOItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-
+    setSelected(true);
 }
 
 void CGraphicsIOItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
@@ -41,7 +42,7 @@ void CGraphicsIOItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void CGraphicsIOItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-
+     setSelected(false);
 }
 
 void CGraphicsIOItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
