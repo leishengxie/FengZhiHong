@@ -4,6 +4,22 @@
 #include <QGraphicsScene>
 #include "Component.h"
 
+class CGraphicsArrowConnectItem;
+
+//template<class T>
+//T* firstItem(QGraphicsScene *scene, QPointF pos)
+//{
+//    foreach (QGraphicsItem* item, scene->items(pos))
+//    {
+//        T* base = dynamic_cast<T*>(item);
+//        if (base)
+//        {
+//            return base;
+//        }
+//    }
+//    return nullptr;
+//}
+
 ///
 /// \brief The CGraphicsFlowScene class
 /// 本身不可见，是一个存储图元的容器，必须通过与之相连的QGraphicsView视图来显示及与外界进行交互，
@@ -21,12 +37,17 @@ protected:
     void dragEnterEvent(QGraphicsSceneDragDropEvent *event);
     void dragMoveEvent(QGraphicsSceneDragDropEvent *event);
     void dropEvent(QGraphicsSceneDragDropEvent *event);
-
+    void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) Q_DECL_OVERRIDE;
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent) Q_DECL_OVERRIDE;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent) Q_DECL_OVERRIDE;
 
 signals:
 
 private:
+    QPointF m_ptPressPos;
+    int m_nPressType;
 
+    CGraphicsArrowConnectItem* m_pArrowConnectItem;
 
 };
 

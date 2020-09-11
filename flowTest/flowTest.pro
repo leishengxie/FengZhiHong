@@ -21,6 +21,7 @@ SOURCES += \
     ComponentMimeData.cpp \
     ComponentTreeModel.cpp \
     ComponentTreeView.cpp \
+    GraphicsArrowItem.cpp \
     GraphicsFlowScene.cpp \
     GraphicsFlowView.cpp \
     GraphicsIOItem.cpp \
@@ -33,6 +34,8 @@ HEADERS += \
     ComponentMimeData.h \
     ComponentTreeModel.h \
     ComponentTreeView.h \
+    GlobalDef.h \
+    GraphicsArrowItem.h \
     GraphicsFlowScene.h \
     GraphicsFlowView.h \
     GraphicsIOItem.h \

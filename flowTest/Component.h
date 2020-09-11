@@ -2,30 +2,51 @@
 #define CCOMPONENT_H
 #include <QObject>
 #include <QIcon>
+#include "GlobalDef.h"
 
 // 组件io
-struct T_ComponentIO
+class CComponentIO
 {
+public:
     enum E_IOType
     {
         EI_In,
-        EI_Out
+        EI_Out,
+        EI_InOut
     };
+
+    CComponentIO();
+
+    int height()
+    {
+        return rect.height();
+    }
+
+    int width()
+    {
+        return rect.width();
+    }
+
+    bool isEnabled() const
+    {
+        return bEnabled;
+    }
+
+    friend QDataStream & operator>>(QDataStream & in, CComponentIO & data);
+    friend QDataStream & operator<<(QDataStream & out, const CComponentIO & data);
+
 
     E_IOType eIOType;
 
-    bool bEnbale;
+    //Disabled：关闭 Enabled：启用
+    bool bEnabled;
 
     // 目标节点id
-    int nDestNodeId;
+    //int nDestNodeId;
 
-    T_ComponentIO()
-        : eIOType(EI_Out)
-        , nDestNodeId(-1)
-        , bEnbale(false)
-    {
+    QRect rect;
 
-    }
+
 
 };
 
@@ -71,16 +92,7 @@ public:
         EC_Successed,
     };
 
-    // 直接使用Qt定义的
-    //Qt::Edge
-    //Qt::Edges
-    enum E_Direction
-    {
-        ED_Top,
-        ED_Left,
-        ED_Right,
-        ED_Bottom
-    };
+
 
     QColor statusColor() const;
 
@@ -109,8 +121,24 @@ public:
     // 区域大小
     QSize sizeHint() const
     {
-        return QSize(200, 40);
+        return rect.size();
     }
+    int width() const
+    {
+        return rect.width();
+    }
+    int height() const
+    {
+        return rect.height();
+    }
+
+    // IO的位置
+    CComponentIO io(E_Direction eDirection) const
+    {
+        return arrIO[eDirection];
+    }
+    QPoint ioPos(E_Direction eDirection) const;
+
 
     //QPainterPath shape() const;
 
@@ -122,6 +150,7 @@ public:
     // 组件图标
     QIcon m_icon;
 
+    QRect rect;
 
 
     E_ComponentShape eNodeShape;
@@ -129,7 +158,7 @@ public:
     E_ComponentBoxClass eComponentClass;
     E_ComponentStatus eStatus;
 
-    //T_ComponentIO tArrIO[4];
+    CComponentIO arrIO[4];
 
 };
 

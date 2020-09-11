@@ -6,6 +6,7 @@
 
 class CGraphicsIOItem;
 
+
 class CGraphicsNodeItem : public QGraphicsItem
 {
 
@@ -15,14 +16,15 @@ public:
     QRectF boundingRect() const override;
     void setRect(const QRectF &rect);
     QRectF rect() const;
+    QSizeF size() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
-
+    int type() const override;
 
 signals:
 
 protected:
-//    void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    void mousePressEvent(QGraphicsSceneMouseEvent *event);
 //    void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 //    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
@@ -38,9 +40,12 @@ private:
 
     mutable QRectF m_rectBounding;
 
+    CComponent m_component;
+
+    // 四个位置的输入输出桩
     CGraphicsIOItem* m_pGraphicsIOItem[4];
 
-    CComponent m_component;
+
 
 };
 

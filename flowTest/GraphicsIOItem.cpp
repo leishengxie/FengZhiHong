@@ -1,5 +1,8 @@
 #include "GraphicsIOItem.h"
+#include "GlobalDef.h"
 #include <QPainter>
+#include <QtDebug>
+#include <QCursor>
 
 CGraphicsIOItem::CGraphicsIOItem(QGraphicsItem *parent)
     : QAbstractGraphicsShapeItem(parent)
@@ -8,6 +11,8 @@ CGraphicsIOItem::CGraphicsIOItem(QGraphicsItem *parent)
     setBrush(QColor(150, 150, 150));
     setAcceptHoverEvents(true);
     setFlags(QGraphicsItem::ItemIsSelectable);
+    //    setData();
+    //    data()
 }
 
 QRectF CGraphicsIOItem::boundingRect() const
@@ -30,9 +35,16 @@ void CGraphicsIOItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
     painter->drawEllipse(m_rect);
 }
 
+int CGraphicsIOItem::type() const
+{
+    return EG_IO;
+}
+
 void CGraphicsIOItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     setSelected(true);
+    qDebug() << __FILE__ << __FUNCTION__;
+    QAbstractGraphicsShapeItem::mousePressEvent(event);
 }
 
 void CGraphicsIOItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
@@ -48,6 +60,7 @@ void CGraphicsIOItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 void CGraphicsIOItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     setBrush(QColor(158, 179, 207));
+    setCursor(QCursor(Qt::CrossCursor));
     QAbstractGraphicsShapeItem::hoverEnterEvent(event);
 }
 

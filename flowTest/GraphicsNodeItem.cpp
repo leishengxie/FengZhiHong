@@ -2,14 +2,21 @@
 #include <QPainter>
 #include <QWidget>
 #include <QStyleOptionGraphicsItem>
+#include <QtDebug>
 //#include <QGraphicsRectItem>
 #include "GraphicsIOItem.h"
+#include "GraphicsArrowItem.h"
+#include "GlobalDef.h"
 
 CGraphicsNodeItem::CGraphicsNodeItem(const CComponent &component, QGraphicsItem *parent)
     : m_component(component)
       , QGraphicsItem(parent)
 {
     m_rect.setRect(0, 0, component.sizeHint().width(), component.sizeHint().height());
+    for (int i = 0; i < 4; ++i)
+    {
+        m_pGraphicsIOItem[i] = nullptr;
+    }
     updateBoundingRect();
     createIOItem();
     setAcceptHoverEvents(true);
@@ -41,6 +48,11 @@ QRectF CGraphicsNodeItem::rect() const
     return m_rect;
 }
 
+QSizeF CGraphicsNodeItem::size() const
+{
+    return m_rect.size();
+}
+
 void CGraphicsNodeItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(option)
@@ -60,10 +72,25 @@ void CGraphicsNodeItem::paint(QPainter *painter, const QStyleOptionGraphicsItem 
 
 }
 
+int CGraphicsNodeItem::type() const
+{
+    return EG_Node;
+}
+
+void CGraphicsNodeItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    qDebug() << __FILE__ << __FUNCTION__;
+    QGraphicsItem::mousePressEvent(event);
+}
+
 void CGraphicsNodeItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     for(int i = 0; i < 4; ++i)
     {
+        if (m_pGraphicsIOItem[i] == nullptr)
+        {
+            continue;
+        }
         m_pGraphicsIOItem[i]->show();
     }
 }
@@ -72,6 +99,10 @@ void CGraphicsNodeItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
     for(int i = 0; i < 4; ++i)
     {
+        if (m_pGraphicsIOItem[i] == nullptr)
+        {
+            continue;
+        }
         m_pGraphicsIOItem[i]->hide();
     }
 }
@@ -83,21 +114,16 @@ void CGraphicsNodeItem::updateBoundingRect()
 
 void CGraphicsNodeItem::createIOItem()
 {
-    m_pGraphicsIOItem[CComponent::ED_Top] = new CGraphicsIOItem(this);
-    m_pGraphicsIOItem[CComponent::ED_Top]->moveBy(m_rect.width() / 2 - m_pGraphicsIOItem[CComponent::ED_Top]->boundingRect().width() / 2, 0);
-    m_pGraphicsIOItem[CComponent::ED_Top]->hide();
+    for (int i = 0; i < 4; ++i)
+    {
+        E_Direction eDirection = E_Direction(i);
+        if(m_component.io(eDirection).isEnabled())
+        {
+            m_pGraphicsIOItem[i] = new CGraphicsIOItem(this);
+            m_pGraphicsIOItem[i]->setPos(m_component.ioPos(eDirection));
+            m_pGraphicsIOItem[i]->setDirection(eDirection);
+            m_pGraphicsIOItem[i]->hide();
+        }
+    }
 
-    m_pGraphicsIOItem[CComponent::ED_Left] = new CGraphicsIOItem(this);
-    m_pGraphicsIOItem[CComponent::ED_Left]->moveBy(0, m_rect.height() / 2 - m_pGraphicsIOItem[CComponent::ED_Top]->boundingRect().height() / 2);
-    m_pGraphicsIOItem[CComponent::ED_Left]->hide();
-
-    m_pGraphicsIOItem[CComponent::ED_Right] = new CGraphicsIOItem(this);
-    m_pGraphicsIOItem[CComponent::ED_Right]->moveBy(m_rect.width() - m_pGraphicsIOItem[CComponent::ED_Top]->boundingRect().width()
-            , m_rect.height() / 2 - m_pGraphicsIOItem[CComponent::ED_Top]->boundingRect().height() / 2);
-    m_pGraphicsIOItem[CComponent::ED_Right]->hide();
-
-    m_pGraphicsIOItem[CComponent::ED_Bottom] = new CGraphicsIOItem(this);
-    m_pGraphicsIOItem[CComponent::ED_Bottom]->moveBy(m_rect.width() / 2 - m_pGraphicsIOItem[CComponent::ED_Top]->boundingRect().height() / 2
-            , m_rect.height() - m_pGraphicsIOItem[CComponent::ED_Top]->boundingRect().height());
-    m_pGraphicsIOItem[CComponent::ED_Bottom]->hide();
 }

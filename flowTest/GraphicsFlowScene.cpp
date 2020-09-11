@@ -1,6 +1,9 @@
 #include "GraphicsFlowScene.h"
 #include "GraphicsNodeItem.h"
 #include "ComponentMimeData.h"
+#include "GlobalDef.h"
+#include "GraphicsArrowItem.h"
+#include "GraphicsIOItem.h"
 #include <QGraphicsView>
 #include <QGraphicsSceneDragDropEvent>
 #include <QtDebug>
@@ -9,7 +12,10 @@
 CGraphicsFlowScene::CGraphicsFlowScene(QObject *parent)
     : QGraphicsScene(parent)
 {
-
+    m_pArrowConnectItem = new CGraphicsArrowConnectItem();
+    m_pArrowConnectItem->hide();
+    addItem(m_pArrowConnectItem);
+    m_nPressType = EG_NoOne;
 }
 
 void CGraphicsFlowScene::addNode(const QPointF &ptScene, const CComponent &component)
@@ -24,6 +30,7 @@ void CGraphicsFlowScene::addNode(const QPointF &ptScene, const CComponent &compo
 //    QGraphicsRectItem* item = new QGraphicsRectItem();
 //    item->setRect(ptScene.x(), ptScene.y(), 200, 40);
 //    addItem(item);
+
 }
 
 
@@ -55,6 +62,60 @@ void CGraphicsFlowScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 {
     const CComponentMimeData *pComponentMimeData= qobject_cast<const CComponentMimeData *>(event->mimeData());
     addNode(event->scenePos() - pComponentMimeData->hotspot(), pComponentMimeData->component());
+}
+
+// 事件先传递给scene，再传给QGraphicsItem
+///
+/// \brief CGraphicsFlowScene::mousePressEvent
+/// \param mouseEvent
+/// 在QT的QGraphicsView架构中鼠标事件首先由QGraphicsView处理，若未处理传递给QGraphicsScene，
+/// 然后再传递给对应位置的QGraphicsItem。QGraphicsView的mousePressEvent方法中除了进行自己关心的处理外，
+/// 其它情况应让事件继续传递下去。
+///
+void CGraphicsFlowScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
+{
+    // get press whitch
+    qDebug() << __FILE__ << __FUNCTION__;
+
+    //get topmost visible item
+    QGraphicsItem* pGraphicsItem = itemAt(mouseEvent->scenePos(), views().at(0)->transform());
+    m_ptPressPos = mouseEvent->scenePos();
+    m_nPressType = pGraphicsItem->type();
+
+    if (pGraphicsItem == nullptr)
+    {
+        return;
+    }
+
+    if (m_nPressType == EG_IO)
+    {
+        m_pArrowConnectItem->handleSceneMousePressEvent(mouseEvent);
+    }
+
+    // 传递mousePressEvent给QGraphicsItem
+    QGraphicsScene::mousePressEvent(mouseEvent);
+
+    qDebug() << __FILE__ << __FUNCTION__ << "-----2";
+
+}
+
+void CGraphicsFlowScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
+{
+    if (m_nPressType == EG_IO)
+    {
+        m_pArrowConnectItem->handleSceneMouseMoveEvent(mouseEvent);
+    }
+    QGraphicsScene::mouseMoveEvent(mouseEvent);
+}
+
+void CGraphicsFlowScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
+{
+    QGraphicsScene::mouseReleaseEvent(mouseEvent);
+    if (m_nPressType == EG_IO)
+    {
+        m_pArrowConnectItem->handleSceneMouseReleaseEvent(mouseEvent);
+    }
+    m_nPressType = EG_NoOne;
 }
 
 
