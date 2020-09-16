@@ -6,9 +6,11 @@
 #include <QPainterPath>
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsView>
+#include <QtDebug>
+#include <QStyleOptionGraphicsItem>
+#include <math.h>
 
-
-
+const qreal Pi = 3.14;
 
 ///
 /// \brief CGraphicsArrowItem::CGraphicsArrowItem
@@ -17,8 +19,11 @@
 /// 当鼠标连接到目标节点的io端点时，计算该io端点到起始节点的四个io端点（必须是输出端点）的距离，采用最近的一个io端点连线
 /// 选择折线最少的
 ///
-CGraphicsArrowItem::CGraphicsArrowItem(QGraphicsItem *parent)
+CGraphicsArrowItem::CGraphicsArrowItem(CGraphicsIOItem *pIOStart, CGraphicsIOItem *pIOEnd
+                                       , QGraphicsItem *parent)
     : QGraphicsPathItem(parent)
+    , m_pIOStart(pIOStart)
+    , m_pIOEnd(pIOEnd)
 {
     //    //这是一个重载函数。 通过(c1X, c1Y)和(c2X, c2Y)指定的控制点，在当前位置和结束点(endPointX, endPointY)之间添加
     //一条三次贝塞尔曲线。
@@ -26,6 +31,19 @@ CGraphicsArrowItem::CGraphicsArrowItem(QGraphicsItem *parent)
     //    pathCubic.cubicTo();
     //    //使用由(cx, cy)指定的控制点在当前点和端点(endPointX, endPointY)之间添加二次贝塞尔曲线。
     //    pathCubic.quadTo();
+    setFlags(QGraphicsItem::ItemIsSelectable);
+
+    setPen(QPen(Qt::darkGray, 2));
+
+    // 注意QGraphicsPathItem不要设置setBrush
+//    setBrush(QBrush(Qt::darkGray));
+
+    m_painterPathStroker.setCapStyle(Qt::FlatCap);  // 端点风格
+    m_painterPathStroker.setJoinStyle(Qt::SvgMiterJoin); // 连接样式
+    m_painterPathStroker.setDashPattern(Qt::SolidLine);
+    m_painterPathStroker.setWidth(7);
+
+
 }
 
 int CGraphicsArrowItem::type() const
@@ -33,10 +51,106 @@ int CGraphicsArrowItem::type() const
     return EG_Arrow;
 }
 
-void CGraphicsArrowItem::updateLine(const QPointF &ptStart, const E_Direction &eDirectionIoStart
-                                    , const QPointF &ptEnd, const E_Direction &eDirectionIoEnd)
+QPainterPath CGraphicsArrowItem::shape() const
+{
+    return m_pathStroker;
+}
+
+// 覆盖父类
+void CGraphicsArrowItem::setPath(const QPainterPath &path)
+{
+    QGraphicsPathItem::setPath(path);
+    m_pathStroker = m_painterPathStroker.createStroke(path);
+    updateArrowHead();
+}
+
+void CGraphicsArrowItem::updatePosition()
+{
+    updateArrowLine();
+    updateArrowHead();
+}
+
+void CGraphicsArrowItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+    QStyleOptionGraphicsItem op;
+    op.initFrom(widget);
+
+    // 判断选中时，设置状态为 State_None -- 去掉选中时难看的虚线框
+    if (option->state & QStyle::State_Selected)
+    {
+        op.state = QStyle::State_None;
+    }
+    QGraphicsPathItem::paint(painter, &op, widget);
+
+    painter->setRenderHint(QPainter::Antialiasing, true);
+    if (option->state & QStyle::State_Selected)
+    {
+        painter->fillPath(m_pathStroker, QColor(77, 77, 77, 40));
+    }
+    painter->setBrush(pen().brush());
+    painter->drawPolygon(m_polygonArrowHead);
+}
+
+void CGraphicsArrowItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    QGraphicsPathItem::mousePressEvent(event);
+}
+
+void CGraphicsArrowItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+    QGraphicsPathItem::mouseMoveEvent(event);
+}
+
+void CGraphicsArrowItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    QGraphicsPathItem::mouseReleaseEvent(event);
+}
+
+QVariant CGraphicsArrowItem::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
+{
+    if (change == ItemSelectedChange && scene())
+    {
+    }
+    return QGraphicsItem::itemChange(change, value);
+}
+
+
+
+void CGraphicsArrowItem::updateArrowLine()
 {
 
+}
+
+void CGraphicsArrowItem::updateArrowHead()
+{
+
+    // 获取折线最后一段
+    QPainterPath painterPath = path();
+    int nElementCount = painterPath.elementCount();
+    if (nElementCount < 2)
+    {
+        return;
+    }
+    QPointF ptEnd = painterPath.elementAt(nElementCount - 1);
+    QPointF ptEndPre = painterPath.elementAt(nElementCount - 2);
+    QLineF lineSegment(ptEnd, ptEndPre);
+
+    // 通过直线画箭头
+    qreal arrowSize = 8;
+    QLineF line = lineSegment;
+    line.setLength(8);
+    double angle = ::acos(line.dx() / line.length());
+    if (line.dy() >= 0)
+    {
+        angle = (Pi * 2) - angle;
+    }
+    QPointF arrowP1 = line.p1() + QPointF(sin(angle + Pi / 3) * arrowSize,
+                                    cos(angle + Pi / 3) * arrowSize);
+    QPointF arrowP2 = line.p1() + QPointF(sin(angle + Pi - Pi / 3) * arrowSize,
+                                    cos(angle + Pi - Pi / 3) * arrowSize);
+
+    m_polygonArrowHead.clear();
+    m_polygonArrowHead << line.p1() << arrowP1 << arrowP2;
 }
 
 
@@ -53,6 +167,9 @@ CGraphicsArrowConnectItem::CGraphicsArrowConnectItem(QGraphicsItem *parent)
     , m_pNodeEnd(nullptr)
 {
 
+    m_rectNear.setRect(0, 0, 5, 5);
+    setZValue(1);
+    setPen(QPen(QPen(QColor("#808080"), 1, Qt::DotLine)));
 }
 
 void CGraphicsArrowConnectItem::handleSceneMousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
@@ -67,6 +184,7 @@ void CGraphicsArrowConnectItem::handleSceneMousePressEvent(QGraphicsSceneMouseEv
     m_pNodeStart = nodeItem;
     setPos(mouseEvent->scenePos());
     show();
+    showAllConnectUsableIO();
 }
 
 void CGraphicsArrowConnectItem::handleSceneMouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
@@ -77,25 +195,49 @@ void CGraphicsArrowConnectItem::handleSceneMouseMoveEvent(QGraphicsSceneMouseEve
     {
         ioItem = qgraphicsitem_cast<CGraphicsIOItem*>(pGraphicsItem);
     }
+
+    if (m_pIOStart == ioItem)
+    {
+        return;
+    }
+
     if (ioItem == nullptr)
     {
         m_ptEnd = mouseEvent->scenePos();
-        updateIoToPointPath();
+        setIoToPointPath();
     }
     else
     {
         m_pIOEnd = ioItem;
-        updateIoToIoPath();
+        setIoToIoPath();
+        qDebug() << "IO";
+
     }
+    showNearConnectUsableIO();
 
 }
 
 void CGraphicsArrowConnectItem::handleSceneMouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
+
+    // 检测是否可连接
+    if (m_pIOEnd != nullptr)
+    {
+        CGraphicsArrowItem* pArrowItem = new CGraphicsArrowItem(m_pIOStart, m_pIOEnd);
+        m_pIOStart->addArrow(pArrowItem);
+        m_pIOEnd->addArrow(pArrowItem);
+        pArrowItem->setPath(path());
+        pArrowItem->setPos(scenePos());
+        scene()->addItem(pArrowItem);
+    }
+
+    hideAllConnectUsableIO();
+    setPath(QPainterPath());
     m_pIOStart = nullptr;
     m_pIOEnd = nullptr;
     m_pNodeStart = nullptr;
     m_pNodeEnd = nullptr;
+    hide();
 }
 
 QPointF CGraphicsArrowConnectItem::getNearIOPoint(const QPointF &ptIO, const E_Direction &eDirectionIo
@@ -120,43 +262,96 @@ QPointF CGraphicsArrowConnectItem::getNearIOPoint(const QPointF &ptIO, const E_D
     return ptResult;
 }
 
+void CGraphicsArrowConnectItem::showAllConnectUsableIO()
+{
+    m_lstConnectUsableIO.clear();
+    QList<QGraphicsItem *> lstGraphicsItem = scene()->items();
+    foreach (QGraphicsItem* pGraphicsItem, lstGraphicsItem)
+    {
+        if(pGraphicsItem->type() != E_GraphicsItemUserType::EG_IO)
+        {
+            continue;
+        }
+        CGraphicsIOItem* pIOItemEnd = qgraphicsitem_cast<CGraphicsIOItem*>(pGraphicsItem);
+        if(m_pIOStart->canConnectIO(pIOItemEnd))
+        {
+            pIOItemEnd->showFacade(CComponentIO::EI_ConnectUsable);
+            m_lstConnectUsableIO.append(pIOItemEnd);
+        }
+    }
+}
+
+void CGraphicsArrowConnectItem::showNearConnectUsableIO()
+{
+    m_rectNear.moveCenter(m_ptEnd);
+    foreach (CGraphicsIOItem* pIOItemNear, m_lstIONear)
+    {
+        pIOItemNear->showFacade(CComponentIO::EI_ConnectUsable);
+    }
+
+    m_lstIONear.clear();
+    QList<QGraphicsItem *> lstGraphicsItem = scene()->items(m_rectNear);
+    foreach (QGraphicsItem* pGraphicsItem, lstGraphicsItem)
+    {
+        if(pGraphicsItem->type() != E_GraphicsItemUserType::EG_IO)
+        {
+            continue;
+        }
+        CGraphicsIOItem* pIOItemEnd = qgraphicsitem_cast<CGraphicsIOItem*>(pGraphicsItem);
+        if (m_lstConnectUsableIO.contains(pIOItemEnd))
+        {
+            m_lstIONear.append(pIOItemEnd);
+        }
+    }
+    foreach (CGraphicsIOItem* pIOItemNear, m_lstIONear)
+    {
+        pIOItemNear->showFacade(CComponentIO::EI_ConnectUsableNear);
+    }
+}
+
+void CGraphicsArrowConnectItem::hideAllConnectUsableIO()
+{
+    foreach (CGraphicsIOItem* pIOItem, m_lstConnectUsableIO)
+    {
+        pIOItem->showFacade(CComponentIO::EI_Normal);
+        pIOItem->hide();
+    }
+}
+
 void CGraphicsArrowConnectItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                                       QWidget *widget)
 {
     QGraphicsPathItem::paint(painter, option, widget);
 }
 
+
 // IO -- IO
-void CGraphicsArrowConnectItem::updateIoToIoPath()
+void CGraphicsArrowConnectItem::setIoToIoPath()
 {
     if (m_pIOStart == nullptr)
     {
         return;
     }
 
-//    QPointF ptStart = m_pIOStart->scenePos();
-//    E_Direction eDirectionIoStart = m_pIOStart->direction();
-//    QPointF ptEnd = m_pIOEnd->scenePos();
-//    E_Direction eDirectionIoEnd = m_pIOEnd->direction();
+    QPainterPath painterPath = getPolylinePath(m_pIOStart->sceneCenterPos()
+                                               , m_pIOStart->direction()
+                                               , m_pIOEnd->sceneCenterPos()
+                                               , m_pIOEnd->direction());
 
-    QPainterPath painterPath;
-    QPointF arrPos[MAX_POLYLINE_POINT];
-    getPolylinePointArray(arrPos, m_pIOStart->scenePos(), m_pIOStart->direction()
-                          , m_pIOEnd->scenePos(), m_pIOEnd->direction());
-
-
+    setPath(painterPath);
 }
 
 
 // IO -- Point
-void CGraphicsArrowConnectItem::updateIoToPointPath()
+void CGraphicsArrowConnectItem::setIoToPointPath()
 {
     if (m_pIOStart == nullptr)
     {
         return;
     }
 
-    QPointF ptStart = m_pIOStart->scenePos();
+    // 起点应矫正为io的中心
+    QPointF ptStart = m_pIOStart->sceneCenterPos();
     E_Direction eDirectionIoStart = m_pIOStart->direction();
     QPointF ptEnd = m_ptEnd;
 
@@ -169,12 +364,38 @@ void CGraphicsArrowConnectItem::updateIoToPointPath()
         return;
     }
 
+
+
+}
+
+
+///
+/// \brief CGraphicsArrowConnectItem::getPolylinePath
+/// \param rectSceneStart 起始节点(组件)的在场景的Rect区域
+/// \param eDirectionIoStart io在起始节点(组件)的位置
+/// \param rectSceneEnd 终止节点(组件)的在场景的Rect区域
+/// \param eDirectionIoEnd io在终止节点(组件)的位置
+/// \return
+///
+QPainterPath CGraphicsArrowConnectItem::getPolylinePath(const QRectF &rectSceneStart, const E_Direction &eDirectionIoStart
+                                                        , const QRectF &rectSceneEnd, const E_Direction &eDirectionIoEnd)
+{
+    QPointF arrPos[MAX_POLYLINE_POINT];
+    // 用户点击io边缘时，是想连接该IO，所以把点击的点重新更到io的中心,用sceneCenterPos替代scenePos
+    getPolylinePointArray(arrPos, rectSceneStart, eDirectionIoStart, rectSceneEnd, eDirectionIoEnd);
+    QPainterPath painterPath = convertArrayScenePosToPath(arrPos);
+    return painterPath;
+}
+
+QPainterPath CGraphicsArrowConnectItem::getPolylinePath(const QRectF &rectSceneStart, const E_Direction &eDirectionIoStart
+                                                        , const QPointF &ptEnd)
+{
     E_Direction eDirectionEnd;
     int nLineSegmentCountMin = MAX_POLYLINE_POINT - 1;
     // 如果目标io的Direction与起始io形成折线线段数最少，取该方向Direction
     for( int i = 0; i < 4; ++i)
     {
-        int nLineSegmentCount = polylineLineSegmentCount(ptStart, eDirectionIoStart, ptEnd, E_Direction(i));
+        int nLineSegmentCount = polylineLineSegmentCount(rectSceneStart, eDirectionIoStart, ptEnd, E_Direction(i));
         if (nLineSegmentCount < nLineSegmentCountMin)
         {
             eDirectionEnd = E_Direction(i);
@@ -182,16 +403,20 @@ void CGraphicsArrowConnectItem::updateIoToPointPath()
         }
     }
 
+    return getPolylinePath(rectSceneStart, eDirectionIoStart, ptEnd, eDirectionEnd);
+}
 
-    QPointF arrPos[MAX_POLYLINE_POINT];
-    getPolylinePointArray(arrPos, ptStart, eDirectionIoStart, ptEnd, eDirectionEnd);
+QPainterPath CGraphicsArrowConnectItem::convertArrayScenePosToPath(QPointF arrPos[])
+{
+    // 场景坐标数组转换为自身的path,即减去自身所在的位置
+    prepareGeometryChange();
     for(int i = 0; i < MAX_POLYLINE_POINT; ++i)
     {
         if(arrPos[i].isNull())
         {
             break;
         }
-        arrPos[i] = arrPos[i] - ptStart;
+        arrPos[i] = arrPos[i] - pos();
     }
 
     QPainterPath painterPath;
@@ -204,7 +429,7 @@ void CGraphicsArrowConnectItem::updateIoToPointPath()
         }
         painterPath.lineTo(arrPos[i]);
     }
-    setPath(painterPath);
+    return painterPath;
 }
 
 void CGraphicsArrowConnectItem::getPolylinePointArray(QPointF arrPos[]
@@ -335,11 +560,12 @@ void CGraphicsArrowConnectItem::polylineConnetPoint_5(QPointF arrPos[]
     }
 }
 
+// QSizeF sizeNodeEnd = (m_pNodeEnd == nullptr ? QSizeF(200, 40) : m_pNodeEnd->size());
 void CGraphicsArrowConnectItem::polylineConnetPoint_6(QPointF arrPos[]
                                                       , const QPointF &ptStart, const E_Direction &eDirectionIoStart
-                                                      , const QPointF &ptEnd, const E_Direction &eDirectionIoEnd)
+                                                      , const QPointF &ptEnd, const E_Direction &eDirectionIoEnd
+                                                      , , QSizeF sizeNodeEnd)
 {
-    QSizeF sizeNodeEnd = (m_pNodeEnd == nullptr ? QSizeF(200, 40) : m_pNodeEnd->size());
     arrPos[0] = ptStart;
     arrPos[1] = getNearIOPoint(ptStart, eDirectionIoStart);
     arrPos[4] = getNearIOPoint(ptEnd, eDirectionIoEnd);

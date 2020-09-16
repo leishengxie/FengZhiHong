@@ -22,6 +22,8 @@ CGraphicsNodeItem::CGraphicsNodeItem(const CComponent &component, QGraphicsItem 
     setAcceptHoverEvents(true);
     setFlag(QGraphicsItem::ItemIsMovable);
     setFlag(QGraphicsItem::ItemIsSelectable);
+    //setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
+
 }
 
 
@@ -106,6 +108,20 @@ void CGraphicsNodeItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
         m_pGraphicsIOItem[i]->hide();
     }
 }
+
+//QVariant CGraphicsNodeItem::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
+//{
+//    if (change == ItemPositionHasChanged && scene())
+//    {
+////        for (int i = 0; i < 4; ++i)
+////        {
+////                m_pGraphicsIOItem[i] = new CGraphicsIOItem(this);
+////        }
+//        qDebug() << __FILE__ << __FUNCTION__ << "ItemPositionHasChanged";
+
+//    }
+//    return QGraphicsItem::itemChange(change, value);
+//}
 
 void CGraphicsNodeItem::updateBoundingRect()
 {

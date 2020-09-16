@@ -15,6 +15,19 @@ public:
         EI_InOut
     };
 
+    enum E_IOShape
+    {
+        EI_Ellipse
+    };
+
+    enum E_IOStatus
+    {
+        EI_Normal,
+        EI_ConnectUsable,
+        EI_ConnectUsableNear,
+        EI_ConnectUnusable
+    };
+
     CComponentIO();
 
     int height()
@@ -37,6 +50,7 @@ public:
 
 
     E_IOType eIOType;
+    E_IOStatus eIOStatus;
 
     //Disabled：关闭 Enabled：启用
     bool bEnabled;

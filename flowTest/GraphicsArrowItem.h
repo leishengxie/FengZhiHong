@@ -23,83 +23,109 @@ class CGraphicsArrowItem : public QGraphicsPathItem
 {
 
 public:
-    explicit CGraphicsArrowItem(QGraphicsItem *parent = nullptr);
+    explicit CGraphicsArrowItem(CGraphicsIOItem* pIOStart, CGraphicsIOItem* pIOEnd
+                                , QGraphicsItem *parent = nullptr);
 
     int type() const override;
 
-    void updateLine(const QPointF & ptStart, const E_Direction & eDirectionIoStart
-                    , const QPointF & ptEnd, const E_Direction & eDirectionIoEnd);
+    QPainterPath shape() const;
+    void setPath(const QPainterPath &path);
+
+    void updatePosition();
 
 
-
-
-
-signals:
-
+protected:
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
 private:
-    CGraphicsNodeItem* m_pNodeStart;
-    E_Direction m_eDirectionIoStart;
+    void updateArrowLine();
+    void updateArrowHead();
 
-    CGraphicsNodeItem* m_pNodeEnd;
-    E_Direction m_eDirectionIoEnd;
+private:
+    CGraphicsIOItem* m_pIOStart;
+    CGraphicsIOItem* m_pIOEnd;
+
+    QPolygonF m_polygonArrowHead;
+
+    // 空间换取时间
+    QPainterPathStroker m_painterPathStroker;
+    QPainterPath m_pathStroker;
 
 
 };
 
 
 
+///
+/// \brief The CGraphicsArrowConnectItem class 辅助线连接器,包含连接方法
+///
 class CGraphicsArrowConnectItem : public QGraphicsPathItem
 {
 
 public:
-    explicit CGraphicsArrowConnectItem(QGraphicsItem *parent = nullptr);
-//CGraphicsIOItem * pIOStart
-    void handleSceneMousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
-    //CGraphicsIOItem * pIOEnd, const QPointF & ptScene
-    void handleSceneMouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
-    //const QPointF & ptScenePress
-    void handleSceneMouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
+    // 通用方法 io -- io
+    static QPainterPath getPolylinePath(const QRectF & rectSceneStart, const E_Direction & eDirectionIoStart
+                                        , const QRectF & rectSceneEnd, const E_Direction & eDirectionIoEnd);
+    // io -- Point
+    static QPainterPath getPolylinePath(const QRectF & rectSceneStart, const E_Direction & eDirectionIoStart
+                                        , const QPointF & ptEnd);
+
+private:
+    static QPainterPath convertArrayScenePosToPath(QPointF arrPos[MAX_POLYLINE_POINT]);
+
+    static void getPolylinePointArray(QPointF arrPos[MAX_POLYLINE_POINT]
+                               , const QPointF & ptStart, const E_Direction & eDirectionIoStart
+                               , const QPointF & ptEnd, const E_Direction & eDirectionIoEnd);
+
+    // 下面为总结的连接方法, 数字下标表示右多少个点
+    static void polylineConnetPoint_2(QPointF arrPos[MAX_POLYLINE_POINT]
+                               , const QPointF & ptStart, const QPointF & ptEnd);
+
+    static void polylineConnetPoint_3(QPointF arrPos[MAX_POLYLINE_POINT]
+                               , const QPointF & ptStart, const E_Direction & eDirectionIoStart
+                               , const QPointF & ptEnd);
+
+    static void polylineConnetPoint_4(QPointF arrPos[MAX_POLYLINE_POINT]
+                               , const QPointF & ptStart, const E_Direction & eDirectionIoStart
+                               , const QPointF & ptEnd, const E_Direction & eDirectionIoEnd);
+
+    static void polylineConnetPoint_5(QPointF arrPos[MAX_POLYLINE_POINT]
+                               , const QPointF & ptStart, const E_Direction & eDirectionIoStart
+                               , const QPointF & ptEnd, const E_Direction & eDirectionIoEnd);
+
+    static void polylineConnetPoint_6(QPointF arrPos[MAX_POLYLINE_POINT]
+                               , const QPointF & ptStart, const E_Direction & eDirectionIoStart
+                               , const QPointF & ptEnd, const E_Direction & eDirectionIoEnd, QSizeF sizeNodeEnd);
+
+    static quint32 polylineLineSegmentCount(const QPointF & ptStart, const E_Direction & eDirectionIoStart
+                          , const QPointF & ptEnd, const E_Direction & eDirectionIoEnd);
 
     // 获取连接到IO端点线段另一端的端点
-    QPointF getNearIOPoint(const QPointF & ptIO, const E_Direction & eDirectionIo,
+    static QPointF getNearIOPoint(const QPointF & ptIO, const E_Direction & eDirectionIo,
                            int polylineLength = DEFAULT_POLYLINE_LENGTH);
 
-signals:
+public:
+    explicit CGraphicsArrowConnectItem(QGraphicsItem *parent = nullptr);
+
+    void handleSceneMousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
+    void handleSceneMouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
+    void handleSceneMouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
+
 
 protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
 private:
-    void updateIoToIoPath();
-    void updateIoToPointPath();
+    void setIoToIoPath();
+    void setIoToPointPath();
 
-    void getPolylinePointArray(QPointF arrPos[MAX_POLYLINE_POINT]
-                               , const QPointF & ptStart, const E_Direction & eDirectionIoStart
-                               , const QPointF & ptEnd, const E_Direction & eDirectionIoEnd);
-
-    // 下面为总结的连接方法
-    void polylineConnetPoint_2(QPointF arrPos[MAX_POLYLINE_POINT]
-                               , const QPointF & ptStart, const QPointF & ptEnd);
-
-    void polylineConnetPoint_3(QPointF arrPos[MAX_POLYLINE_POINT]
-                               , const QPointF & ptStart, const E_Direction & eDirectionIoStart
-                               , const QPointF & ptEnd);
-
-    void polylineConnetPoint_4(QPointF arrPos[MAX_POLYLINE_POINT]
-                               , const QPointF & ptStart, const E_Direction & eDirectionIoStart
-                               , const QPointF & ptEnd, const E_Direction & eDirectionIoEnd);
-
-    void polylineConnetPoint_5(QPointF arrPos[MAX_POLYLINE_POINT]
-                               , const QPointF & ptStart, const E_Direction & eDirectionIoStart
-                               , const QPointF & ptEnd, const E_Direction & eDirectionIoEnd);
-
-    void polylineConnetPoint_6(QPointF arrPos[MAX_POLYLINE_POINT]
-                               , const QPointF & ptStart, const E_Direction & eDirectionIoStart
-                               , const QPointF & ptEnd, const E_Direction & eDirectionIoEnd);
-
-    quint32 polylineLineSegmentCount(const QPointF & ptStart, const E_Direction & eDirectionIoStart
-                          , const QPointF & ptEnd, const E_Direction & eDirectionIoEnd);
+    void showAllConnectUsableIO();
+    void showNearConnectUsableIO();
+    void hideAllConnectUsableIO();
 
 
 private:
@@ -110,6 +136,10 @@ private:
 
     QPointF m_ptEnd;
 
+    QRectF m_rectNear;
+    QList<CGraphicsIOItem *> m_lstIONear;
+
+    QList<CGraphicsIOItem *> m_lstConnectUsableIO;
 //    E_Direction m_eDirectionIoStart;
 //    E_Direction m_eDirectionIoEnd;
 

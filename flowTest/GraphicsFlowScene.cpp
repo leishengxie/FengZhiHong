@@ -34,6 +34,8 @@ void CGraphicsFlowScene::addNode(const QPointF &ptScene, const CComponent &compo
 }
 
 
+
+
 /// GraphicsView框架会将拖拽事件翻译为QGraphicsSceneDragDropEvent事件,再发送到场景，场景接管事件
 /// ，再把事件发送到光标下接受拖拽的第一个图元。为了开启图元拖拽，创建一个QDrag对象
 /// ，传递启动拖拽的QWidget的指针。图元可以同时被多个视图观察，但只有一个视图可以拖拽图元。
@@ -79,13 +81,16 @@ void CGraphicsFlowScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
     //get topmost visible item
     QGraphicsItem* pGraphicsItem = itemAt(mouseEvent->scenePos(), views().at(0)->transform());
+    if (pGraphicsItem == nullptr)
+    {
+        QGraphicsScene::mousePressEvent(mouseEvent);
+        return;
+    }
+
     m_ptPressPos = mouseEvent->scenePos();
     m_nPressType = pGraphicsItem->type();
 
-    if (pGraphicsItem == nullptr)
-    {
-        return;
-    }
+
 
     if (m_nPressType == EG_IO)
     {
@@ -101,11 +106,12 @@ void CGraphicsFlowScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
 void CGraphicsFlowScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
+    QGraphicsScene::mouseMoveEvent(mouseEvent);
     if (m_nPressType == EG_IO)
     {
         m_pArrowConnectItem->handleSceneMouseMoveEvent(mouseEvent);
     }
-    QGraphicsScene::mouseMoveEvent(mouseEvent);
+
 }
 
 void CGraphicsFlowScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
@@ -116,6 +122,7 @@ void CGraphicsFlowScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
         m_pArrowConnectItem->handleSceneMouseReleaseEvent(mouseEvent);
     }
     m_nPressType = EG_NoOne;
+
 }
 
 

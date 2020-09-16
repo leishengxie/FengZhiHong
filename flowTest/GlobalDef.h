@@ -12,7 +12,7 @@ enum E_FlowRole
 enum E_GraphicsItemUserType
 {
     EG_Node = QGraphicsItem::UserType + 1,
-    EG_IO = Qt::red,
+    EG_IO,
     EG_Arrow,
     EG_NoOne
 };
