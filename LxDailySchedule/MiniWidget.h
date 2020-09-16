@@ -1,7 +1,8 @@
 #ifndef CMINIWIDGET_H
 #define CMINIWIDGET_H
 
-#include "widgets/NoTitleMenuMainWidget.h"
+#include "DailyScheduleModel.h"
+#include <QWidget>
 #include <QMediaPlayer>
 
 class CMiniWidget : public QWidget
@@ -14,7 +15,8 @@ public:
     QSize sizeHint() const;
 
 public slots:
-    void slot_show(const QString & strText);
+    void slot_show(const T_ScheduleItem & tScheduleItem);
+    void slot_timeout();
 
 signals:
 
@@ -28,8 +30,9 @@ protected:
 
     void changeEvent(QEvent *event);
 
-private:
+private slots:
     void slot_mediaPlayerStateChanged(QMediaPlayer::State newState);
+    //void mediaStatusChanged(QMediaPlayer::MediaStatus status);
 
 private:
     QString m_strText;
@@ -42,6 +45,10 @@ private:
 
     // 媒体播放器
     QMediaPlayer* m_pMediaPlayer;
+
+    // 闹铃响的时候旋转头像
+    QTimer *m_timer;
+    unsigned int m_unAngle;
 
 };
 

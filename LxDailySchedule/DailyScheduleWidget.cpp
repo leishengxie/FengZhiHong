@@ -41,9 +41,9 @@ CDailyScheduleWidget::CDailyScheduleWidget(QWidget *parent) :
     //m_pMiniWidget = new CMiniWidget(this); // 有this主窗口最小化，子窗口也会跟随
     m_pMiniWidget = new CMiniWidget();
 //    m_pMiniWidget->hide();
-    m_pMiniWidget->slot_show("无");
-    connect(ui->listViewSchedule, SIGNAL(sigCurScheduleChanged(QString))
-            , m_pMiniWidget, SLOT(slot_show(QString)));
+    m_pMiniWidget->slot_show(T_ScheduleItem("无"));
+    connect(ui->listViewSchedule, SIGNAL(sigCurScheduleChanged(T_ScheduleItem))
+            , m_pMiniWidget, SLOT(slot_show(T_ScheduleItem)));
 
 }
 

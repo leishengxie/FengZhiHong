@@ -7,7 +7,10 @@
 #include <QPixmap>
 #include <QMouseEvent>
 #include <QPainterPath>
+#include <QTimer>
 
+// 默认闹铃
+static const QString s_strAlarm = "default_alarm.mp3";
 
 CMiniWidget::CMiniWidget(QWidget *parent)
     : QWidget(parent, Qt::WindowStaysOnTopHint | Qt::CoverWindow | Qt::Window | Qt::FramelessWindowHint)
@@ -17,6 +20,8 @@ CMiniWidget::CMiniWidget(QWidget *parent)
     setAttribute(Qt::WA_TranslucentBackground, true);
 
     m_bCanDrag = false;
+    m_unAngle = 0;
+
     //setCursor(QCursor(Qt::PointingHandCursor));
     QScreen *screen = QGuiApplication::primaryScreen ();
     QRect screenRect =  screen->availableVirtualGeometry();
@@ -25,17 +30,44 @@ CMiniWidget::CMiniWidget(QWidget *parent)
     move(dWidth - width(), 0);
     qDebug() << __FUNCTION__ << rect();
 
+    QString strDefaultAlarmPath = qApp->applicationDirPath() + "/" + s_strAlarm;
+    m_pMediaPlayer->setMedia(QUrl::fromLocalFile(strDefaultAlarmPath));
     connect(m_pMediaPlayer, SIGNAL(stateChanged(QMediaPlayer::State))
             , this, SLOT(slot_mediaPlayerStateChanged(QMediaPlayer::State)));
+
+    m_timer = new QTimer(this);
+    connect(m_timer, SIGNAL(timeout()), this, SLOT(slot_timeout()));
+    m_timer->setInterval(30);
 }
 
-void CMiniWidget::slot_show(const QString &strText)
+void CMiniWidget::slot_show(const T_ScheduleItem &tScheduleItem)
 {
-    m_strText = strText;
+    m_strText = tScheduleItem.strContent;
+    if (tScheduleItem.bUseAlarmClock)
+    {
+        m_pMediaPlayer->play();
+        m_timer->start();
+    }
+    else
+    {
+        m_pMediaPlayer->stop();
+        m_unAngle = 0;
+        m_timer->stop();
+    }
     update();
     QWidget::show();
 
 
+}
+
+void CMiniWidget::slot_timeout()
+{
+    m_unAngle += 1;
+    if (m_unAngle >= 360)
+    {
+        m_unAngle = 0;
+    }
+    update();
 }
 
 void CMiniWidget::paintEvent(QPaintEvent *event)
@@ -53,7 +85,7 @@ void CMiniWidget::paintEvent(QPaintEvent *event)
     QRect rectContent;
     rectContent = rectThis.adjusted(0, 10, 0, -10);
     int nRadius = rectContent.size().height() / 2;
-    qDebug() << rectThis << rectContent;
+    //qDebug() << rectThis << rectContent;
     painter.drawRoundedRect(rectContent, nRadius, nRadius);
     painter.restore();
 
@@ -62,6 +94,9 @@ void CMiniWidget::paintEvent(QPaintEvent *event)
     QPixmap pix(":/img/appIcon/app.ico");
     QRect rectPixSrc = pix.rect();
     QRect rectPixDest = rectPixSrc;
+    painter.translate(rectPixDest.width() / 2, rectPixDest.height() / 2); //设置旋转中心
+    painter.rotate(m_unAngle); //旋转
+    painter.translate(-(rectPixDest.width() / 2), -(rectPixDest.height() / 2)); //将原点复位
     QPainterPath path;
     path.addEllipse(rectPixDest);
     painter.setClipPath(path);
@@ -90,6 +125,8 @@ void CMiniWidget::paintEvent(QPaintEvent *event)
 
     painter.setPen(QColor(0, 160, 230));
     painter.drawText(rectTitle, Qt::AlignCenter, "当前安排:");
+
+
 }
 
 void CMiniWidget::enterEvent(QEvent *event)
@@ -141,7 +178,13 @@ void CMiniWidget::changeEvent(QEvent *event)
 
 void CMiniWidget::slot_mediaPlayerStateChanged(QMediaPlayer::State newState)
 {
-
+    if (QMediaPlayer::StoppedState == newState)
+    {
+        //m_pMediaPlayer->stop();
+        m_unAngle = 0;
+        m_timer->stop();
+        update();
+    }
 }
 
 QSize CMiniWidget::sizeHint() const

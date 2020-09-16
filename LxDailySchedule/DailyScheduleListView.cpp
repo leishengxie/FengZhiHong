@@ -11,8 +11,8 @@ CDailyScheduleListView::CDailyScheduleListView(QWidget *parent)
     setModel(m_pDailyScheduleListModel);
     setItemDelegate(pDelegate);
 
-    connect(m_pDailyScheduleListModel, SIGNAL(sigCurScheduleChanged(QString))
-            , this, SIGNAL(sigCurScheduleChanged(QString)));
+    connect(m_pDailyScheduleListModel, SIGNAL(sigCurScheduleChanged(T_ScheduleItem))
+            , this, SIGNAL(sigCurScheduleChanged(T_ScheduleItem)));
 }
 
 void CDailyScheduleListView::loadDailySchedule(const T_DailySchedule &tDailySchedule)

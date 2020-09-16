@@ -16,7 +16,7 @@ public:
 
 signals:
     // 用于通知其他部件内容已改变，如小浮窗
-    void sigCurScheduleChanged(const QString & strContent);
+    void sigCurScheduleChanged(const T_ScheduleItem & tScheduleItem);
 
 protected:
     void paintEvent(QPaintEvent *e);
