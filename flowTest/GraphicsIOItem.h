@@ -15,36 +15,25 @@ class CGraphicsIOItem : public QAbstractGraphicsShapeItem
 {
 
 public:
-    enum E_StretchStatus
-    {
-        ES_Expand,
-        ES_Shrink
-    };
-
-    explicit CGraphicsIOItem(QGraphicsItem *parent = nullptr);
+    explicit CGraphicsIOItem(const CComponentIO & componentIO, QGraphicsItem *parent = nullptr);
 
     QRectF boundingRect() const override;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
     void setRect(const QRectF & rect)
     {
-        m_rect = rect;
+        m_componentIO.rect = rect;
 
     }
 
     QPointF sceneCenterPos()
     {
-        return scenePos() + m_rect.center();
+        return scenePos() + m_componentIO.rect.center();
     }
 
     E_Direction direction() const
     {
-        return m_eDirection;
-    }
-
-    void setDirection(E_Direction eDirection)
-    {
-        m_eDirection = eDirection;
+        return m_componentIO.direction();
     }
 
     int type() const override;
@@ -67,12 +56,6 @@ protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
 private:
-    QRectF m_rect;
-
-    E_Direction m_eDirection;
-
-    E_StretchStatus m_eStretchStatus;
-
     CComponentIO m_componentIO;
 
     // 多对多 箭头连线列表

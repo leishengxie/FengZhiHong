@@ -240,23 +240,50 @@ void CGraphicsArrowConnectItem::handleSceneMouseReleaseEvent(QGraphicsSceneMouse
     hide();
 }
 
-QPointF CGraphicsArrowConnectItem::getNearIOPoint(const QPointF &ptIO, const E_Direction &eDirectionIo
-                                                  , int polylineLength)
+
+QPointF CGraphicsArrowConnectItem::getIOPoint(const QRectF &rectScene, const E_Direction &eDirection)
 {
-    QPointF ptResult = ptIO;
-    switch (eDirectionIo)
+    QPointF ptResult;
+    switch (eDirection)
     {
     case ED_Left:
-        ptResult.setX(ptIO.x() - polylineLength);
+        ptResult.setX(rectScene.left());
+        ptResult.setY(rectScene.y() + rectScene.height() / 2);
         break;
     case ED_Top:
-        ptResult.setY(ptIO.y() - polylineLength);
+        ptResult.setX(rectScene.x() + rectScene.width() / 2);
+        ptResult.setY(rectScene.top());
         break;
     case ED_Right:
-        ptResult.setX(ptIO.x() + polylineLength);
+        ptResult.setX(rectScene.right());
+        ptResult.setY(rectScene.y() + rectScene.height() / 2);
         break;
     case ED_Bottom:
-        ptResult.setY(ptIO.y() + polylineLength);
+        ptResult.setX(rectScene.x() + rectScene.width() / 2);
+        ptResult.setY(rectScene.bottom());
+        break;
+    }
+    return ptResult;
+}
+
+QPointF CGraphicsArrowConnectItem::getNearIOPoint(const QRectF &rectScene, const E_Direction &eDirection
+                                                  , int polylineLength)
+{
+    QPointF ptIO = getIOPoint(rectScene, eDirection);
+    QPointF ptResult = ptIO;
+    switch (eDirection)
+    {
+    case ED_Left:
+        ptResult.setX(rectScene.x() - polylineLength);
+        break;
+    case ED_Top:
+        ptResult.setY(rectScene.y() - polylineLength);
+        break;
+    case ED_Right:
+        ptResult.setX(rectScene.x() + polylineLength);
+        break;
+    case ED_Bottom:
+        ptResult.setY(rectScene.y() + polylineLength);
         break;
     }
     return ptResult;
@@ -406,6 +433,8 @@ QPainterPath CGraphicsArrowConnectItem::getPolylinePath(const QRectF &rectSceneS
     return getPolylinePath(rectSceneStart, eDirectionIoStart, ptEnd, eDirectionEnd);
 }
 
+
+
 QPainterPath CGraphicsArrowConnectItem::convertArrayScenePosToPath(QPointF arrPos[])
 {
     // 场景坐标数组转换为自身的path,即减去自身所在的位置
@@ -433,19 +462,27 @@ QPainterPath CGraphicsArrowConnectItem::convertArrayScenePosToPath(QPointF arrPo
 }
 
 void CGraphicsArrowConnectItem::getPolylinePointArray(QPointF arrPos[]
-                                                      , const QPointF &ptStart, const E_Direction &eDirectionIoStart
-                                                      , const QPointF &ptEnd, const E_Direction &eDirectionIoEnd)
+                                                      , const QRectF &rectSceneStart
+                                                      , const E_Direction &eDirectionIoStart
+                                                      , const QRectF &rectSceneEnd
+                                                      , const E_Direction &eDirectionIoEnd)
 {
+    QPointF ptStart = getIOPoint(rectSceneStart, eDirectionIoStart);
+    QPointF ptEnd = getIOPoint(rectSceneEnd, eDirectionIoEnd);
     bool bSameX = (ptStart.x() == ptEnd.x());
     bool bSameY = (ptStart.y() == ptEnd.y());
 
-    // io端点同为水平或同为垂直方向 左-左 左-右 右-左，上-下 等
-    if (eDirectionIoStart % 2 == eDirectionIoEnd % 2)
+    // io端点同为水平或同为垂直方向 左-左 左-右 右-左，上-下 等, 即为平行关系，否则为垂直关系
+    bool bParallel = (eDirectionIoStart % 2 == eDirectionIoEnd % 2);
+    bool bSameDirection = (eDirectionIoStart == eDirectionIoEnd);
+
+    // 平行关系
+    if (bParallel)
     {
         // io端点同一方向
-        if(eDirectionIoStart == eDirectionIoEnd)
+        if(bSameDirection)
         {
-            polylineConnetPoint_6(arrPos, ptStart, eDirectionIoStart, ptEnd, eDirectionIoEnd);
+            polylineConnetPoint_6(arrPos, rectSceneStart, eDirectionIoStart, rectSceneEnd, eDirectionIoEnd);
         }
         else //io端点反向
         {
@@ -453,48 +490,48 @@ void CGraphicsArrowConnectItem::getPolylinePointArray(QPointF arrPos[]
             if(eDirectionIoStart % 2 == 0)
             {
                 // 内侧相接
-                if((eDirectionIoStart == ED_Right && ptStart.x() < ptEnd.x())
-                        || (eDirectionIoStart == ED_Left && ptStart.x() > ptEnd.x()))
+                if((eDirectionIoStart == ED_Right && rectSceneStart.x() < rectSceneEnd.x())
+                        || (eDirectionIoStart == ED_Left && rectSceneStart.x() > rectSceneEnd.x()))
                 {
                     if (bSameY)
                     {
-                        polylineConnetPoint_2(arrPos, ptStart, ptEnd);
+                        polylineConnetPoint_2(arrPos, rectSceneStart, eDirectionIoStart, rectSceneEnd, eDirectionIoEnd);
                     }
                     else
                     {
-                        polylineConnetPoint_4(arrPos, ptStart, eDirectionIoStart, ptEnd, eDirectionIoEnd);
+                        polylineConnetPoint_4(arrPos, rectSceneStart, eDirectionIoStart, rectSceneEnd, eDirectionIoEnd);
                     }
                 }
                 else // 外侧
                 {
-                    polylineConnetPoint_6(arrPos, ptStart, eDirectionIoStart, ptEnd, eDirectionIoEnd);
+                    polylineConnetPoint_6(arrPos, rectSceneStart, eDirectionIoStart, rectSceneEnd, eDirectionIoEnd);
                 }
             }
             else // io端点垂直反向
             {
                 // 内侧相接
-                if((eDirectionIoStart == ED_Bottom && ptStart.y() < ptEnd.y())
-                        || (eDirectionIoStart == ED_Top && ptStart.y() > ptEnd.y()))
+                if((eDirectionIoStart == ED_Bottom && rectSceneStart.y() < rectSceneEnd.y())
+                        || (eDirectionIoStart == ED_Top && rectSceneStart.y() > rectSceneEnd.y()))
                 {
                     if (bSameX)
                     {
-                        polylineConnetPoint_2(arrPos, ptStart, ptEnd);
+                        polylineConnetPoint_2(arrPos, rectSceneStart, eDirectionIoStart, rectSceneEnd, eDirectionIoEnd);
                     }
                     else
                     {
-                        polylineConnetPoint_4(arrPos, ptStart, eDirectionIoStart, ptEnd, eDirectionIoEnd);
+                        polylineConnetPoint_4(arrPos, rectSceneStart, eDirectionIoStart, rectSceneEnd, eDirectionIoEnd);
                     }
                 }
                 else // 外侧
                 {
-                    polylineConnetPoint_6(arrPos, ptStart, eDirectionIoStart, ptEnd, eDirectionIoEnd);
+                    polylineConnetPoint_6(arrPos, rectSceneStart, eDirectionIoStart, rectSceneEnd, eDirectionIoEnd);
                 }
             }
         }
     }
-    else //io端点一个是垂直方向，一个水平方向
+    else //垂直关系
     {
-        polylineConnetPoint_5(arrPos, ptStart, eDirectionIoStart, ptEnd, eDirectionIoEnd);
+        polylineConnetPoint_5(arrPos, rectSceneStart, eDirectionIoStart, rectSceneEnd, eDirectionIoEnd);
     }
 }
 
@@ -505,47 +542,52 @@ void CGraphicsArrowConnectItem::getPolylinePointArray(QPointF arrPos[]
 /// \param ptEnd
 ///
 void CGraphicsArrowConnectItem::polylineConnetPoint_2(QPointF arrPos[]
-                                                      , const QPointF &ptStart, const QPointF &ptEnd)
+                                                      , const QRectF &rectSceneStart
+                                                      , const E_Direction &eDirectionIoStart
+                                                      , const QRectF &rectSceneEnd
+                                                      , const E_Direction &eDirectionIoEnd)
 {
-    arrPos[0] = ptStart;
-    arrPos[1] = ptEnd;
+    arrPos[0] = getIOPoint(rectSceneStart, eDirectionIoStart);
+    arrPos[1] = getIOPoint(rectSceneEnd, eDirectionIoEnd);
 }
 
 void CGraphicsArrowConnectItem::polylineConnetPoint_3(QPointF arrPos[]
-                                                      , const QPointF &ptStart, const E_Direction &eDirectionIoStart
-                                                      , const QPointF &ptEnd)
+                                                      , const QRectF &rectSceneStart, const E_Direction &eDirectionIoStart
+                                                      , const QRectF &rectSceneEnd, const E_Direction &eDirectionIoEnd)
 {
-    arrPos[0] = ptStart;
-    arrPos[1] = getNearIOPoint(ptStart, eDirectionIoStart);
-    arrPos[2] = ptEnd;
+    arrPos[0] = getIOPoint(rectSceneStart, eDirectionIoStart);
+    arrPos[1] = getNearIOPoint(rectSceneStart, eDirectionIoStart);
+    arrPos[2] = getIOPoint(rectSceneEnd, eDirectionIoEnd);
 }
 
 void CGraphicsArrowConnectItem::polylineConnetPoint_4(QPointF arrPos[],
-                                                      const QPointF &ptStart, const E_Direction &eDirectionIoStart
-                                                      , const QPointF &ptEnd, const E_Direction &eDirectionIoEnd)
+                                                      const QRectF &rectSceneStart, const E_Direction &eDirectionIoStart
+                                                      , const QRectF &rectSceneEnd, const E_Direction &eDirectionIoEnd)
 {
-    arrPos[0] = ptStart;
-    arrPos[1] = getNearIOPoint(ptStart, eDirectionIoStart);
+    arrPos[0] = getIOPoint(rectSceneStart, eDirectionIoStart);
+    arrPos[1] = getNearIOPoint(rectSceneStart, eDirectionIoStart);
+    arrPos[3] = getIOPoint(rectSceneEnd, eDirectionIoEnd);
+
     arrPos[2] = arrPos[1];
     if(eDirectionIoStart % 2 == 0)
     {
-        arrPos[2].setY(ptEnd.y());
+        arrPos[2].setY(arrPos[3].y());
     }
     else
     {
-        arrPos[2].setX(ptEnd.x());
+        arrPos[2].setX(arrPos[3].x());
     }
-    arrPos[3] = ptEnd;
+
 }
 
 void CGraphicsArrowConnectItem::polylineConnetPoint_5(QPointF arrPos[]
-                                                      , const QPointF &ptStart, const E_Direction &eDirectionIoStart
-                                                      , const QPointF &ptEnd, const E_Direction &eDirectionIoEnd)
+                                                      , const QRectF &rectSceneStart, const E_Direction &eDirectionIoStart
+                                                      , const QRectF &rectSceneEnd, const E_Direction &eDirectionIoEnd)
 {
-    arrPos[0] = ptStart;
-    arrPos[1] = getNearIOPoint(ptStart, eDirectionIoStart);
-    arrPos[3] = getNearIOPoint(ptEnd, eDirectionIoEnd);
-    arrPos[4] = ptEnd;
+    arrPos[0] = getIOPoint(rectSceneStart, eDirectionIoStart);
+    arrPos[1] = getNearIOPoint(rectSceneStart, eDirectionIoStart);
+    arrPos[3] = getNearIOPoint(rectSceneEnd, eDirectionIoEnd);
+    arrPos[4] = getIOPoint(rectSceneEnd, eDirectionIoEnd);
 
     // 水平
     if (eDirectionIoStart % 2 == 0)
@@ -562,19 +604,19 @@ void CGraphicsArrowConnectItem::polylineConnetPoint_5(QPointF arrPos[]
 
 // QSizeF sizeNodeEnd = (m_pNodeEnd == nullptr ? QSizeF(200, 40) : m_pNodeEnd->size());
 void CGraphicsArrowConnectItem::polylineConnetPoint_6(QPointF arrPos[]
-                                                      , const QPointF &ptStart, const E_Direction &eDirectionIoStart
-                                                      , const QPointF &ptEnd, const E_Direction &eDirectionIoEnd
-                                                      , , QSizeF sizeNodeEnd)
+                                                      , const QRectF &rectSceneStart, const E_Direction &eDirectionIoStart
+                                                      , const QRectF &rectSceneEnd, const E_Direction &eDirectionIoEnd
+                                                      , )
 {
-    arrPos[0] = ptStart;
-    arrPos[1] = getNearIOPoint(ptStart, eDirectionIoStart);
-    arrPos[4] = getNearIOPoint(ptEnd, eDirectionIoEnd);
-    arrPos[5] = ptEnd;
+    arrPos[0] = getIOPoint(rectSceneStart, eDirectionIoStart);
+    arrPos[1] = getNearIOPoint(rectSceneStart, eDirectionIoStart);
+    arrPos[4] = getNearIOPoint(rectSceneEnd, eDirectionIoEnd);
+    arrPos[5] = getIOPoint(rectSceneEnd, eDirectionIoEnd);
     if(eDirectionIoStart % 2 == 0)
     {
         // 通过平移端点4可用确定端点3
-        QPointF ptOffset(0, sizeNodeEnd.height() / 2 + DEFAULT_POLYLINE_LENGTH);
-        if(ptStart.y() < ptEnd.y())
+        QPointF ptOffset(0, rectSceneEnd.height() / 2 + DEFAULT_POLYLINE_LENGTH);
+        if(arrPos[0].y() < arrPos[5].y())
         {
             arrPos[3] = arrPos[4] - ptOffset;
         }
@@ -587,8 +629,8 @@ void CGraphicsArrowConnectItem::polylineConnetPoint_6(QPointF arrPos[]
     }
     else
     {
-        QPointF ptOffset(sizeNodeEnd.width() / 2 + DEFAULT_POLYLINE_LENGTH, 0);
-        if(ptStart.x() < ptEnd.x())
+        QPointF ptOffset(rectSceneEnd.width() / 2 + DEFAULT_POLYLINE_LENGTH, 0);
+        if(arrPos[0].x() < arrPos[5].x())
         {
             arrPos[3] = arrPos[4] - ptOffset;
         }

@@ -36,17 +36,11 @@ private:
     void createIOItem();
 
 private:
-    // 注意:此rect的x, y 并非代表在父对象的x,y 坐标
-    QRectF m_rect;
-
-    mutable QRectF m_rectBounding;
-
+    // 组件信息
     CComponent m_component;
 
-    // 四个位置的输入输出桩
+    // 四个位置的输入输出桩指针
     CGraphicsIOItem* m_pGraphicsIOItem[4];
-
-
 
 };
 
