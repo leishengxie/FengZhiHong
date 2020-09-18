@@ -33,7 +33,7 @@ public:
 
     E_Direction direction() const
     {
-        return m_componentIO.direction();
+        return m_componentIO.eDirection;
     }
 
     int type() const override;

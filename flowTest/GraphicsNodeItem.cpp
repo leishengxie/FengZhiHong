@@ -50,6 +50,11 @@ QRectF CGraphicsNodeItem::rect() const
     return m_component.rect;
 }
 
+QRectF CGraphicsNodeItem::sceneRect() const
+{
+    return QRectF(scenePos(), size());
+}
+
 QSizeF CGraphicsNodeItem::size() const
 {
     return m_component.rect.size();

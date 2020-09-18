@@ -7,30 +7,33 @@
 
 CComponentIO::CComponentIO()
     : eIOType(EI_InOut)
+    , eIOStatus(EI_Normal)
+    , eDirection(ED_Left)
+    , eStretchStatus(ES_Shrink)
     //, nDestNodeId(-1)
     , bEnabled(true)
-    , m_eStretchStatus(ES_Shrink)
+
 {
     rect.setRect(0, 0, 16, 16);
 }
 
 void CComponentIO::shrink()
 {
-    if (m_eStretchStatus == ES_Shrink)
+    if (eStretchStatus == ES_Shrink)
     {
         return;
     }
-    m_eStretchStatus = ES_Shrink;
+    eStretchStatus = ES_Shrink;
     rect.adjust(STRETCH_FACTOR, STRETCH_FACTOR, -STRETCH_FACTOR, -STRETCH_FACTOR);
 }
 
 void CComponentIO::expand()
 {
-    if (m_eStretchStatus == ES_Expand)
+    if (eStretchStatus == ES_Expand)
     {
         return;
     }
-    m_eStretchStatus = ES_Expand;
+    eStretchStatus = ES_Expand;
     rect.adjust(-STRETCH_FACTOR, -STRETCH_FACTOR, STRETCH_FACTOR, STRETCH_FACTOR);
 }
 
@@ -39,7 +42,7 @@ void CComponentIO::paint(QPainter *painter, const QPen &pen, const QBrush &brush
     painter->setRenderHint(QPainter::Antialiasing, true);
     painter->setPen(pen);
     painter->setBrush(brush);
-    if (m_eStretchStatus == ES_Expand)
+    if (eStretchStatus == ES_Expand)
     {
         QPainterPath pathOutside;
         pathOutside.addEllipse(rect);
@@ -56,13 +59,14 @@ void CComponentIO::paint(QPainter *painter, const QPen &pen, const QBrush &brush
 
 QDataStream &operator>>(QDataStream &in, CComponentIO &data)
 {
-    in >> data.eIOType >> data.bEnabled >> data.rect;
+
+    in >> data.eIOType >> data.eIOStatus >> data.eDirection >> data.eStretchStatus >> data.bEnabled >> data.rect;
     return in;
 }
 
 QDataStream &operator<<(QDataStream &out, const CComponentIO &data)
 {
-    out << data.eIOType << data.bEnabled << data.rect;
+    out << data.eIOType << data.eIOStatus << data.eDirection << data.eStretchStatus << data.bEnabled << data.rect;
     return out;
 }
 
@@ -92,7 +96,7 @@ void CComponent::init()
         E_Direction eDirection = E_Direction(i);
         if(arrIO[i].isEnabled())
         {
-            arrIO[i].setDirection(eDirection);
+            arrIO[i].eDirection = eDirection;
         }
     }
 }
@@ -139,7 +143,7 @@ void CComponent::paint(QPainter *painter, const QRectF &rect, const QPalette &pa
 
 QPixmap CComponent::renderPixmap()
 {
-    QPixmap pixmap(sizeHint());
+    QPixmap pixmap(sizeHint().toSize());
     pixmap.fill(Qt::transparent);
 
     QPainter painter(&pixmap);
@@ -151,10 +155,14 @@ QPointF CComponent::ioPos(E_Direction eDirection) const
 {
     CComponentIO io = arrIO[eDirection];
     QPointF arrPos[4];
-    arrPos[ED_Top] = QPointF(width() / 2 - io.width() / 2, 0);
-    arrPos[ED_Left] = QPointF(0, height() / 2 - io.height() / 2);
-    arrPos[ED_Right] = QPointF(width() - io.width(), height() / 2 - io.height() / 2);
-    arrPos[ED_Bottom] = QPointF(width() / 2 - io.height() / 2, height() - io.height());
+//    arrPos[ED_Top] = QPointF(width() / 2 - io.width() / 2, 0);
+//    arrPos[ED_Left] = QPointF(0, height() / 2 - io.height() / 2);
+//    arrPos[ED_Right] = QPointF(width() - io.width(), height() / 2 - io.height() / 2);
+//    arrPos[ED_Bottom] = QPointF(width() / 2 - io.height() / 2, height() - io.height());
+    arrPos[ED_Top] = QPointF(width() / 2, 0) - io.rect.center();
+    arrPos[ED_Left] = QPointF(0, height() / 2) - io.rect.center();
+    arrPos[ED_Right] = QPointF(width(), height() / 2) - io.rect.center();
+    arrPos[ED_Bottom] = QPointF(width() / 2, height()) - io.rect.center();
     return arrPos[eDirection];
 }
 

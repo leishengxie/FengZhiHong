@@ -69,10 +69,11 @@ class CGraphicsArrowConnectItem : public QGraphicsPathItem
 public:
     // 通用方法 io -- io, 考虑连接线与rectSceneStart，rectSceneEnd不能碰撞，对于其他未加入连接的节点是否碰撞暂时不加以考虑
     static QPainterPath getPolylinePath(const QRectF & rectSceneStart, const E_Direction & eDirectionIoStart
-                                        , const QRectF & rectSceneEnd, const E_Direction & eDirectionIoEnd);
+                                        , const QRectF & rectSceneEnd, const E_Direction & eDirectionIoEnd
+                                        , const QPointF ptArrowScenePos);
     // io -- Point
     static QPainterPath getPolylinePath(const QRectF & rectSceneStart, const E_Direction & eDirectionIoStart
-                                        , const QPointF & ptEnd);
+                                        , const QPointF & ptEnd, const QPointF ptArrowScenePos);
 
 private:
     // 获取连接到IO端点线段另一端的端点
@@ -82,11 +83,10 @@ private:
     static QPointF getNearIOPoint(const QRectF & rectScene, const E_Direction & eDirection,
                            int polylineLength = DEFAULT_POLYLINE_LENGTH);
 
-    static QPainterPath convertArrayScenePosToPath(QPointF arrPos[MAX_POLYLINE_POINT]);
+    static QPainterPath convertArrayScenePosToPath(const QPointF arrPos[MAX_POLYLINE_POINT], const QPointF ptArrowScenePos);
 
-    static void getPolylinePointArray(QPointF arrPos[MAX_POLYLINE_POINT]
-                               , const QRectF & rectSceneStart, const E_Direction & eDirectionIoStart
-                                      , const QRectF & rectSceneEnd, const E_Direction & eDirectionIoEnd);
+    static quint32 getPolylineConnetPointCount(const QRectF & rectSceneStart, const E_Direction & eDirectionIoStart
+                                               , const QRectF & rectSceneEnd, const E_Direction & eDirectionIoEnd);
 
     // 下面为总结的连接方法, 数字下标表示右多少个点
     static void polylineConnetPoint_2(QPointF arrPos[MAX_POLYLINE_POINT]
@@ -109,8 +109,7 @@ private:
                                , const QRectF & rectSceneStart, const E_Direction & eDirectionIoStart
                                       , const QRectF & rectSceneEnd, const E_Direction & eDirectionIoEnd);
 
-    static quint32 polylineLineSegmentCount(const QPointF & ptStart, const E_Direction & eDirectionIoStart
-                          , const QPointF & ptEnd, const E_Direction & eDirectionIoEnd);
+
 
 
 

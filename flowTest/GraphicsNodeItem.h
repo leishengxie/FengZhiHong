@@ -16,6 +16,7 @@ public:
     QRectF boundingRect() const override;
     void setRect(const QRectF &rect);
     QRectF rect() const;
+    QRectF sceneRect() const;
     QSizeF size() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 

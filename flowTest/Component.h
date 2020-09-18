@@ -51,26 +51,26 @@ public:
         return bEnabled;
     }
 
-    E_Direction direction() const
-    {
-        return eDirection;
-    }
+//    E_Direction direction() const
+//    {
+//        return eDirection;
+//    }
 
-    void setDirection(E_Direction eDirection)
-    {
-        eDirection = eDirection;
-    }
+//    void setDirection(E_Direction eDirection)
+//    {
+//        eDirection = eDirection;
+//    }
 
     void shrink();
     bool isShrink()
     {
-        return m_eStretchStatus == ES_Shrink;
+        return eStretchStatus == ES_Shrink;
     }
 
     void expand();
     bool isExpand()
     {
-        return m_eStretchStatus == ES_Expand;
+        return eStretchStatus == ES_Expand;
     }
 
     void paint(QPainter *painter, const QPen & pen, const QBrush & brush) const;
@@ -85,7 +85,7 @@ public:
 
     E_Direction eDirection;
 
-    E_StretchStatus m_eStretchStatus;
+    E_StretchStatus eStretchStatus;
 
     //Disabled：关闭 Enabled：启用
     bool bEnabled;
