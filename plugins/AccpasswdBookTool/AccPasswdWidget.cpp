@@ -4,7 +4,6 @@
 #include <QSqlError>
 #include <QMessageBox>
 
-
 CAccPasswdWidget::CAccPasswdWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::CAccPasswdWidget)
