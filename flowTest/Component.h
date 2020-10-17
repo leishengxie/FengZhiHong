@@ -28,14 +28,20 @@ public:
         EI_ConnectUnusable
     };
 
+    enum E_StretchStatus
+    {
+        ES_Expand,
+        ES_Shrink
+    };
+
     CComponentIO();
 
-    int height()
+    qreal height()
     {
         return rect.height();
     }
 
-    int width()
+    qreal width()
     {
         return rect.width();
     }
@@ -45,12 +51,41 @@ public:
         return bEnabled;
     }
 
+//    E_Direction direction() const
+//    {
+//        return eDirection;
+//    }
+
+//    void setDirection(E_Direction eDirection)
+//    {
+//        eDirection = eDirection;
+//    }
+
+    void shrink();
+    bool isShrink()
+    {
+        return eStretchStatus == ES_Shrink;
+    }
+
+    void expand();
+    bool isExpand()
+    {
+        return eStretchStatus == ES_Expand;
+    }
+
+    void paint(QPainter *painter, const QPen & pen, const QBrush & brush) const;
+
     friend QDataStream & operator>>(QDataStream & in, CComponentIO & data);
     friend QDataStream & operator<<(QDataStream & out, const CComponentIO & data);
 
 
     E_IOType eIOType;
+
     E_IOStatus eIOStatus;
+
+    E_Direction eDirection;
+
+    E_StretchStatus eStretchStatus;
 
     //Disabled：关闭 Enabled：启用
     bool bEnabled;
@@ -58,7 +93,8 @@ public:
     // 目标节点id
     //int nDestNodeId;
 
-    QRect rect;
+    // 设定io在场景的显示区域
+    QRectF rect;
 
 
 
@@ -119,7 +155,7 @@ public:
     friend QDataStream & operator<<(QDataStream & out, const CComponent & data);
 
     // 组件的绘制方法
-    void paint(QPainter *painter, const QRect &rect, const QPalette &palette) const;
+    void paint(QPainter *painter, const QRectF &rect, const QPalette &palette) const;
     QPixmap renderPixmap();
 
     QIcon icon() const
@@ -133,15 +169,15 @@ public:
     }
 
     // 区域大小
-    QSize sizeHint() const
+    QSizeF sizeHint() const
     {
         return rect.size();
     }
-    int width() const
+    qreal width() const
     {
         return rect.width();
     }
-    int height() const
+    qreal height() const
     {
         return rect.height();
     }
@@ -151,7 +187,7 @@ public:
     {
         return arrIO[eDirection];
     }
-    QPoint ioPos(E_Direction eDirection) const;
+    QPointF ioPos(E_Direction eDirection) const;
 
 
     //QPainterPath shape() const;
@@ -164,7 +200,9 @@ public:
     // 组件图标
     QIcon m_icon;
 
-    QRect rect;
+    // 设定组件的显示区域，本类的BoundingRect和rect一样
+    // 注意:此rect的x, y 并非代表在父对象的x,y 坐标
+    QRectF rect;
 
 
     E_ComponentShape eNodeShape;

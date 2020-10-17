@@ -12,7 +12,7 @@ CGraphicsNodeItem::CGraphicsNodeItem(const CComponent &component, QGraphicsItem 
     : m_component(component)
       , QGraphicsItem(parent)
 {
-    m_rect.setRect(0, 0, component.sizeHint().width(), component.sizeHint().height());
+
     for (int i = 0; i < 4; ++i)
     {
         m_pGraphicsIOItem[i] = nullptr;
@@ -30,29 +30,34 @@ CGraphicsNodeItem::CGraphicsNodeItem(const CComponent &component, QGraphicsItem 
 
 QRectF CGraphicsNodeItem::boundingRect() const
 {
-    return m_rectBounding;
+    return m_component.rect;
 }
 
 void CGraphicsNodeItem::setRect(const QRectF &rect)
 {
-    if (m_rect == rect)
+    if (m_component.rect == rect)
     {
         return;
     }
     prepareGeometryChange();
-    m_rect = rect;
+    m_component.rect = rect;
     updateBoundingRect();
     update();
 }
 
 QRectF CGraphicsNodeItem::rect() const
 {
-    return m_rect;
+    return m_component.rect;
+}
+
+QRectF CGraphicsNodeItem::sceneRect() const
+{
+    return QRectF(scenePos(), size());
 }
 
 QSizeF CGraphicsNodeItem::size() const
 {
-    return m_rect.size();
+    return m_component.rect.size();
 }
 
 void CGraphicsNodeItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -70,7 +75,7 @@ void CGraphicsNodeItem::paint(QPainter *painter, const QStyleOptionGraphicsItem 
     }
     painter->setBrush(colorBg);
 
-    m_component.paint(painter, m_rect.toRect(), widget->palette());
+    m_component.paint(painter, m_component.rect, widget->palette());
 
 }
 
@@ -125,7 +130,7 @@ void CGraphicsNodeItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 
 void CGraphicsNodeItem::updateBoundingRect()
 {
-    m_rectBounding = m_rect;
+
 }
 
 void CGraphicsNodeItem::createIOItem()
@@ -135,9 +140,8 @@ void CGraphicsNodeItem::createIOItem()
         E_Direction eDirection = E_Direction(i);
         if(m_component.io(eDirection).isEnabled())
         {
-            m_pGraphicsIOItem[i] = new CGraphicsIOItem(this);
+            m_pGraphicsIOItem[i] = new CGraphicsIOItem(m_component.arrIO[i], this);
             m_pGraphicsIOItem[i]->setPos(m_component.ioPos(eDirection));
-            m_pGraphicsIOItem[i]->setDirection(eDirection);
             m_pGraphicsIOItem[i]->hide();
         }
     }

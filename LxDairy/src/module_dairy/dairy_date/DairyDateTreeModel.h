@@ -55,12 +55,15 @@ struct T_DairyDateItem
     QString strMonth;
     QString strDay;
     QString strTitle;
+
     // QSet, 因为指针的相等直接是地址的相等，QPointer, QSharedPointer实质也是指针， 所以重写insert
     //QSet<QPointer<T_DairyDateItem>> m_setChildItems;
     // stl的set, 不提供list的转换,其实自己写简单
     set<T_DairyDateItem*, T_DairyDateComparator> m_setChildItems;
+
     T_DairyDateItem* m_pParentItem;
 
+public:
     T_DairyDateItem();
     T_DairyDateItem(E_DairyDateNodeType eDairyDateNodeType);
     T_DairyDateItem(E_DairyDateNodeType eDairyDateNodeType, T_Dairy dairy);

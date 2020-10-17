@@ -3,23 +3,70 @@
 #include <QStyle>
 #include <QPainter>
 
+#define STRETCH_FACTOR 4
+
 CComponentIO::CComponentIO()
     : eIOType(EI_InOut)
+    , eIOStatus(EI_Normal)
+    , eDirection(ED_Left)
+    , eStretchStatus(ES_Shrink)
     //, nDestNodeId(-1)
     , bEnabled(true)
+
 {
     rect.setRect(0, 0, 16, 16);
 }
 
+void CComponentIO::shrink()
+{
+    if (eStretchStatus == ES_Shrink)
+    {
+        return;
+    }
+    eStretchStatus = ES_Shrink;
+    rect.adjust(STRETCH_FACTOR, STRETCH_FACTOR, -STRETCH_FACTOR, -STRETCH_FACTOR);
+}
+
+void CComponentIO::expand()
+{
+    if (eStretchStatus == ES_Expand)
+    {
+        return;
+    }
+    eStretchStatus = ES_Expand;
+    rect.adjust(-STRETCH_FACTOR, -STRETCH_FACTOR, STRETCH_FACTOR, STRETCH_FACTOR);
+}
+
+void CComponentIO::paint(QPainter *painter, const QPen &pen, const QBrush &brush) const
+{
+    painter->setRenderHint(QPainter::Antialiasing, true);
+    painter->setPen(pen);
+    painter->setBrush(brush);
+    if (eStretchStatus == ES_Expand)
+    {
+        QPainterPath pathOutside;
+        pathOutside.addEllipse(rect);
+        painter->fillPath(pathOutside, QColor(0x1D, 0x78, 0xFE, 100));
+        QPainterPath pathInside;
+        pathInside.addEllipse(rect.adjusted(STRETCH_FACTOR, STRETCH_FACTOR, -STRETCH_FACTOR, -STRETCH_FACTOR));
+        painter->fillPath(pathInside, QColor("#3092EF"));
+    }
+    else
+    {
+        painter->drawEllipse(rect);
+    }
+}
+
 QDataStream &operator>>(QDataStream &in, CComponentIO &data)
 {
-    in >> data.eIOType >> data.bEnabled >> data.rect;
+
+    in >> data.eIOType >> data.eIOStatus >> data.eDirection >> data.eStretchStatus >> data.bEnabled >> data.rect;
     return in;
 }
 
 QDataStream &operator<<(QDataStream &out, const CComponentIO &data)
 {
-    out << data.eIOType << data.bEnabled << data.rect;
+    out << data.eIOType << data.eIOStatus << data.eDirection << data.eStretchStatus << data.bEnabled << data.rect;
     return out;
 }
 
@@ -44,6 +91,14 @@ void CComponent::init()
     m_icon = QApplication::style()->standardIcon(QStyle::SP_ComputerIcon);
     eNodeShape = EC_RoundRect;
     rect.setRect(0, 0, 200, 40);
+    for (int i = 0; i < 4; ++i)
+    {
+        E_Direction eDirection = E_Direction(i);
+        if(arrIO[i].isEnabled())
+        {
+            arrIO[i].eDirection = eDirection;
+        }
+    }
 }
 
 QColor CComponent::statusColor() const
@@ -57,7 +112,7 @@ QColor CComponent::statusColor() const
     return Qt::white;
 }
 
-void CComponent::paint(QPainter *painter, const QRect &rect, const QPalette &palette) const
+void CComponent::paint(QPainter *painter, const QRectF &rect, const QPalette &palette) const
 {
     painter->save();
 
@@ -88,7 +143,7 @@ void CComponent::paint(QPainter *painter, const QRect &rect, const QPalette &pal
 
 QPixmap CComponent::renderPixmap()
 {
-    QPixmap pixmap(sizeHint());
+    QPixmap pixmap(sizeHint().toSize());
     pixmap.fill(Qt::transparent);
 
     QPainter painter(&pixmap);
@@ -96,14 +151,18 @@ QPixmap CComponent::renderPixmap()
     return pixmap;
 }
 
-QPoint CComponent::ioPos(E_Direction eDirection) const
+QPointF CComponent::ioPos(E_Direction eDirection) const
 {
     CComponentIO io = arrIO[eDirection];
-    QPoint arrPos[4];
-    arrPos[ED_Top] = QPoint(width() / 2 - io.width() / 2, 0);
-    arrPos[ED_Left] = QPoint(0, height() / 2 - io.height() / 2);
-    arrPos[ED_Right] = QPoint(width() - io.width(), height() / 2 - io.height() / 2);
-    arrPos[ED_Bottom] = QPoint(width() / 2 - io.height() / 2, height() - io.height());
+    QPointF arrPos[4];
+//    arrPos[ED_Top] = QPointF(width() / 2 - io.width() / 2, 0);
+//    arrPos[ED_Left] = QPointF(0, height() / 2 - io.height() / 2);
+//    arrPos[ED_Right] = QPointF(width() - io.width(), height() / 2 - io.height() / 2);
+//    arrPos[ED_Bottom] = QPointF(width() / 2 - io.height() / 2, height() - io.height());
+    arrPos[ED_Top] = QPointF(width() / 2, 0) - io.rect.center();
+    arrPos[ED_Left] = QPointF(0, height() / 2) - io.rect.center();
+    arrPos[ED_Right] = QPointF(width(), height() / 2) - io.rect.center();
+    arrPos[ED_Bottom] = QPointF(width() / 2, height()) - io.rect.center();
     return arrPos[eDirection];
 }
 

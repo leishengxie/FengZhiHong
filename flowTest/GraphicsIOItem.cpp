@@ -5,13 +5,13 @@
 #include <QCursor>
 #include "GraphicsArrowItem.h"
 
-#define STRETCH_FACTOR 4
 
-CGraphicsIOItem::CGraphicsIOItem(QGraphicsItem *parent)
+
+CGraphicsIOItem::CGraphicsIOItem(const CComponentIO &componentIO, QGraphicsItem *parent)
     : QAbstractGraphicsShapeItem(parent)
+    , m_componentIO(componentIO)
 {
-    m_rect.setRect(0, 0, 16, 16);
-    m_eStretchStatus = ES_Shrink;
+
     setBrush(QColor(150, 150, 150));
     setAcceptHoverEvents(true);
     setAcceptTouchEvents(true);
@@ -28,32 +28,16 @@ QRectF CGraphicsIOItem::boundingRect() const
     qreal halfpw = pen().style() == Qt::NoPen ? qreal(0) : pen().widthF() / 2;
     if (halfpw > 0.0)
     {
-        return m_rect.adjusted(-halfpw, -halfpw, halfpw, halfpw);
+        return m_componentIO.rect.adjusted(-halfpw, -halfpw, halfpw, halfpw);
     }
-    return m_rect;
+    return m_componentIO.rect;
 }
 
 void CGraphicsIOItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(option)
     Q_UNUSED(widget)
-    painter->setRenderHint(QPainter::Antialiasing, true);
-    painter->setPen(pen());
-    painter->setBrush(brush());
-    if (m_eStretchStatus == ES_Expand)
-    {
-        QPainterPath pathOutside;
-        pathOutside.addEllipse(m_rect);
-        painter->fillPath(pathOutside, QColor(0x1D, 0x78, 0xFE, 100));
-        QPainterPath pathInside;
-        pathInside.addEllipse(m_rect.adjusted(STRETCH_FACTOR, STRETCH_FACTOR, -STRETCH_FACTOR, -STRETCH_FACTOR));
-        painter->fillPath(pathInside, QColor("#3092EF"));
-    }
-    else
-    {
-        painter->drawEllipse(m_rect);
-    }
-
+    m_componentIO.paint(painter, pen(), brush());
 }
 
 int CGraphicsIOItem::type() const
@@ -126,24 +110,22 @@ bool CGraphicsIOItem::canConnectIO(CGraphicsIOItem *other)
 
 void CGraphicsIOItem::shrink()
 {
-    if (m_eStretchStatus == ES_Shrink)
+    if (m_componentIO.isShrink())
     {
         return;
     }
-    m_eStretchStatus = ES_Shrink;
     prepareGeometryChange();
-    m_rect.adjust(STRETCH_FACTOR, STRETCH_FACTOR, -STRETCH_FACTOR, -STRETCH_FACTOR);
+    m_componentIO.shrink();
 }
 
 void CGraphicsIOItem::expand()
 {
-    if (m_eStretchStatus == ES_Expand)
+    if (m_componentIO.isExpand())
     {
         return;
     }
-    m_eStretchStatus = ES_Expand;
     prepareGeometryChange();
-    m_rect.adjust(-STRETCH_FACTOR, -STRETCH_FACTOR, STRETCH_FACTOR, STRETCH_FACTOR);
+    m_componentIO.expand();
 }
 
 void CGraphicsIOItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
