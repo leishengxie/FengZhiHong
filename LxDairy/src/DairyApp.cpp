@@ -22,7 +22,7 @@ bool CDairyApp::notify(QObject *obj, QEvent *e)
 
 
 
-CDairyApp::setUserInfo(const T_UserInfo &tUserInfo)
+void CDairyApp::setUserInfo(const T_UserInfo &tUserInfo)
 {
     s_tUserInfo = tUserInfo;
 }

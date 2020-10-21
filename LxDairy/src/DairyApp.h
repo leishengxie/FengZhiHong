@@ -20,7 +20,7 @@ public:
 
 
 
-    static setUserInfo(const T_UserInfo & tUserInfo);
+    static void setUserInfo(const T_UserInfo & tUserInfo);
     static T_UserInfo userInfo();
 
 signals:
