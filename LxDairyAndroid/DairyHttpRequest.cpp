@@ -201,7 +201,7 @@ void CDairyHttpRequest::deleteDairy(int did, QJSValue jsCallback)
     T_Dairy dairy;
     dairy.uid = CDairyAndroidApp::userInfo().uid;
     dairy.did = did;
-    tDairyDeleteReq << dairy;
+    tDairyDeleteReq.dairyList << dairy;
 
     m_jsValue = jsCallback;
 
