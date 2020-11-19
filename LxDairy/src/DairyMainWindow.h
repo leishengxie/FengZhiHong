@@ -24,6 +24,9 @@ public:
 public:
     void setLoginWidget(CLoginWidget* pLoginWidget);
 
+    //void disableAllAction();
+    //void setActionOpenDisabled(bool bDisabled);
+
 public slots:
     void onBgPixmapChanged(const QPixmap & pixmap);
 

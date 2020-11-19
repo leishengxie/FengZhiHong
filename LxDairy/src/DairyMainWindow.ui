@@ -39,21 +39,21 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>2</number>
       </property>
       <widget class="CDairyWidget" name="tabDairy">
        <attribute name="title">
         <string>日记</string>
        </attribute>
       </widget>
-      <widget class="CGeneralToolsWidget" name="tabTool">
-       <attribute name="title">
-        <string>实用工具</string>
-       </attribute>
-      </widget>
       <widget class="CCollectionWidget" name="tabCollection">
        <attribute name="title">
         <string>集</string>
+       </attribute>
+      </widget>
+      <widget class="CGeneralToolsWidget" name="tabTool">
+       <attribute name="title">
+        <string>实用工具</string>
        </attribute>
       </widget>
      </widget>
