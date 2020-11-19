@@ -107,7 +107,7 @@ void CLoginWidget::paintEvent(QPaintEvent* event)
 
 void CLoginWidget::resizeEvent(QResizeEvent* event)
 {
-    // 谨慎使用，20191201 会应用到子对象， 从而导致子对象每次show时都会使用，导致界面刷新卡顿
+    // 大图片谨慎使用，20191201 会应用到子对象， 从而导致子对象每次show时都会使用，导致界面刷新卡顿
 //    QPalette pal;
 //    pal.setBrush(QPalette::Background, QBrush(QPixmap(":/img/bg/1.jpg").scaled(size())));
     //    setPalette(pal);

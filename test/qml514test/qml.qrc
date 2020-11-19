@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>LxMenu.qml</file>
+        <file>MenuTextField.qml</file>
+        <file>TestUi.qml</file>
+        <file>TestUiForm.ui.qml</file>
+    </qresource>
+</RCC>
