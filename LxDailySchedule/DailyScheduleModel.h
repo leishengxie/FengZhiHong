@@ -20,6 +20,15 @@ struct T_ScheduleItem
 
     }
 
+    T_ScheduleItem(const QString & strContent)
+        : strStartTime("00:00")
+        , strEndTime("00:00")
+        , strContent(strContent)
+        , bUseAlarmClock(false)
+    {
+
+    }
+
 
     // std::sort指针
 //    bool operator() (const T_ScheduleItem & tScheduleItem)

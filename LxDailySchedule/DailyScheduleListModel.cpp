@@ -47,7 +47,7 @@ void CDailyScheduleListModel::setDailySchedule(const QList<T_ScheduleItem> &lstS
 
     m_nCurItemIndex = -1;
     m_nPreItemIndex = -1;
-    emit sigCurScheduleChanged("无");
+    emit sigCurScheduleChanged(T_ScheduleItem("无"));
 }
 
 void CDailyScheduleListModel::slot_timeout()
@@ -66,7 +66,7 @@ void CDailyScheduleListModel::slot_timeout()
     }
     if (m_nCurItemIndex != m_nPreItemIndex)
     {
-        emit sigCurScheduleChanged(m_lstScheduleItem.at(m_nCurItemIndex).strContent);
+        emit sigCurScheduleChanged(m_lstScheduleItem.at(m_nCurItemIndex));
         m_nPreItemIndex = m_nCurItemIndex;
     }
 }

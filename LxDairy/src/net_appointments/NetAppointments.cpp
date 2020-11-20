@@ -136,7 +136,7 @@ QString CNetAppointments::urlDairyDelete()
 {
     T_NetAppointment tNetAppointment;
     tNetAppointment.eRequsetType = T_NetAppointment::ER_Post;
-    tNetAppointment.strVirtualDirectory = VIRTUAL_DIR_PATH_DAIRY_UPLOAD;
+    tNetAppointment.strVirtualDirectory = VIRTUAL_DIR_PATH_DAIRY_DELETE;
 
     return tNetAppointment.url();
 }
