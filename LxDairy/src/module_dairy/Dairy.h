@@ -11,6 +11,33 @@
 // Q_DISABLE_COPY(QObject) 不继承QObject
 //QObject 中没有提供一个拷贝构造函数和赋值操作符给外界使用，其实拷贝构造和赋值的操作都是已经声明了的，但是它们被使用了Q_DISABLE_COPY() 宏放在了private区域。
 //因此所有继承自QObject的类都使用这个宏声明了他们的拷贝构造函数和赋值操作符为私有。
+
+
+
+///
+/// \brief The T_DairyInfo struct
+/// T_Dairy的后续优化处理，因为strContent的内容可能有点多，会消耗很多内存，所以可以仿造QFile-QFileInfo。
+/// 目前暂时未加入使用，而是对strContent的内容做了字数2000上限和纯文本限制。
+///
+struct T_DairyInfo
+{
+    int did;
+    int uid;
+    QString strTitle;
+    QString strDateTime;
+    QString strWeather;
+    QString strTag;
+    //QString strContent;
+
+    T_DairyInfo() {}
+
+};
+
+
+///
+/// \brief The T_Dairy struct
+/// dairy实体
+///
 struct T_Dairy
 {
     T_Dairy();
@@ -23,24 +50,24 @@ struct T_Dairy
     QString strTag;
     QString strContent;
 
-
-//    SETGETCONST(int, did, Did)
-//    SETGETCONST(int, uid, Uid)
-//    SETGETCONST(QString, strTitle, Title)
-//    SETGETCONST(QString, strDateTime, DateTime)
-//    SETGETCONST(QString, strWeather, Weather)
-//    SETGETCONST(QString, strTag, Tag)
-//    SETGETCONST(QString, strContent, Content)
-
-    bool isEmptyContent()
+    bool isEmptyTitle() const
     {
-        return strTitle.isEmpty() && strContent.isEmpty();
+        return strTitle.isEmpty();
+    }
+
+    bool isEmptyContent() const
+    {
+        return strContent.isEmpty();
     }
 
     bool isNewDairy() const
     {
         return did == INVAILD_DAIRY_ID;
     }
+
+    int year() const;
+    int month() const;
+    int day() const;
 
     //QList contains need
     bool operator == (const T_Dairy &right) const;
@@ -52,6 +79,15 @@ struct T_Dairy
 Q_DECLARE_METATYPE(T_Dairy)
 
 
+
+
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 struct T_DairyListRequest
 {
     int uid;

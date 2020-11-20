@@ -2,36 +2,33 @@
 #include <QDateTime>
 
 T_DairyDateItem::T_DairyDateItem()
+: eDairyDateNodeType(ED_Invalid)
 {
     init();
 }
 
 T_DairyDateItem::T_DairyDateItem(E_DairyDateNodeType eDairyDateNodeType)
+    : eDairyDateNodeType(eDairyDateNodeType)
 {
     init();
-    this->eDairyDateNodeType = eDairyDateNodeType;
 }
 
 T_DairyDateItem::T_DairyDateItem(E_DairyDateNodeType eDairyDateNodeType, T_Dairy dairy)
+    : eDairyDateNodeType(eDairyDateNodeType)
+    , tDairy(dairy)
 {
     init();
-    this->eDairyDateNodeType = eDairyDateNodeType;
-    //QMultiMap
-    //"2010-07-02 17:35:00";
-    did = dairy.did;
-    strTitle = dairy.strTitle;
-    QString strDateTime = dairy.strDateTime;
-    strYear = strDateTime.mid(0, 4);
-    strMonth = strDateTime.mid(5, 2);
-    strDay = strDateTime.mid(8, 2);
+
+
 }
 
 void T_DairyDateItem::init()
 {
-    did = INVAILD_DAIRY_ID;
-    eDairyDateNodeType = ED_Invalid;
+
     m_setChildItems.clear();
     m_pParentItem = NULL;
+
+
 }
 
 T_DairyDateItem::~T_DairyDateItem()
@@ -62,11 +59,11 @@ bool T_DairyDateItem::operator ==(const T_DairyDateItem & right) const
     switch (eDairyDateNodeType)
     {
         case ED_Year:
-            return strYear.toInt() == right.strYear.toInt();
+            return tDairy.year() == right.tDairy.year();
         case ED_Month:
-            return strMonth.toInt() == right.strMonth.toInt();
+            return tDairy.month() == right.tDairy.month();
         case ED_Day:
-            return strDay.toInt() == right.strDay.toInt();
+            return tDairy.day() == right.tDairy.day();
             break;
         default:
             break;
@@ -86,13 +83,13 @@ uint T_DairyDateItem::value() const
     switch (eDairyDateNodeType)
     {
         case ED_Year:
-            nValue = strYear.toUInt() * 366;
+            nValue = tDairy.year() * 366;
             break;
         case ED_Month:
-            nValue = strMonth.toUInt() * 31;
+            nValue = tDairy.month() * 31;
             break;
         case ED_Day:
-            nValue = strDay.toUInt();
+            nValue = tDairy.day();
             break;
         default:
             break;
@@ -231,19 +228,19 @@ QString T_DairyDateItem::text()
     switch (eDairyDateNodeType)
     {
         case ED_Year:
-            strText = strYear + "年";
+            strText = QString::number(tDairy.year()) + "年";
             break;
         case ED_Month:
-            strText = strMonth + "月";
+            strText = QString::number(tDairy.month()) + "月";
             break;
         case ED_Day:
-            if (strTitle.isEmpty())
+            if (tDairy.isEmptyTitle())
             {
-                strText = strDay + "日";
+                strText = QString::number(tDairy.day()) + "日";
             }
             else
             {
-                strText = strDay + "日 - " + strTitle;
+                strText = QString::number(tDairy.day()) + "日 - " + tDairy.strTitle;
             }
             break;
         default:

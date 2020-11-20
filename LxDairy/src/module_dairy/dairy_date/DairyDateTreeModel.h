@@ -21,15 +21,24 @@ enum E_DairyDateNodeType
 
 
 
-
+/// 知识点补充
 //QSet和STL的set是有本质区别的，虽然它们的名字很像，前者是基于哈希表的，后者是红黑树的变种
 //QSet是基于哈希算法的，这就要求自定义的结构体Type必须提供：
 //1. bool operator == (const Type &b) const
 //2. 一个全局的uint qHash(Type key)函数
 
-//当使用set容器存放对象指针时，不指定set第二个参数的情况下，默认是以指针的值得大小进行排序的
+// stl-set
+//1.当使用set容器存放对象指针时，不指定set第二个参数的情况下，默认是以指针的值得大小进行排序的
 //2，当需要以指定的方法进行排序的时候需要指定set的第二个参数，
+// bool operator<(const T_DairyDateItem & right)const;或者
 //使用一个仿函数进行绑定判断条件（重载对象的小于号操作符并不能使set排序，因为存放的是指针，并不是对象本身，对象本身的时候小于号操作符是有效的）
+// stl的set, 不提供list的转换,其实自己写简单
+
+
+// 本需求中 最开始选择QSet 但发现下面的问题
+// 要知道指针的比较是不用重载的，你也没办法重载
+// bool operator == (const T_DairyDateItem* right) const;
+// 所以选择了stl-set
 
 struct T_DairyDateItem
 {
@@ -48,20 +57,18 @@ struct T_DairyDateItem
         }
     };
 
-
+    // 节点类型
     E_DairyDateNodeType eDairyDateNodeType;
-    int did;
-    QString strYear;
-    QString strMonth;
-    QString strDay;
-    QString strTitle;
 
-    // QSet, 因为指针的相等直接是地址的相等，QPointer, QSharedPointer实质也是指针， 所以重写insert
-    //QSet<QPointer<T_DairyDateItem>> m_setChildItems;
-    // stl的set, 不提供list的转换,其实自己写简单
+    // 节点内容
+    T_Dairy tDairy;
+
+    // 子节点集合
     set<T_DairyDateItem*, T_DairyDateComparator> m_setChildItems;
 
+    // 父节点
     T_DairyDateItem* m_pParentItem;
+
 
 public:
     T_DairyDateItem();
@@ -69,9 +76,11 @@ public:
     T_DairyDateItem(E_DairyDateNodeType eDairyDateNodeType, T_Dairy dairy);
     ~T_DairyDateItem();
 
-    void release();
+
 
     void init();
+
+    void release();
 
     // 显示的文本
     QString text();
@@ -81,17 +90,12 @@ public:
 
     void findItemById(int did, T_DairyDateItem *&pDairyDateItem);
 
-    // QSet所需
-    bool operator == (const T_DairyDateItem &right) const;
-    // 要知道指针的比较是不用重载的，你也没办法重载
-    //bool operator == (const T_DairyDateItem* right) const;
-    uint value() const; // 提供排序
-    /// STL-set need this function
-    //    bool operator<(const T_DairyDateItem & right)const;
+     bool operator == (const T_DairyDateItem &right) const;
 
-    // std set
+    /// std set
+      uint value() const; // 提供排序
 
-    // 节点操作
+    /// 节点操作
     void deleteChild(T_DairyDateItem *child);
     void deleteChildren();
     T_DairyDateItem *find(T_DairyDateItem* tDairyDateItem);  // 返回子节点的地址

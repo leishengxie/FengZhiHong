@@ -12,6 +12,30 @@ T_Dairy::T_Dairy()
 
 }
 
+int T_Dairy::year() const
+{
+    //QMultiMap
+    //"2010-07-02 17:35:00";
+//    strYear = strDateTime.mid(0, 4);
+//    strMonth = strDateTime.mid(5, 2);
+//    strDay = strDateTime.mid(8, 2);
+
+    QDateTime dataTime = QDateTime::fromString(strDateTime, FORMAT_DATETIME);
+    return dataTime.date().year();
+}
+
+int T_Dairy::month() const
+{
+    QDateTime dataTime = QDateTime::fromString(strDateTime, FORMAT_DATETIME);
+    return dataTime.date().month();
+}
+
+int T_Dairy::day() const
+{
+    QDateTime dataTime = QDateTime::fromString(strDateTime, FORMAT_DATETIME);
+    return dataTime.date().day();
+}
+
 bool T_Dairy::operator ==(const T_Dairy &right) const
 {
     return did == right.did;
