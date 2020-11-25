@@ -9,7 +9,16 @@ class CSkinWidget;
 }
 
 ///
+/// \brief The CSkinNotifyCenter class
+///
+class CSkinNotifyCenter
+{
+
+};
+
+///
 /// \brief The CSkinWidget class: the skin select
+/// 皮肤管理界面
 ///
 class CSkinWidget : public QWidget
 {
