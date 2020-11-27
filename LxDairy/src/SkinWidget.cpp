@@ -20,6 +20,18 @@
 
 #include "DairyAppStation.h"
 
+
+CSkinNotifyCenter* CSkinNotifyCenter::m_pLNotificationCenter = nullptr;
+
+CSkinNotifyCenter *CSkinNotifyCenter::getInstance()
+{
+    if (m_pLNotificationCenter == nullptr)
+    {
+        m_pLNotificationCenter = new CSkinNotifyCenter();
+    }
+    return m_pLNotificationCenter;
+}
+
 // 皮肤对应的qss
 static const char* s_aStyleSheet[] =
 {
