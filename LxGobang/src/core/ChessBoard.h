@@ -11,11 +11,29 @@ class CChessBoard
 public:
     CChessBoard(int nWidth = 15, int nHeight = 15);
 
+    // 初始化
+    void init();
+
     // 落子
+    void setChess(int x, int y, CChess::E_ChessType eChessType);
     void setChess(const CChess & chess);
 
     // 悔棋
     void takeBackChess(int nStep = 2);
+
+    int chessBoardWidth() const
+    {
+        return m_nWidth;
+    }
+
+    int chessBoardHeight() const
+    {
+        return m_nHeight;
+    }
+
+    CChess::E_ChessType chessType(int x, int y);
+
+    void reset();
 
 private:
     // 棋盘大小

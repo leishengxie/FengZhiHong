@@ -15,27 +15,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-SOURCES += \
-    Chess.cpp \
-    ChessBoard.cpp \
-    GobangGame.cpp \
-    GobangGameWidget.cpp \
-    Judge.cpp \
-    Player.cpp \
-    main.cpp
-
-HEADERS += \
-    Chess.h \
-    ChessBoard.h \
-    GobangGame.h \
-    GobangGameWidget.h \
-    Judge.h \
-    Player.h
-
-FORMS += \
-    GobangGameWidget.ui
+include (src/src.pri)
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    res_img.qrc

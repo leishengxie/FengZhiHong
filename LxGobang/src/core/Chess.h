@@ -1,6 +1,9 @@
 #ifndef CCHESS_H
 #define CCHESS_H
 
+#define TOTAL_BLACK_CHESS   113
+#define TOTAL_WHITE_CHESS   112
+
 // piece
 class CChess
 {
@@ -8,7 +11,7 @@ class CChess
     public:
 
     // 棋子类型
-    enum
+    enum E_ChessType
     {
         E_Empty,
         E_Black,
@@ -17,6 +20,7 @@ class CChess
 
 
     CChess();
+    CChess(int x, int y, E_ChessType eChessType);
 
     int x() const
     {
@@ -34,9 +38,9 @@ class CChess
     }
 
 private:
-    int m_nChessType;
     int m_nPosX;
     int m_nPosY;
+    int m_nChessType;
 
 };
 

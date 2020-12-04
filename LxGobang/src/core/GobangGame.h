@@ -1,6 +1,11 @@
 #ifndef CGOBANGGAME_H
 #define CGOBANGGAME_H
+
 #include "Chess.h"
+
+class CChessBoard;
+class CJudge;
+class CPlayer;
 
 
 ////////////////////////////////////////////////////////////////////
@@ -22,6 +27,10 @@
 //    CChess chess;
 //};
 
+
+///
+/// \brief The CGobangGame class 游戏类，包含游戏所有玩家和道具
+///
 class CGobangGame
 {
 public:
@@ -32,12 +41,13 @@ public:
         EG_Over
     };
 
-    CGobangGame();
+    CGobangGame(CChessBoard* pChessBoard, CPlayer* p1, CPlayer* p2);
 
 
 
 
     void start();
+    void playing(); // 加入游戏调度
     void over();
     bool isPlaying();
     bool isGameOver();
@@ -56,6 +66,11 @@ protected:
 
 private:
     E_GameStatus m_eGameStatus;
+
+    CChessBoard* m_pChessBoard;
+    CJudge* m_pJudge;
+    CPlayer* m_pPlayer1;    //p1
+    CPlayer* m_pPlayer2;    //p2
 };
 
 #endif // CGOBANGGAME_H

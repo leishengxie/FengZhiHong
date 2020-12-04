@@ -13,6 +13,11 @@ CChessBoard::CChessBoard(int nWidth, int nHeight)
         m_pChessMap[x] = new int[m_nHeight];
     }
 
+    init();
+}
+
+void CChessBoard::init()
+{
     // 给各元素赋值
     for (int x = 0; x < m_nWidth; ++x)
     {
@@ -21,6 +26,11 @@ CChessBoard::CChessBoard(int nWidth, int nHeight)
             m_pChessMap[x][j] = CChess::E_Empty;
         }
     }
+}
+
+void CChessBoard::setChess(int x, int y, CChess::E_ChessType eChessType)
+{
+    setChess(CChess(x, y, eChessType));
 }
 
 void CChessBoard::setChess(const CChess &chess)
@@ -42,4 +52,15 @@ void CChessBoard::takeBackChess(int nStep)
         m_stackChessRecord.pop();
     }
 
+}
+
+CChess::E_ChessType CChessBoard::chessType(int x, int y)
+{
+
+    return CChess::E_ChessType(m_pChessMap[x][y]);
+}
+
+void CChessBoard::reset()
+{
+    init();
 }
