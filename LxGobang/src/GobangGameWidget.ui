@@ -15,7 +15,7 @@
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_2">
    <item>
-    <widget class="QWidget" name="widget" native="true"/>
+    <widget class="CChessBoardWidget" name="chessBoardWidget" native="true"/>
    </item>
    <item>
     <spacer name="horizontalSpacer">
@@ -76,6 +76,14 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>CChessBoardWidget</class>
+   <extends>QWidget</extends>
+   <header>ChessBoardWidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

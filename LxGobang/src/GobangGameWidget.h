@@ -25,10 +25,21 @@ private slots:
 
     void slotTimerSchedulerTimeOut();
 
+protected:
+    void paintEvent(QPaintEvent *event);
+
+protected:
+    // 派生类实现接口
+    void drawBoard() {}
+    void drawChesses() {}
+
 private:
     Ui::CGobangGameWidget *ui;
 
     // 时间调度，用于指定裁判去执行相应的动作。
     QTimer* m_timerScheduler;
+
+    // 背景图片
+    QPixmap m_pixBg;
 };
 #endif // CCHESSWIDGET_H

@@ -43,7 +43,10 @@ public:
 
     CGobangGame(CChessBoard* pChessBoard, CPlayer* p1, CPlayer* p2);
 
-
+    void setChessBoard(CChessBoard* pChessBoard)
+    {
+        m_pChessBoard = pChessBoard;
+    }
 
 
     void start();

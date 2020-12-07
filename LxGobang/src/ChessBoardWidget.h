@@ -10,6 +10,15 @@ class CChessBoardWidget : public QWidget, public CChessBoard
 public:
     explicit CChessBoardWidget(QWidget *parent = nullptr);
 
+    int heightForWidth(int w) const override;
+    bool hasHeightForWidth() const override;
+
+protected:
+    void resizeEvent(QResizeEvent *event);
+    void paintEvent(QPaintEvent *e);
+    void mouseMoveEvent(QMouseEvent *e);
+    void mousePressEvent(QMouseEvent *e);
+
 signals:
 
 };

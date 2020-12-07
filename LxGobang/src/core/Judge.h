@@ -16,15 +16,17 @@ public:
         return m_pPreWinner;
     }
 
-    void setPlayingPlayer(const CPlayer* player)
+    void setActivePlayer(CPlayer* player)
     {
-        m_pPlayingPlayer = player;
+        m_pActivePlayer = player;
     }
 
-    CPlayer* playingPlayer() const
+    CPlayer* activePlayer() const
     {
-        return m_pPlayingPlayer;
+        return m_pActivePlayer;
     }
+
+    void switchActivePlayer();
 
     // 判断先手
     CPlayer* judgeOnTheOffensive();
@@ -38,8 +40,8 @@ private:
     CPlayer* m_pPlayer2;    //p2
 
     CPlayer* m_pPreWinner;  //上一局赢的玩家
-    // 当前等待执行落子的玩家，即本轮活动玩家current round active player
-    CPlayer* m_pPlayingPlayer;
+    // 当前等待执行落子的玩家，〖轮走方〗即“行棋方”,即本轮活动玩家current round active player
+    CPlayer* m_pActivePlayer;
 };
 
 #endif // CJUDGE_H

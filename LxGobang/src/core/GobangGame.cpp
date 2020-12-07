@@ -19,7 +19,7 @@ void CGobangGame::start()
     m_pPlayer2->reset();
 
     CPlayer *player = m_pJudge->judgeOnTheOffensive();
-    m_pJudge->setPlayingPlayer(player);
+    m_pJudge->setActivePlayer(player);
 
     m_eGameStatus = EG_Playing;
 
@@ -27,11 +27,12 @@ void CGobangGame::start()
 
 void CGobangGame::playing()
 {
-    CPlayer *player = m_pJudge->playingPlayer();
+    CPlayer *player = m_pJudge->activePlayer();
     if(player->isRobot())
     {
         CChess chess = player->think();
-        m_pChessBoard->setChess(chess);
+        player->moveInChess(chess.x(), chess.y());
+        m_pJudge->switchActivePlayer();
     }
 }
 

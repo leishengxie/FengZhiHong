@@ -8,6 +8,18 @@ CJudge::CJudge()
 
 }
 
+void CJudge::switchActivePlayer()
+{
+    if (m_pActivePlayer == m_pPlayer1)
+    {
+        m_pActivePlayer = m_pPlayer2;
+    }
+    else
+    {
+        m_pActivePlayer = m_pPlayer1;
+    }
+}
+
 CPlayer *CJudge::judgeOnTheOffensive()
 {
     CPlayer* pOnTheOffensive;
