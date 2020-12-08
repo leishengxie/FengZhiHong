@@ -1,5 +1,9 @@
 #include "ChessBoard.h"
 
+//#include <vector>
+
+//using namespace std;
+
 CChessBoard::CChessBoard(int nWidth, int nHeight)
     : m_nWidth(nWidth)
     , m_nHeight(nHeight)
@@ -63,4 +67,107 @@ CChess::E_ChessType CChessBoard::chessType(int x, int y)
 void CChessBoard::reset()
 {
     init();
+}
+
+// 阳线：棋盘上可见的纵线top-bottom, 和横线left-right
+// 阴线：棋盘对角线及与对角线平行的隐形斜线 反斜杠topleft-bottomright, 斜杠topright-bottomleft
+///
+/// \brief CChessBoard::hasBecome_5 成五判断
+/// \param eChessType
+/// \return
+///
+bool CChessBoard::hasBecome_5(CChess::E_ChessType eChessType)
+{
+    //bool bHasBecome5 = false;
+    /// top-bottom
+    for (int x = 0; x < m_nWidth; ++x)
+    {
+        int nCountContinuous = 0;   // 连续的颗数
+        for (int y = 0; y < m_nHeight; ++y)
+        {
+            if(m_pChessMap[x][y] == eChessType)
+            {
+                nCountContinuous++;
+                if(y == m_nHeight - 1)
+                {
+                    if(nCountContinuous > 4)
+                    {
+                        //bHasBecome5 = true;
+                        return true;
+                    }
+                }
+            }
+            else
+            {
+                if(nCountContinuous > 4)
+                {
+                    //bHasBecome5 = true;
+                    //break;
+                    return true;
+                }
+                nCountContinuous = 0;
+            }
+        }
+    }
+
+    /// left-right
+    for (int y = 0; y < m_nHeight; ++y)
+    {
+        int nCountContinuous = 0;
+        for (int x = 0; x < m_nWidth; ++x)
+        {
+            if(m_pChessMap[x][y] == eChessType)
+            {
+                nCountContinuous++;
+                if(x == m_nWidth - 1)
+                {
+                    if(nCountContinuous > 4)
+                    {
+                        return true;
+                    }
+                }
+            }
+            else
+            {
+                if(nCountContinuous > 4)
+                {
+                    return true;
+                }
+                nCountContinuous = 0;
+            }
+        }
+    }
+
+    /// topleft-bottomright
+    for (int y = 0; y < m_nHeight; ++y)
+    {
+        int nCountContinuous = 0;
+        for (int x = 0; x < m_nWidth; ++x)
+        {
+            if(m_pChessMap[x][y] == eChessType)
+            {
+                nCountContinuous++;
+                if(x == m_nWidth - 1)
+                {
+                    if(nCountContinuous > 4)
+                    {
+                        return true;
+                    }
+                }
+            }
+            else
+            {
+                if(nCountContinuous > 4)
+                {
+                    return true;
+                }
+                nCountContinuous = 0;
+            }
+        }
+    }
+}
+
+bool CChessBoard::hasBecome_5(CChess::E_ChessType eChessType, int x, int y)
+{
+    return false;
 }

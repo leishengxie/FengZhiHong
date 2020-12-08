@@ -4,7 +4,34 @@
 #include "Chess.h"
 #include <stack>
 
+#define DEFUALT_SIDE    15
+
 using namespace std;
+
+// 定义平面向量
+class CPlaneVector
+{
+    CPlaneVector(int x, int y)
+        : m_nX(x)
+        , m_nY(y)
+    {
+
+    }
+
+    int x() const
+    {
+        return m_nX;
+    }
+
+    int y() const
+    {
+        return m_nY;
+    }
+
+private:
+    int m_nX;
+    int m_nY;
+};
 
 class CChessBoard
 {
@@ -34,6 +61,11 @@ public:
     CChess::E_ChessType chessType(int x, int y);
 
     void reset();
+
+
+    // 棋型判定
+    bool hasBecome_5(CChess::E_ChessType eChessType);
+    bool hasBecome_5(CChess::E_ChessType eChessType, int x, int y);
 
 private:
     // 棋盘大小
