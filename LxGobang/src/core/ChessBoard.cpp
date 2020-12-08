@@ -4,6 +4,7 @@
 
 //using namespace std;
 
+
 CChessBoard::CChessBoard(int nWidth, int nHeight)
     : m_nWidth(nWidth)
     , m_nHeight(nHeight)
