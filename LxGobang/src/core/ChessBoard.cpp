@@ -139,16 +139,46 @@ bool CChessBoard::hasBecome_5(CChess::E_ChessType eChessType)
         }
     }
 
-    /// topleft-bottomright
+    /// topleft-bottomright part1
     for (int y = 0; y < m_nHeight; ++y)
     {
         int nCountContinuous = 0;
-        for (int x = 0; x < m_nWidth; ++x)
+        int y1 = y;
+        for (int x = 0; y1 < m_nHeight; ++x, ++y1)
         {
-            if(m_pChessMap[x][y] == eChessType)
+            if(m_pChessMap[x][y1] == eChessType)
             {
                 nCountContinuous++;
-                if(x == m_nWidth - 1)
+                if(y1 == m_nHeight - 1)
+                {
+                    if(nCountContinuous > 4)
+                    {
+                        return true;
+                    }
+                }
+            }
+            else
+            {
+                if(nCountContinuous > 4)
+                {
+                    return true;
+                }
+                nCountContinuous = 0;
+            }
+        }
+    }
+
+    /// topleft-bottomright part2
+    for (int x = 0; x < m_nWidth; ++x)
+    {
+        int nCountContinuous = 0;
+        int x1 = x;
+        for (int y = 0; x1 < m_nWidth; ++x, ++y)
+        {
+            if(m_pChessMap[x1][y] == eChessType)
+            {
+                nCountContinuous++;
+                if(x1 == m_nWidth - 1)
                 {
                     if(nCountContinuous > 4)
                     {
