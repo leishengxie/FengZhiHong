@@ -1,30 +1,20 @@
 #include "GobangAI.h"
 
-#define LINE_5      10000   // 五连，五枚同色棋子在一条线上邻接连串。11111
-#define LINE_LONG   10000   // 长连,五枚以上同色棋子在一条线上邻接成串 111111
-#define BECOME_5    10000   // 成五,五连和长连的统称
-//〖威胁〗下一手可以成五或者活四的点。
-//跳冲四
-//〖四〗五连去掉1子的棋型。
-#define LIVE_4      1000    // 活四, two head, 有两个威胁的四    011110
-#define SINGLE_4    500     // 冲四, one head, middle,只有一个威胁的四    011112  10111 11011
-#define DEAD_4      0       // 死四, 不能成五的四   211112
+#define SCORE_LINE_5      10000
+#define SCORE_LINE_LONG   10000
+#define SCORE_BECOME_5    10000
 
-//〖三〗可以形成四再形成五的三枚同色棋子组成的棋型。
-//〖连活三〗两端都是威胁的活三。简称“连三”。    0011100
-//〖跳活三〗中间夹有一个威胁的活三。简称“跳三”。  010110
+#define SCORE_LIVE_4      1000
+#define SCORE_SINGLE_4    600
+#define SCORE_DEAD_4      0
 
-#define LIVE_3      400     // 〖活三〗再走一着可以形成活四的三
-//假活三, 在活三两端相隔一点的位置上有对方的棋子(或边线)阻拦时，这个看起来是活三的棋形实际上是个假活三  0011102
-#define SLEEP_3     200     // 眠三,再走一着可以形成冲四的三  211100  210110
-#define DEAD_3      0       // 死三, 不能成五的三
-//〖二〗可以形成三、四直至五的两枚同色棋子组成的棋型。
-//〖连活二〗连的活二。简称“连二”。
-//〖跳活二〗中间隔有一个空点的活二。简称“跳二”。
-//〖大跳活二〗中间隔有两个空点的活二。简称“大跳二”。
-#define LIVE_2      100     //〖活二〗再走一着可以形成活三的二。
-#define SLEEP_2     50     //〖眠二〗再走一着可以形成眠三的二。
-#define DEAD_2      0       //〖死二〗不能成五的二。
+#define SCORE_LIVE_3      500
+#define SCORE_SLEEP_3     100
+#define SCORE_DEAD_3      0
+
+#define SCORE_LIVE_2      80
+#define SCORE_SLEEP_2     50
+#define SCORE_DEAD_2      0
 
 
 CGobangAI::CGobangAI()

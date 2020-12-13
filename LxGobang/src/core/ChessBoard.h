@@ -8,58 +8,6 @@
 
 using namespace std;
 
-// 定义平面向量
-class CPlaneVector
-{
-public:
-    CPlaneVector(int x, int y)
-        : m_nX(x)
-        , m_nY(y)
-    {
-
-    }
-
-    int x() const
-    {
-        return m_nX;
-    }
-
-    int y() const
-    {
-        return m_nY;
-    }
-
-    // 横向x轴正方向的单位向量
-    static CPlaneVector hUintVector()
-    {
-        static CPlaneVector uintVector(1, 0);
-        return uintVector;
-    }
-
-    static CPlaneVector vUintVector()
-    {
-        static CPlaneVector uintVector(0, 1);
-        return uintVector;
-    }
-
-    // \----backlas反斜杠方向
-    static CPlaneVector bUintVector()
-    {
-        static CPlaneVector uintVector(1, 1);
-        return uintVector;
-    }
-
-    // /----slash 正斜线
-    static CPlaneVector sUintVector()
-    {
-        static CPlaneVector uintVector(-1, 1);
-        return uintVector;
-    }
-
-private:
-    int m_nX;
-    int m_nY;
-};
 
 class CChessBoard
 {
@@ -94,6 +42,9 @@ public:
     // 棋型判定
     bool hasBecome_5(CChess::E_ChessType eChessType);
     bool hasBecome_5(CChess::E_ChessType eChessType, int x, int y);
+
+    // 棋型分析
+    //bool
 
     // 获取棋子在某方向上连续出现同色有多少颗
     int getChessNum(const CChess & chess, const CPlaneVector & planeVector);
