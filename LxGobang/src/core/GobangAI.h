@@ -36,9 +36,9 @@ public:
 
     void think();
 private:
-    int **m_pScoreMap;
-    int m_nSelfTotalScore;
-    int m_nOpponentTotalScore;  // 对手总分
+//    int **m_pScoreMap;
+//    int m_nSelfTotalScore;
+//    int m_nOpponentTotalScore;  // 对手总分
 };
 
 #endif // CGOBANGAI_H

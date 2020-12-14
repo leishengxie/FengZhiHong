@@ -126,10 +126,10 @@ enum E_ChessSingleGroupType
 
 enum E_VectorDirection
 {
-    EV_Horizontal,
-    EV_Vertical,
-    EV_Backlas, // \----backlas反斜杠方向
-    EV_Slash,    // /----slash 正斜线
+    EV_Horizontal,  // 阳线
+    EV_Vertical,  // 阳线
+    EV_Backlas, // \----backlas反斜杠方向,阴线
+    EV_Slash,    // /----slash 正斜线,阴线
     EV_VectorDirectionMax
 };
 
