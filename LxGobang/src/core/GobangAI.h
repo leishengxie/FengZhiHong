@@ -32,7 +32,6 @@ class CGobangAI
 public:
     CGobangAI();
 
-    friend class CChessBoard;
 
     void think();
 private:

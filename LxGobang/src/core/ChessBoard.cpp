@@ -33,11 +33,7 @@ void CChessBoard::init()
     }
 }
 
-void CChessBoard::setChess(int x, int y, CChess::E_ChessType eChessType)
-{
-    setChess(CChess(x, y, eChessType));
-}
-
+\
 void CChessBoard::setChess(const CChess &chess)
 {
     m_pChessMap[chess.x()][chess.y()] = chess.type();
@@ -59,7 +55,7 @@ void CChessBoard::takeBackChess(int nStep)
 
 }
 
-CChess::E_ChessType CChessBoard::chessType(int x, int y)
+CChess::E_ChessType CChessBoard::chessTypeAt(int x, int y)
 {
 
     return CChess::E_ChessType(m_pChessMap[x][y]);
@@ -201,4 +197,23 @@ bool CChessBoard::hasBecome_5(CChess::E_ChessType eChessType)
 bool CChessBoard::hasBecome_5(CChess::E_ChessType eChessType, int x, int y)
 {
     return false;
+}
+
+void CChessBoard::analyseChessGroup()
+{
+    for (int x = 0; x < m_nWidth; ++x)
+    {
+        for (int y = 0; y < m_nHeight; ++y)
+        {
+            if (chessTypeAt(x, y) != CChess::E_Empty)
+            {
+                continue;
+            }
+        }
+    }
+}
+
+CChessGroups CChessBoard::getChessGroup(int x, int y)
+{
+    CChessGroups chessGroup(CPoint(x, y));
 }

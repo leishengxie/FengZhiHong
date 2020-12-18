@@ -3,6 +3,7 @@
 
 #include "Chess.h"
 #include <stack>
+#include <vector>
 
 #define DEFUALT_SIDE    15
 
@@ -18,7 +19,6 @@ public:
     void init();
 
     // 落子
-    void setChess(int x, int y, CChess::E_ChessType eChessType);
     void setChess(const CChess & chess);
 
     // 悔棋
@@ -34,7 +34,7 @@ public:
         return m_nHeight;
     }
 
-    CChess::E_ChessType chessType(int x, int y);
+    CChess::E_ChessType chessTypeAt(int x, int y);
 
     void reset();
 
@@ -44,7 +44,9 @@ public:
     bool hasBecome_5(CChess::E_ChessType eChessType, int x, int y);
 
     // 棋型分析
-    //bool
+    void analyseChessGroup();
+    CChessGroups getChessGroup(int x, int y);
+    E_ChessGroupType chessGroupTypeAt(int x, int y, const CPlaneVector & planeVector);
 
     // 获取棋子在某方向上连续出现同色有多少颗
     int getChessNum(const CChess & chess, const CPlaneVector & planeVector);
@@ -60,6 +62,8 @@ private:
     // 落子顺序记录
     stack<CChess> m_stackChessRecord;
 
+    vector<CChessGroups> m_vecChessGroupBlack;
+    vector<CChessGroups> m_vecChessGroupWhite;
 
 };
 
