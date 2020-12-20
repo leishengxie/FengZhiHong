@@ -12,7 +12,11 @@ public:
     void init();
 
     // 选棋子类型
-    void chooseChessType(int nChoosedChessType);
+    void setChoosedChessType(const CChess::E_ChessType &eChessType);
+    CChess::E_ChessType choosedChessType()
+    {
+        return m_eChessTypeChoosed;
+    }
 
     // 下棋落子
     void moveInChess(int x, int y);
@@ -28,7 +32,7 @@ public:
 
 protected:
     // 选择的棋子类型(黑棋或白棋)
-    int m_nChoosedChessType;
+    CChess::E_ChessType m_eChessTypeChoosed;
 
     int m_nSurplusChessNum;
 

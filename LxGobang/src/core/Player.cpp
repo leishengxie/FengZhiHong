@@ -9,14 +9,14 @@ CPlayer::CPlayer()
 
 void CPlayer::init()
 {
-    m_nChoosedChessType = CChess::E_Empty;
+    m_eChessTypeChoosed = CChess::E_Empty;
     m_nSurplusChessNum = 0;
 }
 
-void CPlayer::chooseChessType(int nChoosedChessType)
+void CPlayer::setChoosedChessType(const CChess::E_ChessType &eChessType)
 {
-    m_nChoosedChessType = nChoosedChessType;
-    if (m_nChoosedChessType == CChess::E_Black)
+    m_eChessTypeChoosed = eChessType;
+    if (m_eChessTypeChoosed == CChess::E_Black)
     {
         m_nSurplusChessNum = TOTAL_BLACK_CHESS;
     }
@@ -28,7 +28,7 @@ void CPlayer::chooseChessType(int nChoosedChessType)
 
 void CPlayer::moveInChess(int x, int y)
 {
-    CChess chess(x, y, CChess::E_ChessType(m_nChoosedChessType));
+    CChess chess(x, y, m_eChessTypeChoosed);
     m_pChessBoard->setChess(chess);
 }
 

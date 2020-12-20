@@ -35,21 +35,41 @@ public:
     }
 
     CChess::E_ChessType chessTypeAt(int x, int y);
+    CChess::E_ChessType chessTypeAt(const CPoint & pos);
 
     void reset();
 
+    // 判断位置是否无效
+    bool isInvaildAt(const CPoint & pos);
+    bool isInvaildAt(int x, int y);
 
     // 棋型判定
     bool hasBecome_5(CChess::E_ChessType eChessType);
     bool hasBecome_5(CChess::E_ChessType eChessType, int x, int y);
+    bool hasBecome_5(CChess::E_ChessType eChessType, const CPoint & pos);
 
     // 棋型分析
-    void analyseChessGroup();
-    CChessGroups getChessGroup(int x, int y);
+    void analyseEmptyPosChessGroups();
+    void analyseEmptyPosChessGroups(const CChess::E_ChessType & eChessType);
+    void analyseEmptyPosChessGroup(const CEmptyPosChessGroups & emptyPosChessGroups);
+
+    CEmptyPosChessGroups emptyPosChessGroupAt(int x, int y, const CChess::E_ChessType &eChessType);
     E_ChessGroupType chessGroupTypeAt(int x, int y, const CPlaneVector & planeVector);
 
-    // 获取棋子在某方向上连续出现同色有多少颗
-    int getChessNum(const CChess & chess, const CPlaneVector & planeVector);
+    // 在某方向向量上 包含某位置且 起止点相距距离(默认颗数5)范围内 出现某颜色的棋子的最多的棋型
+    CChessGroup getBestGroup(const CPoint & pos, const CChess::E_ChessType & eChessType
+                             , const CPlaneVector & planeVector, int nStartEndDistance = 5);
+
+    // 在某方向向量上 包含某棋子且 起止点相距距离(默认颗数5)范围内 出现与该棋同色的最多有多少颗
+    int getSameChessMaxNum(const CChess & chess, const CPlaneVector & planeVector, int nStartEndDistance = 5);
+
+    // 在某方向向量上 包含某位置且 起止点相距距离(默认颗数5)范围内 出现某颜色的棋子的最多有多少颗
+    int getSameChessMaxNum(const CPoint & pos, const CChess::E_ChessType & eChessType
+                        , const CPlaneVector & planeVector, int nStartEndDistance = 5);
+
+    // 在某方向向量上 以某位置为起止，到终点相距距离(默认颗数5)范围内 出现某颜色的棋子的有多少颗
+    int getSameChessNum(const CPoint & posStart, const CChess::E_ChessType & eChessType
+                        , const CPlaneVector & planeVector, int nStartEndDistance = 5);
 
 private:
     // 棋盘大小
@@ -62,8 +82,8 @@ private:
     // 落子顺序记录
     stack<CChess> m_stackChessRecord;
 
-    vector<CChessGroups> m_vecChessGroupBlack;
-    vector<CChessGroups> m_vecChessGroupWhite;
+    vector<CEmptyPosChessGroups> m_vecChessGroupBlack;
+    vector<CEmptyPosChessGroups> m_vecChessGroupWhite;
 
 };
 

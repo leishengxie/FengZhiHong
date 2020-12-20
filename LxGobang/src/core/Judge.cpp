@@ -51,7 +51,7 @@ CPlayer *CJudge::judgeOnTheOffensive()
             pSecond = m_pPlayer1;
         }
     }
-    pOnTheOffensive->chooseChessType(CChess::E_Black);
-    pSecond->chooseChessType(CChess::E_White);
+    pOnTheOffensive->setChoosedChessType(CChess::E_Black);
+    pSecond->setChoosedChessType(CChess::E_White);
     return pOnTheOffensive;
 }

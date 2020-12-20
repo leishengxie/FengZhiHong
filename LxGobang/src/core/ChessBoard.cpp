@@ -61,9 +61,28 @@ CChess::E_ChessType CChessBoard::chessTypeAt(int x, int y)
     return CChess::E_ChessType(m_pChessMap[x][y]);
 }
 
+CChess::E_ChessType CChessBoard::chessTypeAt(const CPoint &pos)
+{
+    return chessTypeAt(pos.x(), pos.y());
+}
+
 void CChessBoard::reset()
 {
     init();
+}
+
+bool CChessBoard::isInvaildAt(const CPoint &pos)
+{
+    return isInvaildAt(pos.x(), pos.y());
+}
+
+bool CChessBoard::isInvaildAt(int x, int y)
+{
+    if (x < 0 || y < 0 || x >= chessBoardWidth() || y >= chessBoardHeight())
+    {
+        return true;
+    }
+    return false;
 }
 
 // 阳线：棋盘上可见的纵线top-bottom, 和横线left-right
@@ -199,7 +218,18 @@ bool CChessBoard::hasBecome_5(CChess::E_ChessType eChessType, int x, int y)
     return false;
 }
 
-void CChessBoard::analyseChessGroup()
+bool CChessBoard::hasBecome_5(CChess::E_ChessType eChessType, const CPoint &pos)
+{
+    return hasBecome_5(eChessType, pos.x(), pos.y());
+}
+
+void CChessBoard::analyseEmptyPosChessGroups()
+{
+    analyseEmptyPosChessGroups(CChess::E_ChessType::E_Black);
+    analyseEmptyPosChessGroups(CChess::E_ChessType::E_White);
+}
+
+void CChessBoard::analyseEmptyPosChessGroups(const CChess::E_ChessType &eChessType)
 {
     for (int x = 0; x < m_nWidth; ++x)
     {
@@ -209,11 +239,104 @@ void CChessBoard::analyseChessGroup()
             {
                 continue;
             }
+
+            CEmptyPosChessGroups chessGroups(CPoint(x, y), eChessType);
+            for (int i = 0; i < EV_VectorDirectionMax; ++i)
+            {
+                E_VectorDirection eVectorDirection = E_VectorDirection(i);
+                CChessGroup group = getBestGroup(CPoint(x, y), eChessType, CPlaneVector::getUnitVector(eVectorDirection));
+                chessGroups.setGroup(eVectorDirection, group);
+            }
+
+            analyseEmptyPosChessGroup(chessGroups);
+            if (eChessType == CChess::E_Black)
+            {
+
+                m_vecChessGroupBlack.push_back(chessGroups);
+            }
+
         }
     }
 }
 
-CChessGroups CChessBoard::getChessGroup(int x, int y)
+void CChessBoard::analyseEmptyPosChessGroup(const CEmptyPosChessGroups &emptyPosChessGroups)
 {
-    CChessGroups chessGroup(CPoint(x, y));
+
+}
+
+CEmptyPosChessGroups CChessBoard::emptyPosChessGroupAt(int x, int y, const CChess::E_ChessType &eChessType)
+{
+    CEmptyPosChessGroups chessGroup(CPoint(x, y), eChessType);
+
+    int nNum = getSameChessMaxNum(CPoint(x,y), eChessType, CPlaneVector::hUintVector());
+}
+
+CChessGroup CChessBoard::getBestGroup(const CPoint &pos, const CChess::E_ChessType &eChessType
+                                      , const CPlaneVector &planeVector, int nStartEndDistance)
+{
+    int nMaxNum = 0;
+    CPoint posHeadBest;
+
+    for (int i = nStartEndDistance - 1; i > -1; --i)
+    {
+        CPoint posHead = pos - planeVector * i;
+        if (isInvaildAt(posHead))
+        {
+            continue;
+        }
+        int nNum = getSameChessNum(posHead, eChessType, planeVector, nStartEndDistance);
+        if (nNum > nMaxNum)
+        {
+            nMaxNum = nNum;
+            posHeadBest = posHead;
+        }
+    }
+    return CChessGroup(posHeadBest, planeVector, eChessType);
+}
+
+int CChessBoard::getSameChessMaxNum(const CChess &chess, const CPlaneVector &planeVector, int nStartEndDistance)
+{
+    return getSameChessMaxNum(chess.pos(), chess.type(), planeVector, nStartEndDistance);
+}
+
+int CChessBoard::getSameChessMaxNum(const CPoint &pos, const CChess::E_ChessType &eChessType
+                                 , const CPlaneVector &planeVector, int nStartEndDistance)
+{
+    int nMaxNum = 0;
+    CPoint posHead;
+
+    for (int i = nStartEndDistance - 1; i > -1; --i)
+    {
+        posHead = pos - planeVector * i;
+        if (isInvaildAt(posHead))
+        {
+            continue;
+        }
+        int nNum = getSameChessNum(posHead, eChessType, planeVector, nStartEndDistance);
+        if (nNum > nMaxNum)
+        {
+            nMaxNum = nNum;
+        }
+    }
+    return nMaxNum;
+}
+
+int CChessBoard::getSameChessNum(const CPoint &posHead, const CChess::E_ChessType &eChessType, const CPlaneVector &planeVector, int nStartEndDistance)
+{
+    int nNum = 0;
+    CPoint pos = posHead;
+    for (int i = 0; i < nStartEndDistance; ++i)
+    {
+        pos = pos + planeVector;
+        if (isInvaildAt(pos))
+        {
+            continue;
+        }
+        if (chessTypeAt(pos) != eChessType)
+        {
+            continue;
+        }
+        ++nNum;
+    }
+    return nNum;
 }
