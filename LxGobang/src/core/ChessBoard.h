@@ -2,6 +2,8 @@
 #define CCHESSBOARD_H
 
 #include "Chess.h"
+#include "ChessGroup.h"
+
 #include <stack>
 #include <vector>
 
@@ -48,17 +50,11 @@ public:
     bool hasBecome_5(CChess::E_ChessType eChessType, int x, int y);
     bool hasBecome_5(CChess::E_ChessType eChessType, const CPoint & pos);
 
-    // 棋型分析
-    void analyseEmptyPosChessGroups();
-    void analyseEmptyPosChessGroups(const CChess::E_ChessType & eChessType);
-    void analyseEmptyPosChessGroup(const CEmptyPosChessGroups & emptyPosChessGroups);
-
-    CEmptyPosChessGroups emptyPosChessGroupAt(int x, int y, const CChess::E_ChessType &eChessType);
-    E_ChessGroupType chessGroupTypeAt(int x, int y, const CPlaneVector & planeVector);
-
     // 在某方向向量上 包含某位置且 起止点相距距离(默认颗数5)范围内 出现某颜色的棋子的最多的棋型
     CChessGroup getBestGroup(const CPoint & pos, const CChess::E_ChessType & eChessType
                              , const CPlaneVector & planeVector, int nStartEndDistance = 5);
+
+    E_ChessGroupType getChessGroupType(const CChessGroup & chessGroup);
 
     // 在某方向向量上 包含某棋子且 起止点相距距离(默认颗数5)范围内 出现与该棋同色的最多有多少颗
     int getSameChessMaxNum(const CChess & chess, const CPlaneVector & planeVector, int nStartEndDistance = 5);
@@ -68,8 +64,15 @@ public:
                         , const CPlaneVector & planeVector, int nStartEndDistance = 5);
 
     // 在某方向向量上 以某位置为起止，到终点相距距离(默认颗数5)范围内 出现某颜色的棋子的有多少颗
+    //, bIgnoreOpponent是否忽略对手的堵棋，即死四，死三，死二
     int getSameChessNum(const CPoint & posStart, const CChess::E_ChessType & eChessType
-                        , const CPlaneVector & planeVector, int nStartEndDistance = 5);
+                        , const CPlaneVector & planeVector, int nStartEndDistance = 5, bool bIgnoreOpponent = false);
+
+    // 棋型分析
+    void analyseEmptyPosChessGroups();
+
+
+
 
 private:
     // 棋盘大小
@@ -82,8 +85,8 @@ private:
     // 落子顺序记录
     stack<CChess> m_stackChessRecord;
 
-    vector<CEmptyPosChessGroups> m_vecChessGroupBlack;
-    vector<CEmptyPosChessGroups> m_vecChessGroupWhite;
+    vector<CEmptyPosComplexChessGroup> m_vecChessGroupBlack;
+    vector<CEmptyPosComplexChessGroup> m_vecChessGroupWhite;
 
 };
 

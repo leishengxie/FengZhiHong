@@ -225,12 +225,6 @@ bool CChessBoard::hasBecome_5(CChess::E_ChessType eChessType, const CPoint &pos)
 
 void CChessBoard::analyseEmptyPosChessGroups()
 {
-    analyseEmptyPosChessGroups(CChess::E_ChessType::E_Black);
-    analyseEmptyPosChessGroups(CChess::E_ChessType::E_White);
-}
-
-void CChessBoard::analyseEmptyPosChessGroups(const CChess::E_ChessType &eChessType)
-{
     for (int x = 0; x < m_nWidth; ++x)
     {
         for (int y = 0; y < m_nHeight; ++y)
@@ -240,36 +234,18 @@ void CChessBoard::analyseEmptyPosChessGroups(const CChess::E_ChessType &eChessTy
                 continue;
             }
 
-            CEmptyPosChessGroups chessGroups(CPoint(x, y), eChessType);
-            for (int i = 0; i < EV_VectorDirectionMax; ++i)
-            {
-                E_VectorDirection eVectorDirection = E_VectorDirection(i);
-                CChessGroup group = getBestGroup(CPoint(x, y), eChessType, CPlaneVector::getUnitVector(eVectorDirection));
-                chessGroups.setGroup(eVectorDirection, group);
-            }
+            CEmptyPosComplexChessGroup complexGroupsForBlack(CPoint(x, y), CChess::E_Black);
+            complexGroupsForBlack.analyse(this);
+            m_vecChessGroupBlack.push_back(complexGroupsForBlack);
 
-            analyseEmptyPosChessGroup(chessGroups);
-            if (eChessType == CChess::E_Black)
-            {
-
-                m_vecChessGroupBlack.push_back(chessGroups);
-            }
-
+            CEmptyPosComplexChessGroup complexGroupsForWhite(CPoint(x, y), CChess::E_White);
+            complexGroupsForWhite.analyse(this);
+            m_vecChessGroupWhite.push_back(complexGroupsForWhite);
         }
     }
 }
 
-void CChessBoard::analyseEmptyPosChessGroup(const CEmptyPosChessGroups &emptyPosChessGroups)
-{
 
-}
-
-CEmptyPosChessGroups CChessBoard::emptyPosChessGroupAt(int x, int y, const CChess::E_ChessType &eChessType)
-{
-    CEmptyPosChessGroups chessGroup(CPoint(x, y), eChessType);
-
-    int nNum = getSameChessMaxNum(CPoint(x,y), eChessType, CPlaneVector::hUintVector());
-}
 
 CChessGroup CChessBoard::getBestGroup(const CPoint &pos, const CChess::E_ChessType &eChessType
                                       , const CPlaneVector &planeVector, int nStartEndDistance)
@@ -292,6 +268,28 @@ CChessGroup CChessBoard::getBestGroup(const CPoint &pos, const CChess::E_ChessTy
         }
     }
     return CChessGroup(posHeadBest, planeVector, eChessType);
+}
+
+E_ChessGroupType CChessBoard::getChessGroupType(const CChessGroup &chessGroup)
+{
+    int nNum = getSameChessNum(chessGroup.headPos(), chessGroup.chessType(), chessGroup.planeVector());
+    if (nNum < 1)
+    {
+        return EC_Empty;
+    }
+    else if (nNum == 5)
+    {
+        return EC_B5;
+    }
+    else if (nNum == 4)
+    {
+        // 判断连还是跳
+        if(chessTypeAt(chessGroup.headPos()) == CChess::E_Empty
+                || chessTypeAt(chessGroup.headPos() + chessGroup.planeVector() * 4) == CChess::E_Empty)
+        {
+
+        }
+    }
 }
 
 int CChessBoard::getSameChessMaxNum(const CChess &chess, const CPlaneVector &planeVector, int nStartEndDistance)
@@ -321,7 +319,8 @@ int CChessBoard::getSameChessMaxNum(const CPoint &pos, const CChess::E_ChessType
     return nMaxNum;
 }
 
-int CChessBoard::getSameChessNum(const CPoint &posHead, const CChess::E_ChessType &eChessType, const CPlaneVector &planeVector, int nStartEndDistance)
+int CChessBoard::getSameChessNum(const CPoint &posHead, const CChess::E_ChessType &eChessType
+                                 , const CPlaneVector &planeVector, int nStartEndDistance, bool bIgnoreOpponent)
 {
     int nNum = 0;
     CPoint pos = posHead;
@@ -330,11 +329,22 @@ int CChessBoard::getSameChessNum(const CPoint &posHead, const CChess::E_ChessTyp
         pos = pos + planeVector;
         if (isInvaildAt(pos))
         {
+            return 0;
+        }
+        if (chessTypeAt(pos) == CChess::E_Empty)
+        {
             continue;
         }
         if (chessTypeAt(pos) != eChessType)
         {
-            continue;
+            if (bIgnoreOpponent)
+            {
+                continue;
+            }
+            else
+            {
+                return 0;
+            }
         }
         ++nNum;
     }

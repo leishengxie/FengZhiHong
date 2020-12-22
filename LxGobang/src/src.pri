@@ -5,6 +5,7 @@ HEADERS += \
     $$PWD/GobangGameWidget.h \
     $$PWD/core/Chess.h \
     $$PWD/core/ChessBoard.h \
+    $$PWD/core/ChessGroup.h \
     $$PWD/core/GobangAI.h \
     $$PWD/core/GobangGame.h \
     $$PWD/core/Judge.h \
@@ -15,6 +16,7 @@ SOURCES += \
     $$PWD/GobangGameWidget.cpp \
     $$PWD/core/Chess.cpp \
     $$PWD/core/ChessBoard.cpp \
+    $$PWD/core/ChessGroup.cpp \
     $$PWD/core/GobangAI.cpp \
     $$PWD/core/GobangGame.cpp \
     $$PWD/core/Judge.cpp \

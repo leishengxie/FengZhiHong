@@ -27,8 +27,8 @@ public:
     void think();
 private:
     CPlayer* m_pPlayer;
-    vector<CEmptyPosChessGroups> m_vecChessGroupBlack;
-    vector<CEmptyPosChessGroups> m_vecChessGroupWhite;
+    vector<CEmptyPosComplexChessGroup> m_vecChessGroupBlack;
+    vector<CEmptyPosComplexChessGroup> m_vecChessGroupWhite;
     int **m_pScoreMap;
 };
 

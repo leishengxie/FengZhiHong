@@ -1,24 +1,6 @@
 #include "GobangAI.h"
 
-#define SCORE_LINE_5      10000
-#define SCORE_LINE_LONG   10000
-#define SCORE_BECOME_5    10000
 
-#define SCORE_LIVE_4      1000
-#define SCORE_SINGLE_4    600
-#define SCORE_DEAD_4      0
-
-#define SCORE_LIVE_3      100
-#define SCORE_SLEEP_3     60
-#define SCORE_DEAD_3      0
-
-#define SCORE_LIVE_2      10
-#define SCORE_SLEEP_2     6
-#define SCORE_DEAD_2      0
-
-#define SCORE_SELF_4    4000
-#define SCORE_SELF_3    400
-#define SCORE_SELF_2    40
 
 CGobangAI::CGobangAI(CPlayer* pPlayer)
 {
