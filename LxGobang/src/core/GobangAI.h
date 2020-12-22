@@ -24,7 +24,7 @@ public:
     CGobangAI(CPlayer* pPlayer);
 
 
-    void think();
+    void think(const CChessBoard* pChessBoard);
 private:
     CPlayer* m_pPlayer;
     vector<CEmptyPosComplexChessGroup> m_vecChessGroupBlack;

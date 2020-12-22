@@ -16,14 +16,15 @@
 // 棋型类型
 enum E_ChessGroupType
 {
-    EC_Empty,
     EC_B5,  // 成五
     EC_L4,  // 活四
     EC_S4,  // 冲四
     EC_L3,  // 活三
     EC_S3,  // 呡三
     EC_L2,
-    EC_S2
+    EC_S2,
+    EC_Single,
+    EC_Empty
 };
 
 
@@ -35,14 +36,8 @@ class CChessBoard;
 class CChessGroup
 {
 public:
-    CChessGroup(){}
-    CChessGroup(const CPoint & pos, const CPlaneVector & planeVector, const CChess::E_ChessType & eChessType)
-        : m_posHead(pos)
-        , m_planeVector(planeVector)
-        , m_eChessType(eChessType)
-    {
-
-    }
+    CChessGroup();
+    CChessGroup(const CPoint & pos, const CPlaneVector & planeVector, const CChess::E_ChessType & eChessType);
 
     void setHeadPoint(const CPoint & pos)
     {
@@ -66,15 +61,18 @@ public:
     {
         m_eChessType = eChessType;
     }
-    CChess::E_ChessType chessType()
+    CChess::E_ChessType chessType() const
     {
         return m_eChessType;
     }
 
     void analyse(const CChessBoard* pChessBoard);
 
+    // 判断时候是活x
+    bool isLiveGroup(const CChessBoard* pChessBoard);
+
     int score(const CChess::E_ChessType & eChessType);
-    static int score(E_ChessGroupType eChessGroupType, const CChess::E_ChessType &eChessType = true);
+    static int score(E_ChessGroupType eChessGroupType, bool bSelf);
 
     //E_ChessGroupType chessGroupType();
 
@@ -90,7 +88,7 @@ private:
     CChess::E_ChessType m_eChessType;
 
     //
-    std::map<int, >
+    //std::map<int, >
 
     /// 分析结果
     E_ChessGroupType m_eChessGroupType;

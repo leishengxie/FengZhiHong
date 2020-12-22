@@ -55,13 +55,13 @@ void CChessBoard::takeBackChess(int nStep)
 
 }
 
-CChess::E_ChessType CChessBoard::chessTypeAt(int x, int y)
+CChess::E_ChessType CChessBoard::chessTypeAt(int x, int y) const
 {
 
     return CChess::E_ChessType(m_pChessMap[x][y]);
 }
 
-CChess::E_ChessType CChessBoard::chessTypeAt(const CPoint &pos)
+CChess::E_ChessType CChessBoard::chessTypeAt(const CPoint &pos) const
 {
     return chessTypeAt(pos.x(), pos.y());
 }
@@ -71,18 +71,28 @@ void CChessBoard::reset()
     init();
 }
 
-bool CChessBoard::isInvaildAt(const CPoint &pos)
+bool CChessBoard::isInvaildAt(const CPoint &pos) const
 {
     return isInvaildAt(pos.x(), pos.y());
 }
 
-bool CChessBoard::isInvaildAt(int x, int y)
+bool CChessBoard::isInvaildAt(int x, int y) const
 {
     if (x < 0 || y < 0 || x >= chessBoardWidth() || y >= chessBoardHeight())
     {
         return true;
     }
     return false;
+}
+
+bool CChessBoard::isEmptyAt(const CPoint &pos) const
+{
+    return chessTypeAt(pos) == CChess::E_Empty;
+}
+
+bool CChessBoard::isEmptyAt(int x, int y) const
+{
+    return chessTypeAt(x, y) == CChess::E_Empty;
 }
 
 // 阳线：棋盘上可见的纵线top-bottom, 和横线left-right
@@ -223,32 +233,11 @@ bool CChessBoard::hasBecome_5(CChess::E_ChessType eChessType, const CPoint &pos)
     return hasBecome_5(eChessType, pos.x(), pos.y());
 }
 
-void CChessBoard::analyseEmptyPosChessGroups()
-{
-    for (int x = 0; x < m_nWidth; ++x)
-    {
-        for (int y = 0; y < m_nHeight; ++y)
-        {
-            if (chessTypeAt(x, y) != CChess::E_Empty)
-            {
-                continue;
-            }
-
-            CEmptyPosComplexChessGroup complexGroupsForBlack(CPoint(x, y), CChess::E_Black);
-            complexGroupsForBlack.analyse(this);
-            m_vecChessGroupBlack.push_back(complexGroupsForBlack);
-
-            CEmptyPosComplexChessGroup complexGroupsForWhite(CPoint(x, y), CChess::E_White);
-            complexGroupsForWhite.analyse(this);
-            m_vecChessGroupWhite.push_back(complexGroupsForWhite);
-        }
-    }
-}
 
 
 
 CChessGroup CChessBoard::getBestGroup(const CPoint &pos, const CChess::E_ChessType &eChessType
-                                      , const CPlaneVector &planeVector, int nStartEndDistance)
+                                      , const CPlaneVector &planeVector, int nStartEndDistance) const
 {
     int nMaxNum = 0;
     CPoint posHeadBest;
@@ -270,27 +259,7 @@ CChessGroup CChessBoard::getBestGroup(const CPoint &pos, const CChess::E_ChessTy
     return CChessGroup(posHeadBest, planeVector, eChessType);
 }
 
-E_ChessGroupType CChessBoard::getChessGroupType(const CChessGroup &chessGroup)
-{
-    int nNum = getSameChessNum(chessGroup.headPos(), chessGroup.chessType(), chessGroup.planeVector());
-    if (nNum < 1)
-    {
-        return EC_Empty;
-    }
-    else if (nNum == 5)
-    {
-        return EC_B5;
-    }
-    else if (nNum == 4)
-    {
-        // 判断连还是跳
-        if(chessTypeAt(chessGroup.headPos()) == CChess::E_Empty
-                || chessTypeAt(chessGroup.headPos() + chessGroup.planeVector() * 4) == CChess::E_Empty)
-        {
 
-        }
-    }
-}
 
 int CChessBoard::getSameChessMaxNum(const CChess &chess, const CPlaneVector &planeVector, int nStartEndDistance)
 {
@@ -320,7 +289,8 @@ int CChessBoard::getSameChessMaxNum(const CPoint &pos, const CChess::E_ChessType
 }
 
 int CChessBoard::getSameChessNum(const CPoint &posHead, const CChess::E_ChessType &eChessType
-                                 , const CPlaneVector &planeVector, int nStartEndDistance, bool bIgnoreOpponent)
+                                 , const CPlaneVector &planeVector
+                                 , int nStartEndDistance, bool bIgnoreOpponent) const
 {
     int nNum = 0;
     CPoint pos = posHead;
