@@ -20,6 +20,7 @@ public:
 
     // 下棋落子
     void moveInChess(int x, int y);
+    void moveInChess(const CPoint & pos);
 
     // 请求悔棋
     void reqTakeBackChess();
@@ -28,7 +29,7 @@ public:
 
 public:
     virtual bool isRobot() = 0;
-    virtual CChess think(){return CChess();}
+    virtual CPoint think(){return CPoint();}
 
 protected:
     // 选择的棋子类型(黑棋或白棋)
@@ -56,7 +57,7 @@ class CRobotPlayer : public CPlayer
 {
 public:
     bool isRobot() override{return true;}
-    CChess think() override;
+    CPoint think() override;
 };
 
 #endif // CPLAYER_H

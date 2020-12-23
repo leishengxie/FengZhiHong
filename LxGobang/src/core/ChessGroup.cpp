@@ -180,9 +180,25 @@ int CChessGroup::score(E_ChessGroupType eChessGroupType, bool bSelf)
 
 
 ///
-/// \brief CEmptyPosComplexChessGroup::analyse
-/// \param pChessBoard
+/// \brief CEmptyPosComplexChessGroup::CEmptyPosComplexChessGroup
 ///
+CEmptyPosComplexChessGroup::CEmptyPosComplexChessGroup()
+{
+
+}
+
+CEmptyPosComplexChessGroup::CEmptyPosComplexChessGroup(const CPoint &pos, const CChess::E_ChessType &eChessType)
+    : m_posEmpty(pos)
+    , m_eChessType(eChessType)
+{
+
+}
+
+bool CEmptyPosComplexChessGroup::isInvaild(const CChessBoard *pChessBoard) const
+{
+    return pChessBoard->isInvaildAt(m_posEmpty);
+}
+
 void CEmptyPosComplexChessGroup::analyse(const CChessBoard *pChessBoard)
 {
     for (int i = 0; i < EV_VectorDirectionMax; ++i)

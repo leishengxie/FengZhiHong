@@ -320,3 +320,74 @@ int CChessBoard::getSameChessNum(const CPoint &posHead, const CChess::E_ChessTyp
     }
     return nNum;
 }
+
+///
+/// \brief CChessBoard::singleBestPos 获取没有任何棋型情况下，单个棋子的最佳位置
+/// 从天元网四周扩散
+/// \return
+///
+CPoint CChessBoard::singleBestPos() const
+{
+    int nHalfWidth = m_nWidth / 2;
+    int nHalfHeight = m_nHeight / 2;
+    CPoint posCenter(nHalfWidth, nHalfHeight); // H8(天元）
+    if (!isInvaildAt(posCenter) && isEmptyAt(posCenter))
+    {
+        return posCenter;
+    }
+
+    CPoint posBest;
+    int steps = nHalfWidth > nHalfHeight ? nHalfWidth : nHalfHeight;
+    int x, y;
+    for (int i = 1; i < steps; ++i)
+    {
+        // x正轴
+        x = posCenter.x() + i;
+        for(int j = -i; j <= i; ++j)
+        {
+            y = posCenter.y() + j;
+            posBest = CPoint(x, y);
+            if (!isInvaildAt(posBest) && isEmptyAt(posBest))
+            {
+                return posBest;
+            }
+        }
+
+        // x负轴
+        x = posCenter.x() - i;
+        for(int j = -i; j <= i; ++j)
+        {
+            y = posCenter.y() + j;
+            posBest = CPoint(x, y);
+            if (!isInvaildAt(posBest) && isEmptyAt(posBest))
+            {
+                return posBest;
+            }
+        }
+
+        // y正轴
+        y = posCenter.y() + i;
+        for(int j = -i; j <= i; ++j)
+        {
+            x = posCenter.x() + j;
+            posBest = CPoint(x, y);
+            if (!isInvaildAt(posBest) && isEmptyAt(posBest))
+            {
+                return posBest;
+            }
+        }
+
+        // y负轴
+        y = posCenter.y() - i;
+        for(int j = -i; j <= i; ++j)
+        {
+            x = posCenter.x() + j;
+            posBest = CPoint(x, y);
+            if (!isInvaildAt(posBest) && isEmptyAt(posBest))
+            {
+                return posBest;
+            }
+        }
+    }
+    return posBest;
+}

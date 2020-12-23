@@ -30,8 +30,8 @@ void CGobangGame::playing()
     CPlayer *player = m_pJudge->activePlayer();
     if(player->isRobot())
     {
-        CChess chess = player->think();
-        player->moveInChess(chess.x(), chess.y());
+        CPoint pos = player->think();
+        player->moveInChess(pos);
         m_pJudge->switchActivePlayer();
     }
 }

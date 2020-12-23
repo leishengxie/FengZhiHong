@@ -1,8 +1,9 @@
 #include "GobangAI.h"
 
-
+#include "Player.h"
 
 CGobangAI::CGobangAI(CPlayer* pPlayer)
+    : m_pPlayer(pPlayer)
 {
 
 }
@@ -18,8 +19,9 @@ CGobangAI::CGobangAI(CPlayer* pPlayer)
  * 以上实际上可以总结为第四步 这样的话，活三的分数应大于眠三*4(4个方向)或活二*4
  * 3.得到上述的棋型填充到分数map中，得到最大分数的pos落子
  */
-void CGobangAI::think(const CChessBoard *pChessBoard)
+CPoint CGobangAI::think(const CChessBoard *pChessBoard)
 {
+    CPoint posBest;
     for (int x = 0; x < pChessBoard->chessBoardWidth(); ++x)
     {
         for (int y = 0; y < pChessBoard->chessBoardHeight(); ++y)
@@ -39,6 +41,42 @@ void CGobangAI::think(const CChessBoard *pChessBoard)
         }
     }
 
-    int nMaxScoreBlack = 0;
-    int nMaxScoreWhite = 0;
+    CEmptyPosComplexChessGroup complexGroupBlack = getMaxScoreComplexGroup(m_vecChessGroupBlack);
+    CEmptyPosComplexChessGroup complexGroupWhite = getMaxScoreComplexGroup(m_vecChessGroupWhite);
+    CEmptyPosComplexChessGroup complexGroupBest;
+    if (complexGroupBlack.score(m_pPlayer->choosedChessType()) > complexGroupWhite.score(m_pPlayer->choosedChessType()))
+    {
+        complexGroupBest = complexGroupBlack;
+    }
+    else
+    {
+        complexGroupBest = complexGroupWhite;
+    }
+
+    if (complexGroupBest.isInvaild(pChessBoard))
+    {
+        posBest = pChessBoard->singleBestPos();
+    }
+    else
+    {
+        posBest = complexGroupBest.pos();
+    }
+    return posBest;
+}
+
+CEmptyPosComplexChessGroup CGobangAI::getMaxScoreComplexGroup(
+        const vector<CEmptyPosComplexChessGroup> &vecChessGroupWhite)
+{
+    int nMaxScore = 0;
+    CEmptyPosComplexChessGroup complexGroupMax;
+    foreach (CEmptyPosComplexChessGroup complexGroup, vecChessGroupWhite)
+    {
+        int nScore = complexGroup.score(m_pPlayer->choosedChessType());
+        if (nScore > nMaxScore)
+        {
+            nMaxScore = nScore;
+            complexGroupMax = complexGroup;
+        }
+    }
+    return complexGroupMax;
 }

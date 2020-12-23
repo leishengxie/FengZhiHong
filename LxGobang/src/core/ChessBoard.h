@@ -72,6 +72,7 @@ public:
                         , int nStartEndDistance = 5, bool bIgnoreOpponent = false) const;
 
 
+    CPoint singleBestPos() const;
 
 
 private:

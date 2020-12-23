@@ -24,12 +24,16 @@ public:
     CGobangAI(CPlayer* pPlayer);
 
 
-    void think(const CChessBoard* pChessBoard);
+    CPoint think(const CChessBoard* pChessBoard);
+
+private:
+    CEmptyPosComplexChessGroup getMaxScoreComplexGroup(
+            const vector<CEmptyPosComplexChessGroup> & vecChessGroupWhite);
 private:
     CPlayer* m_pPlayer;
     vector<CEmptyPosComplexChessGroup> m_vecChessGroupBlack;
     vector<CEmptyPosComplexChessGroup> m_vecChessGroupWhite;
-    int **m_pScoreMap;
+
 };
 
 #endif // CGOBANGAI_H
