@@ -107,14 +107,15 @@ private:
 class CEmptyPosComplexChessGroup
 {
 public:
-    CEmptyPosComplexChessGroup(){}
-    CEmptyPosComplexChessGroup(const CPoint & pos, const CChess::E_ChessType & eChessType)
-        : m_posEmpty(pos)
-        , m_eChessType(eChessType)
-    {
+    CEmptyPosComplexChessGroup();
+    CEmptyPosComplexChessGroup(const CPoint & pos, const CChess::E_ChessType & eChessType);
 
+    CPoint pos() const
+    {
+        return m_posEmpty;
     }
 
+    bool isInvaild(const CChessBoard* pChessBoard) const;
 //    void setGroup(const E_VectorDirection & eVectorDirection, const CChessGroup & chessGroup)
 //    {
 //        arrChessGroup[eVectorDirection] = chessGroup;
@@ -127,7 +128,7 @@ public:
 private:
     CPoint m_posEmpty;  // 需要分析的空位
 
-    CChess::E_ChessType m_eChessType;    // 需要分析的棋子类别
+    CChess::E_ChessType m_eChessType;    // 需要分析的棋子类别watch type
 
     /// 分析的结果
     CChessGroup m_arrChessGroup[EV_VectorDirectionMax];  //  空位在四个方向形成的最佳棋型

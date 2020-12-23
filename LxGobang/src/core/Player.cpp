@@ -32,6 +32,11 @@ void CPlayer::moveInChess(int x, int y)
     m_pChessBoard->setChess(chess);
 }
 
+void CPlayer::moveInChess(const CPoint &pos)
+{
+    moveInChess(pos.x(), pos.y());
+}
+
 void CPlayer::reqTakeBackChess()
 {
 
@@ -42,7 +47,7 @@ void CPlayer::reset()
     init();
 }
 
-CChess CRobotPlayer::think()
+CPoint CRobotPlayer::think()
 {
 
 }

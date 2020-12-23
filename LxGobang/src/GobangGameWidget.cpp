@@ -45,6 +45,7 @@ void CGobangGameWidget::on_btnTakeBackChess_clicked()
 void CGobangGameWidget::slotTimerSchedulerTimeOut()
 {
     playing();
+    update();
 }
 
 void CGobangGameWidget::paintEvent(QPaintEvent *event)
