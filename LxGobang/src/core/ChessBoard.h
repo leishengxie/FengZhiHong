@@ -74,8 +74,13 @@ public:
 
     CPoint singleBestPos() const;
 
+protected:
+    // 派生类实现接口
+    virtual void drawBoard() = 0;
+    virtual void drawChesses() = 0;
 
-private:
+
+protected:
     // 棋盘大小
     int m_nWidth;
     int m_nHeight;

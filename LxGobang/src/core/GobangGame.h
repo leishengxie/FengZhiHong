@@ -62,10 +62,7 @@ public:
     void onTimeout();
     void setSpeed(int ms);
 
-protected:
-    // 派生类实现接口
-    virtual void drawBoard() = 0;
-    virtual void drawChesses() = 0;
+
 
 private:
     E_GameStatus m_eGameStatus;

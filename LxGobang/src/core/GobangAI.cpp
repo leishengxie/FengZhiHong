@@ -19,7 +19,7 @@ CGobangAI::CGobangAI(CPlayer* pPlayer)
  * 以上实际上可以总结为第四步 这样的话，活三的分数应大于眠三*4(4个方向)或活二*4
  * 3.得到上述的棋型填充到分数map中，得到最大分数的pos落子
  */
-CPoint CGobangAI::think(const CChessBoard *pChessBoard)
+CPoint CGobangAI::think(const CChessBoard* pChessBoard)
 {
     CPoint posBest;
     for (int x = 0; x < pChessBoard->chessBoardWidth(); ++x)
@@ -65,11 +65,13 @@ CPoint CGobangAI::think(const CChessBoard *pChessBoard)
 }
 
 CEmptyPosComplexChessGroup CGobangAI::getMaxScoreComplexGroup(
-        const vector<CEmptyPosComplexChessGroup> &vecChessGroupWhite)
+    const vector<CEmptyPosComplexChessGroup> & vecChessGroupWhite)
 {
     int nMaxScore = 0;
     CEmptyPosComplexChessGroup complexGroupMax;
-    foreach (CEmptyPosComplexChessGroup complexGroup, vecChessGroupWhite)
+
+    //vector<CEmptyPosComplexChessGroup> vec;
+    for (CEmptyPosComplexChessGroup complexGroup : vecChessGroupWhite)
     {
         int nScore = complexGroup.score(m_pPlayer->choosedChessType());
         if (nScore > nMaxScore)

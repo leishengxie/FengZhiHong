@@ -1,6 +1,7 @@
 #include "Player.h"
 
 #include "ChessBoard.h"
+#include "GobangAI.h"
 
 CPlayer::CPlayer()
 {
@@ -47,7 +48,17 @@ void CPlayer::reset()
     init();
 }
 
+CRobotPlayer::CRobotPlayer()
+{
+    m_pAI = new CGobangAI(this);
+}
+
+CRobotPlayer::~CRobotPlayer()
+{
+    delete m_pAI;
+}
+
 CPoint CRobotPlayer::think()
 {
-
+    return m_pAI->think(m_pChessBoard);
 }

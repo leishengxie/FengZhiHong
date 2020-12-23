@@ -2,10 +2,20 @@
 
 #include "Player.h"
 
-CJudge::CJudge()
-    : m_pPreWinner(nullptr)
-{
 
+CJudge::CJudge(CPlayer *p1, CPlayer *p2)
+: m_pPlayer1(p1)
+, m_pPlayer2(p2)
+, m_pPreWinner(nullptr)
+{
+    if(m_pPlayer1->choosedChessType() == CChess::E_Black)
+    {
+        m_pActivePlayer = m_pPlayer1;
+    }
+    else
+    {
+        m_pActivePlayer = m_pPlayer2;
+    }
 }
 
 void CJudge::switchActivePlayer()

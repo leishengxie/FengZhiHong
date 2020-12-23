@@ -9,7 +9,7 @@ class CPlayer;
 class CJudge
 {
 public:
-    CJudge();
+    CJudge(CPlayer* p1, CPlayer* p2);
 
     CPlayer* preWinner() const
     {

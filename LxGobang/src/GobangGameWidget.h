@@ -28,10 +28,7 @@ private slots:
 protected:
     void paintEvent(QPaintEvent *event);
 
-protected:
-    // 派生类实现接口
-    void drawBoard() {}
-    void drawChesses() {}
+
 
 private:
     Ui::CGobangGameWidget *ui;

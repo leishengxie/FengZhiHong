@@ -3,6 +3,7 @@
 
 #include "Chess.h"
 class CChessBoard;
+class CGobangAI;
 
 class CPlayer
 {
@@ -56,8 +57,13 @@ public:
 class CRobotPlayer : public CPlayer
 {
 public:
+    CRobotPlayer();
+    ~CRobotPlayer();
     bool isRobot() override{return true;}
     CPoint think() override;
+
+private:
+    CGobangAI* m_pAI;
 };
 
 #endif // CPLAYER_H

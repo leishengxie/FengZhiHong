@@ -9,7 +9,7 @@ CGobangGame::CGobangGame(CChessBoard *pChessBoard, CPlayer *p1, CPlayer *p2)
     , m_pPlayer1(p1)
     , m_pPlayer2(p2)
 {
-    //m_pJudge = new
+    m_pJudge = new CJudge(m_pPlayer1, m_pPlayer2);
 }
 
 void CGobangGame::start()
