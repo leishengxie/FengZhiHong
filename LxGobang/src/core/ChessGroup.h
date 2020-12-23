@@ -84,7 +84,7 @@ private:
     // 棋型的方向向量
     CPlaneVector m_planeVector;
 
-    //
+    // 正在观察的棋型颜色
     CChess::E_ChessType m_eChessType;
 
     //
