@@ -26,18 +26,23 @@ void CChessBoard::init()
     // 给各元素赋值
     for (int x = 0; x < m_nWidth; ++x)
     {
-        for (int j = 0; j < m_nHeight; ++j)
+        for (int y = 0; y < m_nHeight; ++y)
         {
-            m_pChessMap[x][j] = CChess::E_Empty;
+            m_pChessMap[x][y] = CChess::E_Empty;
         }
     }
+}
+
+void CChessBoard::setChess(const CPoint &pos, CChess::E_ChessType eChessType)
+{
+    m_pChessMap[pos.x()][pos.y()] = eChessType;
+    //m_stackChessRecord.push(chess);
 }
 
 \
 void CChessBoard::setChess(const CChess &chess)
 {
-    m_pChessMap[chess.x()][chess.y()] = chess.type();
-    m_stackChessRecord.push(chess);
+    setChess(chess.pos(), chess.type());
 }
 
 void CChessBoard::takeBackChess(int nStep)

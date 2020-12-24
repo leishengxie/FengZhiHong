@@ -4,6 +4,7 @@
 #include "GobangAI.h"
 
 CPlayer::CPlayer()
+    : m_pChessBoard(nullptr)
 {
 
 }

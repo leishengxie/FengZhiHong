@@ -10,7 +10,8 @@ CChess::CChess()
 CChess::CChess(int x, int y, const E_ChessType &eChessType)
     : m_eChessType(eChessType)
 {
-
+    m_pos.setX(x);
+    m_pos.setY(y);
 }
 
 

@@ -19,6 +19,11 @@ public:
         return m_eChessTypeChoosed;
     }
 
+    void setChessBoard(CChessBoard* pChessBoard)
+    {
+        m_pChessBoard = pChessBoard;
+    }
+
     // 下棋落子
     void moveInChess(int x, int y);
     void moveInChess(const CPoint & pos);
@@ -37,8 +42,6 @@ protected:
     CChess::E_ChessType m_eChessTypeChoosed;
 
     int m_nSurplusChessNum;
-
-
 
     // 棋盘指针
     CChessBoard* m_pChessBoard;

@@ -16,12 +16,23 @@ public:
 protected:
     void resizeEvent(QResizeEvent *event) override;
     void paintEvent(QPaintEvent *e) override;
-    void mouseMoveEvent(QMouseEvent *e) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
     void mousePressEvent(QMouseEvent *e) override;
+
+    // 实际落子
+    void mouseReleaseEvent(QMouseEvent *event) override;
 
     // 派生类实现接口
     void drawBoard() override;
     void drawChesses() override;
+
+
+private:
+    void drawHoverPos();
+
+private:
+    int m_nUnitSide;
+    CPoint m_posHover;
 
 };
 

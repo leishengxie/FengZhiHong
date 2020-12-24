@@ -9,7 +9,7 @@ CGobangGame::CGobangGame(CChessBoard *pChessBoard, CPlayer *p1, CPlayer *p2)
     , m_pPlayer1(p1)
     , m_pPlayer2(p2)
 {
-    m_pJudge = new CJudge(m_pPlayer1, m_pPlayer2);
+
 }
 
 void CGobangGame::start()
@@ -17,22 +17,20 @@ void CGobangGame::start()
     m_pChessBoard->reset();
     m_pPlayer1->reset();
     m_pPlayer2->reset();
-
-    CPlayer *player = m_pJudge->judgeOnTheOffensive();
-    m_pJudge->setActivePlayer(player);
-
+    m_pPlayer1->setChessBoard(m_pChessBoard);
+    m_pPlayer2->setChessBoard(m_pChessBoard);
     m_eGameStatus = EG_Playing;
-
+    CJudge::getInstance()->setPlayers(m_pPlayer1, m_pPlayer2);
 }
 
 void CGobangGame::playing()
 {
-    CPlayer *player = m_pJudge->activePlayer();
+    CPlayer *player = CJudge::getInstance()->activePlayer();
     if(player->isRobot())
     {
         CPoint pos = player->think();
         player->moveInChess(pos);
-        m_pJudge->switchActivePlayer();
+        CJudge::getInstance()->switchActivePlayer();
     }
 }
 

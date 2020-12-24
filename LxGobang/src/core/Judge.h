@@ -9,7 +9,12 @@ class CPlayer;
 class CJudge
 {
 public:
-    CJudge(CPlayer* p1, CPlayer* p2);
+    static CJudge* getInstance();
+
+    void setPlayers(CPlayer* p1, CPlayer* p2);
+
+    // 如果没有选手被认为还没有开始
+    bool isHavenotBegunYet();
 
     CPlayer* preWinner() const
     {
@@ -33,6 +38,10 @@ public:
 
     // 判断是否已经有玩家可以胜出
     CPlayer* judgeHasAlreadyAbleWon();
+
+private:
+    CJudge();
+    static CJudge* s_pJydge;
 
 private:
 

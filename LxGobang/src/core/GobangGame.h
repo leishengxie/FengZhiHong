@@ -68,7 +68,7 @@ private:
     E_GameStatus m_eGameStatus;
 
     CChessBoard* m_pChessBoard;
-    CJudge* m_pJudge;
+
     CPlayer* m_pPlayer1;    //p1
     CPlayer* m_pPlayer2;    //p2
 };

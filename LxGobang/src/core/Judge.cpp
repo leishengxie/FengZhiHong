@@ -2,20 +2,27 @@
 
 #include "Player.h"
 
-
-CJudge::CJudge(CPlayer *p1, CPlayer *p2)
-: m_pPlayer1(p1)
-, m_pPlayer2(p2)
-, m_pPreWinner(nullptr)
+CJudge *CJudge::s_pJydge = nullptr;
+CJudge *CJudge::getInstance()
 {
-    if(m_pPlayer1->choosedChessType() == CChess::E_Black)
+    if(s_pJydge == nullptr)
     {
-        m_pActivePlayer = m_pPlayer1;
+        s_pJydge = new CJudge;
     }
-    else
-    {
-        m_pActivePlayer = m_pPlayer2;
-    }
+    return s_pJydge;
+}
+
+void CJudge::setPlayers(CPlayer *p1, CPlayer *p2)
+{
+    m_pPlayer1 = p1;
+    m_pPlayer2 = p2;
+    m_pActivePlayer = judgeOnTheOffensive();
+
+}
+
+bool CJudge::isHavenotBegunYet()
+{
+    return (m_pPlayer1 == nullptr || m_pPlayer1 == nullptr);
 }
 
 void CJudge::switchActivePlayer()
@@ -64,4 +71,13 @@ CPlayer *CJudge::judgeOnTheOffensive()
     pOnTheOffensive->setChoosedChessType(CChess::E_Black);
     pSecond->setChoosedChessType(CChess::E_White);
     return pOnTheOffensive;
+}
+
+CJudge::CJudge()
+    : m_pPlayer1(nullptr)
+    , m_pPlayer2(nullptr)
+    , m_pPreWinner(nullptr)
+    , m_pActivePlayer(nullptr)
+{
+
 }

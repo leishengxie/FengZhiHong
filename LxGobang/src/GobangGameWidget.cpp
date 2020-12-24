@@ -35,6 +35,7 @@ void CGobangGameWidget::on_btnStart_clicked()
 {
     start();
     m_timerScheduler->start();
+    playing();
 }
 
 void CGobangGameWidget::on_btnTakeBackChess_clicked()

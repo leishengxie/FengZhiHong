@@ -21,6 +21,7 @@ public:
     void init();
 
     // 落子
+    void setChess(const CPoint & pos, CChess::E_ChessType eChessType);
     void setChess(const CChess & chess);
 
     // 悔棋
