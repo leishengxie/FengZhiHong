@@ -21,6 +21,9 @@ CGobangAI::CGobangAI(CPlayer* pPlayer)
  */
 CPoint CGobangAI::think(const CChessBoard* pChessBoard)
 {
+    m_vecChessGroupBlack.clear();
+    m_vecChessGroupWhite.clear();
+
     CPoint posBest;
     for (int x = 0; x < pChessBoard->chessBoardWidth(); ++x)
     {
@@ -64,21 +67,29 @@ CPoint CGobangAI::think(const CChessBoard* pChessBoard)
     return posBest;
 }
 
-CEmptyPosComplexChessGroup CGobangAI::getMaxScoreComplexGroup(
-    const vector<CEmptyPosComplexChessGroup> & vecChessGroupWhite)
+CEmptyPosComplexChessGroup CGobangAI::getMaxScoreComplexGroup(const vector<CEmptyPosComplexChessGroup> & vecChessGroup)
 {
     int nMaxScore = 0;
     CEmptyPosComplexChessGroup complexGroupMax;
 
-    //vector<CEmptyPosComplexChessGroup> vec;
-    for (CEmptyPosComplexChessGroup complexGroup : vecChessGroupWhite)
-    {
-        int nScore = complexGroup.score(m_pPlayer->choosedChessType());
-        if (nScore > nMaxScore)
+//    for (CEmptyPosComplexChessGroup complexGroup : vecChessGroup)
+//    {
+//        int nScore = complexGroup.score(m_pPlayer->choosedChessType());
+//        if (nScore > nMaxScore)
+//        {
+//            nMaxScore = nScore;
+//            complexGroupMax = complexGroup;
+//        }
+//    }
+        for (int i = 0; i < vecChessGroup.size(); ++i)
         {
-            nMaxScore = nScore;
-            complexGroupMax = complexGroup;
+            int nScore = vecChessGroup.at(i).score(m_pPlayer->choosedChessType());
+            if (nScore > nMaxScore)
+            {
+                nMaxScore = nScore;
+                complexGroupMax = vecChessGroup.at(i);
+            }
         }
-    }
+
     return complexGroupMax;
 }

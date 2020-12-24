@@ -37,11 +37,11 @@ class CChessGroup
 {
 public:
     CChessGroup();
-    CChessGroup(const CPoint & pos, const CPlaneVector & planeVector, const CChess::E_ChessType & eChessType);
+    CChessGroup(const CPoint & posHead, const CPlaneVector & planeVector, const CChess::E_ChessType & eChessType);
 
-    void setHeadPoint(const CPoint & pos)
+    void setHeadPoint(const CPoint & posHead)
     {
-        m_posHead = pos;
+        m_posHead = posHead;
     }
     CPoint headPos() const
     {
@@ -66,12 +66,14 @@ public:
         return m_eChessType;
     }
 
+
     void analyse(const CChessBoard* pChessBoard);
+    E_ChessGroupType analyseChessGroupType(const CChessBoard* pChessBoard);
 
     // 判断时候是活x
     bool isLiveGroup(const CChessBoard* pChessBoard);
 
-    int score(const CChess::E_ChessType & eChessType);
+    int score(const CChess::E_ChessType & eChessType) const;
     static int score(E_ChessGroupType eChessGroupType, bool bSelf);
 
     //E_ChessGroupType chessGroupType();
@@ -99,6 +101,71 @@ private:
 
 
 
+///
+/// \brief The CEmptyPosChessGroup class    空位棋型
+///
+class CEmptyPosChessGroup
+{
+public:
+    CEmptyPosChessGroup();
+    CEmptyPosChessGroup(const CPoint & posEmpty, const CPlaneVector & planeVector
+                        , const CChess::E_ChessType & eChessType);
+
+    void setPoint(const CPoint & pos)
+    {
+        m_posEmpty = pos;
+    }
+    CPoint pos() const
+    {
+        return m_posEmpty;
+    }
+
+    void setPlaneVector(const CPlaneVector & planeVector)
+    {
+        m_planeVector = planeVector;
+    }
+    CPlaneVector planeVector() const
+    {
+        return m_planeVector;
+    }
+
+    void setChessType(const CChess::E_ChessType & eChessType)
+    {
+        m_eChessType = eChessType;
+    }
+    CChess::E_ChessType chessType() const
+    {
+        return m_eChessType;
+    }
+
+    CChessGroup analyseBestGroup(const CChessBoard* pChessBoard);
+
+
+private:
+    /// 属性成员
+    // 棋型的开头位置，可以是空位
+    CPoint m_posEmpty;
+
+    // 棋型的方向向量
+    CPlaneVector m_planeVector;
+
+    // 正在观察的棋型颜色
+    CChess::E_ChessType m_eChessType;
+
+    //
+    //std::map<int, >
+
+    /// 分析结果
+    E_ChessGroupType m_eChessGroupType;
+
+    // 组成棋型的有效数目
+    //int m_nNum;
+};
+
+
+
+
+
 // Q:词义辨析：menace和threat都做名词时的区别
 // A:按字典中的解释，menace主要指“（有威胁的）人或事物，包括态度、腔调、气氛、语言及行为”；threat主要指“（有威胁的）状态”
 ///
@@ -123,7 +190,8 @@ public:
 
     void analyse(const CChessBoard* pChessBoard);
 
-    int score(const CChess::E_ChessType & eChessType);
+
+    int score(const CChess::E_ChessType & eChessType) const;
 
 private:
     CPoint m_posEmpty;  // 需要分析的空位

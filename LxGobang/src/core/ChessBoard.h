@@ -2,7 +2,6 @@
 #define CCHESSBOARD_H
 
 #include "Chess.h"
-#include "ChessGroup.h"
 
 #include <stack>
 #include <vector>
@@ -16,11 +15,13 @@ class CChessBoard
 {
 public:
     CChessBoard(int nWidth = 15, int nHeight = 15);
+    ~CChessBoard();
 
     // 初始化
     void init();
 
     // 落子
+    void setChess(int x, int y, CChess::E_ChessType eChessType);
     void setChess(const CPoint & pos, CChess::E_ChessType eChessType);
     void setChess(const CChess & chess);
 
@@ -52,11 +53,6 @@ public:
     bool hasBecome_5(CChess::E_ChessType eChessType);
     bool hasBecome_5(CChess::E_ChessType eChessType, int x, int y);
     bool hasBecome_5(CChess::E_ChessType eChessType, const CPoint & pos);
-
-    // 在某方向向量上 包含某位置且 起止点相距距离(默认颗数5)范围内 出现某颜色的棋子的最多的棋型
-    CChessGroup getBestGroup(const CPoint & pos, const CChess::E_ChessType & eChessType
-                             , const CPlaneVector & planeVector, int nStartEndDistance = 5) const;
-
 
 
     // 在某方向向量上 包含某棋子且 起止点相距距离(默认颗数5)范围内 出现与该棋同色的最多有多少颗

@@ -1,6 +1,8 @@
 #include "Judge.h"
 
 #include "Player.h"
+#include "GobangGame.h"
+#include"ChessBoard.h"
 
 CJudge *CJudge::s_pJydge = nullptr;
 CJudge *CJudge::getInstance()
@@ -71,6 +73,21 @@ CPlayer *CJudge::judgeOnTheOffensive()
     pOnTheOffensive->setChoosedChessType(CChess::E_Black);
     pSecond->setChoosedChessType(CChess::E_White);
     return pOnTheOffensive;
+}
+
+CPlayer *CJudge::judgeHasAlreadyAbleWon()
+{
+    bool bBlackHasBecome5 = m_pChessBoard->hasBecome_5(CChess::E_Black);
+    bool bWhiteHasBecome5 = m_pChessBoard->hasBecome_5(CChess::E_White);
+    if (bBlackHasBecome5 || bWhiteHasBecome5)
+    {
+        notifyGameOver();
+    }
+}
+
+void CJudge::notifyGameOver()
+{
+    m_pGobangGame->over();
 }
 
 CJudge::CJudge()

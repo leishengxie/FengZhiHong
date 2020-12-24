@@ -21,6 +21,8 @@ void CGobangGame::start()
     m_pPlayer2->setChessBoard(m_pChessBoard);
     m_eGameStatus = EG_Playing;
     CJudge::getInstance()->setPlayers(m_pPlayer1, m_pPlayer2);
+    CJudge::getInstance()->setChessBoard(m_pChessBoard)
+    CJudge::getInstance()->setGame(this);
 }
 
 void CGobangGame::playing()
@@ -32,6 +34,11 @@ void CGobangGame::playing()
         player->moveInChess(pos);
         CJudge::getInstance()->switchActivePlayer();
     }
+}
+
+void CGobangGame::played()
+{
+
 }
 
 void CGobangGame::over()

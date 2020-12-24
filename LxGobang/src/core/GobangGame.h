@@ -51,6 +51,7 @@ public:
 
     void start();
     void playing(); // 加入游戏调度
+    void played();
     void over();
     bool isPlaying();
     bool isGameOver();

@@ -11,6 +11,8 @@
 *****************************************/
 
 #include "ChessBoard.h"
+#include "ChessGroup.h"
+
 class CPlayer;
 
 ///
@@ -27,8 +29,7 @@ public:
     CPoint think(const CChessBoard* pChessBoard);
 
 private:
-    CEmptyPosComplexChessGroup getMaxScoreComplexGroup(
-            const vector<CEmptyPosComplexChessGroup> & vecChessGroupWhite);
+    CEmptyPosComplexChessGroup getMaxScoreComplexGroup(const vector<CEmptyPosComplexChessGroup> & vecChessGroup);
 private:
     CPlayer* m_pPlayer;
     vector<CEmptyPosComplexChessGroup> m_vecChessGroupBlack;

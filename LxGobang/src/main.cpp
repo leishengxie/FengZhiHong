@@ -1,11 +1,16 @@
 #include "GobangGameWidget.h"
 
+//#include "core/Judge.h"
+//#include "core/Player.h"
+
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+
     CGobangGameWidget w;
     w.show();
-    return a.exec();
+    int nRet = a.exec();
+    return nRet;
 }

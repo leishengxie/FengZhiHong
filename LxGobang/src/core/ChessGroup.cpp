@@ -49,13 +49,16 @@
 #define SCORE_SELF_3    400
 #define SCORE_SELF_2    40
 
+#define CROUP_HAS_CHESS_NUM     5
+
 CChessGroup::CChessGroup()
 {
 
 }
 
-CChessGroup::CChessGroup(const CPoint &pos, const CPlaneVector &planeVector, const CChess::E_ChessType &eChessType)
-    : m_posHead(pos)
+CChessGroup::CChessGroup(const CPoint &posHead, const CPlaneVector &planeVector
+                         , const CChess::E_ChessType &eChessType)
+    : m_posHead(posHead)
     , m_planeVector(planeVector)
     , m_eChessType(eChessType)
 {
@@ -112,6 +115,64 @@ void CChessGroup::analyse(const CChessBoard *pChessBoard)
 
 }
 
+E_ChessGroupType CChessGroup::analyseChessGroupType(const CChessBoard *pChessBoard)
+{
+
+        if (pChessBoard->isInvaildAt(m_posHead))
+        {
+            m_eChessGroupType = EC_Empty;
+            return m_eChessGroupType;
+        }
+
+        int nNum = pChessBoard->getSameChessNum(m_posHead, m_eChessType, m_planeVector);
+        if (nNum < 1)
+        {
+            m_eChessGroupType = EC_Empty;
+            return m_eChessGroupType;
+        }
+
+        bool bLiveGroup = isLiveGroup(pChessBoard);
+        if (nNum == 5)
+        {
+            m_eChessGroupType = EC_B5;
+        }
+        else if (nNum == 4)
+        {
+            m_eChessGroupType = EC_S4;
+
+            // 判断活四
+            if(bLiveGroup)
+            {
+                m_eChessGroupType = EC_L4;
+            }
+        }
+        else if (nNum == 3)
+        {
+            m_eChessGroupType = EC_S3;
+
+            // 判断活四
+            if(bLiveGroup)
+            {
+                m_eChessGroupType = EC_L3;
+            }
+        }
+        else if (nNum == 2)
+        {
+            m_eChessGroupType = EC_S2;
+
+            // 判断活四
+            if(bLiveGroup)
+            {
+                m_eChessGroupType = EC_L2;
+            }
+        }
+        else if (nNum == 1)
+        {
+            m_eChessGroupType = EC_Single;
+        }
+    return m_eChessGroupType;
+}
+
 bool CChessGroup::isLiveGroup(const CChessBoard *pChessBoard)
 {
     if (!pChessBoard->isInvaildAt(m_posHead - m_planeVector))
@@ -133,7 +194,7 @@ bool CChessGroup::isLiveGroup(const CChessBoard *pChessBoard)
     return false;
 }
 
-int CChessGroup::score(const CChess::E_ChessType &eChessType)
+int CChessGroup::score(const CChess::E_ChessType &eChessType) const
 {
     return score(m_eChessGroupType, eChessType == m_eChessType);
 }
@@ -180,6 +241,47 @@ int CChessGroup::score(E_ChessGroupType eChessGroupType, bool bSelf)
 
 
 ///
+/// \brief CEmptyPosChessGroup::CEmptyPosChessGroup
+///
+CEmptyPosChessGroup::CEmptyPosChessGroup()
+{
+
+}
+
+CEmptyPosChessGroup::CEmptyPosChessGroup(const CPoint &posEmpty, const CPlaneVector &planeVector
+                                         , const CChess::E_ChessType &eChessType)
+    : m_posEmpty(posEmpty)
+    , m_planeVector(planeVector)
+    , m_eChessType(eChessType)
+{
+
+}
+
+CChessGroup CEmptyPosChessGroup::analyseBestGroup(const CChessBoard *pChessBoard)
+{
+    CChessGroup chessGroupBest;
+    int typeBest = EC_Empty;
+
+    for (int i = CROUP_HAS_CHESS_NUM - 1; i > -1; --i)
+    {
+        CPoint posHead = m_posEmpty - m_planeVector * i;
+        CChessGroup chessGroup(posHead, m_planeVector, m_eChessType);
+        int type = chessGroup.analyseChessGroupType(pChessBoard);
+        if (type < typeBest)
+        {
+            typeBest = type;
+            chessGroupBest = chessGroup;
+        }
+    }
+
+    return chessGroupBest;
+}
+
+
+
+
+
+///
 /// \brief CEmptyPosComplexChessGroup::CEmptyPosComplexChessGroup
 ///
 CEmptyPosComplexChessGroup::CEmptyPosComplexChessGroup()
@@ -204,15 +306,16 @@ void CEmptyPosComplexChessGroup::analyse(const CChessBoard *pChessBoard)
     for (int i = 0; i < EV_VectorDirectionMax; ++i)
     {
         E_VectorDirection eVectorDirection = E_VectorDirection(i);
-        CChessGroup group = pChessBoard->getBestGroup(m_posEmpty, m_eChessType
-                                                      , CPlaneVector::getUnitVector(eVectorDirection));
-        //setGroup(eVectorDirection, group);
-        group.analyse(pChessBoard);
+        CEmptyPosChessGroup emptyPosChessGroup(m_posEmpty, CPlaneVector::getUnitVector(eVectorDirection)
+                                               , m_eChessType);
+        CChessGroup group = emptyPosChessGroup.analyseBestGroup(pChessBoard);
         m_arrChessGroup[eVectorDirection] = group;
     }
 }
 
-int CEmptyPosComplexChessGroup::score(const CChess::E_ChessType &eChessType)
+
+
+int CEmptyPosComplexChessGroup::score(const CChess::E_ChessType &eChessType) const
 {
     int nScore = 0;
     for (int i = 0; i < EV_VectorDirectionMax; ++i)
@@ -222,3 +325,4 @@ int CEmptyPosComplexChessGroup::score(const CChess::E_ChessType &eChessType)
     }
     return nScore;
 }
+

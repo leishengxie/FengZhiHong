@@ -21,6 +21,11 @@ CChessBoard::CChessBoard(int nWidth, int nHeight)
     init();
 }
 
+CChessBoard::~CChessBoard()
+{
+
+}
+
 void CChessBoard::init()
 {
     // 给各元素赋值
@@ -33,10 +38,18 @@ void CChessBoard::init()
     }
 }
 
+void CChessBoard::setChess(int x, int y, CChess::E_ChessType eChessType)
+{
+    if (isInvaildAt(x, y))
+    {
+        return;
+    }
+    m_pChessMap[x][y] = eChessType;
+}
+
 void CChessBoard::setChess(const CPoint &pos, CChess::E_ChessType eChessType)
 {
-    m_pChessMap[pos.x()][pos.y()] = eChessType;
-    //m_stackChessRecord.push(chess);
+    setChess(pos.x(), pos.y(), eChessType);
 }
 
 \
@@ -241,28 +254,7 @@ bool CChessBoard::hasBecome_5(CChess::E_ChessType eChessType, const CPoint &pos)
 
 
 
-CChessGroup CChessBoard::getBestGroup(const CPoint &pos, const CChess::E_ChessType &eChessType
-                                      , const CPlaneVector &planeVector, int nStartEndDistance) const
-{
-    int nMaxNum = 0;
-    CPoint posHeadBest;
 
-    for (int i = nStartEndDistance - 1; i > -1; --i)
-    {
-        CPoint posHead = pos - planeVector * i;
-        if (isInvaildAt(posHead))
-        {
-            continue;
-        }
-        int nNum = getSameChessNum(posHead, eChessType, planeVector, nStartEndDistance);
-        if (nNum > nMaxNum)
-        {
-            nMaxNum = nNum;
-            posHeadBest = posHead;
-        }
-    }
-    return CChessGroup(posHeadBest, planeVector, eChessType);
-}
 
 
 
@@ -294,14 +286,14 @@ int CChessBoard::getSameChessMaxNum(const CPoint &pos, const CChess::E_ChessType
 }
 
 int CChessBoard::getSameChessNum(const CPoint &posHead, const CChess::E_ChessType &eChessType
-                                 , const CPlaneVector &planeVector
-                                 , int nStartEndDistance, bool bIgnoreOpponent) const
+                                 , const CPlaneVector &planeVector, int nStartEndDistance
+                                 , bool bIgnoreOpponent) const
 {
     int nNum = 0;
-    CPoint pos = posHead;
+    CPoint pos;
     for (int i = 0; i < nStartEndDistance; ++i)
     {
-        pos = pos + planeVector;
+        pos = posHead + planeVector * i;
         if (isInvaildAt(pos))
         {
             return 0;

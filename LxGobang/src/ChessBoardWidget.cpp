@@ -100,7 +100,22 @@ void CChessBoardWidget::mouseReleaseEvent(QMouseEvent *event)
     {
         return;
     }
-    setChess(m_posHover, CJudge::getInstance()->activePlayer()->choosedChessType());
+
+    // 四舍五入
+    int nMargin = m_nUnitSide / 2;
+    int x = std::round((double)(event->x() - nMargin) / (double)m_nUnitSide);
+    int y = std::round((double)(event->y() - nMargin) / (double)m_nUnitSide);
+    if(isInvaildAt(x, y))
+    {
+        return;
+    }
+    if(!isEmptyAt(x, y))
+    {
+        return;
+    }
+
+
+    setChess(x, y, CJudge::getInstance()->activePlayer()->choosedChessType());
     update();
     CJudge::getInstance()->switchActivePlayer();
 }
