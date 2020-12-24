@@ -6,7 +6,7 @@ class CGobangGame;
 class CChessBoard;
 
 ///
-/// \brief The CJudge class 裁判类，协调玩家的行为, 控制游戏进度等
+/// \brief The CJudge class 裁判类，协调玩家的行为, 控制游戏进度等control
 ///
 class CJudge
 {
