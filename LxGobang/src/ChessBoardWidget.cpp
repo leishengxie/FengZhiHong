@@ -50,6 +50,15 @@ void CChessBoardWidget::mouseMoveEvent(QMouseEvent* event)
 {
     QWidget::mouseMoveEvent(event);
 
+    if(CJudge::getInstance()->isHavenotBegunYet())
+    {
+        return;
+    }
+    if(CJudge::getInstance()->activePlayer()->isRobot())
+    {
+        return;
+    }
+
     // 四舍五入
     int nMargin = m_nUnitSide / 2;
     int x = std::round((double)(event->x() - nMargin) / (double)m_nUnitSide);
