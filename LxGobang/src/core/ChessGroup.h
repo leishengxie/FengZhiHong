@@ -114,7 +114,7 @@ public:
     {
         m_posEmpty = pos;
     }
-    CPoint pos() const
+    CPoint posEmpty() const
     {
         return m_posEmpty;
     }
@@ -137,6 +137,8 @@ public:
         return m_eChessType;
     }
 
+
+    CChessGroup analyseBestGroupAfterSetChess(const CChessBoard* pChessBoard);
     CChessGroup analyseBestGroup(const CChessBoard* pChessBoard);
 
 

@@ -15,6 +15,7 @@ class CChessBoard
 {
 public:
     CChessBoard(int nWidth = 15, int nHeight = 15);
+    CChessBoard (const CChessBoard & other);
     ~CChessBoard();
 
     // 初始化
@@ -74,8 +75,8 @@ public:
 
 protected:
     // 派生类实现接口
-    virtual void drawBoard() = 0;
-    virtual void drawChesses() = 0;
+    virtual void drawBoard(){}
+    virtual void drawChesses(){}
 
 
 protected:

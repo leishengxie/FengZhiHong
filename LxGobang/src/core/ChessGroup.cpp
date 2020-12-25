@@ -206,6 +206,13 @@ CEmptyPosChessGroup::CEmptyPosChessGroup(const CPoint &posEmpty, const CPlaneVec
 
 }
 
+CChessGroup CEmptyPosChessGroup::analyseBestGroupAfterSetChess(const CChessBoard *pChessBoard)
+{
+    CChessBoard chessBoard = *pChessBoard;
+    chessBoard.setChess(posEmpty(), chessType());
+    return analyseBestGroup(&chessBoard);
+}
+
 CChessGroup CEmptyPosChessGroup::analyseBestGroup(const CChessBoard *pChessBoard)
 {
     CChessGroup chessGroupBest;
@@ -213,8 +220,8 @@ CChessGroup CEmptyPosChessGroup::analyseBestGroup(const CChessBoard *pChessBoard
 
     for (int i = CROUP_HAS_CHESS_NUM - 1; i > -1; --i)
     {
-        CPoint posHead = m_posEmpty - m_planeVector * i;
-        CChessGroup chessGroup(posHead, m_planeVector, m_eChessType);
+        CPoint posHead = posEmpty() - planeVector() * i;
+        CChessGroup chessGroup(posHead, planeVector(), chessType());
         int type = chessGroup.analyseChessGroupType(pChessBoard);
         if (type < typeBest)
         {
@@ -257,7 +264,7 @@ void CEmptyPosComplexChessGroup::analyse(const CChessBoard *pChessBoard)
         E_VectorDirection eVectorDirection = E_VectorDirection(i);
         CEmptyPosChessGroup emptyPosChessGroup(m_posEmpty, CPlaneVector::getUnitVector(eVectorDirection)
                                                , m_eChessType);
-        CChessGroup group = emptyPosChessGroup.analyseBestGroup(pChessBoard);
+        CChessGroup group = emptyPosChessGroup.analyseBestGroupAfterSetChess(pChessBoard);
         m_arrChessGroup[eVectorDirection] = group;
     }
 }

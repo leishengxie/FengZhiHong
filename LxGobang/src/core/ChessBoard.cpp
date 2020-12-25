@@ -1,7 +1,7 @@
 #include "ChessBoard.h"
 
 //#include <vector>
-
+#include <iostream>
 //using namespace std;
 
 
@@ -19,6 +19,29 @@ CChessBoard::CChessBoard(int nWidth, int nHeight)
     }
 
     init();
+}
+
+CChessBoard::CChessBoard(const CChessBoard &other)
+{
+    m_nWidth = other.m_nWidth;
+    m_nHeight = other.m_nHeight;
+    m_pChessMap = new int*[m_nWidth];
+
+    // 数组的元素都是指针，指向一个新的数组
+    for (int x = 0; x < m_nWidth; ++x)
+    {
+        m_pChessMap[x] = new int[m_nHeight];
+    }
+
+    for (int x = 0; x < m_nWidth; ++x)
+    {
+        for (int y = 0; y < m_nHeight; ++y)
+        {
+            m_pChessMap[x][y] = other.m_pChessMap[x][y];
+        }
+    }
+    //memcpy(m_pChessMap, other.m_pChessMap, sizeof(int) * m_nWidth * m_nHeight);
+    m_stackChessRecord = m_stackChessRecord;
 }
 
 CChessBoard::~CChessBoard()
