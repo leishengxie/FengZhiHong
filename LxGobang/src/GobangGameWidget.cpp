@@ -2,21 +2,22 @@
 #include "ui_GobangGameWidget.h"
 
 #include "core/Player.h"
+#include "core/Judge.h"
+#include "ChessBoardWidget.h"
+
 #include <QLabel>
 #include <QTimer>
 #include <QPixmap>
 #include <QPainter>
+#include <QMessageBox>
 
 CGobangGameWidget::CGobangGameWidget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::CGobangGameWidget)
-    , CGobangGame(nullptr, new CHumanPlayer(), new CRobotPlayer())
+    , CGobangGame(new CChessBoardWidget(this), new CHumanPlayer(), new CRobotPlayer())
 {
     ui->setupUi(this);
-
-    QLabel la;
-    //la.setLayout();
-    setChessBoard(ui->chessBoardWidget);
+    ui->hLayMain->insertWidget(0, (CChessBoardWidget*)m_pChessBoard);
 
     m_pixBg.load(":/img/backgrounimage.jpg");
 
@@ -30,12 +31,30 @@ CGobangGameWidget::~CGobangGameWidget()
     delete ui;
 }
 
+void CGobangGameWidget::onGameStart()
+{
+    CGobangGame::onGameStart();
+    m_timerScheduler->start();
+}
+
+void CGobangGameWidget::onGameInOnesTurn()
+{
+    CGobangGame::onGameInOnesTurn();
+    ((CChessBoardWidget*)m_pChessBoard)->update();
+}
+
+void CGobangGameWidget::onGameOver()
+{
+    CGobangGame::onGameOver();
+    m_timerScheduler->stop();
+    QMessageBox::warning(this, "提示", "游戏结束");
+}
+
 
 void CGobangGameWidget::on_btnStart_clicked()
 {
-    start();
-    m_timerScheduler->start();
-    playing();
+    CJudge::getInstance()->onEventGameStart();
+
 }
 
 void CGobangGameWidget::on_btnTakeBackChess_clicked()
@@ -45,8 +64,9 @@ void CGobangGameWidget::on_btnTakeBackChess_clicked()
 
 void CGobangGameWidget::slotTimerSchedulerTimeOut()
 {
-    playing();
-    ui->chessBoardWidget->update();
+    CJudge::getInstance()->onEventInOnesTurn();
+
+
 }
 
 void CGobangGameWidget::paintEvent(QPaintEvent *event)

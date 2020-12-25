@@ -43,16 +43,16 @@ public:
 
     CGobangGame(CChessBoard* pChessBoard, CPlayer* p1, CPlayer* p2);
 
-    void setChessBoard(CChessBoard* pChessBoard)
-    {
-        m_pChessBoard = pChessBoard;
-    }
 
+    virtual void onGameStart();
 
-    void start();
-    void playing(); // 加入游戏调度
-    void played();
-    void over();
+    // in one's turn 轮到某人下棋了
+    virtual void onGameInOnesTurn();
+
+    virtual void played();
+    virtual void onGameOver();
+
+    bool isReading();
     bool isPlaying();
     bool isGameOver();
 
@@ -65,7 +65,7 @@ public:
 
 
 
-private:
+protected:
     E_GameStatus m_eGameStatus;
 
     CChessBoard* m_pChessBoard;

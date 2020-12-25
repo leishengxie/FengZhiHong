@@ -64,13 +64,20 @@ CChessGroup::CChessGroup(const CPoint &posHead, const CPlaneVector &planeVector
 {
 
 }
-void CChessGroup::analyse(const CChessBoard *pChessBoard)
+
+E_ChessGroupType CChessGroup::analyseChessGroupType(const CChessBoard *pChessBoard)
 {
+    if (pChessBoard->isInvaildAt(m_posHead))
+    {
+        m_eChessGroupType = EC_Empty;
+        return m_eChessGroupType;
+    }
+
     int nNum = pChessBoard->getSameChessNum(m_posHead, m_eChessType, m_planeVector);
     if (nNum < 1)
     {
         m_eChessGroupType = EC_Empty;
-        return;
+        return m_eChessGroupType;
     }
 
     bool bLiveGroup = isLiveGroup(pChessBoard);
@@ -112,64 +119,6 @@ void CChessGroup::analyse(const CChessBoard *pChessBoard)
     {
         m_eChessGroupType = EC_Single;
     }
-
-}
-
-E_ChessGroupType CChessGroup::analyseChessGroupType(const CChessBoard *pChessBoard)
-{
-
-        if (pChessBoard->isInvaildAt(m_posHead))
-        {
-            m_eChessGroupType = EC_Empty;
-            return m_eChessGroupType;
-        }
-
-        int nNum = pChessBoard->getSameChessNum(m_posHead, m_eChessType, m_planeVector);
-        if (nNum < 1)
-        {
-            m_eChessGroupType = EC_Empty;
-            return m_eChessGroupType;
-        }
-
-        bool bLiveGroup = isLiveGroup(pChessBoard);
-        if (nNum == 5)
-        {
-            m_eChessGroupType = EC_B5;
-        }
-        else if (nNum == 4)
-        {
-            m_eChessGroupType = EC_S4;
-
-            // 判断活四
-            if(bLiveGroup)
-            {
-                m_eChessGroupType = EC_L4;
-            }
-        }
-        else if (nNum == 3)
-        {
-            m_eChessGroupType = EC_S3;
-
-            // 判断活四
-            if(bLiveGroup)
-            {
-                m_eChessGroupType = EC_L3;
-            }
-        }
-        else if (nNum == 2)
-        {
-            m_eChessGroupType = EC_S2;
-
-            // 判断活四
-            if(bLiveGroup)
-            {
-                m_eChessGroupType = EC_L2;
-            }
-        }
-        else if (nNum == 1)
-        {
-            m_eChessGroupType = EC_Single;
-        }
     return m_eChessGroupType;
 }
 
@@ -178,7 +127,7 @@ bool CChessGroup::isLiveGroup(const CChessBoard *pChessBoard)
     if (!pChessBoard->isInvaildAt(m_posHead - m_planeVector))
     {
         if(pChessBoard->isEmptyAt(m_posHead - m_planeVector)
-           && pChessBoard->isEmptyAt(m_posHead + m_planeVector * 4))
+                && pChessBoard->isEmptyAt(m_posHead + m_planeVector * 4))
         {
             return true;
         }
@@ -186,7 +135,7 @@ bool CChessGroup::isLiveGroup(const CChessBoard *pChessBoard)
     if(!pChessBoard->isInvaildAt(m_posHead + m_planeVector * 5))
     {
         if(pChessBoard->isEmptyAt(m_posHead)
-           && pChessBoard->isEmptyAt(m_posHead + m_planeVector * 5))
+                && pChessBoard->isEmptyAt(m_posHead + m_planeVector * 5))
         {
             return true;
         }
@@ -203,38 +152,38 @@ int CChessGroup::score(E_ChessGroupType eChessGroupType, bool bSelf)
 {
     int nScore = 0;
     int nExtraScore = 0;
-	switch (eChessGroupType)
-	{
-	case EC_B5:
+    switch (eChessGroupType)
+    {
+    case EC_B5:
         nScore = SCORE_BECOME_5;
-		break;
-	case EC_L4:
+        break;
+    case EC_L4:
         nScore = SCORE_LIVE_4;
         nExtraScore = bSelf ? SCORE_SELF_4 : 0;
-		break;
-	case EC_S4:
+        break;
+    case EC_S4:
         nScore = SCORE_SINGLE_4;
         nExtraScore = bSelf ? SCORE_SELF_4 : 0;
-		break;
-	case EC_L3:
+        break;
+    case EC_L3:
         nScore = SCORE_LIVE_3;
         nExtraScore = bSelf ? SCORE_SELF_3 : 0;
-		break;
-	case EC_S3:
+        break;
+    case EC_S3:
         nScore = SCORE_SLEEP_3;
         nExtraScore = bSelf ? SCORE_SELF_3 : 0;
-		break;
-	case EC_L2:
+        break;
+    case EC_L2:
         nScore = SCORE_LIVE_2;
         nExtraScore = bSelf ? SCORE_SELF_2 : 0;
-		break;
-	case EC_S2:
+        break;
+    case EC_S2:
         nScore = SCORE_SLEEP_2;
         nExtraScore = bSelf ? SCORE_SELF_2 : 0;
-		break;
-	default:
-		break;
-	}
+        break;
+    default:
+        break;
+    }
     return nScore + nExtraScore;
 }
 

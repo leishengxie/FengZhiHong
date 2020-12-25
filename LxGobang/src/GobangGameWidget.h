@@ -18,6 +18,10 @@ public:
     CGobangGameWidget(QWidget *parent = nullptr);
     ~CGobangGameWidget();
 
+    void onGameStart() override;
+    void onGameInOnesTurn() override;
+    void onGameOver() override;
+
 private slots:
     void on_btnStart_clicked();
 

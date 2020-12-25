@@ -24,7 +24,7 @@ void CJudge::setPlayers(CPlayer *p1, CPlayer *p2)
 
 bool CJudge::isHavenotBegunYet()
 {
-    return (m_pPlayer1 == nullptr || m_pPlayer1 == nullptr);
+    return !m_pGobangGame->isPlaying();
 }
 
 void CJudge::switchActivePlayer()
@@ -75,19 +75,32 @@ CPlayer *CJudge::judgeOnTheOffensive()
     return pOnTheOffensive;
 }
 
-CPlayer *CJudge::judgeHasAlreadyAbleWon()
+
+
+void CJudge::onEventGameStart()
 {
-    bool bBlackHasBecome5 = m_pChessBoard->hasBecome_5(CChess::E_Black);
-    bool bWhiteHasBecome5 = m_pChessBoard->hasBecome_5(CChess::E_White);
-    if (bBlackHasBecome5 || bWhiteHasBecome5)
-    {
-        notifyGameOver();
-    }
+    m_pGobangGame->onGameStart();
 }
 
-void CJudge::notifyGameOver()
+void CJudge::onEventInOnesTurn()
 {
-    m_pGobangGame->over();
+    m_pGobangGame->onGameInOnesTurn();
+}
+
+void CJudge::onEventSetChessDone()
+{
+    bool bHasBecome5 = m_pChessBoard->hasBecome5Mothod_2(m_pActivePlayer->choosedChessType());
+    if (bHasBecome5)
+    {
+        onEventGameOver();
+        return;
+    }
+    switchActivePlayer();
+}
+
+void CJudge::onEventGameOver()
+{
+    m_pGobangGame->onGameOver();
 }
 
 CJudge::CJudge()

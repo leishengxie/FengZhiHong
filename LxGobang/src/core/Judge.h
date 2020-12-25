@@ -46,10 +46,10 @@ public:
     // 判断先手
     CPlayer* judgeOnTheOffensive();
 
-    // 判断是否已经有玩家可以胜出
-    CPlayer* judgeHasAlreadyAbleWon();
-
-    void notifyGameOver();
+    void onEventGameStart();
+    void onEventInOnesTurn();
+    void onEventSetChessDone();
+    void onEventGameOver();
 
 private:
     CJudge();

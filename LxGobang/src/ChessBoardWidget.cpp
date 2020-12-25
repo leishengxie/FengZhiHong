@@ -117,7 +117,8 @@ void CChessBoardWidget::mouseReleaseEvent(QMouseEvent *event)
 
     setChess(x, y, CJudge::getInstance()->activePlayer()->choosedChessType());
     update();
-    CJudge::getInstance()->switchActivePlayer();
+    CJudge::getInstance()->onEventSetChessDone();
+
 }
 
 void CChessBoardWidget::drawBoard()

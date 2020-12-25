@@ -120,7 +120,7 @@ bool CChessBoard::isEmptyAt(int x, int y) const
 /// \param eChessType
 /// \return
 ///
-bool CChessBoard::hasBecome_5(CChess::E_ChessType eChessType)
+bool CChessBoard::hasBecome5Mothod_1(CChess::E_ChessType eChessType)
 {
     //bool bHasBecome5 = false;
     /// top-bottom
@@ -241,18 +241,31 @@ bool CChessBoard::hasBecome_5(CChess::E_ChessType eChessType)
     }
 }
 
-bool CChessBoard::hasBecome_5(CChess::E_ChessType eChessType, int x, int y)
+bool CChessBoard::hasBecome5Mothod_2(CChess::E_ChessType eChessType)
 {
+    for (int x = 0; x < m_nWidth; ++x)
+    {
+        for (int y = 0; y < m_nHeight; ++y)
+        {
+            if(chessTypeAt(x, y) != eChessType)
+            {
+                continue;
+            }
+            for (int i = 0; i < EV_VectorDirectionMax; ++i)
+            {
+                E_VectorDirection eVectorDirection = E_VectorDirection(i);
+                int nNum = getSameChessMaxNum(CChess(x, y, eChessType)
+                                              , CPlaneVector::getUnitVector(eVectorDirection));
+                if(nNum > 4)
+                {
+                    return true;
+                }
+            }
+
+        }
+    }
     return false;
 }
-
-bool CChessBoard::hasBecome_5(CChess::E_ChessType eChessType, const CPoint &pos)
-{
-    return hasBecome_5(eChessType, pos.x(), pos.y());
-}
-
-
-
 
 
 

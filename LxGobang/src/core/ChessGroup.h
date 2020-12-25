@@ -67,7 +67,6 @@ public:
     }
 
 
-    void analyse(const CChessBoard* pChessBoard);
     E_ChessGroupType analyseChessGroupType(const CChessBoard* pChessBoard);
 
     // 判断时候是活x
