@@ -19,10 +19,6 @@ CGobangGame::CGobangGame(CChessBoard *pChessBoard, CPlayer *p1, CPlayer *p2)
 
 void CGobangGame::onGameStart()
 {
-//    m_pChessBoard->reset();
-//    m_pPlayer1->reset();
-//    m_pPlayer2->reset();
-
     m_eGameStatus = EG_Playing;
 
 }
@@ -46,6 +42,11 @@ void CGobangGame::played()
 void CGobangGame::onGameOver()
 {
     m_eGameStatus = EG_Over;
+}
+
+void CGobangGame::onGameRestart()
+{
+
 }
 
 bool CGobangGame::isReading()

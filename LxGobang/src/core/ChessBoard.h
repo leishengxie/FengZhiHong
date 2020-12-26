@@ -77,6 +77,7 @@ protected:
     // 派生类实现接口
     virtual void drawBoard(){}
     virtual void drawChesses(){}
+    virtual void drawLastActiveChesse(const CChess & chess){(void)chess;}
 
 
 protected:

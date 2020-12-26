@@ -3,9 +3,11 @@
 #include "core/Judge.h"
 #include "core/Player.h"
 
+#include <QSound>
 #include <math.h>
 #include <QPainter>
 #include <QMouseEvent>
+
 
 CChessBoardWidget::CChessBoardWidget(QWidget* parent)
     : QWidget(parent)
@@ -115,6 +117,7 @@ void CChessBoardWidget::mouseReleaseEvent(QMouseEvent *event)
     }
 
 
+    QSound::play(":/sound/chessone.wav");
     setChess(x, y, CJudge::getInstance()->activePlayer()->choosedChessType());
     update();
     CJudge::getInstance()->onEventSetChessDone();

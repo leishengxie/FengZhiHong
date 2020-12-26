@@ -35,11 +35,15 @@ void CGobangGameWidget::onGameStart()
 {
     CGobangGame::onGameStart();
     m_timerScheduler->start();
+    ui->btnStart->setEnabled(false);
+    ui->btnTakeBackChess->setEnabled(false);
+    ui->btnRestart->setEnabled(true);
 }
 
 void CGobangGameWidget::onGameInOnesTurn()
 {
     CGobangGame::onGameInOnesTurn();
+    ui->btnTakeBackChess->setEnabled(true);
     ((CChessBoardWidget*)m_pChessBoard)->update();
 }
 
@@ -47,7 +51,19 @@ void CGobangGameWidget::onGameOver()
 {
     CGobangGame::onGameOver();
     m_timerScheduler->stop();
-    QMessageBox::warning(this, "提示", "游戏结束");
+    bool bWin = CJudge::getInstance()->winner()->isRobot() ? false : true;
+    QString strTip;
+    if(bWin)
+    {
+        strTip = "你赢了";
+    }
+    else
+    {
+        strTip = "你输了";
+    }
+    QMessageBox::warning(this, "提示", "游戏结束," + strTip);
+    ui->btnTakeBackChess->setEnabled(false);
+
 }
 
 
@@ -80,4 +96,9 @@ void CGobangGameWidget::paintEvent(QPaintEvent *event)
     painter.drawPixmap(rect(), m_pixBg);
 
 
+}
+
+void CGobangGameWidget::on_btnRestart_clicked()
+{
+    CJudge::getInstance()->onEventGameRestart();
 }

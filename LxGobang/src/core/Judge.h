@@ -26,9 +26,9 @@ public:
     // 如果没有选手被认为还没有开始
     bool isHavenotBegunYet();
 
-    CPlayer* preWinner() const
+    CPlayer* winner() const
     {
-        return m_pPreWinner;
+        return m_pWinner;
     }
 
     void setActivePlayer(CPlayer* player)
@@ -50,6 +50,7 @@ public:
     void onEventInOnesTurn();
     void onEventSetChessDone();
     void onEventGameOver();
+    void onEventGameRestart();
 
 private:
     CJudge();
@@ -62,7 +63,7 @@ private:
     CGobangGame* m_pGobangGame;
     CChessBoard* m_pChessBoard;
 
-    CPlayer* m_pPreWinner;  //上一局赢的玩家
+    CPlayer* m_pWinner;  //赢的玩家
     // 当前等待执行落子的玩家，〖轮走方〗即“行棋方”,即本轮活动玩家current round active player
     CPlayer* m_pActivePlayer;
 };

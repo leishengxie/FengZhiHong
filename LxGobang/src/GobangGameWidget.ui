@@ -59,6 +59,13 @@
         </widget>
        </item>
        <item>
+        <widget class="QPushButton" name="btnRestart">
+         <property name="text">
+          <string>重新开始</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <spacer name="verticalSpacer_2">
          <property name="orientation">
           <enum>Qt::Vertical</enum>

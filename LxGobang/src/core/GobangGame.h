@@ -51,6 +51,7 @@ public:
 
     virtual void played();
     virtual void onGameOver();
+    virtual void onGameRestart();
 
     bool isReading();
     bool isPlaying();

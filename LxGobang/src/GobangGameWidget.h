@@ -29,6 +29,8 @@ private slots:
 
     void slotTimerSchedulerTimeOut();
 
+    void on_btnRestart_clicked();
+
 protected:
     void paintEvent(QPaintEvent *event);
 
