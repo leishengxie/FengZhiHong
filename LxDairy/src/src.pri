@@ -17,6 +17,7 @@ INCLUDEPATH += \
 HEADERS += \
     $$PWD/DairyAppVersion.h \
     $$PWD/core/LBaseWidget.h \
+    $$PWD/module_collection/Article.h \
     $$PWD/module_tool/GeneralToolsWidget.h \
     $$PWD/module_tool/Plugin.h \
     $$PWD/module_tool/PluginsManger.h \
@@ -80,6 +81,7 @@ HEADERS += \
 
 SOURCES += \
     $$PWD/core/LBaseWidget.cpp \
+    $$PWD/module_collection/Article.cpp \
     $$PWD/module_tool/GeneralToolsWidget.cpp \
     $$PWD/module_tool/PluginsManger.cpp \
     $$PWD/music/LLrc.cpp \
