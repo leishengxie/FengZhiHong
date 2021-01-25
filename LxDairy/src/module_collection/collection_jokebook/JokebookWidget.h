@@ -12,7 +12,7 @@ namespace Ui {
 class CJokebookWidget;
 }
 
-class CJokeEditor;
+class CArticleEditor;
 class CJokeModel;
 
 class CJokebookWidget : public QWidget
@@ -62,7 +62,7 @@ private:
 
     CJokeModel* m_pJokeModel;
     CJokeSortFilterProxyModel* m_pProxyModel;
-    CJokeEditor* m_pJokeEditor;
+    CArticleEditor* m_pJokeEditor;
 
     //QNetworkAccessManager m_networkAccessManager;
 

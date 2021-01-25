@@ -1,23 +1,23 @@
-#include "JokeEditor.h"
+#include "ArticleEditor.h"
 #include "ui_JokeEditor.h"
 
 #include <QDateTime>
 #include "DairyApp.h"
 
-CJokeEditor::CJokeEditor(QWidget *parent, Qt::WindowFlags f) :
+CArticleEditor::CArticleEditor(QWidget *parent, Qt::WindowFlags f) :
     QWidget(parent, f),
     ui(new Ui::CJokeEditor)
 {
     ui->setupUi(this);
 }
 
-CJokeEditor::~CJokeEditor()
+CArticleEditor::~CArticleEditor()
 {
     delete ui;
 }
 
 
-void CJokeEditor::on_btnUpload_clicked()
+void CArticleEditor::on_btnUpload_clicked()
 {
     T_Joke tJoke;
     tJoke.strTitle = ui->leTitle->text();
@@ -30,7 +30,7 @@ void CJokeEditor::on_btnUpload_clicked()
     close();
 }
 
-void CJokeEditor::on_btnCancel_clicked()
+void CArticleEditor::on_btnCancel_clicked()
 {
     close();
 }

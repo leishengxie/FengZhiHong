@@ -18,6 +18,7 @@ HEADERS += \
     $$PWD/DairyAppVersion.h \
     $$PWD/core/LBaseWidget.h \
     $$PWD/module_collection/Article.h \
+    $$PWD/module_collection/collection_jokebook/ArticleEditor.h \
     $$PWD/module_tool/GeneralToolsWidget.h \
     $$PWD/module_tool/Plugin.h \
     $$PWD/module_tool/PluginsManger.h \
@@ -57,7 +58,6 @@ HEADERS += \
     $$PWD/DairyAppStation.h \
     $$PWD/module_collection/CollectionModel.h \
     $$PWD/module_collection/CollectionDelegate.h \
-    $$PWD/module_collection/collection_jokebook/JokeEditor.h \
     $$PWD/styles/LBronzeStyle.h \
     $$PWD/styles/LColorStyle.h \
     $$PWD/styles/LGreenNaturalStyle.h \
@@ -82,6 +82,7 @@ HEADERS += \
 SOURCES += \
     $$PWD/core/LBaseWidget.cpp \
     $$PWD/module_collection/Article.cpp \
+    $$PWD/module_collection/collection_jokebook/ArticleEditor.cpp \
     $$PWD/module_tool/GeneralToolsWidget.cpp \
     $$PWD/module_tool/PluginsManger.cpp \
     $$PWD/music/LLrc.cpp \
@@ -121,7 +122,6 @@ SOURCES += \
     $$PWD/DairyAppStation.cpp \
     $$PWD/module_collection/CollectionModel.cpp \
     $$PWD/module_collection/CollectionDelegate.cpp \
-    $$PWD/module_collection/collection_jokebook/JokeEditor.cpp \
     $$PWD/styles/LBronzeStyle.cpp \
     $$PWD/styles/LColorStyle.cpp \
     $$PWD/styles/LGreenNaturalStyle.cpp \
@@ -145,6 +145,7 @@ SOURCES += \
 
 
 FORMS += \
+    $$PWD/module_collection/collection_jokebook/ArticleEditor.ui \
     $$PWD/module_tool/GeneralToolsWidget.ui \
     $$PWD/music/MusicSettingDialog.ui \
     $$PWD/AboutDialog.ui \
@@ -158,5 +159,4 @@ FORMS += \
     $$PWD/module_dairy/dairy_edit/DairyEditWidget.ui \
     $$PWD/module_dairy/dairy_statistics/DairyStatisticsWidget.ui \
     $$PWD/module_dairy/dairy_edit/DairyEditMainWidget.ui \
-    $$PWD/module_collection/collection_jokebook/JokeEditor.ui \
     $$PWD/DownloadDialog.ui

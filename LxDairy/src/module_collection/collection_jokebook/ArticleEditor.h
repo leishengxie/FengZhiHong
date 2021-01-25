@@ -5,16 +5,20 @@
 #include "Joke.h"
 
 namespace Ui {
-class CJokeEditor;
+class CArticleEditor;
 }
 
-class CJokeEditor : public QWidget
+
+///
+/// \brief The CArticleEditor class 文章编辑器
+///
+class CArticleEditor : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit CJokeEditor(QWidget *parent = 0, Qt::WindowFlags f = Qt::WindowFlags());
-    ~CJokeEditor();
+    explicit CArticleEditor(QWidget *parent = 0, Qt::WindowFlags f = Qt::WindowFlags());
+    ~CArticleEditor();
 
 signals:
     void requreUploadJoke(const T_Joke & tJoke);
@@ -26,7 +30,7 @@ private slots:
     void on_btnCancel_clicked();
 
 private:
-    Ui::CJokeEditor *ui;
+    Ui::CArticleEditor *ui;
 };
 
 #endif // JOKEEDITOR_H

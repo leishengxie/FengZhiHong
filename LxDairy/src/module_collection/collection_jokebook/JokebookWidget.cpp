@@ -3,7 +3,7 @@
 #include "JokeModel.h"
 #include "JokeSortFilterProxyModel.h"
 #include "JokeDelegate.h"
-#include "JokeEditor.h"
+#include "ArticleEditor.h"
 
 #include <QDateTime>
 #include <QNetworkReply>
@@ -43,7 +43,7 @@ CJokebookWidget::CJokebookWidget(QWidget* parent) :
     connect(pItemSelectionModel, SIGNAL(selectionChanged(QItemSelection, QItemSelection)),
             this, SLOT(onSelectionChanged(QItemSelection, QItemSelection)));
 
-    m_pJokeEditor = new CJokeEditor(this, Qt::Window);
+    m_pJokeEditor = new CArticleEditor(this, Qt::Window);
     connect(m_pJokeEditor, SIGNAL(requreUploadJoke(T_Joke)), this, SLOT(requestUploadJoke(T_Joke)));
     connect(ui->starEditor, SIGNAL(editingFinished(qreal)), this, SLOT(onStarEidtFinished(qreal)));
 
