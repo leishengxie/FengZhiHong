@@ -18,7 +18,11 @@ HEADERS += \
     $$PWD/DairyAppVersion.h \
     $$PWD/core/LBaseWidget.h \
     $$PWD/module_collection/Article.h \
-    $$PWD/module_collection/collection_jokebook/ArticleEditor.h \
+    $$PWD/module_collection/ArticleDelegate.h \
+    $$PWD/module_collection/ArticleEditor.h \
+    $$PWD/module_collection/ArticleModel.h \
+    $$PWD/module_collection/ArticleSortFilterProxyModel.h \
+    $$PWD/module_collection/StarEditor.h \
     $$PWD/module_tool/GeneralToolsWidget.h \
     $$PWD/module_tool/Plugin.h \
     $$PWD/module_tool/PluginsManger.h \
@@ -39,10 +43,6 @@ HEADERS += \
     $$PWD/core/LEvent.h \
     $$PWD/DairyApp.h \
     $$PWD/module_collection/CollectionWidget.h \
-    $$PWD/module_collection/collection_jokebook/StarEditor.h \
-    $$PWD/module_collection/collection_jokebook/JokebookWidget.h \
-    $$PWD/module_collection/collection_jokebook/JokeModel.h \
-    $$PWD/module_collection/collection_jokebook/JokeDelegate.h \
     $$PWD/module_dairy/Dairy.h \
     $$PWD/module_dairy/DairyWidget.h \
     $$PWD/module_dairy/dairy_date/DairyDateDelegate.h \
@@ -70,19 +70,21 @@ HEADERS += \
     $$PWD/styles/LNorwegianWoodStyle.h \
     $$PWD/styles/LDarkDevelopStyle.h \
     $$PWD/DairyHttpClient.h \
-    $$PWD/module_collection/collection_jokebook/Joke.h \
     $$PWD/net_appointments/NetAppointments.h \
     $$PWD/net_appointments/datastream_type/NetDataStream.h \
     $$PWD/UserInfo.h \
     $$PWD/module_dairy/dairy_date/DairyDateTreeView.h \
     $$PWD/module_dairy/dairy_tag/DairyTagListView.h \
-    $$PWD/module_collection/collection_jokebook/JokeSortFilterProxyModel.h \
     $$PWD/DownloadDialog.h
 
 SOURCES += \
     $$PWD/core/LBaseWidget.cpp \
     $$PWD/module_collection/Article.cpp \
-    $$PWD/module_collection/collection_jokebook/ArticleEditor.cpp \
+    $$PWD/module_collection/ArticleDelegate.cpp \
+    $$PWD/module_collection/ArticleEditor.cpp \
+    $$PWD/module_collection/ArticleModel.cpp \
+    $$PWD/module_collection/ArticleSortFilterProxyModel.cpp \
+    $$PWD/module_collection/StarEditor.cpp \
     $$PWD/module_tool/GeneralToolsWidget.cpp \
     $$PWD/module_tool/PluginsManger.cpp \
     $$PWD/music/LLrc.cpp \
@@ -103,10 +105,6 @@ SOURCES += \
     $$PWD/core/LEvent.cpp \
     $$PWD/DairyApp.cpp \
     $$PWD/module_collection/CollectionWidget.cpp \
-    $$PWD/module_collection/collection_jokebook/StarEditor.cpp \
-    $$PWD/module_collection/collection_jokebook/JokebookWidget.cpp \
-    $$PWD/module_collection/collection_jokebook/JokeModel.cpp \
-    $$PWD/module_collection/collection_jokebook/JokeDelegate.cpp \
     $$PWD/module_dairy/Dairy.cpp \
     $$PWD/module_dairy/DairyWidget.cpp \
     $$PWD/module_dairy/dairy_date/DairyDateDelegate.cpp \
@@ -134,18 +132,16 @@ SOURCES += \
     $$PWD/styles/LNorwegianWoodStyle.cpp \
     $$PWD/styles/LDarkDevelopStyle.cpp \
     $$PWD/DairyHttpClient.cpp \
-    $$PWD/module_collection/collection_jokebook/Joke.cpp \
     $$PWD/net_appointments/NetAppointments.cpp \
     $$PWD/net_appointments/datastream_type/NetDataStream.cpp \
     $$PWD/UserInfo.cpp \
     $$PWD/module_dairy/dairy_date/DairyDateTreeView.cpp \
     $$PWD/module_dairy/dairy_tag/DairyTagListView.cpp \
-    $$PWD/module_collection/collection_jokebook/JokeSortFilterProxyModel.cpp \
     $$PWD/DownloadDialog.cpp
 
 
 FORMS += \
-    $$PWD/module_collection/collection_jokebook/ArticleEditor.ui \
+    $$PWD/module_collection/ArticleEditor.ui \
     $$PWD/module_tool/GeneralToolsWidget.ui \
     $$PWD/music/MusicSettingDialog.ui \
     $$PWD/AboutDialog.ui \
@@ -155,7 +151,6 @@ FORMS += \
     $$PWD/SkinWidget.ui \
     $$PWD/module_dairy/DairyWidget.ui \
     $$PWD/module_collection/CollectionWidget.ui \
-    $$PWD/module_collection/collection_jokebook/JokebookWidget.ui \
     $$PWD/module_dairy/dairy_edit/DairyEditWidget.ui \
     $$PWD/module_dairy/dairy_statistics/DairyStatisticsWidget.ui \
     $$PWD/module_dairy/dairy_edit/DairyEditMainWidget.ui \
