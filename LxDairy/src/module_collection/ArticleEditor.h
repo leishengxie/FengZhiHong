@@ -2,7 +2,7 @@
 #define JOKEEDITOR_H
 
 #include <QWidget>
-#include "Joke.h"
+#include "Article.h"
 
 namespace Ui {
 class CArticleEditor;
@@ -21,7 +21,7 @@ public:
     ~CArticleEditor();
 
 signals:
-    void requreUploadJoke(const T_Joke & tJoke);
+    void requreUploadJoke(const T_Article & tJoke);
 
 private slots:
 

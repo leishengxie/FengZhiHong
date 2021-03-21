@@ -1,7 +1,7 @@
 #ifndef CJOKEMODEL_H
 #define CJOKEMODEL_H
 #include <QAbstractTableModel>
-#include "Joke.h"
+#include "Article.h"
 
 class CArticleModel : public QAbstractTableModel
 {
@@ -15,20 +15,20 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
     Qt::ItemFlags flags(const QModelIndex & index) const;
 
-    QList<T_Joke> listJoke()
+    QList<T_Article> listJoke()
     {
         return m_lstJoke;
     }
 
-    void setListJoke(const QList<T_Joke> & lstJoke);
-    void appendListJoke(const QList<T_Joke> & lstJoke);
+    void setListJoke(const QList<T_Article> & lstJoke);
+    void appendListJoke(const QList<T_Article> & lstJoke);
     void clear();
 
 private:
 
 
 private:
-    QList<T_Joke> m_lstJoke;
+    QList<T_Article> m_lstJoke;
     QStringList m_strlstHeader;
 };
 

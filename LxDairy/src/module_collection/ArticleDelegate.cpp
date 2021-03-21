@@ -18,7 +18,7 @@ void CArticleDelegate::paint(QPainter* painter, const QStyleOptionViewItem & opt
         return;
     }
 
-    T_Joke tJoke = qvariant_cast<T_Joke>(index.data());
+    T_Article tJoke = qvariant_cast<T_Article>(index.data());
 
     QStyleOptionViewItem  view_option(option);
     QRect rect = view_option.rect;

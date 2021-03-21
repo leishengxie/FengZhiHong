@@ -30,16 +30,16 @@ enum E_ArticleGenreType
 
 
 ///
-/// \brief The T_Article struct 文章
+/// \brief The T_Article struct 文章, 基本的单元
 ///
 struct T_Article
 {
 
-    QRect rect;
-    QRectF f;
-    QString str;
+//    QRect rect;
+//    QRectF f;
+//    QString str;
 
-    T_Article();
+//    T_Article();
 
     int jId;
     QString strTitle;
@@ -57,32 +57,10 @@ struct T_Article
     quint64 llRatingNumOfPeople; // 评价总人数
     qreal dRatingToatalScore ; // 评价总评分
     qreal dRatingAverageScore;  // 评价平均评分 0-5
-};
-
-
-
-
-
-struct T_Joke
-{
-    int jId;
-    QString strTitle;
-    QString strDate;
-    QString strContent;
-
-    bool bOriginal; // 是否原创
-
-    int upUid;        // 上传者用户id
-    QString strNickname; // 上传者昵称, 目前没有使用第三方登录， 先用用户名顶替
-
-
-    quint64 llRatingNumOfPeople; // 评价总人数
-    qreal dRatingToatalScore ; // 评价总评分
-    qreal dRatingAverageScore;  // 评价平均评分 0-5
 
     //QVector<T_Rating> vecRating;    // 评价列表
 
-    T_Joke()
+    T_Article()
         : jId(-1)
         , bOriginal(false)
         , upUid(-1)
@@ -94,12 +72,13 @@ struct T_Joke
     }
 
 #ifndef QT_NO_DATASTREAM
-    friend QDataStream & operator>>(QDataStream & in, T_Joke & data);
-    friend QDataStream & operator<<(QDataStream & out, const T_Joke & data);
+    friend QDataStream & operator>>(QDataStream & in, T_Article & data);
+    friend QDataStream & operator<<(QDataStream & out, const T_Article & data);
 #endif
-
 };
-Q_DECLARE_METATYPE(T_Joke)
+
+
+Q_DECLARE_METATYPE(T_Article)
 
 
 // filter
@@ -124,7 +103,7 @@ enum E_OrderType
     EO_DESC,
 };
 
-struct T_JokeListRequest
+struct T_ArticleListRequest
 {
     int uId;
     int nPageIndex; // 页码
@@ -133,7 +112,7 @@ struct T_JokeListRequest
     int nSortFiled;
     int nOrderType;
 
-    T_JokeListRequest()
+    T_ArticleListRequest()
         : nPageIndex(1)
         , nPageItems(10)
         , nSelectType(ES_SelectByWorld)
@@ -157,35 +136,35 @@ struct T_JokeListRequest
         init();
     }
 
-    friend QDataStream & operator>>(QDataStream & in, T_JokeListRequest & data);
-    friend QDataStream & operator<<(QDataStream & out, const T_JokeListRequest & data);
+    friend QDataStream & operator>>(QDataStream & in, T_ArticleListRequest & data);
+    friend QDataStream & operator<<(QDataStream & out, const T_ArticleListRequest & data);
 
 };
 
-struct T_JokeListResp
+struct T_ArticleListResp
 {
     int nTotalItems;
-    QList<T_Joke> listJoke;
+    QList<T_Article> listJoke;
 
-    T_JokeListResp()
+    T_ArticleListResp()
         : nTotalItems(0)
     {
 
     }
 
-    friend QDataStream & operator>>(QDataStream & in, T_JokeListResp & data);
-    friend QDataStream & operator<<(QDataStream & out, const T_JokeListResp & data);
+    friend QDataStream & operator>>(QDataStream & in, T_ArticleListResp & data);
+    friend QDataStream & operator<<(QDataStream & out, const T_ArticleListResp & data);
 };
 
 
-struct T_JokeRating
+struct T_ArticleRating
 {
     int jId;        // 被评价的资源id 既是主键也是外键
     int uId;        // 评价用户id 既是主键也是外键
     qreal dRating;  // 评分
 
-    friend QDataStream & operator>>(QDataStream & in, T_JokeRating & data);
-    friend QDataStream & operator<<(QDataStream & out, const T_JokeRating & data);
+    friend QDataStream & operator>>(QDataStream & in, T_ArticleRating & data);
+    friend QDataStream & operator<<(QDataStream & out, const T_ArticleRating & data);
 };
 
 #endif // CARTICLE_H

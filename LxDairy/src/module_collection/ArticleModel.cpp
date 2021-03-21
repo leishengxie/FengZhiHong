@@ -37,7 +37,7 @@ QVariant CArticleModel::data(const QModelIndex & index, int role) const
     {
         return QVariant();
     }
-    T_Joke tJoke = m_lstJoke.at(index.row());
+    T_Article tJoke = m_lstJoke.at(index.row());
     QVariant variant;
     variant.setValue(tJoke);
     return variant;
@@ -85,14 +85,14 @@ Qt::ItemFlags CArticleModel::flags(const QModelIndex & index) const
     return  flag;
 }
 
-void CArticleModel::setListJoke(const QList<T_Joke> & lstJoke)
+void CArticleModel::setListJoke(const QList<T_Article> & lstJoke)
 {
     beginResetModel();
     m_lstJoke = lstJoke;
     endResetModel();
 }
 
-void CArticleModel::appendListJoke(const QList<T_Joke> &lstJoke)
+void CArticleModel::appendListJoke(const QList<T_Article> &lstJoke)
 {
     if (lstJoke.isEmpty())
     {

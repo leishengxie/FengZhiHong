@@ -3,9 +3,9 @@
 #include "CollectionDelegate.h"
 #include "CollectionModel.h"
 
-#include "JokeModel.h"
-#include "JokeSortFilterProxyModel.h"
-#include "JokeDelegate.h"
+#include "ArticleModel.h"
+#include "ArticleSortFilterProxyModel.h"
+#include "ArticleDelegate.h"
 #include "ArticleEditor.h"
 
 #include <QDateTime>
@@ -17,7 +17,7 @@
 #include "NetAppointments.h"
 #include "DairyApp.h"
 #include "LToast.h"
-#include "JokeModel.h"
+#include "ArticleModel.h"
 
 #include <QHeaderView>
 
@@ -36,7 +36,7 @@ CCollectionWidget::CCollectionWidget(QWidget *parent) :
     m_pJokeModel = new CArticleModel(this);
     m_pProxyModel = new CArticleSortFilterProxyModel;
     m_pProxyModel->setSourceModel(m_pJokeModel);
-    CJokeDelegate* pJokeDelegate = new CJokeDelegate(this);
+    CArticleDelegate* pJokeDelegate = new CArticleDelegate(this);
     ui->tableView->setModel(m_pProxyModel);
     ui->tableView->setItemDelegate(pJokeDelegate);
     ui->tableView->setShowGrid(false);
@@ -53,7 +53,7 @@ CCollectionWidget::CCollectionWidget(QWidget *parent) :
             this, SLOT(onSelectionChanged(QItemSelection, QItemSelection)));
 
     m_pJokeEditor = new CArticleEditor(this, Qt::Window);
-    connect(m_pJokeEditor, SIGNAL(requreUploadJoke(T_Joke)), this, SLOT(requestUploadJoke(T_Joke)));
+    connect(m_pJokeEditor, SIGNAL(requreUploadJoke(T_Article)), this, SLOT(requestUploadJoke(T_Article)));
     connect(ui->starEditor, SIGNAL(editingFinished(qreal)), this, SLOT(onStarEidtFinished(qreal)));
 }
 
@@ -65,12 +65,12 @@ CCollectionWidget::~CCollectionWidget()
 
 
 
-void CJokebookWidget::saveJoke(const T_Joke & tJoke)
+void CCollectionWidget::saveJoke(const T_Article & tJoke)
 {
 
 }
 
-void CJokebookWidget::requestUploadJoke(const T_Joke & tJoke)
+void CCollectionWidget::requestUploadJoke(const T_Article & tJoke)
 {
 
 //    qDebug() << "uploadJoke:" << tJoke.strDate << tJoke.strTitle;
@@ -91,16 +91,16 @@ void CJokebookWidget::requestUploadJoke(const T_Joke & tJoke)
 }
 
 ///
-/// \brief CJokebookWidget::requestJokeList
+/// \brief CCollectionWidget::requestJokeList
 /// \param tJokeListRequest
 /// \param bAppend  是否追加到现有列表，否则清除现有列表
 ///
-void CJokebookWidget::requestJokeList(const T_JokeListRequest & tJokeListRequest, bool bAppend)
+void CCollectionWidget::requestJokeList(const T_ArticleListRequest & tJokeListRequest, bool bAppend)
 {
     CDairyHttpClient* pDairyHttpClient = new CDairyHttpClient(this, true);
     connect(pDairyHttpClient, &CDairyHttpClient::finished_1, [ = ](QByteArray byteArray)
     {
-        m_tJokeListResp = CNetAppointments::deserialization<T_JokeListResp>(byteArray);
+        m_tJokeListResp = CNetAppointments::deserialization<T_ArticleListResp>(byteArray);
         if (bAppend)
         {
             m_pJokeModel->appendListJoke(m_tJokeListResp.listJoke);
@@ -117,12 +117,12 @@ void CJokebookWidget::requestJokeList(const T_JokeListRequest & tJokeListRequest
     pDairyHttpClient->post(CNetAppointments::urlJokeList(), CNetAppointments::serializa(tJokeListRequest));
 }
 
-void CJokebookWidget::onRespUploadJoke(const QByteArray & data)
+void CCollectionWidget::onRespUploadJoke(const QByteArray & data)
 {
 
 }
 
-//void CJokebookWidget::onRespUploadJokeFinished()
+//void CCollectionWidget::onRespUploadJokeFinished()
 //{
 //    QNetworkReply* pNetworkReply = qobject_cast<QNetworkReply*>(sender());
 //    QByteArray data = pNetworkReply->readAll();
@@ -147,14 +147,14 @@ void CJokebookWidget::onRespUploadJoke(const QByteArray & data)
 
 //}
 
-void CJokebookWidget::showEvent(QShowEvent* event)
+void CCollectionWidget::showEvent(QShowEvent* event)
 {
     Q_UNUSED(event)
     m_tJokeListRequest.reset();
     requestJokeList(m_tJokeListRequest);
 }
 
-void CJokebookWidget::hideEvent(QHideEvent* event)
+void CCollectionWidget::hideEvent(QHideEvent* event)
 {
     Q_UNUSED(event)
     //ui->tableView->model()->cl
@@ -163,7 +163,7 @@ void CJokebookWidget::hideEvent(QHideEvent* event)
 }
 
 
-void CJokebookWidget::on_comboBox_currentIndexChanged(int index)
+void CCollectionWidget::on_comboBox_currentIndexChanged(int index)
 {
     Q_ASSERT(index < ES_Max);
 
@@ -189,16 +189,16 @@ void CJokebookWidget::on_comboBox_currentIndexChanged(int index)
 }
 
 
-void CJokebookWidget::on_btnAdd_clicked()
+void CCollectionWidget::on_btnAdd_clicked()
 {
     m_pJokeEditor->show();
 }
 
-void CJokebookWidget::on_tableView_clicked(const QModelIndex & index)
+void CCollectionWidget::on_tableView_clicked(const QModelIndex & index)
 {
 
     ui->textBrowser->clear();
-    T_Joke tJoke = qvariant_cast<T_Joke>(index.data());
+    T_Article tJoke = qvariant_cast<T_Article>(index.data());
     ui->textBrowser->append(QString("标题: %1").arg(tJoke.strTitle));
     ui->textBrowser->append(QString("日期: %1").arg(tJoke.strDate));
     ui->textBrowser->append(QString("上传作者昵称: %1").arg(tJoke.strNickname));
@@ -211,7 +211,7 @@ void CJokebookWidget::on_tableView_clicked(const QModelIndex & index)
     ui->starEditor->setRating(tJoke.dRatingAverageScore);
 }
 
-void CJokebookWidget::onStarEidtFinished(qreal dRating)
+void CCollectionWidget::onStarEidtFinished(qreal dRating)
 {
     QItemSelectionModel* pItemSelectionModel = ui->tableView->selectionModel();
     QModelIndexList IndexList = pItemSelectionModel->selectedIndexes();
@@ -221,8 +221,8 @@ void CJokebookWidget::onStarEidtFinished(qreal dRating)
         CLToast::showStr(this, "请先选择一则笑话！");
         return;
     }
-    T_Joke tJoke = qvariant_cast<T_Joke>(IndexList.at(0).data());
-    T_JokeRating tJokeRating;
+    T_Article tJoke = qvariant_cast<T_Article>(IndexList.at(0).data());
+    T_ArticleRating tJokeRating;
     tJokeRating.jId = tJoke.jId;
     tJokeRating.uId = CDairyApp::userInfo().uid;
     tJokeRating.dRating = dRating;
@@ -236,7 +236,7 @@ void CJokebookWidget::onStarEidtFinished(qreal dRating)
     pDairyHttpClient->post(CNetAppointments::urlJokeRating(), CNetAppointments::serializa(tJokeRating));
 }
 
-void CJokebookWidget::onSelectionChanged(const QItemSelection & selected, const QItemSelection & deselected)
+void CCollectionWidget::onSelectionChanged(const QItemSelection & selected, const QItemSelection & deselected)
 {
 
     QItemSelectionModel* pItemSelectionModel = ui->tableView->selectionModel();
@@ -268,7 +268,7 @@ void CJokebookWidget::onSelectionChanged(const QItemSelection & selected, const 
     on_tableView_clicked(index);
 }
 
-void CJokebookWidget::onScrollBarValueChanged(int nValue)
+void CCollectionWidget::onScrollBarValueChanged(int nValue)
 {
     if (nValue == ui->tableView->verticalScrollBar()->maximum())
     {
@@ -283,7 +283,7 @@ void CJokebookWidget::onScrollBarValueChanged(int nValue)
     }
 }
 
-void CJokebookWidget::onHttpRequestFinished(const QByteArray & data)
+void CCollectionWidget::onHttpRequestFinished(const QByteArray & data)
 {
 
 }

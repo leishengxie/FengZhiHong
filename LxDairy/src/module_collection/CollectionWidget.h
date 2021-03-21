@@ -3,7 +3,7 @@
 
 #include <QWidget>
 //#include <QNetworkAccessManager>
-#include "JokeModel.h"
+#include "ArticleModel.h"
 #include <QItemSelectionModel>
 
 class CArticleSortFilterProxyModel;
@@ -26,9 +26,9 @@ public:
     ~CCollectionWidget();
 
 public slots:
-    void saveJoke(const T_Joke & tJoke);
-    void requestUploadJoke(const T_Joke & tJoke);
-    void requestJokeList(const T_JokeListRequest &tJokeListRequest, bool bAppend = false);
+    void saveJoke(const T_Article & tJoke);
+    void requestUploadJoke(const T_Article & tJoke);
+    void requestJokeList(const T_ArticleListRequest &tJokeListRequest, bool bAppend = false);
 
     void onRespUploadJoke(const QByteArray& data);
     //void onRespUploadJokeFinished();
@@ -67,8 +67,8 @@ private:
 
     //QNetworkAccessManager m_networkAccessManager;
 
-    T_JokeListRequest m_tJokeListRequest;
-    T_JokeListResp m_tJokeListResp;
+    T_ArticleListRequest m_tJokeListRequest;
+    T_ArticleListResp m_tJokeListResp;
 };
 
 #endif // COLLECTIONWIDGET_H

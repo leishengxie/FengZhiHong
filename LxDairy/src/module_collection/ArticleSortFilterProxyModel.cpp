@@ -24,7 +24,7 @@ bool CArticleSortFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelI
 		return QSortFilterProxyModel::filterAcceptsRow(sourceRow, sourceParent);
     }
     QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
-    T_Joke tJoke = qvariant_cast<T_Joke>(index.data());
+    T_Article tJoke = qvariant_cast<T_Article>(index.data());
     qDebug() << m_uid << tJoke.upUid;
     return m_uid == tJoke.upUid;
 
