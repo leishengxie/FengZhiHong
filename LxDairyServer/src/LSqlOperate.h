@@ -6,7 +6,7 @@
 #include <QSqlQuery>
 #include "Singleton.h"
 
-#include "collection_jokebook/Joke.h"
+#include "Article.h"
 #include "UserInfo.h"
 #include "NetAppointments.h"
 
@@ -48,11 +48,11 @@ public:
      void deleteDairy(const T_DairyDeleteReq & tDairyDeleteReq, T_HttpStatusMsg &tHttpStatusMsg);
 
      // 集服务
-     void saveUserUploadJoke(const T_Joke & tJoke, T_HttpStatusMsg &tHttpStatusMsg);
-     void getJokeList(const T_JokeListRequest & tJokeListRequest
-                      , T_JokeListResp & tJokeListResp
+     void saveUserUploadArticle(const T_Article & tArticle, T_HttpStatusMsg &tHttpStatusMsg);
+     void getArticleList(const T_ArticleListRequest & tArticleListRequest
+                      , T_ArticleListResp & tArticleListResp
                       , T_HttpStatusMsg &tHttpStatusMsg);
-     void jokeRating(const T_JokeRating & tJokeRating, T_HttpStatusMsg &tHttpStatusMsg);
+     void articleRating(const T_ArticleRating & tArticleRating, T_HttpStatusMsg &tHttpStatusMsg);
 
 
 public slots:

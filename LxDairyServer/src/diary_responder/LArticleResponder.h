@@ -3,11 +3,11 @@
 
 #include "IResponder.h"
 
-class CLJokeResponder : public IResponder
+class CLArticleResponder : public IResponder
 {
     Q_OBJECT
 public:
-    CLJokeResponder(CLHttpRequest* req, CLHttpResponse* resp);
+    CLArticleResponder(CLHttpRequest* req, CLHttpResponse* resp);
 
     virtual int handle();
 

@@ -116,8 +116,8 @@ void CLSqlOperate::createTable()
         qDebug() << query.lastError();
     }
 
-    /// tJoke 此表服务端即使上传者账号注销，其上传的作品不删除， 所以其外键删除时NO ACTION
-    strSql = "create table if not exists tJoke(" \
+    /// tArticle 此表服务端即使上传者账号注销，其上传的作品不删除， 所以其外键删除时NO ACTION
+    strSql = "create table if not exists tArticle(" \
              "jid int not null primary key auto_increment," \
              "title varchar(32) NOT NULL," \
              "create_datetime datetime," \
@@ -128,21 +128,21 @@ void CLSqlOperate::createTable()
              "total_rating_people int DEFAULT 0, " \
              "total_rating_score double DEFAULT 0, " \
              "average_rating_score double DEFAULT 0, " \
-             "CONSTRAINT fk_tJoke_up_uid FOREIGN KEY (up_uid) REFERENCES tUser(uid) ON DELETE NO ACTION ON UPDATE CASCADE" \
+             "CONSTRAINT fk_tArticle_up_uid FOREIGN KEY (up_uid) REFERENCES tUser(uid) ON DELETE NO ACTION ON UPDATE CASCADE" \
              ")";
     if (!query.exec(strSql))
     {
         qDebug() << query.lastError();
     }
 
-    /// tJoke 外键不能重名 统一用fk_表名_字段名
-    strSql = "create table if not exists tJokeRating(" \
+    /// tArticle 外键不能重名 统一用fk_表名_字段名
+    strSql = "create table if not exists tArticleRating(" \
              "jid int not null, " \
              "uid int not null, " \
              "rating double NOT NULL, " \
              "PRIMARY KEY (jid, uid), " \
-             "CONSTRAINT fk_tJokeRating_jid FOREIGN KEY (jid) REFERENCES tJoke(jid) ON DELETE CASCADE ON UPDATE CASCADE," \
-             "CONSTRAINT fk_tJokeRating_uid FOREIGN KEY (uid) REFERENCES tUser(uid) ON DELETE CASCADE ON UPDATE CASCADE" \
+             "CONSTRAINT fk_tArticleRating_jid FOREIGN KEY (jid) REFERENCES tArticle(jid) ON DELETE CASCADE ON UPDATE CASCADE," \
+             "CONSTRAINT fk_tArticleRating_uid FOREIGN KEY (uid) REFERENCES tUser(uid) ON DELETE CASCADE ON UPDATE CASCADE" \
              ")";
     if (!query.exec(strSql))
     {
@@ -155,9 +155,9 @@ void CLSqlOperate::createTable()
 
 void CLSqlOperate::createProc()
 {
-//    DROP PROCEDURE IF EXISTS `proc_joke_rating`;
+//    DROP PROCEDURE IF EXISTS `proc_article_rating`;
 //    delimiter ;;
-//    CREATE PROCEDURE `proc_joke_rating`(IN `i_jid` int,IN `i_uid` int,IN `i_rating` double)
+//    CREATE PROCEDURE `proc_article_rating`(IN `i_jid` int,IN `i_uid` int,IN `i_rating` double)
 //    BEGIN
 //        #Routine body goes here...
 //    DECLARE bExist TINYINT default 0;
@@ -168,21 +168,21 @@ void CLSqlOperate::createProc()
 //    DECLARE t_error int DEFAULT 0;
 //    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET t_error=1;
 
-//        select count(1) into bExist from tjokerating where jid=i_jid and uid=i_uid;
+//        select count(1) into bExist from tarticlerating where jid=i_jid and uid=i_uid;
 //    # 开始事务
 //    START TRANSACTION;
 //        if bExist
 //        then
-//        update tJokeRating set rating=i_rating where jid=i_jid and uid=i_uid;
+//        update tArticleRating set rating=i_rating where jid=i_jid and uid=i_uid;
 //    else
-//    INSERT INTO tJokeRating(jid, uid, rating) VALUES(i_jid, i_uid, i_rating);
+//    INSERT INTO tArticleRating(jid, uid, rating) VALUES(i_jid, i_uid, i_rating);
 
 //    end if;
 
-//    # select COUNT(1) into var_total_rating_people from tjokerating where jid=i_jid;
-//    #	set @var_total_rating_score = (select SUM(rating) from tjokerating where jid=i_jid);
+//    # select COUNT(1) into var_total_rating_people from tarticlerating where jid=i_jid;
+//    #	set @var_total_rating_score = (select SUM(rating) from tarticlerating where jid=i_jid);
 //    #	set @var_average_rating_score = var_total_rating_people / var_total_rating_score;
-//    update tJoke, (select COUNT(1) as r_count from tjokerating where jid=i_jid) as t1, (select SUM(rating) as r_rating from tjokerating where jid=i_jid) as t2 set total_rating_people=t1.r_count, total_rating_score=t2.r_rating, average_rating_score = r_rating / r_count WHERE jid=i_jid;
+//    update tArticle, (select COUNT(1) as r_count from tarticlerating where jid=i_jid) as t1, (select SUM(rating) as r_rating from tarticlerating where jid=i_jid) as t2 set total_rating_people=t1.r_count, total_rating_score=t2.r_rating, average_rating_score = r_rating / r_count WHERE jid=i_jid;
 
 //    IF t_error = 1 THEN
 //                ROLLBACK;
@@ -389,18 +389,18 @@ void CLSqlOperate::deleteDairy(const T_DairyDeleteReq &tDairyDeleteReq, T_HttpSt
 
 
 
-void CLSqlOperate::saveUserUploadJoke(const T_Joke & tJoke, T_HttpStatusMsg & tHttpStatusMsg)
+void CLSqlOperate::saveUserUploadArticle(const T_Article & tArticle, T_HttpStatusMsg & tHttpStatusMsg)
 {
     QSqlDatabase db = CSqlConnectionPool::getInstance()->getOpenConnection();
     QSqlQuery query(db);
     // 有外键约束会检测uid在tuser的存在
-    query.prepare("INSERT INTO tJoke(title, create_datetime, content, original, up_uid, nickname) VALUES(?, ?, ?, ?, ?, ?)");
-    query.bindValue(0, tJoke.strTitle);
-    query.bindValue(1, tJoke.strDate);
-    query.bindValue(2, tJoke.strContent);
-    query.bindValue(3, tJoke.bOriginal);
-    query.bindValue(4, tJoke.upUid);
-    query.bindValue(5, tJoke.strNickname);
+    query.prepare("INSERT INTO tArticle(title, create_datetime, content, original, up_uid, nickname) VALUES(?, ?, ?, ?, ?, ?)");
+    query.bindValue(0, tArticle.strTitle);
+    query.bindValue(1, tArticle.strDate);
+    query.bindValue(2, tArticle.strContent);
+    query.bindValue(3, tArticle.bOriginal);
+    query.bindValue(4, tArticle.upUid);
+    query.bindValue(5, tArticle.strNickname);
 
     if (!query.exec())
     {
@@ -489,8 +489,8 @@ void CLSqlOperate::saveUserUploadJoke(const T_Joke & tJoke, T_HttpStatusMsg & tH
 //}
 
 
-void CLSqlOperate::getJokeList(const T_JokeListRequest & tJokeListRequest
-                               , T_JokeListResp & tJokeListResp
+void CLSqlOperate::getArticleList(const T_ArticleListRequest & tArticleListRequest
+                               , T_ArticleListResp & tArticleListResp
                                , T_HttpStatusMsg & tHttpStatusMsg)
 {
     QSqlDatabase db = CSqlConnectionPool::getInstance()->getOpenConnection();
@@ -503,21 +503,21 @@ void CLSqlOperate::getJokeList(const T_JokeListRequest & tJokeListRequest
 
 
     QString strUserLimit = "";
-    if (tJokeListRequest.nSelectType == ES_SelectByMyUpload)
+    if (tArticleListRequest.nSelectType == ES_SelectByMyUpload)
     {
-        strUserLimit = QString(" where up_uid = %1").arg(tJokeListRequest.uId);
+        strUserLimit = QString(" where up_uid = %1").arg(tArticleListRequest.uId);
     }
-    QString strQuery = "select count(1) from tJoke" + strUserLimit;
+    QString strQuery = "select count(1) from tArticle" + strUserLimit;
     qDebug() << strQuery;
     query.exec(strQuery);
     if(query.next())
     {
-        tJokeListResp.nTotalItems = query.value(0).toInt();
+        tArticleListResp.nTotalItems = query.value(0).toInt();
     }
 
     //select * from table_name limit 0,10
-    int nPos = (tJokeListRequest.nPageIndex - 1) * tJokeListRequest.nPageItems;
-    strQuery = QString("select * from tJoke" + strUserLimit + " limit %1, %2").arg(nPos).arg(tJokeListRequest.nPageItems);
+    int nPos = (tArticleListRequest.nPageIndex - 1) * tArticleListRequest.nPageItems;
+    strQuery = QString("select * from tArticle" + strUserLimit + " limit %1, %2").arg(nPos).arg(tArticleListRequest.nPageItems);
     qDebug() << strQuery;
     if (!query.exec(strQuery))
     {
@@ -529,47 +529,47 @@ void CLSqlOperate::getJokeList(const T_JokeListRequest & tJokeListRequest
     }
     while (query.next())
     {
-        T_Joke tJoke;
-        tJoke.jId = query.value("jid").toInt();
-        tJoke.strTitle = query.value("title").toString();
-        tJoke.strDate = query.value("create_datetime").toString();
-        tJoke.strContent = query.value("content").toString();
-        tJoke.bOriginal = query.value("original").toBool();
-        tJoke.upUid = query.value("up_uid").toInt();
-        tJoke.strNickname = query.value("nickname").toString();
-        tJoke.llRatingNumOfPeople = query.value("total_rating_people").toInt();
-        tJoke.dRatingToatalScore = query.value("total_rating_score").toDouble();
-        tJoke.dRatingAverageScore = query.value("average_rating_score").toDouble();
-        tJokeListResp.listJoke.append(tJoke);
+        T_Article tArticle;
+        tArticle.jId = query.value("jid").toInt();
+        tArticle.strTitle = query.value("title").toString();
+        tArticle.strDate = query.value("create_datetime").toString();
+        tArticle.strContent = query.value("content").toString();
+        tArticle.bOriginal = query.value("original").toBool();
+        tArticle.upUid = query.value("up_uid").toInt();
+        tArticle.strNickname = query.value("nickname").toString();
+        tArticle.llRatingNumOfPeople = query.value("total_rating_people").toInt();
+        tArticle.dRatingToatalScore = query.value("total_rating_score").toDouble();
+        tArticle.dRatingAverageScore = query.value("average_rating_score").toDouble();
+        tArticleListResp.listArticle.append(tArticle);
     }
     CSqlConnectionPool::getInstance()->closeConnection(db);
 }
 
-void CLSqlOperate::jokeRating(const T_JokeRating & tJokeRating, T_HttpStatusMsg & tHttpStatusMsg)
+void CLSqlOperate::articleRating(const T_ArticleRating & tArticleRating, T_HttpStatusMsg & tHttpStatusMsg)
 {
     QSqlDatabase db = CSqlConnectionPool::getInstance()->getOpenConnection();
     QSqlQuery query(db);
     /**
         // 查询是否已经有评价
 
-        QString strQuery = QString("select count(1) from tJoke where jid=%1 and uid=%2").arg(tJokeRating.jId).arg(tJokeRating.uId);
+        QString strQuery = QString("select count(1) from tArticle where jid=%1 and uid=%2").arg(tArticleRating.jId).arg(tArticleRating.uId);
         query.exec(strQuery);
         if(query.next())
         {
-            strQuery = QString("update tJokeRating set rating=%1 where jid=%2 and uid=%3")
-                    .arg(tJokeRating.dRating)
-                    .arg(tJokeRating.jId)
-                    .arg(tJokeRating.uId);
+            strQuery = QString("update tArticleRating set rating=%1 where jid=%2 and uid=%3")
+                    .arg(tArticleRating.dRating)
+                    .arg(tArticleRating.jId)
+                    .arg(tArticleRating.uId);
         }
         else
         {
-            strQuery = QString("INSERT INTO tJokeRating(jid, uid, rating) VALUES(%1, %2, %3)")
-                    .arg(tJokeRating.jId)
-                    .arg(tJokeRating.uId)
-                    .arg(tJokeRating.dRating);
+            strQuery = QString("INSERT INTO tArticleRating(jid, uid, rating) VALUES(%1, %2, %3)")
+                    .arg(tArticleRating.jId)
+                    .arg(tArticleRating.uId)
+                    .arg(tArticleRating.dRating);
         }
         query.exec(strQuery);
-        //strQuery = "update tJoke set total_rating_people= total_rating_score= average_rating_score=";
+        //strQuery = "update tArticle set total_rating_people= total_rating_score= average_rating_score=";
         */
 
     //    以下是访问oracle存储过程的示例，多个输入、输出都可以。
@@ -591,8 +591,8 @@ void CLSqlOperate::jokeRating(const T_JokeRating & tJokeRating, T_HttpStatusMsg 
     //    QString str2 = query.boundValue(":out2").toInt();
 
     // 使用存储过程
-    qDebug() << "使用存储过程" << tJokeRating.jId << tJokeRating.uId << tJokeRating.dRating;
-    if (!query.prepare("call proc_joke_rating(:p1,:p2,:p3)"))
+    qDebug() << "使用存储过程" << tArticleRating.jId << tArticleRating.uId << tArticleRating.dRating;
+    if (!query.prepare("call proc_article_rating(:p1,:p2,:p3)"))
     {
         qDebug() << query.lastError();
         tHttpStatusMsg.nStatusCode = EH_Ex_SqlError;
@@ -600,9 +600,9 @@ void CLSqlOperate::jokeRating(const T_JokeRating & tJokeRating, T_HttpStatusMsg 
         CSqlConnectionPool::getInstance()->closeConnection(db);
         return;
     }
-    query.bindValue(":p1", tJokeRating.jId, QSql::In);
-    query.bindValue(":p2", tJokeRating.uId, QSql::In);
-    query.bindValue(":p3", tJokeRating.dRating, QSql::In);
+    query.bindValue(":p1", tArticleRating.jId, QSql::In);
+    query.bindValue(":p2", tArticleRating.uId, QSql::In);
+    query.bindValue(":p3", tArticleRating.dRating, QSql::In);
     if (!query.exec())
     {
         qDebug() << query.lastError();

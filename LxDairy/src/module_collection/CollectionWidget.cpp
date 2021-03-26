@@ -86,7 +86,7 @@ void CCollectionWidget::requestUploadJoke(const T_Article & tJoke)
         m_tJokeListRequest.nPageIndex = 1;
         requestJokeList(m_tJokeListRequest);
     });
-    pDairyHttpClient->post(CNetAppointments::urlUploadJoke(), CNetAppointments::serializa(tJoke));
+    pDairyHttpClient->post(CNetAppointments::urlArticleUpload(), CNetAppointments::serializa(tJoke));
 
 }
 
@@ -114,7 +114,7 @@ void CCollectionWidget::requestJokeList(const T_ArticleListRequest & tJokeListRe
             m_pJokeModel->setListJoke(m_tJokeListResp.listJoke);
         }
     });
-    pDairyHttpClient->post(CNetAppointments::urlJokeList(), CNetAppointments::serializa(tJokeListRequest));
+    pDairyHttpClient->post(CNetAppointments::urlArticleList(), CNetAppointments::serializa(tJokeListRequest));
 }
 
 void CCollectionWidget::onRespUploadJoke(const QByteArray & data)
@@ -233,7 +233,7 @@ void CCollectionWidget::onStarEidtFinished(qreal dRating)
         m_tJokeListRequest.nPageIndex = 1;
         requestJokeList(m_tJokeListRequest);
     });
-    pDairyHttpClient->post(CNetAppointments::urlJokeRating(), CNetAppointments::serializa(tJokeRating));
+    pDairyHttpClient->post(CNetAppointments::urlArticleRating(), CNetAppointments::serializa(tJokeRating));
 }
 
 void CCollectionWidget::onSelectionChanged(const QItemSelection & selected, const QItemSelection & deselected)

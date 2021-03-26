@@ -19,10 +19,10 @@ const char * const VIRTUAL_DIR_PATH_DAIRY_LIST = "/dairy/list";
 const char* const VIRTUAL_DIR_PATH_DAIRY_UPLOAD = "/dairy/upload";
 const char* const VIRTUAL_DIR_PATH_DAIRY_DELETE = "/dairy/delete";
 
-const char * const VIRTUAL_DIR_PATH_JOKE_ROOT = "/joke";
-const char * const VIRTUAL_DIR_PATH_JOKE_LIST = "/joke/list";
-const char * const VIRTUAL_DIR_PATH_JOKE_RATING = "/joke/rating";
-const char * const VIRTUAL_DIR_PATH_JOKE_UPLOAD = "/joke/upload";
+const char * const VIRTUAL_DIR_PATH_ARTICLE_ROOT = "/article";
+const char * const VIRTUAL_DIR_PATH_ARTICLE_LIST = "/article/list";
+const char * const VIRTUAL_DIR_PATH_ARTICLE_RATING = "/article/rating";
+const char * const VIRTUAL_DIR_PATH_ARTICLE_UPLOAD = "/article/upload";
 
 const char * const VIRTUAL_DIR_PATH_REGISTER = "/register";
 const char * const VIRTUAL_DIR_PATH_LOGIN = "/login";
@@ -141,31 +141,31 @@ QString CNetAppointments::urlDairyDelete()
     return tNetAppointment.url();
 }
 
-QString CNetAppointments::urlJokeList()
+QString CNetAppointments::urlArticleList()
 {
     T_NetAppointment tNetAppointment;
     tNetAppointment.eRequsetType = T_NetAppointment::ER_Post;
-    tNetAppointment.strVirtualDirectory = VIRTUAL_DIR_PATH_JOKE_LIST;
+    tNetAppointment.strVirtualDirectory = VIRTUAL_DIR_PATH_ARTICLE_LIST;
 
     return tNetAppointment.url();
 }
 
 
 
-QString CNetAppointments::urlUploadJoke()
+QString CNetAppointments::urlArticleUpload()
 {
     T_NetAppointment tNetAppointment;
     tNetAppointment.eRequsetType = T_NetAppointment::ER_Post;
-    tNetAppointment.strVirtualDirectory = VIRTUAL_DIR_PATH_JOKE_UPLOAD;
+    tNetAppointment.strVirtualDirectory = VIRTUAL_DIR_PATH_ARTICLE_UPLOAD;
 
     return tNetAppointment.url();
 }
 
-QString CNetAppointments::urlJokeRating()
+QString CNetAppointments::urlArticleRating()
 {
     T_NetAppointment tNetAppointment;
     tNetAppointment.eRequsetType = T_NetAppointment::ER_Post;
-    tNetAppointment.strVirtualDirectory = VIRTUAL_DIR_PATH_JOKE_RATING;
+    tNetAppointment.strVirtualDirectory = VIRTUAL_DIR_PATH_ARTICLE_RATING;
 
     return tNetAppointment.url();
 }

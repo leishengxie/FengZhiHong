@@ -7,7 +7,7 @@
 #include "LHttpServer.h"
 #include "responder/LDumpResponder.h"
 #include "responder/LDefaultResponder.h"
-#include "diary_responder/LJokeResponder.h"
+#include "diary_responder/LArticleResponder.h"
 #include "diary_responder/LLoginRigsterResponder.h"
 #include "diary_responder/LDairyResponder.h"
 
@@ -36,9 +36,9 @@ IResponder* CLDiaryResponderCreator::service(CLHttpRequest *request, CLHttpRespo
         pResponder = new CLDairyResponder(request, resp);
 
     }
-    else if (path.startsWith(VIRTUAL_DIR_PATH_JOKE_ROOT))
+    else if (path.startsWith(VIRTUAL_DIR_PATH_ARTICLE_ROOT))
     {
-        pResponder = new CLJokeResponder(request, resp);
+        pResponder = new CLArticleResponder(request, resp);
 
     }
     else if (path.startsWith(VIRTUAL_DIR_PATH_REGISTER) || path.startsWith(VIRTUAL_DIR_PATH_LOGIN))

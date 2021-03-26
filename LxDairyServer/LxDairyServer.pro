@@ -80,7 +80,7 @@ HEADERS += \
     src/network/http/IResponderCreator.h \
     src/LDiaryResponderCreator.h \
     src/LDairyService.h \
-    src/diary_responder/LJokeResponder.h \
+    src/diary_responder/LArticleResponder.h \
     src/LDairyApp.h \
     src/LSqlOperate.h \
     src/diary_responder/LLoginRigsterResponder.h \
@@ -108,7 +108,7 @@ SOURCES += \
     src/network/http/IResponderCreator.cpp \
     src/LDiaryResponderCreator.cpp \
     src/LDairyService.cpp \
-    src/diary_responder/LJokeResponder.cpp \
+    src/diary_responder/LArticleResponder.cpp \
     src/LDairyApp.cpp \
     src/LSqlOperate.cpp \
     src/diary_responder/LLoginRigsterResponder.cpp \

@@ -8,7 +8,7 @@
 #ifdef APPOINTMENT_DATASTREAM
     #include "datastream_type/NetDataStream.h"
 
-    #include "collection_jokebook/Joke.h"
+    #include "Article.h"
 #include "module_dairy/Dairy.h"
     #include "UserInfo.h"
 #endif
@@ -34,10 +34,10 @@ extern const char * const VIRTUAL_DIR_PATH_DAIRY_LIST;
 extern const char * const VIRTUAL_DIR_PATH_DAIRY_UPLOAD;
 extern const char * const VIRTUAL_DIR_PATH_DAIRY_DELETE;
 
-extern const char * const VIRTUAL_DIR_PATH_JOKE_ROOT;
-extern const char * const VIRTUAL_DIR_PATH_JOKE_LIST;
-extern const char * const VIRTUAL_DIR_PATH_JOKE_RATING;
-extern const char * const VIRTUAL_DIR_PATH_JOKE_UPLOAD;
+extern const char * const VIRTUAL_DIR_PATH_ARTICLE_ROOT;
+extern const char * const VIRTUAL_DIR_PATH_ARTICLE_LIST;
+extern const char * const VIRTUAL_DIR_PATH_ARTICLE_RATING;
+extern const char * const VIRTUAL_DIR_PATH_ARTICLE_UPLOAD;
 
 
 struct T_NetAppointment
@@ -97,9 +97,9 @@ public:
     static QString urlDairyUpload();
     static QString urlDairyDelete();
 
-    static QString urlJokeList();
-    static QString urlUploadJoke();
-    static QString urlJokeRating();
+    static QString urlArticleList();
+    static QString urlArticleUpload();
+    static QString urlArticleRating();
 
     template<typename T>
     static QByteArray serializa(const T & t)

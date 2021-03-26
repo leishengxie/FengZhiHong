@@ -11,12 +11,12 @@ INCLUDEPATH += $$PWD/net_appointments
 INCLUDEPATH += $$PWD/module_collection
 
 HEADERS += $$PWD/net_appointments/NetAppointments.h \
-    $$PWD/module_collection/collection_jokebook/Joke.h \
+    $$PWD/module_collection/Article.h \
     $$PWD/UserInfo.h \
     $$PWD/module_dairy/Dairy.h
 
 SOURCES += $$PWD/net_appointments/NetAppointments.cpp \
-    $$PWD/module_collection/collection_jokebook/Joke.cpp \
+    $$PWD/module_collection/collection_articlebook/Article.cpp \
     $$PWD/UserInfo.cpp \
     $$PWD/module_dairy/Dairy.cpp
 
