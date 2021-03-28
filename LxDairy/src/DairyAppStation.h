@@ -2,7 +2,7 @@
 #define CDAIRYAPPSTATION_H
 
 #include <QObject>
-#include "Singleton.h"
+#include "patterns/Singleton.h"
 
 ///
 /// \brief The CDairyAppStation class   全局中转站，由于qt信号槽类似观察者模式

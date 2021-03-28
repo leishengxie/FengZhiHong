@@ -257,10 +257,10 @@ QString T_DairyDateItem::text()
 void T_DairyDateItem::dairyModify(const T_Dairy & dairyBefore, const T_Dairy & dairyAfter
                                   , T_DairyDateItem* & pDairyDateItem)
 {
-    if (did == dairyBefore.did && eDairyDateNodeType == ED_Day)
+    if (tDairy.did == dairyBefore.did && eDairyDateNodeType == ED_Day)
     {
-        did = dairyAfter.did;
-        strTitle = dairyAfter.strTitle;
+        tDairy.did = dairyAfter.did;
+        tDairy.strTitle = dairyAfter.strTitle;
         pDairyDateItem = this;
     }
     if (m_setChildItems.empty())
@@ -275,7 +275,7 @@ void T_DairyDateItem::dairyModify(const T_Dairy & dairyBefore, const T_Dairy & d
 
 void T_DairyDateItem::findItemById(int did, T_DairyDateItem* & pDairyDateItem)
 {
-    if (this->did == did && eDairyDateNodeType == ED_Day)
+    if (tDairy.did == did && eDairyDateNodeType == ED_Day)
     {
         pDairyDateItem = this;
     }

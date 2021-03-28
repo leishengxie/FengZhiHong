@@ -144,7 +144,7 @@ struct T_ArticleListRequest
 struct T_ArticleListResp
 {
     int nTotalItems;
-    QList<T_Article> listJoke;
+    QList<T_Article> listArticle;
 
     T_ArticleListResp()
         : nTotalItems(0)

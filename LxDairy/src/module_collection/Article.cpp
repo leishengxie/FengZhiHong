@@ -38,13 +38,13 @@ QDataStream & operator<<(QDataStream &out, const T_ArticleListRequest &data)
 
 QDataStream & operator>>(QDataStream &in, T_ArticleListResp &data)
 {
-    in >> data.nTotalItems >> data.listJoke;
+    in >> data.nTotalItems >> data.listArticle;
     return in;
 }
 
 QDataStream & operator<<(QDataStream &out, const T_ArticleListResp &data)
 {
-    out << data.nTotalItems << data.listJoke;
+    out << data.nTotalItems << data.listArticle;
     return out;
 }
 

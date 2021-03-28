@@ -14,8 +14,8 @@ class CSkinWidget;
 class ISkinListenner
 {
 public:
-    ISkinListenner();
-    ~ISkinListenner();
+    //ISkinListenner(){}
+    virtual ~ISkinListenner(){}
 
     virtual void requreRefrshBackground(const QPixmap& pixmpap) = 0;
 };
@@ -23,14 +23,14 @@ public:
 class ISkinNotifier
 {
 public:
-    ISkinNotifier();
-    ~ISkinNotifier();
+    //ISkinNotifier(){}
+    virtual ~ISkinNotifier(){}
 
 public:
     virtual void addListenner(ISkinListenner* listenner) = 0;
     virtual void removeListenner(ISkinListenner* listenner) = 0;
     //virtual void notify() = 0;
-    virtual void notityBackgroundChanged(const QPixmap& pixmpap);
+    virtual void notityBackgroundChanged(const QPixmap& pixmpap){}
 
 };
 
@@ -55,7 +55,7 @@ public:
         //delete listenner;
     }
 
-    virtual notityBackgroundChanged(const QPixmap& pixmpap)
+    virtual void notityBackgroundChanged(const QPixmap& pixmpap)
     {
         list <ISkinListenner*> ::iterator it = m_listenners.begin();
         for (; it != m_listenners.end(); ++it)
@@ -86,7 +86,7 @@ public:
 
     }
 
-    uint getIndex()
+    uint getIndex() const
     {
         return m_unIndex;
     }

@@ -366,9 +366,9 @@ void CLSqlOperate::deleteDairy(const T_DairyDeleteReq &tDairyDeleteReq, T_HttpSt
 
     db.transaction();
     QVariantList varlist_id;
-    foreach (int id, tDairyDeleteReq.dairyList)
+    foreach (T_Dairy tDairy, tDairyDeleteReq.dairyList)
     {
-        varlist_id << id;
+        varlist_id << tDairy.did;
     }
 
     query.prepare("delete from tDairy where did=?");

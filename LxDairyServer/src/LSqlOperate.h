@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QSqlDatabase>
 #include <QSqlQuery>
-#include "Singleton.h"
+#include "patterns/Singleton.h"
 
 #include "Article.h"
 #include "UserInfo.h"

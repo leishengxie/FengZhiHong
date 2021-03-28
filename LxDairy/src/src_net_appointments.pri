@@ -16,7 +16,7 @@ HEADERS += $$PWD/net_appointments/NetAppointments.h \
     $$PWD/module_dairy/Dairy.h
 
 SOURCES += $$PWD/net_appointments/NetAppointments.cpp \
-    $$PWD/module_collection/collection_articlebook/Article.cpp \
+    $$PWD/module_collection/Article.cpp \
     $$PWD/UserInfo.cpp \
     $$PWD/module_dairy/Dairy.cpp
 

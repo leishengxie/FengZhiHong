@@ -54,12 +54,12 @@ void CDairyDateTreeView::on_treeDairy_clicked(const QModelIndex & index)
                 //ui->page_dairy_statistics->showStatisticsByDate(tDairyTagItem->strYear, "");
                 foreach (T_Dairy dairy, lstDairy)
                 {
-                    if (dairy.strDateTime.left(4) == tDairyTagItem->strYear)
+                    if (dairy.year() == tDairyTagItem->tDairy.year())
                     {
                         lstDairySortByDate.append(dairy);
                     }
                 }
-                emit sortDairyByDateFinished(tDairyTagItem->strYear, "", lstDairySortByDate);
+                emit sortDairyByDateFinished(QString::number(tDairyTagItem->tDairy.year()), "", lstDairySortByDate);
                 break;
             }
         case ED_Month:
@@ -69,12 +69,13 @@ void CDairyDateTreeView::on_treeDairy_clicked(const QModelIndex & index)
 //                ui->page_dairy_statistics->showStatisticsByDate(tDairyTagItem->strYear, tDairyTagItem->strMonth);
                 foreach (T_Dairy dairy, lstDairy)
                 {
-                    if (dairy.strDateTime.left(4) == tDairyTagItem->strYear && dairy.strDateTime.mid(5, 2) == tDairyTagItem->strMonth)
+                    if (dairy.year() == tDairyTagItem->tDairy.year() && dairy.month() == tDairyTagItem->tDairy.month())
                     {
                         lstDairySortByDate.append(dairy);
                     }
                 }
-                emit sortDairyByDateFinished(tDairyTagItem->strYear, tDairyTagItem->strMonth, lstDairySortByDate);
+                emit sortDairyByDateFinished(QString::number(tDairyTagItem->tDairy.year())
+                                             , QString::number(tDairyTagItem->tDairy.month()), lstDairySortByDate);
                 break;
 
             }
@@ -86,7 +87,7 @@ void CDairyDateTreeView::on_treeDairy_clicked(const QModelIndex & index)
 //                ui->page_dairy->slot_displayDairy(dairy);
                 foreach (T_Dairy dairy, lstDairy)
                 {
-                    if (dairy.did == tDairyTagItem->did)
+                    if (dairy.did == tDairyTagItem->tDairy.did)
                     {
                         emit requreOpenDairy(dairy);
                         break;

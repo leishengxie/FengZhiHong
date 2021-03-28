@@ -5,7 +5,7 @@
 #include "NetAppointments.h"
 
 #include <QMessageBox>
-#include "LMd5.h"
+#include "crypto/LMd5.h"
 
 CRegisterDialog::CRegisterDialog(QWidget* parent) :
     QDialog(parent),

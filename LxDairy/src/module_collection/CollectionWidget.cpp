@@ -103,7 +103,7 @@ void CCollectionWidget::requestJokeList(const T_ArticleListRequest & tJokeListRe
         m_tJokeListResp = CNetAppointments::deserialization<T_ArticleListResp>(byteArray);
         if (bAppend)
         {
-            m_pJokeModel->appendListJoke(m_tJokeListResp.listJoke);
+            m_pJokeModel->appendListJoke(m_tJokeListResp.listArticle);
         }
         else
         {
@@ -111,7 +111,7 @@ void CCollectionWidget::requestJokeList(const T_ArticleListRequest & tJokeListRe
             //and has to be queried for again. This also means that the current item and any selected items will become invalid.
             // 根据官方介绍所有视图selected items 无效
             ui->tableView->selectionModel()->clearSelection();
-            m_pJokeModel->setListJoke(m_tJokeListResp.listJoke);
+            m_pJokeModel->setListJoke(m_tJokeListResp.listArticle);
         }
     });
     pDairyHttpClient->post(CNetAppointments::urlArticleList(), CNetAppointments::serializa(tJokeListRequest));

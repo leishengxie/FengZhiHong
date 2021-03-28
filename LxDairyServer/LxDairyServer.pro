@@ -1,6 +1,8 @@
 
 
-QT += core gui network sql
+QT += core gui network sql multimedia xml
+
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TEMPLATE = app
 CONFIG += console
@@ -36,14 +38,14 @@ win32 {
 }
 
 #依赖头文#
-INCLUDEPATH += $$PWD/../../LxTool/LQtTool/include
-DEPENDPATH += $$PWD/../../LxTool/LQtTool/include
+#INCLUDEPATH += $$PWD/../../LxTool/LQtTool/include
+#DEPENDPATH += $$PWD/../../LxTool/LQtTool/include
 
 
 #链接#
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../LxTool/LQtTool/bin/ -lLQtTool
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../LxTool/LQtTool/bin/ -lLQtToold
-else:unix: LIBS += -L$$PWD/../../LxTool/LQtTool/bin/ -lLQtTool
+#win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../LxTool/LQtTool/bin/ -lLQtTool
+#else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../LxTool/LQtTool/bin/ -lLQtToold
+#else:unix: LIBS += -L$$PWD/../../LxTool/LQtTool/bin/ -lLQtTool
 
 
 #import path to system
@@ -118,4 +120,5 @@ SOURCES += \
 
 include(qtservice/qtservice.pri)
 include(logging/logging.pri)
+include($$PWD/../../../lib/LxTool/LxQt.pri)
 include($$PWD/../LxDairy/src/src_net_appointments.pri)

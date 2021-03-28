@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui sql multimedia
+QT       += core gui sql multimedia xml
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -35,31 +35,26 @@ QMAKE_TARGET_COPYRIGHT = Lx
 RC_LANG = 0x0004
 
 #依赖头文#
-INCLUDEPATH += $$PWD/../../LxTool/LQtTool/include
-DEPENDPATH += $$PWD/../../LxTool/LQtTool/include
 INCLUDEPATH += $$PWD/../../LxMultimedia/LxTTS/include
+INCLUDEPATH += $$PWD/../../../../thirdparty/qtThirdParty/install/qzxing/include
+
 DEPENDPATH += $$PWD/../../LxMultimedia/LxTTS/include
-INCLUDEPATH += $$PWD/../../qtThirdParty/install/qzxing/include
-DEPENDPATH += $$PWD/../../qtThirdParty/install/qzxing/include
+DEPENDPATH += $$PWD/../../../../thirdparty/qtThirdParty/install/qzxing/include
 
 #链接#
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../LxTool/LQtTool/bin/ -lLQtTool
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../LxTool/LQtTool/bin/ -lLQtToold
-else:unix: LIBS += -L$$PWD/../../LxTool/LQtTool/bin/ -lLQtTool
 win32: LIBS += -L$$PWD/../../LxMultimedia/LxTTS/lib/ -lTTS_Win32
-win32: LIBS += -L$$PWD/../../qtThirdParty/install/qzxing/lib/ -lQZXing2
+win32: LIBS += -L$$PWD/../../../../thirdparty/qtThirdParty/install/qzxing/lib/ -lQZXing2
 
 #copy dll
 win32{
 # PRE_TARGETDEPS:The target will run before build
 # PRE_TARGETDEPS
-copy_deps.target=copy_lqttool
+copy_deps.target=copy_lib
 copy_deps.depends=FORCE
-copy_deps.commands = copy $$PWD/../../LxTool/LQtTool/bin/LQtTool.dll $$PWD/bin && \
-                     copy $$PWD/../../LxMultimedia/LxTTS/lib/TTS_Win32.dll $$PWD/bin && \
-                        copy $$PWD/../../qtThirdParty/install/qzxing/lib/QZXing2.dll $$PWD/bin
+copy_deps.commands = copy $$PWD/../../LxMultimedia/LxTTS/lib/TTS_Win32.dll $$PWD/bin && \
+                        copy $$PWD/../../../../thirdparty/qtThirdParty/install/qzxing/lib/QZXing2.dll $$PWD/bin
 # POST_TARGETDEPS:The target will run after build finished
-POST_TARGETDEPS += copy_lqttool
+POST_TARGETDEPS += copy_lib
 QMAKE_EXTRA_TARGETS += copy_deps
 }
 
@@ -94,7 +89,7 @@ win32 {
 #   win32:LIBS = $$member(LIBS, 0) $$member(LIBS, 1)d
 #}
 
-
+include($$PWD/../../../lib/LxTool/LxQt.pri)
 include($$PWD/src/src.pri)
 #include($$PWD/src/src_net_appointments.pri)
 

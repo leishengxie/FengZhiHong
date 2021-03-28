@@ -151,7 +151,7 @@
   <customwidget>
    <class>CStarEditor</class>
    <extends>QWidget</extends>
-   <header>module_collection/collection_jokebook/StarEditor.h</header>
+   <header>module_collection/StarEditor.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
