@@ -33,9 +33,16 @@ int main(int argc, char *argv[])
     //qmlRegisterType<CModelManager>("lxdairy.qt.ModelManager", 1, 0,"ModelManager");
 
     // 注册单例类 --看了官方例子
+    // 尽量用c++的全局，毕竟c++和qml都可以用c++的全局
     //qmlRegisterSingletonType
     qmlRegisterSingletonType( QUrl("qrc:/qml/global/QmlGlobalObj.qml"), "lxdairy.global", 1, 0, "QmlGlobalObj" );
     qmlRegisterSingletonType<CDairyGlobalInstance>( "lxdairy.cpp.global", 1, 0, "DairyGlobalInstance", provider );
+    // -额外了解:
+    // QML从ECMAScript继承而来，所以支持这个ECMAScript。经常在QML工程中看到Math、Data.....等方法，但是在Qt手册里搜索不到，这是因为这些方法不是QtQuick的，而是ECMAScript的。
+    // QML除了支持ECMAScript内置对象对象外,还自己给用户提供了许多宿主对象.当然用户也可以自己自定义对象.
+    // 内置对象 : 由 ECMAScript所提供的对象;如Object、Array、Math、Date等等。
+    // 宿主对象 ：即由 ECMAScript 实现的宿主环境提供的对象,比如Qt对象.
+    // 自定义对象 ：自定义构造函数所创建的对象。
 
     QQmlApplicationEngine engine;
     CModelManager::getInstance()->setQmlContext(engine.rootContext());

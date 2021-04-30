@@ -54,7 +54,6 @@ public:
 
 private:
 
-    // 饮品类队列
     QList<T_Dairy> m_lstDairy;
 
     int m_nCurIndex;

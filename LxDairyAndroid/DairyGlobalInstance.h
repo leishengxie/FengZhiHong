@@ -23,6 +23,9 @@ signals:
     void toast(QString strTip);
 
 public slots:
+
+private:
+
 };
 
 QObject *provider(QQmlEngine *engine, QJSEngine *scriptEngine);

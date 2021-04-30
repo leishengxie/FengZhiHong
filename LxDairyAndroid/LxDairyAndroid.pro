@@ -47,24 +47,25 @@ win32 {
 }
 
 #依赖头文#
-INCLUDEPATH += $$PWD/../../LxTool/LQtTool/include
-DEPENDPATH += $$PWD/../../LxTool/LQtTool/include
+#INCLUDEPATH += $$PWD/../../LxTool/LQtTool/include
+#DEPENDPATH += $$PWD/../../LxTool/LQtTool/include
 
 
-#链接#
-win32 {
-    CONFIG(release, debug|release): LIBS += -L$$PWD/../../LxTool/LQtTool/bin/ -lLQtTool
-    CONFIG(debug, debug|release): LIBS += -L$$PWD/../../LxTool/LQtTool/bin/ -lLQtToold
-}
+##链接#
+#win32 {
+#    CONFIG(release, debug|release): LIBS += -L$$PWD/../../LxTool/LQtTool/bin/ -lLQtTool
+#    CONFIG(debug, debug|release): LIBS += -L$$PWD/../../LxTool/LQtTool/bin/ -lLQtToold
+#}
 
-unix {
-    CONFIG(release, debug|release): LIBS += -L$$PWD/../../LxTool/LQtTool/bin/ -lLQtTool
-   CONFIG(debug, debug|release): LIBS += -L$$PWD/../../LxTool/LQtTool/bin/ -lLQtToold
-}
+#unix {
+#    CONFIG(release, debug|release): LIBS += -L$$PWD/../../LxTool/LQtTool/bin/ -lLQtTool
+#   CONFIG(debug, debug|release): LIBS += -L$$PWD/../../LxTool/LQtTool/bin/ -lLQtToold
+#}
 
 
 # Default rules for deployment.
 include(deployment.pri)
+include($$PWD/../../../lib/LxTool/LxQt.pri)
 include($$PWD/../LxDairy/src/src_android.pri)
 
 HEADERS += \
@@ -76,7 +77,7 @@ HEADERS += \
 
 contains(ANDROID_TARGET_ARCH,armeabi-v7a) {
     ANDROID_EXTRA_LIBS = \
-        $$PWD/../../LxTool/LQtTool/bin/libLQtTool.so
+#        $$PWD/../../LxTool/LQtTool/bin/libLQtTool.so
 }
 
 DISTFILES += \
